@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-label="Wilting kitchen and mirror reflection">
+  <defs>
+    <linearGradient id="bgWash" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#69608f"/>
+      <stop offset="52%" stop-color="#8b88a2"/>
+      <stop offset="100%" stop-color="#aba4b9"/>
+    </linearGradient>
+    <filter id="paperGrain" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="3" result="noise"/>
+      <feColorMatrix in="noise" type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 0.03"/>
+      </feComponentTransfer>
+    </filter>
+    <radialGradient id="lightBloom" cx="30%" cy="22%" r="48%">
+      <stop offset="0%" stop-color="#fff8d8" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#fff8d8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1400" height="900" fill="url(#bgWash)"/>
+  <rect width="1400" height="900" fill="url(#lightBloom)"/>
+  <rect width="1400" height="900" filter="url(#paperGrain)"/>
+
+  <g>
+
+    <rect x="130" y="138" width="1140" height="642" rx="40" fill="rgba(255,255,255,0.13)"/>
+    <rect x="194" y="220" width="544" height="472" rx="30" fill="#c3c0cf"/>
+    <rect x="218" y="246" width="496" height="424" rx="24" fill="#e4e1ea"/>
+    
+    <g transform="translate(470 420) scale(1)">
+      <ellipse cx="0" cy="242" rx="98" ry="42" fill="#7f92a5" opacity="0.25"/>
+      <ellipse cx="0" cy="20" rx="38" ry="46" fill="#f2d4bf"/>
+      <path d="M-42 14 C-20 -44 20 -48 42 14 C20 -10 -18 -12 -42 14 Z" fill="#47352e"/>
+      <circle cx="-12" cy="12" r="3.6" fill="#3a2d29"/>
+      <circle cx="14" cy="12" r="3.6" fill="#3a2d29"/>
+      <path d="M-12 28 Q2 36 16 28" fill="none" stroke="#6e4b44" stroke-width="3" stroke-linecap="round"/>
+      <path d="M-50 82 Q0 66 50 82 L46 182 Q6 214 -46 182 Z" fill="#b79273"/>
+      <path d="M-84 120 C-40 96 22 104 80 122 C62 202 36 254 -10 294 C-40 262 -70 210 -84 120 Z" fill="#92a5b8"/>
+      <path d="M-22 110 C16 138 44 170 68 234" stroke="#9ed0de" stroke-width="6" fill="none" opacity="0.55"/>
+      <rect x="-86" y="96" width="22" height="90" rx="10" fill="#f2d4bf"/>
+      <rect x="62" y="104" width="20" height="84" rx="10" fill="#f2d4bf"/>
+      <circle cx="70" cy="108" r="7" fill="#dba66f"/>
+      <circle cx="72" cy="124" r="6" fill="#dba66f"/>
+    </g>
+  
+    
+    <g transform="translate(472 598) scale(0.7)">
+      <ellipse cx="0" cy="0" rx="188" ry="56" fill="#ffffff"/>
+      <ellipse cx="0" cy="-8" rx="164" ry="42" fill="#f3f6fb"/>
+      <circle cx="-82" cy="-8" r="18" fill="#d9473e"/>
+      <circle cx="-38" cy="-12" r="18" fill="#2f8d57"/>
+      <circle cx="4" cy="-10" r="17" fill="#efc34b"/>
+      <circle cx="48" cy="-8" r="17" fill="#4f77d7"/>
+      <circle cx="88" cy="-10" r="18" fill="#f28f2a"/>
+      <rect x="118" y="-20" width="13" height="40" rx="5" fill="#f3be53"/>
+      <rect x="136" y="-22" width="13" height="42" rx="5" fill="#f3be53"/>
+      <rect x="154" y="-20" width="13" height="40" rx="5" fill="#f3be53"/>
+    </g>
+  
+    <path d="M820 680 C900 620 1010 700 1090 640 C1158 588 1242 638 1278 616" stroke="#807f86" stroke-width="10" fill="none"/>
+    <circle cx="872" cy="690" r="14" fill="#8e835f"/><circle cx="1042" cy="656" r="14" fill="#8e835f"/><circle cx="1218" cy="632" r="14" fill="#8e835f"/>
+    <text x="1048" y="220" text-anchor="middle" font-family="Georgia, serif" font-size="48" fill="#f4e6ce">The Kitchen Began To Fade</text>
+    <text x="1048" y="274" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#f4e6ce">One colour was not enough.</text>
+    
+  </g>
+</svg>

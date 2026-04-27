@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-label="Cartoon harbor at dawn with star and sailor reaching home">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f7b36b"/>
+      <stop offset="45%" stop-color="#fbd58d"/>
+      <stop offset="100%" stop-color="#d6ecff"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6eb2e8"/>
+      <stop offset="100%" stop-color="#3d86c7"/>
+    </linearGradient>
+    <radialGradient id="starGlow" cx="78%" cy="18%" r="22%">
+      <stop offset="0%" stop-color="#fff4ab" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#fff4ab" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="700" fill="url(#sky)"/>
+  <rect width="1200" height="380" fill="url(#starGlow)"/>
+
+  <g>
+    <polygon points="935,62 955,104 1002,110 967,137 976,182 935,160 894,182 903,137 868,110 915,104" fill="#ffd84f"/>
+    <circle cx="935" cy="126" r="70" fill="#ffd84f" opacity="0.26"/>
+    <circle cx="918" cy="123" r="5" fill="#2d3f68"/>
+    <circle cx="948" cy="123" r="5" fill="#2d3f68"/>
+    <path d="M914 143 Q934 158 954 143" fill="none" stroke="#2d3f68" stroke-width="5" stroke-linecap="round"/>
+  </g>
+
+  <path d="M0 410 C170 386 350 446 540 418 C730 390 890 458 1200 418 L1200 700 L0 700 Z" fill="url(#sea)"/>
+  <path d="M0 455 C190 430 370 492 560 460 C730 431 910 496 1200 455" fill="none" stroke="#cce9ff" stroke-width="10" stroke-opacity="0.6"/>
+
+  <g transform="translate(205 372)">
+    <path d="M0 120 L280 120 L252 154 L38 154 Z" fill="#99623b"/>
+    <path d="M58 120 Q140 74 220 120" fill="#b47a4c"/>
+    <rect x="138" y="14" width="10" height="106" fill="#5b4634"/>
+    <polygon points="148,20 148,118 224,70" fill="#fff6de"/>
+  </g>
+
+  <g transform="translate(760 338)">
+    <rect x="0" y="70" width="260" height="146" rx="12" fill="#ffe9b4"/>
+    <polygon points="-14,72 130,-20 274,72" fill="#d95f52"/>
+    <rect x="36" y="114" width="56" height="46" rx="6" fill="#99c5ff"/>
+    <rect x="110" y="114" width="56" height="46" rx="6" fill="#99c5ff"/>
+    <rect x="188" y="114" width="40" height="102" rx="6" fill="#7e5b44"/>
+  </g>
+
+  <g fill="#ffffff" opacity="0.8">
+    <ellipse cx="220" cy="120" rx="84" ry="34"/>
+    <ellipse cx="286" cy="112" rx="92" ry="38"/>
+    <ellipse cx="350" cy="124" rx="78" ry="30"/>
+
+    <ellipse cx="590" cy="92" rx="76" ry="30"/>
+    <ellipse cx="650" cy="84" rx="82" ry="33"/>
+    <ellipse cx="710" cy="96" rx="68" ry="28"/>
+  </g>
+</svg>

@@ -1,0 +1,8 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^git add index\\.html README\\.md && git commit -m \"Add NPLAN section to index\\.html \\+ README with topic breakdown\"$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}

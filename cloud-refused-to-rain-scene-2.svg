@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-label="Flowers And Animals Were Suffering">
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6a88c7"/>
+      <stop offset="55%" stop-color="#88a8de"/>
+      <stop offset="100%" stop-color="#b9d1f2"/>
+    </linearGradient>
+  </defs>
+  <rect width="1400" height="900" fill="url(#bg)"/>
+  <path d="M0 620 C200 560 340 660 540 618 C730 578 950 668 1200 616 C1290 598 1350 608 1400 620 L1400 900 L0 900 Z" fill="rgba(36,62,52,0.26)"/>
+  <path d="M0 690 C210 640 380 724 600 682 C820 640 1030 730 1260 688 C1330 676 1380 684 1400 690 L1400 900 L0 900 Z" fill="rgba(24,45,38,0.34)"/>
+  <g fill="#ffffff" opacity="0.22">
+    <circle cx="120" cy="100" r="6"/><circle cx="280" cy="88" r="5"/><circle cx="510" cy="120" r="6"/>
+    <circle cx="760" cy="92" r="6"/><circle cx="980" cy="110" r="5"/><circle cx="1220" cy="96" r="6"/>
+  </g>
+
+  <g transform="translate(760 250) scale(1.9)" opacity="0.9">
+    <ellipse cx="0" cy="0" rx="58" ry="34" fill="#f5f6fa"/>
+    <ellipse cx="-42" cy="6" rx="44" ry="26" fill="#f5f6fa"/>
+    <ellipse cx="44" cy="8" rx="42" ry="24" fill="#f5f6fa"/>
+    <ellipse cx="4" cy="-18" rx="40" ry="24" fill="#f5f6fa"/>
+  </g>
+  <path d="M160 690 C280 620 420 710 560 680 C700 650 860 718 1020 682 C1120 660 1220 698 1280 682" stroke="#7b5d35" stroke-width="10" fill="none"/>
+  <g transform="translate(260 690) scale(1.8)">
+    <rect x="-3" y="10" width="6" height="42" rx="3" fill="#5c9d53"/>
+    <circle cx="0" cy="0" r="8" fill="#f6d57a"/>
+    <circle cx="-10" cy="0" r="8" fill="#9c7d57"/>
+    <circle cx="10" cy="0" r="8" fill="#9c7d57"/>
+    <circle cx="0" cy="-10" r="8" fill="#9c7d57"/>
+    <circle cx="0" cy="10" r="8" fill="#9c7d57"/>
+  </g><g transform="translate(420 710) scale(1.7)">
+    <rect x="-3" y="10" width="6" height="42" rx="3" fill="#5c9d53"/>
+    <circle cx="0" cy="0" r="8" fill="#f6d57a"/>
+    <circle cx="-10" cy="0" r="8" fill="#9c7d57"/>
+    <circle cx="10" cy="0" r="8" fill="#9c7d57"/>
+    <circle cx="0" cy="-10" r="8" fill="#9c7d57"/>
+    <circle cx="0" cy="10" r="8" fill="#9c7d57"/>
+  </g><g transform="translate(1080 705) scale(1.8)">
+    <rect x="-3" y="10" width="6" height="42" rx="3" fill="#5c9d53"/>
+    <circle cx="0" cy="0" r="8" fill="#f6d57a"/>
+    <circle cx="-10" cy="0" r="8" fill="#9c7d57"/>
+    <circle cx="10" cy="0" r="8" fill="#9c7d57"/>
+    <circle cx="0" cy="-10" r="8" fill="#9c7d57"/>
+    <circle cx="0" cy="10" r="8" fill="#9c7d57"/>
+  </g>
+  <g>
+    <ellipse cx="540" cy="700" rx="24" ry="16" fill="#c9b39a"/>
+    <circle cx="560" cy="690" r="10" fill="#c9b39a"/>
+    <circle cx="564" cy="688" r="2" fill="#2f2f2f"/>
+  </g>
+  <g>
+    <ellipse cx="860" cy="700" rx="24" ry="16" fill="#c9b39a"/>
+    <circle cx="880" cy="690" r="10" fill="#c9b39a"/>
+    <circle cx="884" cy="688" r="2" fill="#2f2f2f"/>
+  </g>
+
+  <text x="700" y="110" text-anchor="middle" font-family="Nunito, sans-serif" font-size="52" font-weight="900" fill="#fff6e5">Flowers And Animals Were Suffering</text>
+  <text x="700" y="844" text-anchor="middle" font-family="Nunito, sans-serif" font-size="32" font-weight="800" fill="#fff6e5">The field became dry and quiet without rain.</text>
+</svg>

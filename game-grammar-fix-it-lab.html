@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grammar Fix-it Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet" />
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="voice-assist.js"></script>
+  <style>
+    :root{
+      --ink:#263654;
+      --line:#e4e8f8;
+      --paper:#fffefa;
+      --mint:#39c3ad;
+      --rose:#ff7f96;
+      --blue:#4d96ff;
+    }
+    html{font-size:17px}
+    @media (max-width:500px){html{font-size:16px}}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      min-height:100vh;
+      font-family:'Nunito',sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 13% 8%, rgba(255,127,150,.2) 0, transparent 30%),
+        radial-gradient(circle at 88% 9%, rgba(77,150,255,.18) 0, transparent 32%),
+        linear-gradient(180deg,#f8f9ff 0%,#fff9ee 100%);
+      padding:16px;
+    }
+    .app{
+      max-width:980px;
+      margin:0 auto;
+      border:1px solid var(--line);
+      border-radius:26px;
+      overflow:hidden;
+      background:var(--paper);
+      box-shadow:0 16px 34px rgba(28,42,74,.1);
+    }
+    .top{
+      padding:14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      border-bottom:1px solid var(--line);
+      background:linear-gradient(135deg,#ffeef2 0%,#edf5ff 100%);
+    }
+    .home-link{
+      min-height:42px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      text-decoration:none;
+      border-radius:999px;
+      padding:9px 14px;
+      color:#fff;
+      font-weight:800;
+      background:linear-gradient(135deg,var(--mint) 0%,#48ceb3 100%);
+    }
+    .title{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-family:'Fredoka One',cursive;
+      font-size:1.2rem;
+      color:#344f7b;
+    }
+    .chip{
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg,#ffe1e8 0%,#e2edff 100%);
+    }
+    .content{padding:16px;display:grid;gap:12px}
+    .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+    .stat{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      text-align:center;
+      padding:10px;
+    }
+    .label{
+      display:block;
+      font-size:.76rem;
+      text-transform:uppercase;
+      letter-spacing:.6px;
+      color:#7483a1;
+      font-weight:800;
+    }
+    .value{
+      display:block;
+      margin-top:3px;
+      font-family:'Fredoka One',cursive;
+      font-size:1.18rem;
+      color:#365789;
+    }
+    .card{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:#fff;
+      padding:12px;
+    }
+    .card .label{
+      text-align:left;
+      margin-bottom:6px;
+    }
+    .wrong-sentence{
+      color:#3e5072;
+      line-height:1.75;
+      font-size:1rem;
+      border-left:4px solid #ff9bad;
+      padding-left:10px;
+      margin-bottom:10px;
+      white-space:pre-line;
+    }
+    .question{
+      font-family:'Fredoka One',cursive;
+      color:#2f4672;
+      font-size:1.16rem;
+      line-height:1.45;
+    }
+    .options{display:grid;gap:10px}
+    .option{
+      border:2px solid #dfe5f7;
+      border-radius:14px;
+      background:#fff;
+      padding:12px 13px;
+      text-align:left;
+      color:#354c78;
+      font-weight:800;
+      cursor:pointer;
+      transition:border-color .14s ease, transform .14s ease, box-shadow .14s ease;
+    }
+    .option:hover{
+      transform:translateY(-1px);
+      box-shadow:0 8px 16px rgba(37,53,83,.08);
+    }
+    .option.correct{
+      border-color:#2db980;
+      box-shadow:0 0 0 3px rgba(45,185,128,.16);
+    }
+    .option.wrong{
+      border-color:#d94861;
+      box-shadow:0 0 0 3px rgba(217,72,97,.15);
+    }
+    .feedback{
+      min-height:24px;
+      text-align:center;
+      font-weight:800;
+      color:#3f5c8f;
+    }
+    .guide{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+    }
+    .guide-card{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      padding:10px;
+      color:#63728e;
+      font-size:.9rem;
+      line-height:1.55;
+    }
+    .guide-card strong{
+      display:block;
+      margin-bottom:4px;
+      color:#344f7b;
+    }
+    .overlay{
+      position:fixed;
+      inset:0;
+      z-index:20;
+      display:grid;
+      place-items:center;
+      background:rgba(16,27,52,.45);
+      padding:16px;
+    }
+    .overlay-card{
+      width:min(100%,560px);
+      background:#fff;
+      border-radius:20px;
+      border:1px solid #e6e8f4;
+      text-align:center;
+      box-shadow:0 16px 30px rgba(20,32,60,.2);
+      padding:20px;
+    }
+    .overlay-card h1{
+      font-family:'Fredoka One',cursive;
+      font-size:1.55rem;
+      color:#354d79;
+      margin-bottom:8px;
+    }
+    .overlay-card p{
+      line-height:1.65;
+      color:#607193;
+      margin-bottom:12px;
+    }
+    .tip{
+      display:inline-block;
+      border-radius:14px;
+      border:1px solid #ffd2db;
+      background:#ffeef3;
+      color:#8b3f54;
+      font-weight:800;
+      font-size:.88rem;
+      padding:8px 10px;
+      margin-bottom:14px;
+    }
+    .btn{
+      border:none;
+      border-radius:14px;
+      min-height:46px;
+      padding:12px 18px;
+      color:#fff;
+      cursor:pointer;
+      font-family:'Fredoka One',cursive;
+      font-size:.95rem;
+      background:linear-gradient(135deg,var(--rose) 0%,#ff5f7d 100%);
+    }
+    @media (max-width:760px){
+      .stats,.guide{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media (max-width:520px){
+      body{padding:10px}
+      .content{padding:12px}
+      .stats,.guide{grid-template-columns:1fr}
+      .title{font-size:1.04rem}
+    }
+  </style>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+  <div class="app">
+    <div class="top">
+      <a class="home-link" href="https://fivetofifteen.com/#games">🏠 Back to Games</a>
+      <div class="title"><span class="chip">🧪</span> Grammar Fix-it Lab</div>
+    </div>
+    <div class="content">
+      <div class="voice-bar">
+        <button class="voice-btn voice-btn-read" id="voiceReadBtn" type="button">🔊 Read Task</button>
+        <button class="voice-btn voice-btn-stop" id="voiceStopBtn" type="button" style="display:none;">⏹ Stop</button>
+        <button class="voice-btn voice-btn-mute" id="voiceMuteBtn" type="button" aria-pressed="false">🔊 Sound On</button>
+        <span class="voice-note">Hear the sentence that needs fixing.</span>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><span class="label">Score</span><span class="value" id="scoreValue">0</span></div>
+        <div class="stat"><span class="label">Question</span><span class="value" id="questionValue">1/10</span></div>
+        <div class="stat"><span class="label">Streak</span><span class="value" id="streakValue">0</span></div>
+        <div class="stat"><span class="label">Time</span><span class="value" id="timeValue">90s</span></div>
+      </div>
+
+      <div class="card">
+        <span class="label">Sentence with mistake</span>
+        <p class="wrong-sentence" id="wrongSentence"></p>
+        <div class="question" id="questionText">Choose the best corrected sentence.</div>
+      </div>
+
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback"></div>
+
+      <div class="guide">
+        <div class="guide-card"><strong>🔧 Fix</strong>Find the option with correct capitals, punctuation, and grammar.</div>
+        <div class="guide-card"><strong>🧠 Check</strong>Read all options slowly before choosing your answer.</div>
+        <div class="guide-card"><strong>⚡ Speed</strong>10 rounds in 90 seconds. Accuracy comes first.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <div class="overlay-card">
+      <h1>Lab Open!</h1>
+      <p>Fix sentence mistakes and become a Grammar Champion.</p>
+      <span class="tip">Tip: Start by checking capitals and end punctuation.</span><br />
+      <button class="btn" id="startBtn" type="button">Start Game</button>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const GAME_SECONDS = 90;
+      const MAX_QUESTIONS = 10;
+
+      const DATA = [
+        {
+          wrong: 'yesterday we visited the science museum',
+          options: ['Yesterday, we visited the science museum.', 'yesterday, we visited the science museum', 'Yesterday we visited the science museum', 'yesterday we visited the science museum.'],
+          answer: 0
+        },
+        {
+          wrong: 'My friend and me are making a robot',
+          options: ['My friend and I are making a robot.', 'Me and my friend are making a robot.', 'My friend and me is making a robot.', 'My friend and I is making a robot.'],
+          answer: 0
+        },
+        {
+          wrong: 'Can you pass me the blue marker',
+          options: ['Can you pass me the blue marker?', 'Can you pass me the blue marker.', 'can you pass me the blue marker?', 'Can you pass me, the blue marker?'],
+          answer: 0
+        },
+        {
+          wrong: 'the dogs tail was wagging quickly',
+          options: ['The dog\'s tail was wagging quickly.', 'The dogs tail was wagging quickly.', 'The dogs tail was wagging quickly.', 'The dog\'s tail was wagging quickly'],
+          answer: 0
+        },
+        {
+          wrong: 'Riya and Sam was late for class',
+          options: ['Riya and Sam were late for class.', 'Riya and Sam was late for class.', 'Riya and Sam were late for class', 'riya and Sam were late for class.'],
+          answer: 0
+        },
+        {
+          wrong: 'we will bring apples bananas and grapes',
+          options: ['We will bring apples, bananas, and grapes.', 'We will bring apples bananas and grapes.', 'We will bring apples, bananas and grapes', 'we will bring apples, bananas, and grapes.'],
+          answer: 0
+        },
+        {
+          wrong: 'After lunch the students played outside',
+          options: ['After lunch, the students played outside.', 'After lunch the students played outside.', 'after lunch, the students played outside.', 'After lunch, the students played outside'],
+          answer: 0
+        },
+        {
+          wrong: 'This puzzle are harder than that one',
+          options: ['This puzzle is harder than that one.', 'This puzzle are harder than that one.', 'This puzzle is harder than that one', 'This puzzle is hard than that one.'],
+          answer: 0
+        },
+        {
+          wrong: 'Mum said "please tidy your room"',
+          options: ['Mum said, "Please tidy your room."', 'Mum said "please tidy your room".', 'Mum said, "please tidy your room"', 'mum said, "Please tidy your room."'],
+          answer: 0
+        },
+        {
+          wrong: 'The team cheered because they win',
+          options: ['The team cheered because they won.', 'The team cheered because they win.', 'The team cheered because they won', 'the team cheered because they won.'],
+          answer: 0
+        },
+        {
+          wrong: 'Its a bright day for a picnic',
+          options: ['It\'s a bright day for a picnic.', 'Its a bright day for a picnic.', 'It\'s a bright day for a picnic', 'It is\' a bright day for a picnic.'],
+          answer: 0
+        }
+      ];
+
+      const scoreValue = document.getElementById('scoreValue');
+      const questionValue = document.getElementById('questionValue');
+      const streakValue = document.getElementById('streakValue');
+      const timeValue = document.getElementById('timeValue');
+      const wrongSentence = document.getElementById('wrongSentence');
+      const options = document.getElementById('options');
+      const feedback = document.getElementById('feedback');
+      const overlay = document.getElementById('overlay');
+      const startBtn = document.getElementById('startBtn');
+
+      let score = 0;
+      let streak = 0;
+      let timeLeft = GAME_SECONDS;
+      let qIndex = 0;
+      let order = [];
+      let current = null;
+      let timerId = null;
+      let locked = false;
+
+      function overlayText() {
+        return overlay ? overlay.textContent.replace(/\s+/g, ' ').trim() : '';
+      }
+
+      function randomFrom(list) {
+        return list[rand(0, list.length - 1)];
+      }
+
+      function sayLine(text) {
+        if (window.voiceAssistSay) {
+          window.voiceAssistSay(text, { interrupt: true, rate: 1.03, pitch: 1.07, lang: 'en-AU' });
+        }
+      }
+
+      function rand(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      function shuffle(arr) {
+        const copy = arr.slice();
+        for (let i = copy.length - 1; i > 0; i -= 1) {
+          const j = rand(0, i);
+          const t = copy[i];
+          copy[i] = copy[j];
+          copy[j] = t;
+        }
+        return copy;
+      }
+
+      function updateStats() {
+        scoreValue.textContent = String(score);
+        streakValue.textContent = String(streak);
+        questionValue.textContent = String(Math.min(qIndex + 1, MAX_QUESTIONS)) + '/' + MAX_QUESTIONS;
+        timeValue.textContent = String(timeLeft) + 's';
+      }
+
+      function renderQuestion() {
+        locked = false;
+        feedback.textContent = '';
+        options.innerHTML = '';
+
+        if (qIndex >= MAX_QUESTIONS) {
+          endGame();
+          return;
+        }
+
+        current = DATA[order[qIndex]];
+        wrongSentence.textContent = current.wrong;
+
+        current.options.forEach(function (text, idx) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'option';
+          btn.textContent = text;
+          btn.addEventListener('click', function () {
+            choose(idx, btn);
+          });
+          options.appendChild(btn);
+        });
+      }
+
+      function choose(index, button) {
+        if (locked) return;
+        locked = true;
+        const list = Array.from(document.querySelectorAll('.option'));
+        const correct = list[current.answer];
+
+        if (index === current.answer) {
+          sayLine(randomFrom([
+            'Correct. Nice grammar fix.',
+            'Great job. That sentence is right.',
+            'Well done. You fixed it correctly.',
+            'Yes. That is the best correction.'
+          ]));
+          button.classList.add('correct');
+          score += 12;
+          streak += 1;
+          if (streak >= 3) score += 3;
+          feedback.textContent = 'Correct! Nice grammar fix.';
+        } else {
+          sayLine(randomFrom([
+            'Sorry, not this one. Try the next sentence carefully.',
+            'Not quite. Check capitals and punctuation again.',
+            'Close. Read each option slowly.',
+            'Oops. Look for the cleanest correct sentence.'
+          ]));
+          button.classList.add('wrong');
+          if (correct) correct.classList.add('correct');
+          streak = 0;
+          feedback.textContent = 'Not this one. Check capitals and punctuation first.';
+        }
+
+        qIndex += 1;
+        updateStats();
+
+        window.setTimeout(function () {
+          renderQuestion();
+          updateStats();
+        }, 700);
+      }
+
+      function endGame() {
+        clearInterval(timerId);
+        const best = Math.max(Number(localStorage.getItem('grammarFixitLabBest') || 0), score);
+        localStorage.setItem('grammarFixitLabBest', String(best));
+
+        const msg = score >= 120
+          ? 'Fantastic editing skills!'
+          : score >= 70
+            ? 'Great effort. Keep polishing sentences.'
+            : 'Good try. Practice makes grammar easier.';
+
+        sayLine('Lab report ready. ' + msg + ' Your score is ' + score + '.');
+
+        overlay.innerHTML =
+          '<div class="overlay-card">' +
+          '<h1>Lab Report</h1>' +
+          '<p>Your score: <strong>' + score + '</strong> · Best score: <strong>' + best + '</strong></p>' +
+          '<span class="tip">' + msg + '</span><br />' +
+          '<button class="btn" id="restartBtn" type="button">Play Again</button>' +
+          '</div>';
+        overlay.style.display = 'grid';
+
+        const restartBtn = document.getElementById('restartBtn');
+        if (restartBtn) restartBtn.addEventListener('click', startGame);
+      }
+
+      function startGame() {
+        score = 0;
+        streak = 0;
+        timeLeft = GAME_SECONDS;
+        qIndex = 0;
+        order = shuffle(DATA.map(function (_, i) { return i; })).slice(0, MAX_QUESTIONS);
+        overlay.style.display = 'none';
+        sayLine('Game started. Fix the sentence mistake.');
+        renderQuestion();
+        updateStats();
+        clearInterval(timerId);
+        timerId = window.setInterval(function () {
+          timeLeft -= 1;
+          updateStats();
+          if (timeLeft <= 0) endGame();
+        }, 1000);
+      }
+
+      if (startBtn) startBtn.addEventListener('click', startGame);
+      updateStats();
+      renderQuestion();
+
+      if (window.setupVoiceAssist) {
+        window.setupVoiceAssist({
+          readButtonId: 'voiceReadBtn',
+          stopButtonId: 'voiceStopBtn',
+          muteButtonId: 'voiceMuteBtn',
+          getText: function () {
+            const overlayVisible = overlay && window.getComputedStyle(overlay).display !== 'none';
+            if (overlayVisible) {
+              return 'Grammar Fix-it Lab. ' + overlayText();
+            }
+            return [
+              'Grammar Fix-it Lab.',
+              'Choose the best corrected sentence.',
+              'Question ' + questionValue.textContent + '.',
+              'Sentence with mistake. ' + wrongSentence.textContent + '.',
+              'Score ' + scoreValue.textContent + '.',
+              'Streak ' + streakValue.textContent + '.',
+              'Time ' + timeValue.textContent.replace('s', ' seconds') + '.'
+            ].join(' ');
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

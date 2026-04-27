@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Editing Express! ✂️</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+    /* global-font-boost */
+    html{font-size:17px;}
+    @media (max-width:500px){html{font-size:16px;}}
+
+:root{
+  --coral:#ff6b6b;--mint:#6bcb77;--blue:#4d96ff;--purple:#c77dff;
+  --orange:#ff9f1c;--yellow:#ffd93d;--dark:#2c3e50;
+  --card-bg:#fffef5;--warm-bg:#fff8f0;
+  --writing:#7b1fa2;--writing-light:#f3e5f5;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--warm-bg);min-height:100vh;overflow-x:hidden;}
+.cloud{position:fixed;opacity:.06;font-size:60px;z-index:0;animation:drift linear infinite;pointer-events:none;}
+@keyframes drift{from{transform:translateX(-100px)}to{transform:translateX(calc(100vw + 100px))}}
+#app{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:12px;}
+.home-link{display:inline-flex;align-items:center;gap:6px;background:var(--mint);color:#fff;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;text-decoration:none;transition:all .2s;margin-bottom:10px;}
+.home-link:hover{transform:scale(1.05);background:#4db860;}
+.tts-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.tts-btn{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#f39c12,#e67e22);color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.tts-btn:hover{transform:scale(1.05);}
+.tts-btn.speaking{background:linear-gradient(135deg,#e74c3c,#c0392b);animation:pulse 1s ease infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(231,76,60,.4)}50%{box-shadow:0 0 0 8px rgba(231,76,60,0)}}
+.tts-stop{background:linear-gradient(135deg,#95a5a6,#7f8c8d);color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;}
+.progress-strip{background:#fff;border-radius:12px;padding:8px 16px;display:flex;align-items:center;gap:10px;margin-bottom:8px;border:2px solid var(--writing-light);box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.progress-bar{flex:1;height:7px;background:var(--writing-light);border-radius:4px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--writing),var(--coral),var(--orange));border-radius:4px;transition:width .5s ease;}
+.progress-label{font-family:'Fredoka One',cursive;font-size:12px;color:#999;white-space:nowrap;}
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#fff;border-radius:16px;margin-bottom:10px;border:2px solid var(--writing-light);box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.nav-btn{background:var(--coral);color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:8px 22px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.nav-btn:hover{transform:scale(1.06);box-shadow:0 4px 12px rgba(255,107,107,.3);}
+.nav-btn:disabled{background:#ddd;cursor:not-allowed;transform:none;box-shadow:none;color:#999;}
+.page-dots{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;max-width:300px;}
+.dot{width:9px;height:9px;border-radius:50%;background:#ddd;cursor:pointer;transition:all .2s;}
+.dot.active{background:var(--writing);transform:scale(1.3);box-shadow:0 0 6px rgba(123,31,162,.45);}
+.dot.visited{background:rgba(123,31,162,.3);}
+.page{display:none;animation:pageIn .5s ease;}
+.page.active{display:block;}
+@keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.cover{background:linear-gradient(160deg,#240046 0%,#5a189a 45%,#9d4edd 100%);border-radius:22px;border:2px solid rgba(255,107,107,.3);padding:50px 30px;text-align:center;position:relative;overflow:hidden;min-height:540px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.cover-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:420px;height:420px;background:radial-gradient(circle,rgba(255,255,255,.1) 0%,transparent 70%);pointer-events:none;}
+.cover-icons{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:20px 0;position:relative;z-index:2;}
+.cover-icon{font-size:36px;animation:iconBounce var(--wb,3s) ease-in-out infinite var(--wd,0s);}
+@keyframes iconBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.cover-title{font-family:'Fredoka One',cursive;font-size:38px;color:var(--yellow);position:relative;z-index:2;line-height:1.15;margin-bottom:8px;text-shadow:0 4px 20px rgba(0,0,0,.4);}
+.cover-sub{font-family:'Fredoka One',cursive;font-size:20px;color:#f3d5ff;position:relative;z-index:2;margin-bottom:6px;}
+.cover-tagline{font-size:13px;color:rgba(255,255,255,.7);position:relative;z-index:2;margin-top:16px;font-style:italic;}
+.hero-anim{font-size:52px;animation:heroFloat 3s ease-in-out infinite;position:relative;z-index:2;}
+@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-12px) rotate(5deg)}}
+.story-page,.quiz-page,.cert-page{background:var(--card-bg);border-radius:22px;padding:26px;min-height:540px;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.story-page{border:3px solid var(--writing-light);}
+.quiz-page{border:3px solid var(--coral);}
+.cert-page{border:3px solid var(--yellow);}
+.page-corner{position:absolute;top:14px;right:16px;font-family:'Fredoka One',cursive;font-size:16px;color:#b0bec5;}
+.story-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.chapter-badge{font-family:'Fredoka One',cursive;font-size:12px;padding:4px 13px;border-radius:16px;white-space:nowrap;color:#fff;}
+.story-title{font-family:'Fredoka One',cursive;font-size:22px;color:var(--dark);}
+.story-body{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+.story-text{font-size:15px;line-height:1.85;color:#444;}
+.story-text p{margin-bottom:10px;}
+.hw{font-weight:800;color:#c62828;}
+.hw2{font-weight:800;color:#1565c0;}
+.hw3{font-weight:800;color:#2e7d32;}
+.story-art{border-radius:16px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:8px;border:2px dashed #cfd8dc;background:linear-gradient(135deg,#fff5fd,#f5fbff);}
+.wonder-label{font-family:'Fredoka One',cursive;font-size:13px;color:#999;margin-top:4px;}
+.wonder-facts{background:rgba(0,0,0,.03);border-radius:12px;padding:10px 14px;width:100%;border:1px solid rgba(0,0,0,.06);}
+.fact-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:13px;color:#555;}
+.fact-row:last-child{border-bottom:none;}
+.fact-icon{font-size:16px;min-width:22px;}
+.edit-card{background:#fff;border:2px solid var(--writing-light);border-radius:16px;padding:14px 16px;margin-top:14px;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.edit-card h3{font-family:'Fredoka One',cursive;font-size:15px;color:var(--writing);margin-bottom:8px;}
+.before{color:#c62828;text-decoration:line-through;font-weight:700;}
+.after{color:#2e7d32;font-weight:800;}
+.quiz-bubble{background:linear-gradient(135deg,#fce4ec,#f3e5f5);border:2px solid var(--coral);border-radius:18px;padding:18px;margin-top:16px;}
+.quiz-title{font-family:'Fredoka One',cursive;font-size:17px;color:var(--writing);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.quiz-options,.fquiz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.q-opt,.fq-opt{background:#fff;border:2px solid #cfd8dc;border-radius:12px;padding:10px 14px;font-size:14px;color:var(--dark);cursor:pointer;transition:all .2s;text-align:left;font-family:'Nunito',sans-serif;font-weight:700;}
+.q-opt:hover,.fq-opt:hover:not(.locked){background:#fce4ec;border-color:var(--coral);transform:translateY(-2px);}
+.q-opt.correct,.fq-opt.correct{background:#d4edda;border-color:#27ae60;color:#155724;}
+.q-opt.wrong,.fq-opt.wrong{background:#f8d7da;border-color:#c0392b;color:#721c24;}
+.fq-opt.locked{cursor:not-allowed;opacity:.75;}
+.quiz-feedback,.q-result-msg{font-family:'Fredoka One',cursive;font-size:16px;margin-top:10px;min-height:24px;text-align:center;}
+.tip-box,.fun-fact,.checklist{border-radius:14px;padding:14px 16px;margin-top:14px;}
+.tip-box{background:#fff3e0;border:2px solid var(--orange);}
+.fun-fact{background:#e3f2fd;border:2px solid var(--blue);}
+.checklist{background:#f3e5f5;border:2px solid var(--purple);}
+.tip-box-title,.fun-fact-title,.check-title{font-family:'Fredoka One',cursive;font-size:15px;margin-bottom:6px;}
+.tip-box-title{color:#e65100;}.fun-fact-title{color:#0d47a1;}.check-title{color:var(--writing);}
+.tip-box-text,.fun-fact-text{font-size:13px;color:#444;line-height:1.6;}
+.check-item{display:flex;align-items:center;gap:8px;padding:6px 0;color:#444;font-size:14px;}
+.quiz-progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.q-counter{font-family:'Fredoka One',cursive;font-size:13px;color:#999;}
+.q-score-badge{font-family:'Fredoka One',cursive;font-size:14px;background:#f3e5f5;border:2px solid var(--coral);padding:4px 14px;border-radius:20px;color:var(--writing);}
+.quiz-question-card{background:#fff;border-radius:16px;padding:20px;margin-bottom:16px;border:2px solid #f3e5f5;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.quiz-q-text{font-family:'Fredoka One',cursive;font-size:19px;color:var(--dark);line-height:1.4;margin-bottom:4px;}
+.quiz-q-emoji{font-size:40px;margin-bottom:10px;}
+.quiz-q-passage{background:#f5f5f5;border-radius:10px;padding:12px;font-size:13px;line-height:1.7;margin-bottom:12px;color:#444;}
+.next-q-btn,.retry-btn,.proceed-btn,.cert-dl-btn,.cert-print-btn{color:#fff;border:none;font-family:'Fredoka One',cursive;cursor:pointer;transition:all .2s;}
+.next-q-btn{display:block;margin:12px auto 0;background:linear-gradient(135deg,var(--coral),#ff8787);font-size:16px;padding:10px 28px;border-radius:22px;}
+.retry-btn,.proceed-btn{font-size:18px;padding:12px 32px;border-radius:24px;margin:8px;}
+.retry-btn{background:linear-gradient(135deg,#e74c3c,#ff6b6b);}
+.proceed-btn{background:linear-gradient(135deg,#27ae60,#2ecc71);}
+.next-q-btn:hover,.retry-btn:hover,.proceed-btn:hover,.cert-dl-btn:hover,.cert-print-btn:hover{transform:scale(1.05);}
+.result-screen{text-align:center;padding:20px 10px;}
+.result-trophy{font-size:80px;margin-bottom:12px;animation:bounce 1s ease infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+.result-title{font-family:'Fredoka One',cursive;font-size:28px;margin-bottom:10px;}
+.result-score{font-family:'Fredoka One',cursive;font-size:48px;color:var(--yellow);}
+.result-msg{font-size:16px;color:#888;margin:12px 0 20px;line-height:1.7;}
+.cert-controls{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+.cert-name-input{font-family:'Nunito',sans-serif;font-size:16px;padding:10px 16px;border:2px solid var(--yellow);border-radius:12px;outline:none;flex:1;min-width:180px;color:#333;}
+.cert-name-input:focus{border-color:var(--purple);}
+.cert-dl-btn{background:var(--purple);font-size:15px;padding:10px 20px;border-radius:24px;white-space:nowrap;}
+.cert-print-btn{background:#1565c0;font-size:15px;padding:10px 20px;border-radius:24px;}
+.cert-wrap{background:#fff;border-radius:16px;padding:6px;border:3px solid var(--yellow);box-shadow:0 4px 20px rgba(0,0,0,.08);}
+canvas#cert{width:100%;border-radius:12px;display:block;}
+.cert-hint{font-size:12px;color:#aaa;margin-top:8px;text-align:center;}
+@media(max-width:580px){.story-body{grid-template-columns:1fr;}.cover-title{font-size:26px;}.quiz-options,.fquiz-options{grid-template-columns:1fr;}.cert-controls{flex-direction:column;}}
+</style>
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="natural-read-aloud.js" defer></script>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+<div id="clouds"></div>
+<div id="app"><div class="tts-bar">
+  <button class="tts-btn" id="ttsBtn" onclick="toggleTTS()">🔊 Read Aloud</button>
+  <button class="tts-stop" id="ttsStop" onclick="stopTTS()" style="display:none;">⏹ Stop</button>
+</div>
+<div class="progress-strip">
+  <span class="progress-label">✂️ Writing...</span>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <span class="progress-label" id="progressText">Page 1 of 11</span>
+</div>
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Back</button>
+  <div class="page-dots" id="pageDots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+</div>
+
+<div class="page active" data-page="0">
+  <div class="cover">
+    <div class="cover-glow"></div>
+    <div class="hero-anim">🚂</div>
+    <div class="cover-title">The Editing<br>Express!</div>
+    <div class="cover-sub">A Sentence & Proofreading Adventure</div>
+    <div class="cover-icons">
+      <span class="cover-icon" style="--wb:3s;--wd:0s">✂️</span>
+      <span class="cover-icon" style="--wb:3.3s;--wd:.2s">📝</span>
+      <span class="cover-icon" style="--wb:3.8s;--wd:.4s">🔗</span>
+      <span class="cover-icon" style="--wb:3.2s;--wd:.6s">🛠️</span>
+      <span class="cover-icon" style="--wb:3.9s;--wd:.8s">✨</span>
+    </div>
+    <p class="cover-tagline">Build smoother sentences, stronger paragraphs, and cleaner punctuation like a real editor! · Year 3–5</p>
+  </div>
+</div>
+
+<div class="page" data-page="1">
+  <div class="story-page">
+    <div class="page-corner">p.1</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--coral);">Welcome!</span><h2 class="story-title">Meet Edie the Editor! 🚂</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Tickets, please! I am <span class="hw">Edie the Editor</span>, conductor of the Editing Express.</p>
+        <p>Writers make the first draft. Editors make it <span class="hw2">clearer</span>, <span class="hw3">stronger</span>, and <span class="hw">smoother</span>.</p>
+        <p>On this train ride we will stop at five stations:</p>
+        <p>🚉 Sentence Station</p>
+        <p>🚉 Combining Corner</p>
+        <p>🚉 Paragraph Place</p>
+        <p>🚉 Cohesion Crossing</p>
+        <p>🚉 Proofreading Platform</p>
+        <p>Keep your editor eyes open. Tiny fixes can make a huge difference! ✨</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:70px;">🚂</div>
+        <div class="wonder-label">Edie the Editor</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">✂️</span> Cuts weak words</div>
+          <div class="fact-row"><span class="fact-icon">🔗</span> Connects ideas smoothly</div>
+          <div class="fact-row"><span class="fact-icon">🔍</span> Spots punctuation problems</div>
+          <div class="fact-row"><span class="fact-icon">🏆</span> Loves polished writing</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="2">
+  <div class="story-page">
+    <div class="page-corner">p.2</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#7b1fa2;">Station 1</span><h2 class="story-title">📝 Sentence Check</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Every sentence needs to make sense on its own.</p>
+        <p>A strong sentence usually has a <span class="hw">who</span> and a <span class="hw2">what happened</span>.</p>
+        <p>Editors check for:</p>
+        <p>🔹 complete thoughts</p>
+        <p>🔹 capital letters at the start</p>
+        <p>🔹 punctuation at the end</p>
+        <p>🔹 no repeated boring sentence openings</p>
+        <div class="edit-card">
+          <h3>Edit Example</h3>
+          <p><span class="before">went to the park</span></p>
+          <p><span class="after">Mia went to the park.</span></p>
+        </div>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">📝</div>
+        <div class="wonder-label">Sentence Signals</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">👤</span> Who is it about?</div>
+          <div class="fact-row"><span class="fact-icon">⚡</span> What happened?</div>
+          <div class="fact-row"><span class="fact-icon">🔠</span> Start with a capital</div>
+          <div class="fact-row"><span class="fact-icon">🛑</span> End with punctuation</div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">Which option is a complete sentence?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'fb1')">under the table</button>
+        <button class="q-opt" data-correct="true" onclick="miniQuiz(this,'fb1')">The puppy slept under the table.</button>
+        <button class="q-opt" onclick="miniQuiz(this,'fb1')">because it was tired</button>
+        <button class="q-opt" onclick="miniQuiz(this,'fb1')">running very fast</button>
+      </div>
+      <div class="quiz-feedback" id="fb1"></div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="3">
+  <div class="story-page">
+    <div class="page-corner">p.3</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#9c27b0;">Station 2</span><h2 class="story-title">🔗 Combining Sentences</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Short sentences are useful, but too many can sound choppy.</p>
+        <p>Editors combine ideas with words like <span class="hw">and</span>, <span class="hw2">but</span>, <span class="hw3">because</span>, <span class="hw2">when</span>, and <span class="hw">so</span>.</p>
+        <div class="edit-card">
+          <h3>Edit Example</h3>
+          <p><span class="before">The rain started. We ran inside.</span></p>
+          <p><span class="after">When the rain started, we ran inside.</span></p>
+        </div>
+        <p>Good editing uses sentence variety. Mix short, medium, and longer sentences so the writing flows.</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🔗</div>
+        <div class="wonder-label">Linking Words</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">➕</span> and adds ideas</div>
+          <div class="fact-row"><span class="fact-icon">⚖️</span> but shows contrast</div>
+          <div class="fact-row"><span class="fact-icon">💡</span> because gives a reason</div>
+          <div class="fact-row"><span class="fact-icon">⏰</span> when shows time</div>
+        </div>
+      </div>
+    </div>
+    <div class="fun-fact">
+      <div class="fun-fact-title">Railway Reminder</div>
+      <div class="fun-fact-text">A writer who starts every sentence the same way can sound bumpy. Varying sentence openers makes the writing glide more smoothly, like a train on clean tracks.</div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="4">
+  <div class="story-page">
+    <div class="page-corner">p.4</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#6a1b9a;">Station 3</span><h2 class="story-title">📚 Paragraph Place</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>A new paragraph helps the reader notice a <span class="hw">new idea</span>.</p>
+        <p>Start a new paragraph when there is:</p>
+        <p>🔹 a new topic</p>
+        <p>🔹 a new speaker in dialogue</p>
+        <p>🔹 a new time or place</p>
+        <div class="edit-card">
+          <h3>Edit Example</h3>
+          <p><span class="before">Tom packed his bag. He raced to the bus stop. At school he painted a dragon.</span></p>
+          <p><span class="after">Tom packed his bag and raced to the bus stop.<br><br>At school, he painted a dragon.</span></p>
+        </div>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">📚</div>
+        <div class="wonder-label">Paragraph Clues</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🧠</span> One main idea</div>
+          <div class="fact-row"><span class="fact-icon">🗣️</span> New speaker, new line</div>
+          <div class="fact-row"><span class="fact-icon">📍</span> New place, new paragraph</div>
+          <div class="fact-row"><span class="fact-icon">🕒</span> New time, new paragraph</div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">When should you begin a new paragraph?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'fb2')">Every two sentences exactly</button>
+        <button class="q-opt" onclick="miniQuiz(this,'fb2')">Only at the end of the story</button>
+        <button class="q-opt" data-correct="true" onclick="miniQuiz(this,'fb2')">When the idea, time, place, or speaker changes</button>
+        <button class="q-opt" onclick="miniQuiz(this,'fb2')">Whenever the page looks too full</button>
+      </div>
+      <div class="quiz-feedback" id="fb2"></div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="5">
+  <div class="story-page">
+    <div class="page-corner">p.5</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#8e24aa;">Station 4</span><h2 class="story-title">🪢 Cohesion Crossing</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p><span class="hw">Cohesion</span> means the writing sticks together smoothly.</p>
+        <p>Editors help ideas connect by using:</p>
+        <p>🔹 linking words like first, next, meanwhile, finally</p>
+        <p>🔹 pronouns like he, she, they, it</p>
+        <p>🔹 repeated key words only when needed</p>
+        <div class="edit-card">
+          <h3>Edit Example</h3>
+          <p><span class="before">Mina found a map. Mina followed the map. Mina opened a gate.</span></p>
+          <p><span class="after">Mina found a map. Then she followed it and opened a gate.</span></p>
+        </div>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🪢</div>
+        <div class="wonder-label">Cohesion Tools</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">➡️</span> then, next, after that</div>
+          <div class="fact-row"><span class="fact-icon">👤</span> pronouns stop repetition</div>
+          <div class="fact-row"><span class="fact-icon">🔁</span> repeat only important words</div>
+          <div class="fact-row"><span class="fact-icon">🌊</span> smooth flow helps readers</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="6">
+  <div class="story-page">
+    <div class="page-corner">p.6</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#ad1457;">Station 5</span><h2 class="story-title">🔍 Proofreading Platform</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>After editing ideas, do a final <span class="hw">proofread</span>.</p>
+        <p>Proofread for:</p>
+        <p>🔹 capitals</p>
+        <p>🔹 full stops, commas, question marks</p>
+        <p>🔹 apostrophes</p>
+        <p>🔹 spelling mistakes</p>
+        <div class="edit-card">
+          <h3>Edit Example</h3>
+          <p><span class="before">yesterday we bakeed muffins, they were delicious</span></p>
+          <p><span class="after">Yesterday, we baked muffins. They were delicious.</span></p>
+        </div>
+        <p>Read slowly. Reading aloud helps you hear missing words or awkward sentences.</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🔍</div>
+        <div class="wonder-label">Proofreading Pass</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🔠</span> capitals checked</div>
+          <div class="fact-row"><span class="fact-icon">.,?!</span> punctuation checked</div>
+          <div class="fact-row"><span class="fact-icon">✅</span> spelling checked</div>
+          <div class="fact-row"><span class="fact-icon">🔊</span> read aloud to test flow</div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">Which version is proofread correctly?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'fb3')">where are my boots</button>
+        <button class="q-opt" data-correct="true" onclick="miniQuiz(this,'fb3')">Where are my boots?</button>
+        <button class="q-opt" onclick="miniQuiz(this,'fb3')">Where are my boots.</button>
+        <button class="q-opt" onclick="miniQuiz(this,'fb3')">where are My boots?</button>
+      </div>
+      <div class="quiz-feedback" id="fb3"></div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="7">
+  <div class="story-page">
+    <div class="page-corner">p.7</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--purple);">Review</span><h2 class="story-title">🧰 Editor's Checklist</h2></div>
+    <div class="checklist" data-tts>
+      <div class="check-title">Run through this checklist before you finish:</div>
+      <div class="check-item">✅ Are my sentences complete?</div>
+      <div class="check-item">✅ Did I combine ideas smoothly?</div>
+      <div class="check-item">✅ Did I start new paragraphs when needed?</div>
+      <div class="check-item">✅ Do linking words and pronouns help the writing flow?</div>
+      <div class="check-item">✅ Did I proofread capitals, punctuation, and spelling?</div>
+    </div>
+    <div class="tip-box">
+      <div class="tip-box-title">Edie's Big Tip</div>
+      <div class="tip-box-text">Edit in layers. First fix meaning. Then fix sentence flow. Last, proofread punctuation and spelling. Trying to fix everything at once makes it harder to spot errors.</div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="8">
+  <div class="story-page">
+    <div class="page-corner">p.8</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--blue);">Memory</span><h2 class="story-title">🚉 Remember the Train Route</h2></div>
+    <div class="story-text" data-tts style="margin-bottom:12px;">
+      <p>Use this memory line:</p>
+      <p style="text-align:center;font-family:'Fredoka One',cursive;font-size:18px;color:var(--writing);margin:12px 0;">"<span class="hw">S</span>mart <span class="hw2">C</span>onductors <span class="hw3">P</span>olish <span class="hw">C</span>lear <span class="hw2">P</span>ages!"</p>
+    </div>
+    <div class="wonder-facts">
+      <div class="fact-row"><span class="fact-icon">S</span> Sentence check</div>
+      <div class="fact-row"><span class="fact-icon">C</span> Combine ideas</div>
+      <div class="fact-row"><span class="fact-icon">P</span> Paragraphs</div>
+      <div class="fact-row"><span class="fact-icon">C</span> Cohesion</div>
+      <div class="fact-row"><span class="fact-icon">P</span> Proofreading</div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="9">
+  <div class="quiz-page">
+    <div id="quizActive">
+      <div class="story-header"><span class="chapter-badge" style="background:var(--coral);">🏆 Final Quiz!</span><h2 class="story-title">Editing Express Challenge</h2></div>
+      <p style="font-size:14px;color:#666;margin-bottom:16px;">Answer 6 questions. You need at least <strong>5 correct</strong> to earn the Junior Editor Certificate.</p>
+      <div class="quiz-progress-row">
+        <span class="q-counter" id="qCounter">Question 1 of 6</span>
+        <span class="q-score-badge" id="qScoreBadge">Score: 0 / 6</span>
+      </div>
+      <div class="quiz-question-card">
+        <div class="quiz-q-emoji" id="qEmoji">✂️</div>
+        <div class="quiz-q-passage" id="qPassage"></div>
+        <div class="quiz-q-text" id="qText"></div>
+      </div>
+      <div class="fquiz-options" id="fquizOptions"></div>
+      <div class="q-result-msg" id="qResultMsg"></div>
+      <button class="next-q-btn" id="nextQBtn" onclick="nextQuestion()" style="display:none;">Next Question →</button>
+    </div>
+    <div id="quizPass" style="display:none;">
+      <div class="result-screen">
+        <div class="result-trophy">🏆</div>
+        <div class="result-title" style="color:#2e7d32;">Polished Like a Pro!</div>
+        <div class="result-score" id="passScore">6 / 6</div>
+        <div class="result-msg" id="passMsg"></div>
+        <button class="proceed-btn" onclick="goToCert()">🎓 Get My Certificate! →</button>
+      </div>
+    </div>
+    <div id="quizFail" style="display:none;">
+      <div class="result-screen">
+        <div class="result-trophy">🌟</div>
+        <div class="result-title" style="color:var(--coral);">Nearly There!</div>
+        <div class="result-score" id="failScore">3 / 6</div>
+        <div class="result-msg">Hop back on the Editing Express and check the stations again.</div>
+        <button class="retry-btn" onclick="restartQuiz()">🔄 Try Again!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="10">
+  <div class="cert-page">
+    <div class="page-corner">🎓</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--yellow);color:#856404;">Certificate</span><h2 class="story-title">Your Junior Editor Certificate</h2></div>
+    <div class="cert-controls">
+      <input class="cert-name-input" id="certName" placeholder="Type the child's name here..." oninput="drawCert()"/>
+      <button class="cert-dl-btn" onclick="downloadCert()">⬇ Download PNG</button>
+      <button class="cert-print-btn" onclick="printCert()">🖨 Print</button>
+    </div>
+    <div class="cert-wrap"><canvas id="cert" width="900" height="630"></canvas></div>
+    <p class="cert-hint">Type a name, then download or print the certificate.</p>
+  </div>
+</div>
+
+</div>
+
+<script>
+(function(){const c=document.getElementById('clouds');const items=['☁️','🚂','✂️'];for(let i=0;i<6;i++){const el=document.createElement('div');el.className='cloud';el.textContent=items[i%items.length];el.style.top=(Math.random()*80)+'%';el.style.animationDuration=(20+Math.random()*30)+'s';el.style.animationDelay=(Math.random()*20)+'s';el.style.fontSize=(40+Math.random()*30)+'px';c.appendChild(el);}})();
+const TOTAL=10;let currentPage=0;let quizPassed=false;
+const pages=document.querySelectorAll('.page');const dots=document.getElementById('pageDots');
+for(let i=0;i<=TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.onclick=()=>goToPage(i);dots.appendChild(d);}
+function goToPage(n){if(n<0||n>TOTAL)return;if(n===10&&!quizPassed){alert('Pass the quiz first to unlock your certificate! 🌟');return;}stopTTS();pages[currentPage].classList.remove('active');currentPage=n;pages[currentPage].classList.add('active');document.getElementById('prevBtn').disabled=currentPage===0;document.getElementById('nextBtn').disabled=currentPage===TOTAL;document.getElementById('progressFill').style.width=Math.round(currentPage/TOTAL*100)+'%';document.getElementById('progressText').textContent='Page '+(currentPage+1)+' of '+(TOTAL+1);document.querySelectorAll('.dot').forEach((d,i)=>{d.classList.toggle('active',i===currentPage);if(i<currentPage)d.classList.add('visited');});if(currentPage===9)initQuiz();if(currentPage===10)setTimeout(drawCert,120);window.scrollTo({top:0,behavior:'smooth'});}
+function changePage(delta){goToPage(currentPage+delta);}
+let isSpeaking=false,utterance=null;
+function toggleTTS(){if(isSpeaking){stopTTS();return;}const el=pages[currentPage].querySelector('[data-tts]')||pages[currentPage].querySelector('.story-text')||pages[currentPage];if(!el)return;speak(el.textContent);}
+function speak(text){if(!('speechSynthesis' in window))return;stopTTS();text=text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{200D}\u{20E3}\u{E0020}-\u{E007F}]/gu,'').replace(/\s+/g,' ').trim();utterance=new SpeechSynthesisUtterance(text);utterance.rate=.8;utterance.pitch=1.1;utterance.lang='en-AU';const voices=speechSynthesis.getVoices();const pref=voices.find(v=>v.name.includes('Karen'))||voices.find(v=>v.name.includes('Samantha'))||voices.find(v=>v.lang.startsWith('en'));if(pref)utterance.voice=pref;utterance.onstart=()=>{isSpeaking=true;document.getElementById('ttsBtn').classList.add('speaking');document.getElementById('ttsBtn').textContent='🔊 Reading...';document.getElementById('ttsStop').style.display='inline-flex';};utterance.onend=resetTTS;utterance.onerror=resetTTS;speechSynthesis.speak(utterance);} 
+function stopTTS(){if('speechSynthesis' in window)speechSynthesis.cancel();resetTTS();}
+function resetTTS(){isSpeaking=false;document.getElementById('ttsBtn').classList.remove('speaking');document.getElementById('ttsBtn').textContent='🔊 Read Aloud';document.getElementById('ttsStop').style.display='none';}
+if('speechSynthesis' in window)speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
+function miniQuiz(btn,id){const wrap=btn.closest('.quiz-bubble');wrap.querySelectorAll('.q-opt').forEach(b=>b.style.pointerEvents='none');const correct=wrap.querySelector('[data-correct="true"]');const fb=document.getElementById(id);if(btn.dataset.correct==='true'){btn.classList.add('correct');fb.innerHTML='<span style="color:#27ae60;">🎉 Correct! Nice editing choice.</span>';return;}btn.classList.add('wrong');if(correct)correct.classList.add('correct');fb.innerHTML='<span style="color:#c0392b;">Not quite. The correct answer is highlighted in green.</span>';}
+const QUESTIONS=[
+  {emoji:'📝',passage:'',q:'Which is a complete sentence?',opts:['under the desk','The cat slept.','because it rained','after lunch'],ans:1},
+  {emoji:'🔗',passage:'The bell rang. We lined up quietly.',q:'Which edit combines the ideas smoothly?',opts:['The bell rang, we lined up quietly.','When the bell rang, we lined up quietly.','The bell rang and quietly.','The bell rang because quietly.'],ans:1},
+  {emoji:'📚',passage:'',q:'You should start a new paragraph when...',opts:['you have written two lines','the speaker or idea changes','you use a comma','a long word appears'],ans:1},
+  {emoji:'🪢',passage:'Mina found a shell. Mina put the shell in Mina\'s pocket.',q:'Which edit improves cohesion?',opts:['Mina shell pocket.','Mina found a shell, and she put it in her pocket.','Mina found a shell shell shell.','A shell found Mina.'],ans:1},
+  {emoji:'🔍',passage:'',q:'Which task belongs to proofreading?',opts:['adding a new character','changing the whole ending','checking capitals and punctuation','drawing a picture'],ans:2},
+  {emoji:'✂️',passage:'',q:'What should you usually edit first?',opts:['spelling only','page colours','meaning and clarity','font size'],ans:2}
+];
+let qIndex=0,score=0,answered=false;
+function initQuiz(){qIndex=0;score=0;answered=false;document.getElementById('quizActive').style.display='block';document.getElementById('quizPass').style.display='none';document.getElementById('quizFail').style.display='none';renderQuestion();}
+function renderQuestion(){const q=QUESTIONS[qIndex];document.getElementById('qEmoji').textContent=q.emoji;document.getElementById('qPassage').textContent=q.passage;document.getElementById('qPassage').style.display=q.passage?'block':'none';document.getElementById('qText').textContent=q.q;document.getElementById('qCounter').textContent='Question '+(qIndex+1)+' of 6';document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';document.getElementById('qResultMsg').textContent='';document.getElementById('nextQBtn').style.display='none';answered=false;const box=document.getElementById('fquizOptions');box.innerHTML='';q.opts.forEach((opt,i)=>{const b=document.createElement('button');b.className='fq-opt';b.textContent=opt;b.onclick=()=>answerQuestion(i,b);box.appendChild(b);});}
+function answerQuestion(i,btn){if(answered)return;answered=true;const q=QUESTIONS[qIndex];document.querySelectorAll('.fq-opt').forEach(b=>b.classList.add('locked'));if(i===q.ans){btn.classList.add('correct');score++;document.getElementById('qResultMsg').innerHTML='<span style="color:#27ae60;">🎉 Correct!</span>';}else{btn.classList.add('wrong');document.querySelectorAll('.fq-opt')[q.ans].classList.add('correct');document.getElementById('qResultMsg').innerHTML='<span style="color:#c0392b;">Not quite. The correct answer is highlighted.</span>';}document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';document.getElementById('nextQBtn').style.display='block';document.getElementById('nextQBtn').textContent=qIndex===5?'See My Result! 🏁':'Next Question →';}
+function nextQuestion(){qIndex++;if(qIndex>=QUESTIONS.length){showResult();return;}renderQuestion();}
+function showResult(){document.getElementById('quizActive').style.display='none';if(score>=5){quizPassed=true;document.getElementById('quizPass').style.display='block';document.getElementById('passScore').textContent=score+' / 6';document.getElementById('passMsg').textContent=score===6?'Perfect editing. Your writing is polished and powerful!' : 'Strong editing work. You know how to improve writing clearly.';}else{document.getElementById('quizFail').style.display='block';document.getElementById('failScore').textContent=score+' / 6';}}
+function restartQuiz(){initQuiz();}
+function goToCert(){goToPage(10);}
+const canvas=document.getElementById('cert');const ctx=canvas.getContext('2d');
+function drawStar(cx,cy,r,pts,col){ctx.save();ctx.fillStyle=col;ctx.beginPath();for(let i=0;i<pts*2;i++){const a=(i*Math.PI/pts)-Math.PI/2,rd=i%2===0?r:r*.45;i===0?ctx.moveTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a)):ctx.lineTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a));}ctx.closePath();ctx.fill();ctx.restore();}
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();}
+const qrImage=new Image();let qrReady=false;qrImage.crossOrigin='anonymous';qrImage.onload=()=>{qrReady=true;drawCert();};qrImage.src='https://quickchart.io/qr?text='+encodeURIComponent('https://fivetofifteen.com/')+'&size=180';
+function drawCert(){const name=document.getElementById('certName').value.trim()||'Junior Editor';const CW=900,CH=630;ctx.clearRect(0,0,CW,CH);const bg=ctx.createLinearGradient(0,0,CW,CH);bg.addColorStop(0,'#fff8f0');bg.addColorStop(.5,'#fff0ff');bg.addColorStop(1,'#eef6ff');ctx.fillStyle=bg;rr(0,0,CW,CH,20);ctx.fill();ctx.strokeStyle='#7b1fa2';ctx.lineWidth=6;rr(8,8,CW-16,CH-16,16);ctx.stroke();ctx.strokeStyle='#ff6b6b';ctx.lineWidth=2;ctx.setLineDash([8,5]);rr(20,20,CW-40,CH-40,10);ctx.stroke();ctx.setLineDash([]);[[52,52],[CW-52,52],[52,CH-52],[CW-52,CH-52]].forEach(([x,y])=>drawStar(x,y,18,5,'#ff6b6b'));ctx.fillStyle='#7b1fa2';ctx.font='bold 18px "Fredoka One",cursive';ctx.textAlign='center';ctx.fillText('THE EDITING EXPRESS ACADEMY',CW/2,56);ctx.font='64px serif';ctx.fillText('✂️',CW/2,140);ctx.font='bold 40px "Fredoka One",cursive';ctx.fillText('Junior Editor Certificate',CW/2,195);ctx.fillStyle='#666';ctx.font='17px "Nunito",sans-serif';ctx.fillText('This certificate is proudly awarded to',CW/2,232);ctx.strokeStyle='#ff6b6b';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(CW/2-240,276);ctx.lineTo(CW/2+240,276);ctx.stroke();ctx.fillStyle='#c62828';ctx.font='bold 38px "Fredoka One",cursive';ctx.fillText(name,CW/2,270);ctx.fillStyle='#444';ctx.font='17px "Nunito",sans-serif';ctx.fillText('for polishing sentences, paragraphs, cohesion, and proofreading',CW/2,312);ctx.fillStyle='#7b1fa2';ctx.font='bold 24px "Fredoka One",cursive';ctx.fillText('Clear • Smooth • Correct',CW/2,348);ctx.fillStyle='#888';ctx.font='14px "Nunito",sans-serif';ctx.fillText('Mastered: sentence flow, paragraphing, and careful editing',CW/2,376);ctx.font='30px serif';ctx.fillText('📝  🔗  📚  🪢  🔍',CW/2,450);ctx.fillStyle='#ffffff';ctx.strokeStyle='#ece2f4';ctx.lineWidth=2;rr(CW-154,68,102,102,14);ctx.fill();ctx.stroke();if(qrReady){ctx.drawImage(qrImage,CW-144,78,82,82);}else{ctx.fillStyle='#faf1ff';ctx.fillRect(CW-144,78,82,82);ctx.fillStyle='#7b1fa2';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('QR loading...',CW-103,122);}ctx.fillStyle='#7b1fa2';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('Scan to visit',CW-103,185);ctx.fillStyle='#9e9e9e';ctx.font='bold 12px "Nunito",sans-serif';ctx.fillText('Presented by fivetofifteen.com',CW/2,538);const d=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});ctx.fillStyle='#999';ctx.font='12px "Nunito",sans-serif';ctx.fillText('Awarded on '+d,CW/2,560);} 
+function downloadCert(){drawCert();const a=document.createElement('a');a.download='junior-editor-certificate.png';a.href=canvas.toDataURL('image/png');a.click();}
+function printCert(){drawCert();const url=canvas.toDataURL('image/png');const w=window.open('','_blank');const html=`<!DOCTYPE html><html><head><title>Certificate</title><style>body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f5f5f5;}img{max-width:100%;}@media print{body{background:#fff;}}</style></head><body><img src="${url}" alt="Certificate"/><\/body><\/html>`;w.document.open();w.document.write(html);w.document.close();w.onload=()=>{w.focus();w.print();};}
+drawCert();
+</script>
+</body>
+</html>

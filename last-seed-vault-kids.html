@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Last Seed Vault 🌱</title>
+<meta name="description" content="A long-form adventure story for ages 10-15 about science, teamwork, courage, food diversity, and protecting nature."/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<script src="analytics.js" defer></script>
+<script src="site-drawer.js" defer></script>
+<script src="page-share.js" defer></script>
+<style>
+  html{font-size:17px;}
+  @media (max-width:520px){html{font-size:16px;}}
+  :root{
+    --ink:#2b333d;
+    --card:#fffefb;
+    --line:#d9d4c5;
+    --accent:#58779a;
+    --warm:#b57b4f;
+    --ok:#3f8c63;
+    --danger:#b95555;
+    --paperTexture:url('watercolor-paper-custom.svg');
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Nunito',sans-serif;
+    background:
+      linear-gradient(180deg, rgba(242,238,227,.9) 0%, rgba(236,229,215,.92) 100%),
+      var(--paperTexture),
+      radial-gradient(circle at 10% 16%, rgba(240,224,194,.42) 0 130px, transparent 131px),
+      radial-gradient(circle at 88% 8%, rgba(165,196,210,.36) 0 160px, transparent 161px),
+      linear-gradient(180deg,#f2eee3 0%,#ece5d7 100%);
+    background-size:cover,cover,100% 100%,100% 100%,100% 100%;
+    background-position:center,center,center,center,center;
+    background-attachment:fixed,fixed,scroll,scroll,scroll;
+    color:var(--ink);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    background-image:
+      radial-gradient(circle at 16% 25%, rgba(255,255,255,.35) 0 2px, transparent 3px),
+      radial-gradient(circle at 78% 22%, rgba(255,255,255,.28) 0 2px, transparent 3px),
+      radial-gradient(circle at 54% 66%, rgba(255,255,255,.25) 0 2px, transparent 3px);
+    background-size:100% 100%;
+    opacity:.55;
+  }
+  .floaty{position:fixed;opacity:.12;font-size:44px;z-index:0;pointer-events:none;animation:drift linear infinite}
+  @keyframes drift{from{transform:translateX(-120px)}to{transform:translateX(calc(100vw + 120px))}}
+
+  #app{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:14px}
+  .home-link{
+    display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#5c7f66,#4d7ea8);color:#fff;text-decoration:none;
+    padding:8px 16px;border-radius:20px;font-family:'Cinzel',serif;font-size:13px;margin-bottom:8px
+  }
+  .tts-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .tts-btn,.tts-stop{border:none;border-radius:20px;padding:8px 16px;color:#fff;font-family:'Cinzel',serif;font-size:13px;cursor:pointer}
+  .tts-btn{background:linear-gradient(135deg,#b57b4f,#8a5b38)}
+  .tts-btn.speaking{background:linear-gradient(135deg,#a44949,#7e3333)}
+  .tts-stop{background:linear-gradient(135deg,#6d7884,#4f5964)}
+
+  .progress-strip{background:#fff;border-radius:14px;padding:8px 14px;display:flex;gap:10px;align-items:center;margin-bottom:8px;border:2px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,.06)}
+  .progress-bar{flex:1;height:8px;background:#e7dfcd;border-radius:999px;overflow:hidden}
+  .progress-fill{height:100%;width:0;background:linear-gradient(90deg,#5f8a65,#4d7ea8,#8b6ab8);transition:width .4s ease}
+  .progress-label{font-family:'Cinzel',serif;font-size:12px;color:#6f6859;white-space:nowrap}
+
+  .nav-bar{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:16px;padding:10px 14px;margin-bottom:10px;border:2px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,.06)}
+  .nav-btn{border:none;background:#a55a5a;color:#fff;font-family:'Cinzel',serif;font-size:14px;padding:9px 18px;border-radius:22px;cursor:pointer}
+  .nav-btn:disabled{background:#c8c8c8;color:#8d8d8d;cursor:not-allowed}
+  .page-dots{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;max-width:360px}
+  .dot{width:10px;height:10px;border-radius:50%;background:#d6d6d6;cursor:pointer;border:none}
+  .dot.active{background:#a55a5a;transform:scale(1.2)}
+  .dot.visited{background:rgba(165,90,90,.45)}
+
+  .page{display:none;animation:fadeIn .4s ease}
+  .page.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+  .cover{
+    background:
+      linear-gradient(160deg, rgba(74,95,115,.82) 0%, rgba(111,135,157,.82) 48%, rgba(200,161,116,.82) 100%),
+      var(--paperTexture);
+    background-size:cover;
+    background-position:center;
+    border-radius:24px;padding:50px 26px;min-height:560px;text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center;
+    position:relative;overflow:hidden;border:2px solid rgba(255,255,255,.18)
+  }
+  .cover::before,.cover::after{content:'';position:absolute;border-radius:50%;background:rgba(255,255,255,.08)}
+  .cover::before{width:260px;height:260px;top:-40px;left:-50px}
+  .cover::after{width:190px;height:190px;bottom:-34px;right:-40px}
+  .cover-emoji{font-size:72px;animation:bob 2.4s ease-in-out infinite;margin-bottom:10px}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .cover-title{font-family:'Cinzel',serif;font-size:clamp(2.1rem,5vw,3.7rem);line-height:1.08;color:#f7eed9;margin-bottom:10px}
+  .cover-sub{font-family:'Cinzel',serif;font-size:1.14rem;color:#f7e7cf;margin-bottom:12px}
+  .cover-tagline{max-width:760px;color:#f5f8ff;line-height:1.78;font-size:1.02rem}
+  .hero-icons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:18px 0 6px}
+  .hero-icon{font-size:34px;animation:popFloat 3s ease-in-out infinite var(--d,0s)}
+  @keyframes popFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+  .story-page{
+    background:
+      linear-gradient(180deg, rgba(255,254,251,.94) 0%, rgba(247,241,229,.94) 100%),
+      var(--paperTexture);
+    background-size:cover;
+    background-position:center;
+    border-radius:24px;padding:26px;min-height:560px;border:2px solid var(--line);box-shadow:0 6px 18px rgba(0,0,0,.06);position:relative;overflow:hidden
+  }
+  .page-corner{position:absolute;top:14px;right:18px;font-family:'Cinzel',serif;font-size:14px;color:#9e947f}
+  .story-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .story-icon{font-size:42px}
+  .story-title{font-family:'Cinzel',serif;font-size:1.72rem;color:#2f475f}
+  .story-sub{margin-top:4px;color:#6f7b8f;font-weight:700}
+  .story-body{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+  .story-text{font-size:1rem;line-height:1.86;color:#3f4960}
+  .story-text p{margin:0 0 12px}
+  .story-text strong{color:#254d7b}
+  .story-art{
+    background:
+      linear-gradient(180deg, rgba(255,253,247,.9) 0%, rgba(246,241,230,.92) 100%),
+      var(--paperTexture);
+    background-size:cover;
+    background-position:center;
+    border:2px dashed #d9d1bd;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px
+  }
+  .story-art h4{font-family:'Cinzel',serif;color:#4f5f74;font-size:1.06rem}
+
+  .scene-image{width:100%;border-radius:14px;border:2px solid #cfd5df;box-shadow:0 8px 16px rgba(45,62,90,.14);display:block;background:#fff}
+  .scene-image.warm{border-color:#e0c9a8;box-shadow:0 8px 18px rgba(125,93,46,.18)}
+
+  .tip-box,.fact-box,.review-card,.mini-quiz,.discussion-box{border-radius:16px;padding:14px 16px}
+  .tip-box{background:#eef4fa;border:2px solid #cfdeef}
+  .fact-box{background:#f4efe1;border:2px solid #e0d2ae}
+  .review-card{background:#ece9f7;border:2px solid #cfc2e8}
+  .discussion-box{background:#eef7ef;border:2px solid #bfe0c2}
+  .tip-title,.fact-title,.review-title,.mini-title,.discussion-title{font-family:'Cinzel',serif;font-size:1rem;margin-bottom:6px}
+  .tip-title{color:#2d648f}.fact-title{color:#8a5d29}.review-title{color:#67508f}.mini-title{color:#8b3d3d}.discussion-title{color:#2f7543}
+
+  .steps{display:grid;gap:10px}
+  .step{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid #e7dcc7;border-radius:14px;padding:10px 12px}
+  .step-no{min-width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#c9955f,#f0c88c);color:#5b3718;font-family:'Cinzel',serif;font-size:12px}
+
+  .mini-quiz{background:linear-gradient(135deg,#f6f0ee,#f2eef8);border:2px solid #ddd0d9}
+  .quiz-options,.fquiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .q-opt,.fq-opt{border:none;background:#fff;border:2px solid #ddd5c9;border-radius:14px;padding:12px 14px;text-align:left;font-family:'Nunito',sans-serif;font-weight:800;color:#2f4b6b;cursor:pointer}
+  .q-opt.correct,.fq-opt.correct{background:#dff5e5;border-color:#7dd49a;color:#1f6b35}
+  .q-opt.wrong,.fq-opt.wrong{background:#ffe5e5;border-color:#ef9e9e;color:#a33535}
+  .q-opt.locked,.fq-opt.locked{pointer-events:none;opacity:.94}
+  .quiz-feedback,.q-result-msg{min-height:26px;margin-top:10px;text-align:center;font-family:'Cinzel',serif;color:#6f507a}
+
+  .char-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .char-card{background:#fff;border:1px solid #e2d8c6;border-radius:14px;padding:12px}
+  .char-name{font-family:'Cinzel',serif;color:#365676;margin-bottom:4px}
+
+  .memory-list{display:grid;gap:8px}
+  .memory-row{display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.76);border-radius:12px;padding:8px 10px}
+  .memory-letter{font-family:'Cinzel',serif;color:#a55a5a;font-size:18px;min-width:22px}
+
+  .quiz-page{
+    background:
+      linear-gradient(180deg, rgba(255,254,251,.94) 0%, rgba(246,241,231,.94) 100%),
+      var(--paperTexture);
+    background-size:cover;
+    background-position:center;
+    border-radius:24px;padding:24px;min-height:560px;border:2px solid #d9d0bf;box-shadow:0 6px 18px rgba(0,0,0,.06)
+  }
+  .quiz-progress-row{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+  .q-counter{font-family:'Cinzel',serif;font-size:13px;color:#786f62}
+  .q-score-badge{font-family:'Cinzel',serif;font-size:14px;background:#ece7da;border:2px solid #d6ccb7;color:#6d5f49;padding:4px 14px;border-radius:20px}
+  .quiz-question-card{background:#fff;border:2px solid #dfd3be;border-radius:18px;padding:20px}
+  .quiz-q-emoji{font-size:40px;margin-bottom:8px}
+  .quiz-q-text{font-family:'Cinzel',serif;font-size:1.25rem;color:#2e4f74;line-height:1.4;margin-bottom:12px}
+  .next-q-btn,.retry-btn,.proceed-btn,.cert-btn{display:inline-flex;align-items:center;justify-content:center;border:none;border-radius:24px;padding:11px 26px;color:#fff;font-family:'Cinzel',serif;cursor:pointer}
+  .next-q-btn{background:linear-gradient(135deg,#8f5f48,#b57b4f);margin:12px auto 0}
+  .retry-btn{background:linear-gradient(135deg,#a95555,#c66d6d)}
+  .proceed-btn{background:linear-gradient(135deg,#3f8c63,#59aa7b)}
+  .result-screen{text-align:center;padding:16px 8px}
+  .result-emoji{font-size:80px;animation:bob 1.9s ease infinite;margin-bottom:8px}
+  .result-title{font-family:'Cinzel',serif;font-size:1.9rem;margin-bottom:8px}
+  .result-score{font-family:'Cinzel',serif;font-size:3rem;color:#b57b4f}
+  .result-msg{color:#68728a;line-height:1.75;margin:12px auto 20px;max-width:620px}
+
+  .cert-page{
+    background:
+      linear-gradient(180deg, rgba(255,254,251,.94) 0%, rgba(246,241,231,.94) 100%),
+      var(--paperTexture);
+    background-size:cover;
+    background-position:center;
+    border-radius:24px;padding:24px;min-height:560px;border:2px solid #d9d0bf;box-shadow:0 6px 18px rgba(0,0,0,.06)
+  }
+  .cert-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .cert-name{flex:1;min-width:220px;padding:12px 14px;border-radius:14px;border:2px solid #d7c7ac;font-size:1rem;font-weight:800}
+  .cert-btn{background:linear-gradient(135deg,#6c6aa7,#8884c8)}
+  .cert-btn.print{background:linear-gradient(135deg,#4d7ea8,#6ea4d1)}
+  .cert-wrap{background:#fff;border-radius:16px;padding:6px;border:3px solid #d8c18f;box-shadow:0 6px 16px rgba(0,0,0,.06)}
+  #cert{width:100%;display:block;border-radius:10px}
+
+  @media (max-width:780px){
+    .story-body{grid-template-columns:1fr}
+    .quiz-options,.fquiz-options{grid-template-columns:1fr}
+    .char-grid{grid-template-columns:1fr}
+  }
+</style>
+<script src="natural-read-aloud.js" defer></script>
+<script src="slim-topbar.js" defer></script>
+</head>
+<body>
+<div id="floaties"></div>
+<div id="app">
+  <a class="home-link" href="index.html">← Back Home</a>
+
+  <div class="tts-bar">
+    <button class="tts-btn" id="ttsBtn" onclick="toggleReadAloud()">🔊 Read Aloud</button>
+    <button class="tts-stop" id="ttsStop" onclick="stopReadAloud()" style="display:none;">⏹ Stop</button>
+  </div>
+
+  <div class="progress-strip">
+    <span class="progress-label">🧭 Story Journey</span>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="progress-label" id="progressText">Page 1 of 13</span>
+  </div>
+
+  <div class="nav-bar">
+    <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Back</button>
+    <div class="page-dots" id="pageDots"></div>
+    <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+  </div>
+
+  <div class="page active">
+    <div class="cover" data-tts="The Last Seed Vault. An adventure story for ages 10 to 15 about science, teamwork, courage, food and nature.">
+      <div class="cover-emoji">🌱</div>
+      <div class="cover-title">The Last Seed Vault</div>
+      <div class="cover-sub">An Adventure Story For Ages 10 – 15</div>
+      <div class="hero-icons">
+        <span class="hero-icon" style="--d:0s">🧭</span>
+        <span class="hero-icon" style="--d:.25s">🧪</span>
+        <span class="hero-icon" style="--d:.5s">🤝</span>
+        <span class="hero-icon" style="--d:.75s">🌾</span>
+        <span class="hero-icon" style="--d:1s">🌍</span>
+      </div>
+      <p class="cover-tagline">Adventure • Science • Teamwork • Courage • Food & Nature</p>
+      <p class="cover-tagline" style="margin-top:8px;">A secret map. A hidden bunker. One chance to protect humanity's food future.</p>
+      <img class="scene-image warm" src="last-seed-vault-scene-1.svg?v=2" alt="Watercolor style scene of the three kids and mysterious letter" style="max-width:660px;margin-top:20px;"/>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 2</div>
+      <div class="story-header">
+        <div class="story-icon">👥</div>
+        <div>
+          <div class="story-title">Meet The Team</div>
+          <div class="story-sub">Four minds. Four strengths. One urgent mission.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="Zara is 13, sharp-minded and loves botany. Finn is 14, brave and impulsive, but fears spiders. Priya is 12, quiet and highly logical. Old Voss is a retired scientist guarding a terrifying secret.">
+          <div class="char-grid">
+            <div class="char-card">
+              <div class="char-name">Zara, 13</div>
+              <div>Sharp-minded, loves botany. Keeps a journal of every plant she sees.</div>
+            </div>
+            <div class="char-card">
+              <div class="char-name">Finn, 14</div>
+              <div>Brave and impulsive. Climbs anything, fears nothing — except spiders.</div>
+            </div>
+            <div class="char-card">
+              <div class="char-name">Priya, 12</div>
+              <div>The quiet one. Solves problems with logic, hates being rushed.</div>
+            </div>
+            <div class="char-card">
+              <div class="char-name">Old Voss</div>
+              <div>A retired scientist who guards a terrible secret about the world's food supply.</div>
+            </div>
+          </div>
+          <div class="tip-box" style="margin-top:12px;">
+            <div class="tip-title">Team Insight</div>
+            <div>Great missions need different skills: courage, logic, memory, and science.</div>
+          </div>
+        </div>
+        <div class="story-art">
+          <h4>Mission Trigger</h4>
+          <img class="scene-image" src="last-seed-vault-scene-1.svg?v=2" alt="Watercolor story scene showing mysterious letter and three kids"/>
+          <div class="fact-box">
+            <div class="fact-title">Key clue</div>
+            <div>"The seeds are dying." Those four words changed everything.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 3</div>
+      <div class="story-header">
+        <div class="story-icon">📩</div>
+        <div>
+          <div class="story-title">Chapter 1 — The Letter That Shouldn't Exist</div>
+          <div class="story-sub">No stamp. No address. Just three names and a warning.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="The envelope had no stamp and no return address. Just three names in shaky handwriting: Zara, Finn, Priya. It appeared under the door of the old greenhouse that had been locked for twenty years.">
+          <p>The envelope had no stamp. No return address. Just three names written in shaky handwriting: <strong>Zara. Finn. Priya.</strong></p>
+          <p>It had appeared under the door of the old greenhouse at the edge of Millbrook Village — the one everyone said had been locked for twenty years. The one nobody went near.</p>
+          <p>Inside was a folded map and four words scrawled in red ink: <strong>"The seeds are dying."</strong></p>
+          <p>Zara read it three times. Finn grabbed it and sniffed it. Priya photographed it before either could lose it.</p>
+          <p>"This is either the best thing that's ever happened to us," said Finn, grinning, "or the most dangerous."</p>
+          <p>"Probably both," said Priya.</p>
+        </div>
+        <div class="story-art">
+          <h4>First Clue</h4>
+          <img class="scene-image" src="last-seed-vault-scene-1.svg?v=2" alt="Watercolor image of old greenhouse and mysterious envelope"/>
+          <div class="mini-quiz">
+            <div class="mini-title">Quick Check</div>
+            <div style="margin-bottom:10px">What was written in red ink?</div>
+            <div class="quiz-options" id="miniQuizOne"></div>
+            <div class="quiz-feedback" id="miniQuizOneFeedback"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 4</div>
+      <div class="story-header">
+        <div class="story-icon">🗺️</div>
+        <div>
+          <div class="story-title">Chapter 2 — What The Map Revealed</div>
+          <div class="story-sub">Three kilometres into forbidden forest. Marked: Vault 7.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="The map marked a location deep into Harrow Forest, past the ridge and dry river bed, into forbidden woods. There was an X marked Vault 7. Zara remembered reading about seed vaults in science books.">
+          <p>The map showed a location three kilometres into Harrow Forest — past the ridge, across the dry river bed, and into a part of the woods their parents had always told them to avoid.</p>
+          <p>Marked with an X was something labelled: <strong>Vault 7.</strong></p>
+          <p>Zara had read about seed vaults in science books — underground bunkers storing seeds in case of global disaster.</p>
+          <p>There was a famous one in Norway. But one in Harrow Forest? That made no sense.</p>
+          <p>Unless someone had built one in secret.</p>
+          <p>They packed torches, rope, water, and Zara's plant journal, then set off at sunrise before their parents woke.</p>
+        </div>
+        <div class="story-art">
+          <h4>The Map</h4>
+          <img class="scene-image" src="last-seed-vault-scene-2.svg?v=2" alt="Watercolor map and forest expedition image"/>
+          <div class="fact-box">
+            <div class="fact-title">Did You Know?</div>
+            <div>Real seed vaults exist worldwide. The Svalbard Global Seed Vault in Norway stores over 1.3 million seed samples as a backup for humanity's food supply.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 5</div>
+      <div class="story-header">
+        <div class="story-icon">🌲</div>
+        <div>
+          <div class="story-title">Chapter 3 — Into Harrow Forest</div>
+          <div class="story-sub">Silent trees. Dry riverbed. A rusted metal door in the hillside.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="The forest was strangely silent. Trees were thinner, undergrowth patchy, no birds. They crossed a dry cracked riverbed and climbed the slope. Then Finn stopped. Half-buried in ivy and rust was a metal door.">
+          <p>The forest was not how Zara remembered it. The trees were thinner. Undergrowth was patchy. No birds. No squirrels. Only dry leaves underfoot.</p>
+          <p>"Something's wrong with this forest," Zara said, writing in her journal as she walked.</p>
+          <p>Finn climbed ahead and shouted, "I see the dry river bed! We're close!"</p>
+          <p>Priya checked her phone: no signal since crossing the fence.</p>
+          <p>They crossed cracked pale mud and dead reeds, climbed the slope, and froze.</p>
+          <p>Half-buried in the hillside, covered in ivy and rust, was a <strong>metal door</strong>.</p>
+        </div>
+        <div class="story-art">
+          <h4>Discovery</h4>
+          <img class="scene-image" src="last-seed-vault-scene-3.svg?v=2" alt="Watercolor style dry forest and hidden vault door"/>
+          <div class="review-card">
+            <div class="review-title">Observation</div>
+            <div><strong>The silent forest and dry riverbed hint that ecological collapse has already begun.</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 6</div>
+      <div class="story-header">
+        <div class="story-icon">🧊</div>
+        <div>
+          <div class="story-title">Chapter 4 — Vault 7</div>
+          <div class="story-sub">Rows of extinct seed varieties. And Old Voss waiting.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="The door opened with a groan. Inside were rows of glass containers holding seeds of extinct varieties. Heritage Wheat 1948, Purple Carrot Syria 1961, Dwarf Bean Peru 1972. Then they saw Old Voss.">
+          <p>The door groaned open. Cold, stale air rushed out. Then came a smell of soil after rain.</p>
+          <p>Inside were hundreds of glass containers, each filled with seeds: <strong>Heritage Wheat — 1948. Purple Carrot — Syria, 1961. Dwarf Bean — Peru, 1972.</strong></p>
+          <p>"These are extinct varieties," Zara whispered. "Plants that don't exist anywhere else anymore."</p>
+          <p>Then they saw Old Voss, exhausted but sharp-eyed, wrapped in a blanket in the corner.</p>
+          <p>"Took you long enough," he said. "I sent that letter six days ago."</p>
+        </div>
+        <div class="story-art">
+          <h4>Inside The Vault</h4>
+          <img class="scene-image warm" src="last-seed-vault-scene-4.svg?v=2" alt="Watercolor underground seed vault with jars and Old Voss"/>
+          <div class="steps">
+            <div class="step"><div class="step-no">1</div><div>Ancient seeds preserved in glass.</div></div>
+            <div class="step"><div class="step-no">2</div><div>Many varieties no longer farmed.</div></div>
+            <div class="step"><div class="step-no">3</div><div>One failing system threatens them all.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 7</div>
+      <div class="story-header">
+        <div class="story-icon">🧬</div>
+        <div>
+          <div class="story-title">Chapter 5 — The Old Man's Secret</div>
+          <div class="story-sub">Food systems had become dangerously uniform.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="Old Voss spent forty years as a botanist. He built Vault 7 in secret because crops worldwide were becoming too similar. If one disease struck modern wheat, billions could go hungry.">
+          <p>Old Voss had spent forty years as a botanist. He built Vault 7 alone, in secret.</p>
+          <p>Why? Because global food crops were becoming dangerously similar. Farmers had switched to a few high-yield varieties and abandoned older ones.</p>
+          <p>"If one disease strikes modern wheat," Voss said, "there is no backup. Billions could go hungry."</p>
+          <p>Priya nodded. "Like the Irish Potato Famine. One disease, one dominant variety, massive loss."</p>
+          <p>Voss looked stunned. "Exactly right."</p>
+          <p>Then he showed the temperature gauge: <strong>14°C</strong>. It should have been <strong>-4°C</strong>.</p>
+        </div>
+        <div class="story-art">
+          <h4>The Risk</h4>
+          <img class="scene-image" src="last-seed-vault-scene-4.svg?v=2" alt="Watercolor seed vault with warning temperature issue"/>
+          <div class="tip-box">
+            <div class="tip-title">Science Insight</div>
+            <div>Genetic diversity in crops is a survival system. Without it, disease resilience drops sharply.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 8</div>
+      <div class="story-header">
+        <div class="story-icon">🛠️</div>
+        <div>
+          <div class="story-title">Chapter 6 — The Mission</div>
+          <div class="story-sub">Repair the cooling system before the seed bank dies.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="Priya found a blocked intake valve and snapped cables. Finn had to crank a backup generator while Priya rewired and Zara assisted with tools and light.">
+          <p>Priya examined the unit: blocked intake valve, two snapped cables.</p>
+          <p>"I need wire, tools, and forty minutes," she said calmly.</p>
+          <p>Voss had the tools but not the strength. Finn took the backup-generator task immediately.</p>
+          <p>For nearly an hour, Priya rewired with steady precision, Zara passed tools and held light, and Finn cranked the generator again and again until his arms burned.</p>
+        </div>
+        <div class="story-art">
+          <h4>Teamwork Under Pressure</h4>
+          <img class="scene-image" src="last-seed-vault-scene-5.svg?v=2" alt="Watercolor scene of mission repair work inside and outside vault"/>
+          <div class="mini-quiz">
+            <div class="mini-title">Quick Check</div>
+            <div style="margin-bottom:10px">What allowed Priya to keep repairing?</div>
+            <div class="quiz-options" id="miniQuizTwo"></div>
+            <div class="quiz-feedback" id="miniQuizTwoFeedback"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 9</div>
+      <div class="story-header">
+        <div class="story-icon">❄️</div>
+        <div>
+          <div class="story-title">Chapter 7 — Cold Air And Warm Hearts</div>
+          <div class="story-sub">The gauge dropped. The seeds were saved.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="The cooling system hummed. Temperature fell from 12 to 8 to 4 to minus 2. Old Voss wept with relief and thanked them for believing something was worth saving.">
+          <p>Then it happened — a deep hum filled the vault as the cooling system restarted.</p>
+          <p>The gauge dropped: 12°C... 8°C... 4°C... -2°C.</p>
+          <p>Old Voss sat down, shaking with relief. "Thank you," he whispered. "Children still believe things are worth saving."</p>
+          <p>Finn rubbed his aching arms. "That generator is absolutely horrible, by the way."</p>
+          <p>Despite everything, they laughed.</p>
+        </div>
+        <div class="story-art">
+          <h4>System Restored</h4>
+          <img class="scene-image warm" src="last-seed-vault-scene-6.svg?v=2" alt="Watercolor cooling gauge dropping and team relief"/>
+          <div class="review-card">
+            <div class="review-title">Power sentence</div>
+            <div><strong>Courage matters most when used to protect something bigger than ourselves.</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 10</div>
+      <div class="story-header">
+        <div class="story-icon">🎒</div>
+        <div>
+          <div class="story-title">Chapter 8 — What They Left Behind</div>
+          <div class="story-sub">Seeds, research, and a lesson in responsibility.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="Voss gave Zara heritage tomato seeds, Priya his forty years of botanical notes, and Finn a handshake about courage. They agreed to tell the right people carefully and protect the vault properly.">
+          <p>Before they left, Voss gave each of them something:</p>
+          <p>To Zara: heritage purple tomato seeds. "Plant them. Remember what diversity means."</p>
+          <p>To Priya: his forty-year research notebook. "Someone young should carry this forward."</p>
+          <p>To Finn: a firm handshake. "Courage is only useful when used for what matters."</p>
+          <p>They walked home in silence through thinning trees, then agreed: tell the right people, carefully, and return with a real protection plan.</p>
+          <p>Above them, a bird finally sang — small, bright, alive.</p>
+        </div>
+        <div class="story-art">
+          <h4>The Handover</h4>
+          <img class="scene-image" src="last-seed-vault-scene-7.svg?v=2" alt="Watercolor gifts handover scene with Old Voss and kids"/>
+          <div class="fact-box">
+            <div class="fact-title">Legacy</div>
+            <div>Knowledge, seeds, and trust were passed to the next generation.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 11</div>
+      <div class="story-header">
+        <div class="story-icon">🌍</div>
+        <div>
+          <div class="story-title">Moral + Think Deeper</div>
+          <div class="story-sub">Why seed diversity matters to every generation.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="The food we eat connects us to earth, history, and future generations. Protecting nature's diversity and understanding food systems is one of our greatest responsibilities.">
+          <div class="review-card">
+            <div class="review-title">THE MORAL OF THE STORY</div>
+            <div><strong>"The food we eat connects us to the earth, to history, and to every person who will come after us. Protecting nature's diversity — and knowing where our food comes from — is one of the most important things any generation can do."</strong></div>
+          </div>
+
+          <div class="discussion-box" style="margin-top:12px;">
+            <div class="discussion-title">Think Deeper — Discussion Questions</div>
+            <div class="memory-list" style="margin-top:8px;">
+              <div class="memory-row"><div class="memory-letter">1</div><div>Why is food diversity so important for the planet?</div></div>
+              <div class="memory-row"><div class="memory-letter">2</div><div>What would you have done if you found Vault 7?</div></div>
+              <div class="memory-row"><div class="memory-letter">3</div><div>Which character are you most like — Zara, Finn, or Priya? Why?</div></div>
+              <div class="memory-row"><div class="memory-letter">4</div><div>What does the dry riverbed and silent forest tell us about the world in this story?</div></div>
+              <div class="memory-row"><div class="memory-letter">5</div><div>If you could save one type of food from disappearing, what would it be?</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="story-art">
+          <h4>Walk Back Through The Forest</h4>
+          <img class="scene-image warm" src="last-seed-vault-scene-8.svg?v=2" alt="Watercolor sunset forest walk with hope and bird song"/>
+          <div class="tip-box">
+            <div class="tip-title">Memory Trick: ROOTS</div>
+            <div class="memory-list" style="margin-top:8px;">
+              <div class="memory-row"><div class="memory-letter">R</div><div><strong>Respect</strong> food origins.</div></div>
+              <div class="memory-row"><div class="memory-letter">O</div><div><strong>Observe</strong> biodiversity changes.</div></div>
+              <div class="memory-row"><div class="memory-letter">O</div><div><strong>Organize</strong> local protection efforts.</div></div>
+              <div class="memory-row"><div class="memory-letter">T</div><div><strong>Think</strong> long-term for future generations.</div></div>
+              <div class="memory-row"><div class="memory-letter">S</div><div><strong>Save</strong> seed diversity.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="quiz-page" data-tts="Final quiz about The Last Seed Vault. Answer the questions to earn your certificate.">
+      <div class="quiz-progress-row">
+        <div class="q-counter" id="quizCounter">Question 1 of 6</div>
+        <div class="q-score-badge" id="scoreBadge">Score: 0 / 6</div>
+      </div>
+      <div id="quizActive">
+        <div class="quiz-question-card">
+          <div class="quiz-q-emoji" id="quizEmoji">🌱</div>
+          <div class="quiz-q-text" id="quizText">Question text</div>
+          <div class="fquiz-options" id="quizOptions"></div>
+          <div class="q-result-msg" id="quizFeedback"></div>
+          <button class="next-q-btn" id="nextQBtn" onclick="nextQuestion()" style="display:none;">Next Question →</button>
+        </div>
+      </div>
+      <div id="quizPass" style="display:none;">
+        <div class="result-screen">
+          <div class="result-emoji">🧬</div>
+          <div class="result-title">Vault Guardian!</div>
+          <div class="result-score" id="passScore">6 / 6</div>
+          <div class="result-msg">Excellent. You understood science, teamwork, and why biodiversity protects humanity's future.</div>
+          <button class="proceed-btn" onclick="goToCertificate()">Go to Certificate 🎓</button>
+        </div>
+      </div>
+      <div id="quizFail" style="display:none;">
+        <div class="result-screen">
+          <div class="result-emoji">📚</div>
+          <div class="result-title">Try Again, Explorer!</div>
+          <div class="result-score" id="failScore">2 / 6</div>
+          <div class="result-msg">No problem. Revisit the mission and try again. Big ideas become clearer with practice.</div>
+          <button class="retry-btn" onclick="restartQuiz()">Try Again ↺</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="cert-page" data-tts="Certificate page for The Last Seed Vault. Type your name and save your certificate.">
+      <div class="story-header" style="margin-bottom:12px">
+        <div class="story-icon">🎓</div>
+        <div>
+          <div class="story-title">Your Certificate</div>
+          <div class="story-sub">Type your name and download your reward.</div>
+        </div>
+      </div>
+      <div class="cert-controls">
+        <input class="cert-name" id="certName" placeholder="Type your name here" oninput="drawCert()"/>
+        <button class="cert-btn" onclick="downloadCert()">Download PNG</button>
+        <button class="cert-btn print" onclick="printCert()">Print</button>
+      </div>
+      <div class="cert-wrap">
+        <canvas id="cert" width="900" height="630"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORY_DATA = {
+  floatyIcons:['🌱','🧭','🧪','🌾','📜','🔧','🌍'],
+  miniQuiz1:{
+    answer:2,
+    options:['Meet us at midnight','The seeds are dying','Vault 7 is empty','Do not tell anyone'],
+    success:'Correct. The warning message was "The seeds are dying."',
+    fail:'Not quite. The key warning was "The seeds are dying."'
+  },
+  miniQuiz2:{
+    answer:1,
+    options:['A drone battery','Finn cranking the backup generator','A satellite signal','A solar panel'],
+    success:'Yes. Finn manually cranked the backup generator while Priya repaired the unit.',
+    fail:'Try again. Priya needed power from the manually cranked backup generator.'
+  },
+  quiz:[
+    {emoji:'📩',q:'What made the first envelope unusual?',opts:['It had no stamp or return address','It was wet','It was addressed to one person','It was in a mailbox'],a:0},
+    {emoji:'🗺️',q:'What did the map label as the destination?',opts:['Station 4','Vault 7','Lab 2','Greenhouse 9'],a:1},
+    {emoji:'🧬',q:'Why was Old Voss worried about global crops?',opts:['Too many crop varieties','Crops becoming dangerously similar','No farmers left','Seeds growing too fast'],a:1},
+    {emoji:'❄️',q:'What indicated urgent danger in the vault?',opts:['Broken lights','The temperature was 14°C instead of -4°C','Too much water','No labels'],a:1},
+    {emoji:'🔧',q:'What was Priya\'s role in the mission?',opts:['Map reading only','Repairing the cooling system','Guarding the door','Collecting samples'],a:1},
+    {emoji:'🌍',q:'What is the central moral?',opts:['Keep discoveries secret forever','Protect biodiversity and understand food systems','Modern crops are always enough','Children should avoid science'],a:1}
+  ],
+  cert:{
+    defaultName:'Seed Guardian',
+    header:'🌱  LAST SEED VAULT CERTIFICATE  🌱',
+    bigEmoji:'🧭',
+    bigTitle:'Biodiversity Guardian Certificate',
+    lineText:'has shown courage, science thinking, and care for Earth\'s food future.',
+    traitLine:'🧪 Scientific Thinking • 🤝 Teamwork • 🌍 Future Care',
+    badges:['✓ Protects diversity','✓ Solves under pressure','✓ Works as a team','✓ Acts with courage'],
+    motto:'EXPLORE • PROTECT • RESTORE • LEAD',
+    fileName:'last-seed-vault-certificate.png',
+    docTitle:'Last Seed Vault Certificate'
+  }
+};
+
+(function(){
+  const wrap=document.getElementById('floaties');
+  const icons=STORY_DATA.floatyIcons;
+  for(let i=0;i<7;i++){
+    const el=document.createElement('div');
+    el.className='floaty';
+    el.textContent=icons[i%icons.length];
+    el.style.top=(Math.random()*84)+'%';
+    el.style.animationDuration=(20+Math.random()*22)+'s';
+    el.style.animationDelay=(Math.random()*16)+'s';
+    el.style.fontSize=(34+Math.random()*22)+'px';
+    wrap.appendChild(el);
+  }
+})();
+
+const pages=[...document.querySelectorAll('.page')];
+const prevBtn=document.getElementById('prevBtn');
+const nextBtn=document.getElementById('nextBtn');
+const progressFill=document.getElementById('progressFill');
+const progressText=document.getElementById('progressText');
+const dotsWrap=document.getElementById('pageDots');
+const TOTAL_PAGES=pages.length;
+const QUIZ_PAGE_INDEX=pages.findIndex(page=>page.querySelector('.quiz-page'));
+const CERT_PAGE_INDEX=pages.findIndex(page=>page.querySelector('.cert-page'));
+let currentPage=0;
+let quizPassed=false;
+let speaking=false;
+
+for(let i=0;i<TOTAL_PAGES;i++){
+  const dot=document.createElement('button');
+  dot.className='dot'+(i===0?' active':'');
+  dot.onclick=()=>goToPage(i);
+  dotsWrap.appendChild(dot);
+}
+
+function updateNav(){
+  pages.forEach((p,i)=>p.classList.toggle('active',i===currentPage));
+  prevBtn.disabled=currentPage===0;
+  nextBtn.disabled=currentPage===TOTAL_PAGES-1;
+  progressFill.style.width=((currentPage)/(TOTAL_PAGES-1))*100+'%';
+  progressText.textContent='Page '+(currentPage+1)+' of '+TOTAL_PAGES;
+  [...document.querySelectorAll('.dot')].forEach((dot,i)=>{
+    dot.classList.toggle('active',i===currentPage);
+    if(i<currentPage) dot.classList.add('visited');
+  });
+}
+
+function goToPage(n){
+  if(n<0||n>=TOTAL_PAGES) return;
+  if(n===CERT_PAGE_INDEX && !quizPassed){
+    alert('Pass the final quiz first to unlock your certificate! 🌱');
+    return;
+  }
+  stopReadAloud();
+  currentPage=n;
+  updateNav();
+  if(currentPage===QUIZ_PAGE_INDEX) renderQuiz();
+  if(currentPage===CERT_PAGE_INDEX) setTimeout(drawCert,100);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function changePage(d){ goToPage(currentPage+d); }
+function goToCertificate(){ if(CERT_PAGE_INDEX>=0) goToPage(CERT_PAGE_INDEX); }
+updateNav();
+
+function getReadText(){
+  const active=pages[currentPage];
+  const source=active.querySelector('[data-tts]') || active;
+  return (source.textContent||'').replace(/\s+/g,' ').trim();
+}
+function toggleReadAloud(){
+  if(!('speechSynthesis' in window)) return;
+  if(speaking){ stopReadAloud(); return; }
+  const text=getReadText();
+  if(!text) return;
+  const utter=new SpeechSynthesisUtterance(text);
+  utter.rate=.9;
+  utter.pitch=1.0;
+  utter.lang='en-AU';
+  utter.onstart=()=>{
+    speaking=true;
+    document.getElementById('ttsBtn').classList.add('speaking');
+    document.getElementById('ttsBtn').textContent='🔊 Reading...';
+    document.getElementById('ttsStop').style.display='inline-flex';
+  };
+  utter.onend=resetTTS;
+  utter.onerror=resetTTS;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(utter);
+}
+function stopReadAloud(){
+  if('speechSynthesis' in window) window.speechSynthesis.cancel();
+  resetTTS();
+}
+function resetTTS(){
+  speaking=false;
+  document.getElementById('ttsBtn').classList.remove('speaking');
+  document.getElementById('ttsBtn').textContent='🔊 Read Aloud';
+  document.getElementById('ttsStop').style.display='none';
+}
+
+function setupMiniQuiz(targetId, feedbackId, answerIndex, options, successText, failText){
+  const target=document.getElementById(targetId);
+  target.innerHTML='';
+  options.forEach((text,i)=>{
+    const btn=document.createElement('button');
+    btn.className='q-opt';
+    btn.textContent=text;
+    btn.onclick=()=>{
+      [...target.children].forEach(b=>b.classList.add('locked'));
+      if(i===answerIndex){
+        btn.classList.add('correct');
+        document.getElementById(feedbackId).textContent=successText;
+      }else{
+        btn.classList.add('wrong');
+        target.children[answerIndex].classList.add('correct');
+        document.getElementById(feedbackId).textContent=failText;
+      }
+    };
+    target.appendChild(btn);
+  });
+}
+
+setupMiniQuiz('miniQuizOne','miniQuizOneFeedback',STORY_DATA.miniQuiz1.answer,STORY_DATA.miniQuiz1.options,STORY_DATA.miniQuiz1.success,STORY_DATA.miniQuiz1.fail);
+setupMiniQuiz('miniQuizTwo','miniQuizTwoFeedback',STORY_DATA.miniQuiz2.answer,STORY_DATA.miniQuiz2.options,STORY_DATA.miniQuiz2.success,STORY_DATA.miniQuiz2.fail);
+
+const QUIZ=STORY_DATA.quiz;
+let quizIndex=0,quizScore=0,quizLocked=false;
+
+function renderQuiz(){
+  document.getElementById('quizActive').style.display='block';
+  document.getElementById('quizPass').style.display='none';
+  document.getElementById('quizFail').style.display='none';
+  quizIndex=0; quizScore=0; quizLocked=false;
+  showQuestion();
+}
+function showQuestion(){
+  const item=QUIZ[quizIndex];
+  document.getElementById('quizCounter').textContent='Question '+(quizIndex+1)+' of '+QUIZ.length;
+  document.getElementById('scoreBadge').textContent='Score: '+quizScore+' / '+QUIZ.length;
+  document.getElementById('quizEmoji').textContent=item.emoji;
+  document.getElementById('quizText').textContent=item.q;
+  document.getElementById('quizFeedback').textContent='';
+  document.getElementById('nextQBtn').style.display='none';
+  quizLocked=false;
+  const wrap=document.getElementById('quizOptions');
+  wrap.innerHTML='';
+  item.opts.forEach((text,i)=>{
+    const btn=document.createElement('button');
+    btn.className='fq-opt';
+    btn.textContent=String.fromCharCode(65+i)+'. '+text;
+    btn.onclick=()=>answerQuiz(i,btn);
+    wrap.appendChild(btn);
+  });
+}
+function answerQuiz(i,btn){
+  if(quizLocked) return;
+  quizLocked=true;
+  const item=QUIZ[quizIndex];
+  const buttons=[...document.querySelectorAll('#quizOptions .fq-opt')];
+  buttons.forEach(b=>b.classList.add('locked'));
+  if(i===item.a){
+    quizScore++;
+    btn.classList.add('correct');
+    document.getElementById('quizFeedback').textContent='Great thinking!';
+  }else{
+    btn.classList.add('wrong');
+    buttons[item.a].classList.add('correct');
+    document.getElementById('quizFeedback').textContent='Good try. Check the best answer and continue.';
+  }
+  document.getElementById('scoreBadge').textContent='Score: '+quizScore+' / '+QUIZ.length;
+  document.getElementById('nextQBtn').style.display='inline-flex';
+  document.getElementById('nextQBtn').textContent=quizIndex===QUIZ.length-1?'See My Result! 🏁':'Next Question →';
+}
+function nextQuestion(){
+  quizIndex++;
+  if(quizIndex>=QUIZ.length){ showQuizResult(); return; }
+  showQuestion();
+}
+function showQuizResult(){
+  document.getElementById('quizActive').style.display='none';
+  if(quizScore>=5){
+    quizPassed=true;
+    document.getElementById('quizPass').style.display='block';
+    document.getElementById('passScore').textContent=quizScore+' / '+QUIZ.length;
+  }else{
+    document.getElementById('quizFail').style.display='block';
+    document.getElementById('failScore').textContent=quizScore+' / '+QUIZ.length;
+  }
+}
+function restartQuiz(){ renderQuiz(); }
+
+const certCanvas=document.getElementById('cert');
+const ctx=certCanvas.getContext('2d');
+const qrImage=new Image();
+let qrReady=false;
+qrImage.crossOrigin='anonymous';
+qrImage.onload=()=>{ qrReady=true; drawCert(); };
+qrImage.src='https://quickchart.io/qr?text='+encodeURIComponent('https://fivetofifteen.com/')+'&size=180';
+
+const CERT = STORY_DATA.cert;
+
+function rr(x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y);
+  ctx.arcTo(x+w,y,x+w,y+r,r);
+  ctx.lineTo(x+w,y+h-r);
+  ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+  ctx.lineTo(x+r,y+h);
+  ctx.arcTo(x,y+h,x,y+h-r,r);
+  ctx.lineTo(x,y+r);
+  ctx.arcTo(x,y,x+r,y,r);
+  ctx.closePath();
+}
+function drawStar(cx,cy,r,color){
+  ctx.save();
+  ctx.fillStyle=color;
+  ctx.beginPath();
+  for(let i=0;i<10;i++){
+    const a=(Math.PI/5)*i-Math.PI/2;
+    const rad=i%2===0?r:r*0.45;
+    const x=cx+Math.cos(a)*rad;
+    const y=cy+Math.sin(a)*rad;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawCert(){
+  const name=(document.getElementById('certName').value||CERT.defaultName).trim() || CERT.defaultName;
+  ctx.clearRect(0,0,900,630);
+  const bg=ctx.createLinearGradient(0,0,900,630);
+  bg.addColorStop(0,'#f4f1e8');
+  bg.addColorStop(.55,'#ffffff');
+  bg.addColorStop(1,'#e6edf5');
+  ctx.fillStyle=bg;
+  rr(0,0,900,630,20);
+  ctx.fill();
+
+  ctx.strokeStyle='#b78958';
+  ctx.lineWidth=6;
+  rr(8,8,884,614,18);
+  ctx.stroke();
+
+  ctx.strokeStyle='#5a7ea5';
+  ctx.lineWidth=2;
+  ctx.setLineDash([8,5]);
+  rr(20,20,860,590,12);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  [[54,54],[846,54],[54,576],[846,576]].forEach(([x,y])=>drawStar(x,y,18,'#d9b766'));
+
+  const ribbon=ctx.createLinearGradient(220,0,680,0);
+  ribbon.addColorStop(0,'#4d7ea8');
+  ribbon.addColorStop(.5,'#5f8a65');
+  ribbon.addColorStop(1,'#b57b4f');
+  ctx.fillStyle=ribbon;
+  rr(220,30,460,44,22);
+  ctx.fill();
+
+  ctx.fillStyle='#fffef5';
+  ctx.font='bold 16px "Cinzel",serif';
+  ctx.textAlign='center';
+  ctx.fillText(CERT.header,450,58);
+
+  ctx.font='58px serif';
+  ctx.fillText(CERT.bigEmoji,450,142);
+  ctx.fillStyle='#274a7d';
+  ctx.font='bold 34px "Cinzel",serif';
+  ctx.fillText(CERT.bigTitle,450,196);
+
+  ctx.fillStyle='#777';
+  ctx.font='16px "Nunito",sans-serif';
+  ctx.fillText('This is to proudly certify that',450,232);
+
+  ctx.strokeStyle='#4d7ea8';
+  ctx.lineWidth=3;
+  ctx.beginPath();
+  ctx.moveTo(210,278);
+  ctx.lineTo(690,278);
+  ctx.stroke();
+
+  ctx.fillStyle='#2f7d32';
+  ctx.font='bold 36px "Cinzel",serif';
+  ctx.fillText(name,450,270);
+
+  ctx.fillStyle='#444';
+  ctx.font='16px "Nunito",sans-serif';
+  ctx.fillText(CERT.lineText,450,314);
+
+  ctx.fillStyle='#8a5a2b';
+  ctx.font='bold 22px "Cinzel",serif';
+  ctx.fillText(CERT.traitLine,450,350);
+
+  let bx=100;
+  CERT.badges.forEach(t=>{
+    ctx.fillStyle='#eef4fb';
+    rr(bx,394,160,30,15);
+    ctx.fill();
+    ctx.fillStyle='#365f8f';
+    ctx.font='bold 12px "Nunito",sans-serif';
+    ctx.fillText(t,bx+80,413);
+    bx+=170;
+  });
+
+  ctx.font='28px serif';
+  ctx.fillText(CERT.motto,450,474);
+
+  ctx.fillStyle='#ffffff';
+  ctx.strokeStyle='#d7e2f4';
+  ctx.lineWidth=2;
+  rr(746,88,102,102,14);
+  ctx.fill();
+  ctx.stroke();
+
+  if(qrReady){
+    ctx.drawImage(qrImage,756,78,82,82);
+  }else{
+    ctx.fillStyle='#eef7ff';
+    ctx.fillRect(756,78,82,82);
+    ctx.fillStyle='#1d6fd6';
+    ctx.font='bold 10px "Nunito",sans-serif';
+    ctx.fillText('QR loading...',797,122);
+  }
+  ctx.fillStyle='#1d6fd6';
+  ctx.font='bold 10px "Nunito",sans-serif';
+  ctx.fillText('Scan to visit',797,185);
+
+  const d=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
+  ctx.fillStyle='#8c8c8c';
+  ctx.font='bold 12px "Nunito",sans-serif';
+  ctx.fillText('Presented by fivetofifteen.com',450,538);
+  ctx.fillStyle='#aaa';
+  ctx.font='12px "Nunito",sans-serif';
+  ctx.fillText('Awarded on '+d,450,562);
+}
+
+function downloadCert(){
+  drawCert();
+  const link=document.createElement('a');
+  link.download=CERT.fileName;
+  link.href=certCanvas.toDataURL('image/png');
+  link.click();
+}
+function printCert(){
+  drawCert();
+  const dataUrl=certCanvas.toDataURL('image/png');
+  const win=window.open('','_blank');
+  const html=[
+    '<!DOCTYPE html><html><head><title>'+CERT.docTitle+'<\\/title>',
+    '<style>body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f5f5f5;}img{max-width:100%;box-shadow:0 4px 20px rgba(0,0,0,.15);border-radius:12px;}@media print{body{background:white;}img{box-shadow:none;width:100%;}}<\\/style><\\/head><body>',
+    '<img src="'+dataUrl+'"/><\\/body><\\/html>'
+  ].join('');
+  win.document.write(html);
+  win.document.close();
+  win.onload=()=>{ win.focus(); win.print(); };
+}
+
+drawCert();
+</script>
+</body>
+</html>

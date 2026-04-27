@@ -1,0 +1,580 @@
+{
+  "meta": {
+    "title": "Selective Reading Practice - Original Sample Set 01",
+    "version": "1.0",
+    "created_date": "2026-04-20",
+    "time_minutes": 40,
+    "total_questions": 30,
+    "note": "Original content built from pattern rules in SELECTIVE_READING_QUESTION_PATTERN_CONTEXT.md"
+  },
+  "sections": [
+    {
+      "id": "dual_extract",
+      "question_range": "1-8",
+      "instructions": "Read Extract A and Extract B, then answer questions 1 to 8.",
+      "extracts": [
+        {
+          "label": "A",
+          "title": "The Observatory Trip",
+          "text": "On the last Thursday of term, our science class boarded a bus before sunrise. The heater had been left on from the previous run, so the windows fogged at once and everyone tugged at their collars. For the first twenty minutes the route was painfully familiar: bakery, oval, roundabout, then the old service station with the crooked sign. We had passed those landmarks on every sports run since Year 5.\n\nAt the stone bridge near Koora Creek, however, the mood shifted. That bridge usually marked the farthest point of school trips, but today we rattled over it and kept climbing toward the hills. Bags rustled. Voices rose. Ms D'Souza turned around and reminded us to keep the windows shut because the road narrowed after the bridge and loose gravel often flicked upward from passing trucks.\n\nBy the time the bus reached the lookout bay, the air felt thick and sleepy. The driver opened the luggage hatch for the telescope cases, and a cool wind rushed in. Someone asked whether we could remove our blazers before the guided tour. Ms D'Souza paused, glanced at the grey clouds, and said, \"For now, yes. Stay neat once we enter the dome.\" Suddenly nobody complained about the early start."
+        },
+        {
+          "label": "B",
+          "title": "Saturday Market Line",
+          "text": "My family catches the 7:05 train to Harbour Market once a month, carrying fold-up bags and far too much optimism. Dad calls it efficient planning; my sister calls it queue training. That morning, the carriage was packed with people balancing coffee cups, prams, and damp umbrellas. My knees were wedged against a suitcase, and the air smelled like wet wool.\n\nThree stations in, we stopped for a signal fault. At first everyone groaned. A toddler tapped the window in protest. I checked the time every thirty seconds and imagined all the good fruit already disappearing from the best stalls. Then, while we waited, a busker on the opposite platform started playing violin under a mural of blue fish and bright oranges. People in our carriage fell quiet. Even Dad stopped explaining discount strategies.\n\nWhen the line finally reopened, we rolled into the harbour just as sunlight broke across the water. The ferris wheel near the foreshore turned slowly, and the market banners snapped in the wind. We spilled onto the platform stiff and hungry, but suddenly cheerful, as if the delay had turned into part of the outing rather than a mistake in it."
+        }
+      ],
+      "questions": [
+        {
+          "number": 1,
+          "type": "mcq_abcd",
+          "stem": "Both extracts show that, during the trip, passengers",
+          "options": {
+            "A": "had plenty of personal space",
+            "B": "were physically uncomfortable for a while",
+            "C": "ate a meal before arrival",
+            "D": "argued with the driver"
+          },
+          "answer": "B",
+          "explanation": {
+            "why_correct": "Extract A mentions stuffy, thick air; Extract B describes cramped seating and wet, crowded conditions.",
+            "why_not_others": {
+              "A": "Both passages describe crowding, not space.",
+              "C": "No meal is described before arrival.",
+              "D": "No argument with driver is reported."
+            }
+          },
+          "skills": ["comparison", "detail tracking"],
+          "difficulty": "easy"
+        },
+        {
+          "number": 2,
+          "type": "mcq_abcd",
+          "stem": "Which extract includes an adult explicitly enforcing a group rule?",
+          "options": {
+            "A": "Extract A",
+            "B": "Extract B",
+            "C": "Both",
+            "D": "Neither"
+          },
+          "answer": "A",
+          "explanation": {
+            "why_correct": "Ms D'Souza instructs students to keep windows shut and later controls uniform rules.",
+            "why_not_others": {
+              "B": "No comparable rule from an authority is enforced.",
+              "C": "Only one extract shows explicit rule-setting.",
+              "D": "Extract A clearly does show it."
+            }
+          },
+          "skills": ["single extract inference"],
+          "difficulty": "easy"
+        },
+        {
+          "number": 3,
+          "type": "mcq_abcd",
+          "stem": "In Extract A, the stone bridge is important because it",
+          "options": {
+            "A": "marks the point where the journey becomes unfamiliar",
+            "B": "is where students usually buy snacks",
+            "C": "is where the bus had to turn around",
+            "D": "marks the location of the observatory dome"
+          },
+          "answer": "A",
+          "explanation": {
+            "why_correct": "The passage says it is usually the farthest point, and crossing it changes the class mood.",
+            "why_not_others": {
+              "B": "No snack stop at the bridge is mentioned.",
+              "C": "They continue beyond it, not turn around.",
+              "D": "The observatory is reached later in the hills."
+            }
+          },
+          "skills": ["symbolic turning point"],
+          "difficulty": "medium"
+        },
+        {
+          "number": 4,
+          "type": "mcq_abcd",
+          "stem": "In Extract A, who appears to make the final decisions about student behavior?",
+          "options": {
+            "A": "The bus driver",
+            "B": "The students collectively",
+            "C": "Ms D'Souza",
+            "D": "The tour guide at the dome"
+          },
+          "answer": "C",
+          "explanation": {
+            "why_correct": "She sets the window rule and responds to the blazer request with conditions.",
+            "why_not_others": {
+              "A": "Driver handles transport, not student conduct.",
+              "B": "Students ask; they do not decide.",
+              "D": "Guide is not involved in these decisions."
+            }
+          },
+          "skills": ["authority inference"],
+          "difficulty": "easy"
+        },
+        {
+          "number": 5,
+          "type": "mcq_abcd",
+          "stem": "In Extract B, the writer's attitude changes from",
+          "options": {
+            "A": "anxiety to panic",
+            "B": "annoyance to enjoyment",
+            "C": "confidence to confusion",
+            "D": "curiosity to fear"
+          },
+          "answer": "B",
+          "explanation": {
+            "why_correct": "The writer first complains about delay and crowding, then describes cheerfulness and renewed enjoyment.",
+            "why_not_others": {
+              "A": "The text does not escalate to panic.",
+              "C": "The shift is emotional mood, not confusion.",
+              "D": "Fear is not the final tone."
+            }
+          },
+          "skills": ["tone shift"],
+          "difficulty": "medium"
+        },
+        {
+          "number": 6,
+          "type": "mcq_abcd",
+          "stem": "From the first paragraph of Extract B, we learn that the market trip is",
+          "options": {
+            "A": "a rare, one-time experiment",
+            "B": "a regular family routine with mixed feelings",
+            "C": "a quiet solo activity",
+            "D": "mainly about avoiding crowds"
+          },
+          "answer": "B",
+          "explanation": {
+            "why_correct": "The family takes the trip monthly, and their comments show humor plus mild frustration.",
+            "why_not_others": {
+              "A": "The passage states it happens once a month.",
+              "C": "It is explicitly a family outing.",
+              "D": "They expect queues and crowding."
+            }
+          },
+          "skills": ["impression from opening"],
+          "difficulty": "medium"
+        },
+        {
+          "number": 7,
+          "type": "mcq_abcd",
+          "stem": "In which extract does an unexpected pause become beneficial?",
+          "options": {
+            "A": "Extract A only",
+            "B": "Extract B only",
+            "C": "Both extracts",
+            "D": "Neither extract"
+          },
+          "answer": "B",
+          "explanation": {
+            "why_correct": "The signal delay in Extract B leads to the busker moment and a mood reset.",
+            "why_not_others": {
+              "A": "Extract A has no comparable delay benefit sequence.",
+              "C": "Only one extract clearly frames a pause as positive.",
+              "D": "Extract B directly does."
+            }
+          },
+          "skills": ["event effect"],
+          "difficulty": "medium"
+        },
+        {
+          "number": 8,
+          "type": "mcq_abcd",
+          "stem": "By the end of both extracts, the passengers are shown as",
+          "options": {
+            "A": "more positive than they were at the start",
+            "B": "ready to cancel the excursion",
+            "C": "still upset about transport rules",
+            "D": "uncertain whether they reached the destination"
+          },
+          "answer": "A",
+          "explanation": {
+            "why_correct": "Extract A ends with fewer complaints; Extract B ends with cheerful arrival.",
+            "why_not_others": {
+              "B": "Neither group cancels.",
+              "C": "The endings emphasize improved mood, not continuing conflict.",
+              "D": "Both clearly arrive."
+            }
+          },
+          "skills": ["global comparison", "tone tracking"],
+          "difficulty": "easy"
+        }
+      ]
+    },
+    {
+      "id": "poetry",
+      "question_range": "9-14",
+      "instructions": "Read the poem, then answer questions 9 to 14.",
+      "poem": {
+        "title": "Tin Roof Morning",
+        "lines": [
+          "Before dawn, rain wrote hard letters on the roof,",
+          "quick knuckles drumming on the gutter edge.",
+          "The lane outside, usually dusty as flour,",
+          "turned to a ribbon of smoked glass.",
+          "At the fence, the jasmine bent and held,",
+          "its white stars pinned with water.",
+          "Then the storm stepped back by inches.",
+          "Drops softened.",
+          "The drain unclenched.",
+          "From the shed, a single magpie tested one note,",
+          "then another, as if checking a microphone.",
+          "Light slid under the clouds",
+          "and laid a pale coin on each puddle.",
+          "By breakfast, the roof was only ticking now,",
+          "a clock forgetting what it was angry about.",
+          "The street steamed.",
+          "Children came out with rolled-up socks,",
+          "kicking silver water into the day."
+        ]
+      },
+      "questions": [
+        {
+          "number": 9,
+          "type": "mcq_abcd",
+          "stem": "The title 'Tin Roof Morning' mainly",
+          "options": {
+            "A": "misleads the reader about the poem's topic",
+            "B": "introduces the setting that shapes the poem",
+            "C": "refers to a specific named character",
+            "D": "matters only in the final line"
+          },
+          "answer": "B",
+          "explanation": {
+            "why_correct": "The poem focuses on rain and sound on a roof at morning transition.",
+            "why_not_others": {
+              "A": "The title matches content directly.",
+              "C": "No character is named in the title.",
+              "D": "The title frames the whole poem, not just the ending."
+            }
+          },
+          "skills": ["title function"],
+          "difficulty": "easy"
+        },
+        {
+          "number": 10,
+          "type": "mcq_abcd",
+          "stem": "In line 2, what is being compared to 'quick knuckles'?",
+          "options": {
+            "A": "the jasmine branches",
+            "B": "children's footsteps",
+            "C": "rain hitting metal surfaces",
+            "D": "the magpie's call"
+          },
+          "answer": "C",
+          "explanation": {
+            "why_correct": "The image follows line 1 where rain is striking the roof and gutter.",
+            "why_not_others": {
+              "A": "Jasmine appears later with a different image.",
+              "B": "Children appear only at the end.",
+              "D": "Magpie imagery appears in lines 10-11."
+            }
+          },
+          "skills": ["figurative language"],
+          "difficulty": "easy"
+        },
+        {
+          "number": 11,
+          "type": "mcq_abcd",
+          "stem": "Which phrase best signals that the storm is easing?",
+          "options": {
+            "A": "'rain wrote hard letters'",
+            "B": "'turned to a ribbon of smoked glass'",
+            "C": "'the storm stepped back by inches'",
+            "D": "'kicking silver water into the day'"
+          },
+          "answer": "C",
+          "explanation": {
+            "why_correct": "This directly personifies the storm retreating.",
+            "why_not_others": {
+              "A": "Shows intensity, not easing.",
+              "B": "Describes visual effect during rainfall.",
+              "D": "Shows later aftermath, not the transition moment."
+            }
+          },
+          "skills": ["mood shift"],
+          "difficulty": "medium"
+        },
+        {
+          "number": 12,
+          "type": "mcq_abcd",
+          "stem": "Which option is the odd one out in how it functions in the poem?",
+          "options": {
+            "A": "'smoked glass'",
+            "B": "'white stars'",
+            "C": "'pale coin'",
+            "D": "'the drain unclenched'"
+          },
+          "answer": "D",
+          "explanation": {
+            "why_correct": "A-C are image comparisons for appearance; D is personification of movement/release.",
+            "why_not_others": {
+              "A": "Visual comparison of lane surface.",
+              "B": "Visual comparison of jasmine flowers.",
+              "C": "Visual comparison of reflected light."
+            }
+          },
+          "skills": ["technique discrimination"],
+          "difficulty": "hard"
+        },
+        {
+          "number": 13,
+          "type": "mcq_abcd",
+          "stem": "The phrase 'a clock forgetting what it was angry about' suggests",
+          "options": {
+            "A": "the roof is being repaired",
+            "B": "the rain sound has calmed",
+            "C": "time has stopped for the speaker",
+            "D": "the storm has become more violent"
+          },
+          "answer": "B",
+          "explanation": {
+            "why_correct": "The roof moves from loud drumming to light ticking, showing reduced intensity.",
+            "why_not_others": {
+              "A": "No repairs are mentioned.",
+              "C": "It is about sound quality, not literal time stop.",
+              "D": "The opposite shift is described."
+            }
+          },
+          "skills": ["inference from metaphor"],
+          "difficulty": "medium"
+        },
+        {
+          "number": 14,
+          "type": "mcq_abcd",
+          "stem": "The poem's overall movement from beginning to end reflects",
+          "options": {
+            "A": "a sudden switch from city to countryside",
+            "B": "a conflict between two people",
+            "C": "a gradual release from tension into activity",
+            "D": "a warning about dangerous weather habits"
+          },
+          "answer": "C",
+          "explanation": {
+            "why_correct": "The poem moves from hard storm sounds to gentle morning life and children outside.",
+            "why_not_others": {
+              "A": "Setting remains the same street environment.",
+              "B": "No interpersonal conflict appears.",
+              "D": "The poem is observational, not instructional."
+            }
+          },
+          "skills": ["whole poem structure"],
+          "difficulty": "medium"
+        }
+      ]
+    },
+    {
+      "id": "gap_fill",
+      "question_range": "15-20",
+      "instructions": "Six sentences have been removed from the text. Choose from A-G the sentence that fits each gap. One sentence is extra.",
+      "title": "After-Hours School Libraries",
+      "text_with_gaps": "In several regional towns, public demand for evening study spaces has grown faster than councils expected. In response, a pilot program now opens selected school libraries from 5 pm to 8 pm on weekdays. Parents had repeatedly asked for places where children could complete homework safely while caregivers finished shifts.\n\nEarly planning meetings were enthusiastic, but principals raised one practical concern immediately: who would supervise the buildings after normal school hours? [15] Once responsibilities were clearer, the pilot moved from proposal to timetable.\n\nAttendance results from the first term surprised organisers. Teenagers were not the largest user group. [16] Many of these visitors borrowed basic literacy books and used translation dictionaries with volunteers.\n\nInterestingly, standard book loans did not rise dramatically. [17] Students said the reliable Wi-Fi, printers, and quiet desks mattered more than taking books home every night.\n\nSome residents had predicted noisy crowds and parking problems around school gates. [18] In fact, most sessions were calmer than expected, and local volunteer rosters filled quickly.\n\nThe biggest challenge now is long-term funding. The current grant supports utilities and security only until June next year. [19] Program leaders argue that shared funding would reduce risk if one source disappears.\n\nDespite that uncertainty, education officers describe the pilot as a strong model for access and equity. [20] They say steady growth with local partnerships is more sustainable than a rapid statewide launch.",
+      "option_bank": {
+        "A": "However, use of computers, study tables, and printing services increased sharply.",
+        "B": "For that reason, officials favour gradual expansion rather than an overnight rollout.",
+        "C": "That question forced councils and schools to design a shared staffing plan before opening.",
+        "D": "Coordinators are now seeking support from local businesses and community foundations.",
+        "E": "Several schools also requested new uniforms for sports carnivals and music nights.",
+        "F": "Instead, primary-age children arrived with parents, grandparents, or older siblings.",
+        "G": "In practice, complaint numbers were low across all pilot locations."
+      },
+      "answers": {
+        "15": "C",
+        "16": "F",
+        "17": "A",
+        "18": "G",
+        "19": "D",
+        "20": "B"
+      },
+      "explanations": {
+        "15": "The previous sentence raises supervision logistics; C directly resolves that concern and links to implementation.",
+        "16": "The sentence before says teens were not largest group; F provides the contrasting actual group.",
+        "17": "The line before notes book loans were flat; A contrasts that with growth in other services.",
+        "18": "The prior sentence predicts complaints; G provides outcome evidence before the next confirming detail.",
+        "19": "The paragraph is about funding risk; D continues logically with a response strategy.",
+        "20": "The previous sentence is positive but cautious; B provides a policy conclusion consistent with that caution."
+      },
+      "unused_option": "E"
+    },
+    {
+      "id": "multi_extract_match",
+      "question_range": "21-30",
+      "instructions": "Read Extracts A-D on the theme of personal records. For each question, choose which extract best matches.",
+      "theme": "Personal Records and Reflection",
+      "extracts": [
+        {
+          "label": "A",
+          "text": "I found my Year 7 notebook while clearing a cupboard last winter. The first pages were full of dramatic promises about becoming a famous inventor by age fifteen. I laughed, then winced. But halfway through the book, I saw careful sketches of a water filter I had entirely forgotten building with my uncle. That detail mattered because it reminded me I had once persisted with difficult tasks much longer than I remembered. Reading the notebook was awkward, but useful: it showed me both the exaggerations and the genuine effort in my younger self."
+        },
+        {
+          "label": "B",
+          "text": "I keep a three-line log each evening: one decision I made, one thing I ignored, and one question for tomorrow. It takes under five minutes. After a month, patterns appear. I notice which choices repeat and which distractions steal time. The point is not literary style; it is decision feedback. Long diary entries can be satisfying, but short structured notes are easier to maintain and far easier to review when you need to decide what to do next."
+        },
+        {
+          "label": "C",
+          "text": "For years I recorded voice notes while cycling home, describing the day before details disappeared. The method felt efficient until I played old files back. I sounded certain about events that I later discovered I had misunderstood. Recording too soon captured confidence, not accuracy. I still use audio notes, but now I add a follow-up after checking facts. I also noticed something else: narrating every moment can pull attention away from the moment itself."
+        },
+        {
+          "label": "D",
+          "text": "Historians depend not only on speeches and official reports but also on ordinary records: shopping lists, postcards, school newsletters, and family calendars. These small documents reveal daily habits that major documents often miss. When communities preserve such material, future researchers can trace changes in language, food, transport, and work patterns. Personal records therefore carry public value, even when their creators never intended them for an archive."
+        }
+      ],
+      "questions": [
+        {
+          "number": 21,
+          "type": "which_extract_abcd",
+          "stem": "Which extract describes surprise at the writer's own earlier beliefs?",
+          "answer": "A",
+          "explanation": {
+            "why_correct": "Extract A reflects on ambitious old claims and the writer's reaction to them.",
+            "why_not_others": "B is procedural advice, C is method caution, D is historical argument."
+          },
+          "skills": ["detail match"],
+          "difficulty": "easy"
+        },
+        {
+          "number": 22,
+          "type": "which_extract_abcd",
+          "stem": "Which extract argues that record-keeping can improve future decisions?",
+          "answer": "B",
+          "explanation": {
+            "why_correct": "Extract B explicitly frames logging as decision feedback.",
+            "why_not_others": "A is retrospective self-reflection, C focuses on reliability limits, D on social history."
+          },
+          "skills": ["claim matching"],
+          "difficulty": "easy"
+        },
+        {
+          "number": 23,
+          "type": "which_extract_abcd",
+          "stem": "Which extract mentions a non-written method of keeping records?",
+          "answer": "C",
+          "explanation": {
+            "why_correct": "Extract C uses voice notes.",
+            "why_not_others": "A and B use notebooks/logs, D refers to written/printed artifacts."
+          },
+          "skills": ["specific detail"],
+          "difficulty": "easy"
+        },
+        {
+          "number": 24,
+          "type": "which_extract_abcd",
+          "stem": "Which extract emphasizes value to society, not just the individual recorder?",
+          "answer": "D",
+          "explanation": {
+            "why_correct": "Extract D explains how personal records help future researchers and communities.",
+            "why_not_others": "A-C focus mainly on personal use."
+          },
+          "skills": ["purpose recognition"],
+          "difficulty": "easy"
+        },
+        {
+          "number": 25,
+          "type": "which_extract_abcd",
+          "stem": "Which extract warns that first versions of records may not be fully reliable?",
+          "answer": "C",
+          "explanation": {
+            "why_correct": "Extract C notes early recordings captured certainty rather than accuracy.",
+            "why_not_others": "A discusses memory recovery, B structure and habit, D archival significance."
+          },
+          "skills": ["evaluation of reliability"],
+          "difficulty": "medium"
+        },
+        {
+          "number": 26,
+          "type": "which_extract_abcd",
+          "stem": "Which extract presents the habit as intentionally brief and repeatable?",
+          "answer": "B",
+          "explanation": {
+            "why_correct": "Extract B highlights a three-line format that takes under five minutes.",
+            "why_not_others": "A is occasional rediscovery, C includes later checking, D is not a personal routine guide."
+          },
+          "skills": ["method identification"],
+          "difficulty": "easy"
+        },
+        {
+          "number": 27,
+          "type": "which_extract_abcd",
+          "stem": "Which extract includes emotional discomfort when reviewing old material?",
+          "answer": "A",
+          "explanation": {
+            "why_correct": "Extract A explicitly says the writer laughed, then winced.",
+            "why_not_others": "B remains neutral, C is analytical caution, D is formal explanatory tone."
+          },
+          "skills": ["tone recognition"],
+          "difficulty": "easy"
+        },
+        {
+          "number": 28,
+          "type": "which_extract_abcd",
+          "stem": "Which extract states that everyday records may later become useful evidence?",
+          "answer": "D",
+          "explanation": {
+            "why_correct": "Extract D says ordinary documents reveal social change for future study.",
+            "why_not_others": "A-C do not frame records as community evidence."
+          },
+          "skills": ["main idea"],
+          "difficulty": "medium"
+        },
+        {
+          "number": 29,
+          "type": "which_extract_abcd",
+          "stem": "Which extract recommends focusing on a small fixed set of points each day?",
+          "answer": "B",
+          "explanation": {
+            "why_correct": "Extract B specifies three fixed prompts for daily logging.",
+            "why_not_others": "A is unstructured old notebook, C is voice reflection, D is historical commentary."
+          },
+          "skills": ["procedural detail"],
+          "difficulty": "easy"
+        },
+        {
+          "number": 30,
+          "type": "which_extract_abcd",
+          "stem": "Which extract suggests that recording life can sometimes interfere with experiencing it?",
+          "answer": "C",
+          "explanation": {
+            "why_correct": "Extract C says narrating everything can pull attention away from the moment.",
+            "why_not_others": "A, B, and D do not present that specific trade-off."
+          },
+          "skills": ["nuanced inference"],
+          "difficulty": "medium"
+        }
+      ]
+    }
+  ],
+  "answer_key": {
+    "1": "B",
+    "2": "A",
+    "3": "A",
+    "4": "C",
+    "5": "B",
+    "6": "B",
+    "7": "B",
+    "8": "A",
+    "9": "B",
+    "10": "C",
+    "11": "C",
+    "12": "D",
+    "13": "B",
+    "14": "C",
+    "15": "C",
+    "16": "F",
+    "17": "A",
+    "18": "G",
+    "19": "D",
+    "20": "B",
+    "21": "A",
+    "22": "B",
+    "23": "C",
+    "24": "D",
+    "25": "C",
+    "26": "B",
+    "27": "A",
+    "28": "D",
+    "29": "B",
+    "30": "C"
+  }
+}

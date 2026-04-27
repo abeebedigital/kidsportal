@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>My Trip to the Solar System! 🚀</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+    /* story-font-boost */
+    html{font-size:17px;}
+    @media (max-width:500px){html{font-size:16px;}}
+:root{
+  --space-dark:#030712;
+  --space-mid:#0f172a;
+  --space-blue:#1e3a5f;
+  --star-gold:#fbbf24;
+  --sun-orange:#f97316;
+  --mercury-gray:#9ca3af;
+  --venus-yellow:#fde68a;
+  --earth-blue:#3b82f6;
+  --mars-red:#ef4444;
+  --jupiter-orange:#fb923c;
+  --saturn-gold:#eab308;
+  --uranus-teal:#5eead4;
+  --neptune-blue:#6366f1;
+  --text-light:#f1f5f9;
+  --text-muted:#94a3b8;
+  --card-bg:rgba(15,23,42,0.85);
+  --accent:#a78bfa;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--space-dark);
+  color:var(--text-light);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* STARFIELD */
+#starfield{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+.star-dot{position:absolute;border-radius:50%;background:white;animation:twinkle var(--dur,3s) infinite var(--delay,0s);}
+@keyframes twinkle{0%,100%{opacity:.2}50%{opacity:1}}
+
+/* LAYOUT */
+#app{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:12px;}
+
+/* HOME LINK */
+.home-link{display:inline-flex;align-items:center;gap:6px;background:rgba(167,139,250,.15);border:1px solid rgba(167,139,250,.4);color:#a78bfa;font-family:'Fredoka One',cursive;font-size:13px;padding:6px 14px;border-radius:20px;text-decoration:none;transition:all .2s;margin-bottom:10px;}
+.home-link:hover{background:rgba(167,139,250,.3);color:white;}
+
+/* NAV */
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:rgba(15,23,42,.9);border-radius:16px;margin-bottom:10px;border:1px solid rgba(167,139,250,.25);backdrop-filter:blur(10px);}
+.nav-btn{background:linear-gradient(135deg,#7c3aed,#a855f7);color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:7px 20px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.nav-btn:hover{transform:scale(1.06);box-shadow:0 0 16px rgba(167,139,250,.5);}
+.nav-btn:disabled{background:rgba(255,255,255,.1);cursor:not-allowed;transform:none;box-shadow:none;color:#555;}
+.page-dots{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;max-width:280px;}
+.dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:all .2s;}
+.dot.active{background:var(--accent);box-shadow:0 0 6px var(--accent);}
+.dot.visited{background:rgba(167,139,250,.5);}
+
+/* PROGRESS */
+.progress-strip{background:rgba(15,23,42,.8);border-radius:12px;padding:7px 16px;display:flex;align-items:center;gap:10px;margin-bottom:8px;border:1px solid rgba(167,139,250,.2);}
+.progress-bar{flex:1;height:6px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,#7c3aed,#a855f7,#06b6d4);border-radius:3px;transition:width .5s ease;}
+.progress-label{font-family:'Fredoka One',cursive;font-size:12px;color:var(--text-muted);white-space:nowrap;}
+
+/* PAGES */
+.page{display:none;animation:pageIn .5s ease;}
+.page.active{display:block;}
+@keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ========================= COVER ========================= */
+.cover{
+  background:radial-gradient(ellipse at 50% 40%,#1e1b4b 0%,#0f172a 50%,#030712 100%);
+  border-radius:22px;border:2px solid rgba(167,139,250,.3);
+  padding:50px 30px;text-align:center;
+  position:relative;overflow:hidden;min-height:540px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.cover-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(124,58,237,.15) 0%,transparent 70%);pointer-events:none;}
+.cover-planets{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:20px 0;position:relative;z-index:2;}
+.cover-planet{border-radius:50%;display:inline-block;animation:orbit-bounce var(--ob,4s) ease-in-out infinite var(--od,0s);}
+@keyframes orbit-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.cover-title{font-family:'Orbitron',monospace;font-size:38px;font-weight:900;background:linear-gradient(135deg,#fbbf24,#f97316,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative;z-index:2;line-height:1.1;margin-bottom:8px;}
+.cover-sub{font-family:'Fredoka One',cursive;font-size:20px;color:#a78bfa;position:relative;z-index:2;margin-bottom:6px;}
+.cover-tagline{font-size:13px;color:var(--text-muted);position:relative;z-index:2;margin-top:16px;font-style:italic;}
+.rocket-anim{font-size:48px;animation:rocketFloat 3s ease-in-out infinite;position:relative;z-index:2;}
+@keyframes rocketFloat{0%,100%{transform:translateY(0) rotate(-10deg)}50%{transform:translateY(-14px) rotate(10deg)}}
+
+/* ========================= STORY PAGES ========================= */
+.story-page{
+  background:var(--card-bg);
+  border-radius:22px;padding:26px;min-height:540px;
+  border:1px solid rgba(167,139,250,.2);
+  position:relative;overflow:hidden;
+  backdrop-filter:blur(8px);
+}
+.page-corner{position:absolute;top:14px;right:16px;font-family:'Orbitron',monospace;font-size:13px;color:rgba(167,139,250,.5);}
+.story-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.chapter-badge{font-family:'Fredoka One',cursive;font-size:12px;padding:4px 13px;border-radius:16px;white-space:nowrap;background:rgba(124,58,237,.4);border:1px solid rgba(167,139,250,.4);color:#c4b5fd;}
+.story-title{font-family:'Orbitron',monospace;font-size:22px;font-weight:700;color:var(--text-light);}
+.story-body{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+.story-text{font-size:15px;line-height:1.85;color:#cbd5e1;}
+.story-text p{margin-bottom:10px;}
+.hw{font-weight:800;color:var(--star-gold);}
+.hw2{font-weight:800;color:#67e8f9;}
+.story-art{border-radius:16px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.08);}
+
+/* PLANET DISPLAY */
+.planet-big{border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:70px;animation:spinSlow 20s linear infinite;margin:8px auto;}
+@keyframes spinSlow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.planet-label{font-family:'Orbitron',monospace;font-size:12px;color:var(--text-muted);text-align:center;margin-top:4px;}
+.planet-facts{background:rgba(0,0,0,.3);border-radius:12px;padding:10px 14px;width:100%;}
+.fact-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:#cbd5e1;}
+.fact-row:last-child{border-bottom:none;}
+.fact-icon{font-size:16px;min-width:22px;}
+
+/* QUIZ BUBBLE */
+.quiz-bubble{
+  background:linear-gradient(135deg,rgba(124,58,237,.2),rgba(6,182,212,.1));
+  border:2px solid rgba(124,58,237,.4);
+  border-radius:18px;padding:18px;margin-top:16px;
+}
+.quiz-title{font-family:'Fredoka One',cursive;font-size:17px;color:#a78bfa;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.q-opt{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);border-radius:12px;padding:10px 14px;font-size:14px;color:var(--text-light);cursor:pointer;transition:all .2s;text-align:left;font-family:'Nunito',sans-serif;}
+.q-opt:hover{background:rgba(124,58,237,.25);border-color:rgba(167,139,250,.5);}
+.q-opt.correct{background:rgba(34,197,94,.2);border-color:#22c55e;color:#86efac;}
+.q-opt.wrong{background:rgba(239,68,68,.15);border-color:#ef4444;color:#fca5a5;}
+.quiz-feedback{font-family:'Fredoka One',cursive;font-size:16px;margin-top:10px;min-height:24px;text-align:center;}
+
+/* FUN FACT BOX */
+.fun-fact{background:rgba(251,191,36,.08);border:1.5px solid rgba(251,191,36,.25);border-radius:14px;padding:14px 16px;margin-top:14px;}
+.fun-fact-title{font-family:'Fredoka One',cursive;font-size:15px;color:var(--star-gold);margin-bottom:6px;}
+.fun-fact-text{font-size:13px;color:#e2e8f0;line-height:1.6;}
+
+/* INTERACTIVE PLANET ORBIT */
+.orbit-display{position:relative;width:100%;height:220px;overflow:hidden;}
+.orbit-sun{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:42px;z-index:5;}
+.orbit-ring{position:absolute;left:50%;top:50%;border-radius:50%;border:1px dashed rgba(255,255,255,.15);transform:translate(-50%,-50%);}
+.orbit-planet-dot{position:absolute;border-radius:50%;cursor:pointer;z-index:6;transition:transform .2s;display:flex;align-items:center;justify-content:center;}
+.orbit-planet-dot:hover{transform:scale(1.4)!important;}
+.orbit-tooltip{position:absolute;background:rgba(15,23,42,.95);border:1px solid rgba(167,139,250,.4);border-radius:8px;padding:6px 10px;font-size:12px;color:white;pointer-events:none;z-index:10;white-space:nowrap;display:none;}
+
+/* FINAL QUIZ */
+.quiz-page{
+  background:var(--card-bg);
+  border-radius:22px;padding:26px;min-height:540px;
+  border:1px solid rgba(124,58,237,.4);
+  backdrop-filter:blur(8px);
+}
+.quiz-progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.q-counter{font-family:'Orbitron',monospace;font-size:13px;color:var(--text-muted);}
+.q-score-badge{font-family:'Fredoka One',cursive;font-size:14px;background:rgba(124,58,237,.3);border:1px solid rgba(167,139,250,.3);padding:4px 14px;border-radius:20px;color:#c4b5fd;}
+.quiz-question-card{background:rgba(0,0,0,.3);border-radius:16px;padding:20px;margin-bottom:16px;border:1px solid rgba(255,255,255,.06);}
+.quiz-q-text{font-family:'Fredoka One',cursive;font-size:19px;color:white;line-height:1.4;margin-bottom:4px;}
+.quiz-q-emoji{font-size:36px;margin-bottom:10px;}
+.fquiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.fq-opt{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:14px;padding:12px 16px;font-size:15px;color:var(--text-light);cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif;font-weight:700;}
+.fq-opt:hover:not(.locked){background:rgba(124,58,237,.3);border-color:rgba(167,139,250,.5);transform:translateY(-2px);}
+.fq-opt.correct{background:rgba(34,197,94,.25);border-color:#22c55e;color:#86efac;}
+.fq-opt.wrong{background:rgba(239,68,68,.2);border-color:#ef4444;color:#fca5a5;}
+.fq-opt.locked{cursor:not-allowed;}
+.q-result-msg{font-family:'Fredoka One',cursive;font-size:16px;text-align:center;min-height:28px;margin-top:8px;}
+.next-q-btn{display:block;margin:12px auto 0;background:linear-gradient(135deg,#7c3aed,#a855f7);color:white;border:none;font-family:'Fredoka One',cursive;font-size:16px;padding:10px 28px;border-radius:22px;cursor:pointer;transition:all .2s;}
+.next-q-btn:hover{transform:scale(1.05);}
+
+/* RESULT SCREENS */
+.result-screen{text-align:center;padding:20px 10px;}
+.result-trophy{font-size:80px;margin-bottom:12px;animation:bounce 1s ease infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+.result-title{font-family:'Orbitron',monospace;font-size:28px;margin-bottom:10px;}
+.result-score{font-family:'Fredoka One',cursive;font-size:48px;color:var(--star-gold);}
+.result-msg{font-size:16px;color:#94a3b8;margin:12px 0 20px;line-height:1.7;}
+.retry-btn{background:linear-gradient(135deg,#ef4444,#f97316);color:white;border:none;font-family:'Fredoka One',cursive;font-size:18px;padding:12px 32px;border-radius:24px;cursor:pointer;transition:all .2s;margin:8px;}
+.retry-btn:hover{transform:scale(1.06);}
+.proceed-btn{background:linear-gradient(135deg,#22c55e,#06b6d4);color:white;border:none;font-family:'Fredoka One',cursive;font-size:18px;padding:12px 32px;border-radius:24px;cursor:pointer;transition:all .2s;margin:8px;}
+.proceed-btn:hover{transform:scale(1.06);}
+
+/* CERTIFICATE */
+.cert-page{background:var(--card-bg);border-radius:22px;padding:24px;min-height:540px;border:1px solid rgba(251,191,36,.35);backdrop-filter:blur(8px);}
+.cert-controls{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+.cert-name-input{font-family:'Nunito',sans-serif;font-size:16px;padding:10px 16px;border:2px solid rgba(251,191,36,.4);border-radius:12px;outline:none;flex:1;min-width:180px;color:white;background:rgba(255,255,255,.07);}
+.cert-name-input:focus{border-color:var(--star-gold);}
+.cert-name-input::placeholder{color:#475569;}
+.cert-dl-btn{background:linear-gradient(135deg,#7c3aed,#a855f7);color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:22px;cursor:pointer;transition:transform .15s;}
+.cert-dl-btn:hover{transform:scale(1.05);}
+.cert-print-btn{background:linear-gradient(135deg,#0ea5e9,#06b6d4);color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:22px;cursor:pointer;transition:transform .15s;}
+.cert-print-btn:hover{transform:scale(1.05);}
+.cert-wrap{background:#0a0e1a;border-radius:16px;padding:6px;border:2px solid rgba(251,191,36,.4);}
+canvas#cert{width:100%;border-radius:12px;display:block;}
+.cert-hint{font-size:12px;color:#475569;margin-top:8px;text-align:center;}
+
+/* END COVER */
+.end-cover{background:radial-gradient(ellipse at 50% 40%,#1e1b4b 0%,#0f172a 50%,#030712 100%);border-radius:22px;padding:40px 30px;text-align:center;position:relative;overflow:hidden;min-height:540px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid rgba(167,139,250,.3);}
+.end-quote{background:rgba(255,255,255,.07);border-radius:20px;padding:20px;max-width:500px;margin:0 auto 18px;border:1px solid rgba(255,255,255,.1);}
+
+/* SIZE COMPARISON */
+.size-row{display:flex;align-items:flex-end;gap:6px;justify-content:center;flex-wrap:wrap;padding:12px 0;}
+.size-planet{border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:rgba(255,255,255,.7);font-family:'Fredoka One',cursive;}
+
+/* MEMORY TRICK */
+.memory-card{background:rgba(124,58,237,.1);border:1.5px solid rgba(124,58,237,.3);border-radius:14px;padding:14px;margin-top:14px;}
+.mem-row{display:flex;align-items:center;gap:10px;padding:5px 0;font-size:14px;}
+.mem-letter{font-family:'Orbitron',monospace;font-size:18px;font-weight:700;color:var(--star-gold);min-width:24px;}
+.mem-word{color:#c4b5fd;min-width:100px;}
+.mem-planet{color:#94a3b8;}
+
+@media(max-width:580px){
+  .story-body{grid-template-columns:1fr;}
+  .cover-title{font-size:26px;}
+  .fquiz-options{grid-template-columns:1fr;}
+  .quiz-options{grid-template-columns:1fr;}
+  .cert-controls{flex-direction:column;}
+}
+</style>
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+
+<!-- STARFIELD -->
+<div id="starfield"></div>
+
+<div id="app">
+
+  <!-- HOME LINK --><!-- PROGRESS -->
+  <div class="progress-strip">
+    <span class="progress-label">🚀 Journey...</span>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:5%"></div></div>
+    <span class="progress-label" id="progressText">Page 1 of 17</span>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav-bar">
+    <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Back</button>
+    <div class="page-dots" id="pageDots"></div>
+    <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+  </div>
+
+  <!-- ===== PAGE 0: COVER ===== -->
+  <div class="page active" data-page="0">
+    <div class="cover">
+      <div class="cover-glow"></div>
+      <div class="rocket-anim">🚀</div>
+      <div class="cover-title">My Trip to the<br>Solar System!</div>
+      <div class="cover-sub">A Space Adventure for Kids</div>
+      <div class="cover-planets">
+        <span class="cover-planet" style="width:28px;height:28px;background:#9ca3af;--ob:3s;--od:0s;font-size:16px;display:flex;align-items:center;justify-content:center;">☿</span>
+        <span class="cover-planet" style="width:32px;height:32px;background:#fde68a;--ob:3.5s;--od:.3s;font-size:18px;display:flex;align-items:center;justify-content:center;">♀</span>
+        <span class="cover-planet" style="width:36px;height:36px;background:#3b82f6;--ob:4s;--od:.6s;font-size:20px;display:flex;align-items:center;justify-content:center;">🌍</span>
+        <span class="cover-planet" style="width:30px;height:30px;background:#ef4444;--ob:3.2s;--od:.9s;font-size:17px;display:flex;align-items:center;justify-content:center;">♂</span>
+        <span class="cover-planet" style="width:52px;height:52px;background:#fb923c;--ob:5s;--od:1.2s;font-size:28px;display:flex;align-items:center;justify-content:center;">♃</span>
+        <span class="cover-planet" style="width:46px;height:46px;background:#eab308;--ob:4.5s;--od:1.5s;font-size:26px;display:flex;align-items:center;justify-content:center;">🪐</span>
+        <span class="cover-planet" style="width:38px;height:38px;background:#5eead4;--ob:3.8s;--od:1.8s;font-size:22px;display:flex;align-items:center;justify-content:center;">⛢</span>
+        <span class="cover-planet" style="width:34px;height:34px;background:#6366f1;--ob:4.2s;--od:2.1s;font-size:20px;display:flex;align-items:center;justify-content:center;">♆</span>
+      </div>
+      <p class="cover-tagline">For young explorers aged 5–8 · 17 pages of cosmic fun!</p>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 1: MEET COSMO ===== -->
+  <div class="page" data-page="1">
+    <div class="story-page">
+      <div class="page-corner">01</div>
+      <div class="story-header"><span class="chapter-badge">Welcome!</span><h2 class="story-title">Meet Cosmo! 👨‍🚀</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p>Hi! I'm <span class="hw">Cosmo the Astronaut</span>! 🧑‍🚀</p>
+          <p>Are you ready for the most amazing trip ever? We're going to fly through <span class="hw">outer space</span> and visit every single planet in our Solar System!</p>
+          <p>We'll meet a giant ball of fire, a planet covered in storms, a beautiful blue planet (that's our home!), and so much more!</p>
+          <p>Put on your <span class="hw2">space helmet</span> 🪖, buckle up your <span class="hw2">seatbelt</span>, and get ready to blast off in 3... 2... 1...!</p>
+          <p style="font-style:italic;color:#64748b;">👉 Tap on things throughout the book to discover secrets!</p>
+        </div>
+        <div class="story-art" style="background:radial-gradient(circle,#1e1b4b,#030712);">
+          <div style="font-size:80px;animation:rocketFloat 3s ease-in-out infinite;">🧑‍🚀</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:15px;color:#a78bfa;text-align:center;">Cosmo — your space guide!</div>
+          <div style="background:rgba(124,58,237,.15);border-radius:12px;padding:10px;width:100%;margin-top:8px;">
+            <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#64748b;text-align:center;margin-bottom:6px;">What we'll discover:</div>
+            <div style="display:flex;flex-direction:column;gap:5px;">
+              <div style="font-size:13px;color:#cbd5e1;">☀️ The giant burning Sun</div>
+              <div style="font-size:13px;color:#cbd5e1;">🪐 All 8 planets</div>
+              <div style="font-size:13px;color:#cbd5e1;">🌕 Moons &amp; asteroid belts</div>
+              <div style="font-size:13px;color:#cbd5e1;">🏆 A special quiz at the end!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 2: WHAT IS THE SOLAR SYSTEM ===== -->
+  <div class="page" data-page="2">
+    <div class="story-page">
+      <div class="page-corner">02</div>
+      <div class="story-header"><span class="chapter-badge">The Basics</span><h2 class="story-title">Our Solar System 🌌</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p>Our <span class="hw">Solar System</span> is like a giant family! In the middle is our <span class="hw">Sun</span> — a huge, blazing star — and all the planets travel around it in big circles called <span class="hw2">orbits</span>.</p>
+          <p>There are <span class="hw">8 planets</span> in our Solar System. From closest to farthest from the Sun they are: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune.</p>
+          <p>The Sun's <span class="hw">gravity</span> (like an invisible pulling force) keeps everything in place — just like how a yo-yo swings around your finger!</p>
+          <p>Our Solar System is <span class="hw2">incredibly big</span>. It would take 6 months to fly to Mars in a rocket!</p>
+        </div>
+        <div class="story-art" style="background:radial-gradient(circle,#0f172a,#030712);padding:8px 4px;">
+          <div class="orbit-display" id="orbitDisplay">
+            <div class="orbit-sun">☀️</div>
+            <div class="orbit-ring" style="width:60px;height:60px;"></div>
+            <div class="orbit-ring" style="width:84px;height:84px;"></div>
+            <div class="orbit-ring" style="width:108px;height:108px;"></div>
+            <div class="orbit-ring" style="width:132px;height:132px;"></div>
+            <div class="orbit-ring" style="width:158px;height:158px;"></div>
+            <div class="orbit-ring" style="width:184px;height:184px;"></div>
+            <div class="orbit-ring" style="width:204px;height:204px;"></div>
+            <div class="orbit-ring" style="width:220px;height:220px;"></div>
+          </div>
+          <div style="font-family:'Fredoka One',cursive;font-size:12px;color:#475569;text-align:center;">Tap a planet to learn its name!</div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🤯 Mind-Blowing Fact!</div>
+        <div class="fun-fact-text">Our Solar System is about <strong style="color:#fbbf24;">4.6 billion years old</strong> — that means it's been here way, way longer than even the very first dinosaur! The Sun is so big that 1 million Earths could fit inside it!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 3: THE SUN ===== -->
+  <div class="page" data-page="3">
+    <div class="story-page">
+      <div class="page-corner">03</div>
+      <div class="story-header"><span class="chapter-badge" style="background:rgba(249,115,22,.25);border-color:rgba(249,115,22,.4);color:#fdba74;">☀️ The Sun</span><h2 class="story-title">Our Giant Star! ☀️</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p>The <span class="hw">Sun</span> is a giant ball of burning, glowing gas — it's actually a <span class="hw2">star</span>, just like the tiny dots you see in the night sky!</p>
+          <p>The Sun gives us two super important things: <span class="hw">light</span> 💡 and <span class="hw">warmth</span> 🔥. Without the Sun, Earth would be freezing cold and dark — no plants, no animals, no us!</p>
+          <p>The Sun is so <span class="hw2">enormously huge</span> that you could fit <span class="hw">1,000,000 Earths</span> inside it. That's one MILLION!</p>
+          <p>The surface of the Sun is about <span class="hw">5,500°C</span> — that's 90 times hotter than your oven at home! 🌡️</p>
+        </div>
+        <div class="story-art" style="background:radial-gradient(circle,#431407,#1c0a00);">
+          <div style="font-size:90px;animation:sunPulse 2s ease-in-out infinite;">☀️</div>
+          <div class="planet-facts">
+            <div class="fact-row"><span class="fact-icon">📏</span><span>109 × bigger than Earth</span></div>
+            <div class="fact-row"><span class="fact-icon">🌡️</span><span>Surface: 5,500°C</span></div>
+            <div class="fact-row"><span class="fact-icon">💡</span><span>Gives light &amp; heat</span></div>
+            <div class="fact-row"><span class="fact-icon">⚡</span><span>It's a star!</span></div>
+          </div>
+        </div>
+      </div>
+      <style>@keyframes sunPulse{0%,100%{transform:scale(1);filter:brightness(1)}50%{transform:scale(1.08);filter:brightness(1.2)}}</style>
+      <div class="quiz-bubble" id="qz3">
+        <div class="quiz-title">🌟 Quick Question!</div>
+        <p style="font-family:'Fredoka One',cursive;font-size:16px;color:white;margin-bottom:10px;">What does the Sun give us?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'correct','qz3fb')">☀️ Light and Warmth</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','qz3fb')">🌧️ Rain and Clouds</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','qz3fb')">🍎 Apples and Oranges</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','qz3fb')">🎵 Music and Dancing</button>
+        </div>
+        <div class="quiz-feedback" id="qz3fb"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 4: MERCURY ===== -->
+  <div class="page" data-page="4">
+    <div class="story-page">
+      <div class="page-corner">04</div>
+      <div class="story-header"><span class="chapter-badge" style="background:rgba(156,163,175,.15);border-color:rgba(156,163,175,.3);color:#d1d5db;">☿ Planet 1</span><h2 class="story-title">Mercury — The Speedy One!</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p><span class="hw">Mercury</span> is the <span class="hw2">smallest planet</span> in our Solar System and the closest one to the Sun!</p>
+          <p>Mercury is very speedy — it zooms around the Sun in just <span class="hw">88 Earth days</span>. That means one year on Mercury is only 88 days long — less than 3 months!</p>
+          <p>Mercury has no air (no <span class="hw2">atmosphere</span>), so it has no wind or weather. During the day it gets boiling hot (<span class="hw">430°C</span>!) and at night it becomes super cold (−180°C).</p>
+          <p>Mercury is covered in <span class="hw">craters</span> — big round dents from space rocks that crashed into it billions of years ago! 🪨</p>
+        </div>
+        <div class="story-art" style="background:radial-gradient(circle,#1c1917,#0c0a09);">
+          <div style="width:90px;height:90px;background:radial-gradient(circle at 35% 35%,#d1d5db,#6b7280);border-radius:50%;margin:10px auto;box-shadow:inset -15px -10px 20px rgba(0,0,0,.6);"></div>
+          <div class="planet-label" style="color:#9ca3af;font-size:13px;">Mercury ☿</div>
+          <div class="planet-facts" style="margin-top:8px;">
+            <div class="fact-row"><span class="fact-icon">🏆</span><span>Smallest planet</span></div>
+            <div class="fact-row"><span class="fact-icon">🌡️</span><span>Day: 430°C / Night: -180°C</span></div>
+            <div class="fact-row"><span class="fact-icon">🌕</span><span>No moons</span></div>
+            <div class="fact-row"><span class="fact-icon">⚡</span><span>Fastest orbit: 88 days</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🤯 Fun Fact!</div>
+        <div class="fun-fact-text">Even though Mercury is closest to the Sun, it is NOT the hottest planet. It has no atmosphere to hold the heat! Venus is actually hotter. Can you remember that for later? 😉</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 5: VENUS + MINI QUIZ ===== -->
+  <div class="page" data-page="5">
+    <div class="story-page">
+      <div class="page-corner">05</div>
+      <div class="story-header"><span class="chapter-badge" style="background:rgba(253,230,138,.1);border-color:rgba(253,230,138,.3);color:#fde68a;">♀ Planet 2</span><h2 class="story-title">Venus — The Hot One! 🌋</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p><span class="hw">Venus</span> is the <span class="hw2">hottest planet</span> in the Solar System — even hotter than Mercury! Its temperature reaches a scorching <span class="hw">465°C</span>. That's hot enough to melt lead!</p>
+          <p>Venus is wrapped in thick, <span class="hw">yellow clouds</span> made of acid. These clouds trap all the Sun's heat like a blanket — this is called the <span class="hw2">greenhouse effect</span>.</p>
+          <p>Here's a weird thing: Venus <span class="hw">spins backwards</span>! So on Venus, the Sun rises in the West and sets in the East — opposite to our Earth!</p>
+          <p>Venus is the <span class="hw2">brightest object</span> in our night sky after the Moon. People call it the "Evening Star"! ⭐</p>
+        </div>
+        <div class="story-art" style="background:radial-gradient(circle,#292524,#1c1410);">
+          <div style="width:95px;height:95px;background:radial-gradient(circle at 35% 35%,#fef08a,#ca8a04);border-radius:50%;margin:10px auto;box-shadow:inset -15px -10px 20px rgba(0,0,0,.5),0 0 20px rgba(250,204,21,.3);"></div>
+          <div class="planet-label" style="color:#fde68a;font-size:13px;">Venus ♀</div>
+          <div class="planet-facts" style="margin-top:8px;">
+            <div class="fact-row"><span class="fact-icon">🔥</span><span>HOTTEST planet: 465°C</span></div>
+            <div class="fact-row"><span class="fact-icon">☁️</span><span>Thick yellow acid clouds</span></div>
+            <div class="fact-row"><span class="fact-icon">🔄</span><span>Spins BACKWARDS!</span></div>
+            <div class="fact-row"><span class="fact-icon">🌙</span><span>No moons</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble" id="qz5">
+        <div class="quiz-title">🌟 Quick Question!</div>
+        <p style="font-family:'Fredoka One',cursive;font-size:16px;color:white;margin-bottom:10px;">Which planet is the HOTTEST in the Solar System?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','qz5fb')">☀️ The Sun (not a planet!)</button>
+          <button class="q-opt" onclick="miniQuiz(this,'correct','qz5fb')">☁️ Venus</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','qz5fb')">☿ Mercury</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','qz5fb')">🔴 Mars</button>
+        </div>
+        <div class="quiz-feedback" id="qz5fb"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 6: EARTH ===== -->
+  <div class="page" data-page="6">
+    <div class="story-page">
+      <div class="page-corner">06</div>
+      <div class="story-header"><span class="chapter-badge" style="background:rgba(59,130,246,.2);border-color:rgba(59,130,246,.4);color:#93c5fd;">🌍 Planet 3</span><h2 class="story-title">Earth — Our Home! 🌍</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p>Welcome home! <span class="hw">Earth</span> is our amazing planet — the only place in the entire universe we <span class="hw2">know for sure</span> has life on it!</p>
+          <p>Earth is just the right distance from the Sun — not too hot, not too cold. Scientists call this the <span class="hw">"Goldilocks Zone"</span> 🐻!</p>
+          <p>About <span class="hw">71% of Earth</span> is covered in water — that's why it looks blue from space! We have oceans, rivers, lakes, rain and snow.</p>
+          <p>Earth has one <span class="hw2">Moon</span> 🌕 that orbits around us. The Moon's gravity causes our ocean <span class="hw">tides</span>!</p>
+          <p>Earth takes <span class="hw">365 days</span> to go around the Sun — that's one year! 🎂</p>
+        </div>
+        <div class="story-art" style="background:radial-gradient(circle,#0c1a2e,#030712);">
+          <div style="width:100px;height:100px;background:radial-gradient(circle at 40% 35%,#60a5fa,#1d4ed8);border-radius:50%;margin:10px auto;position:relative;box-shadow:inset -15px -10px 20px rgba(0,0,0,.5),0 0 24px rgba(59,130,246,.4);">
+            <div style="position:absolute;top:20%;left:15%;width:35%;height:30%;background:#22c55e;border-radius:40% 60% 50% 40%;transform:rotate(-20deg);"></div>
+            <div style="position:absolute;top:40%;right:12%;width:28%;height:22%;background:#22c55e;border-radius:50% 40%;transform:rotate(10deg);"></div>
+          </div>
+          <div class="planet-label" style="color:#93c5fd;font-size:13px;">Earth 🌍 — Our Home!</div>
+          <div class="planet-facts" style="margin-top:8px;">
+            <div class="fact-row"><span class="fact-icon">💧</span><span>71% covered in water</span></div>
+            <div class="fact-row"><span class="fact-icon">🌡️</span><span>Average: 15°C</span></div>
+            <div class="fact-row"><span class="fact-icon">🌕</span><span>1 Moon</span></div>
+            <div class="fact-row"><span class="fact-icon">🎂</span><span>Year = 365 days</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🤯 Amazing Earth Fact!</div>
+        <div class="fun-fact-text">From space, Earth looks like a shiny blue marble! Astronauts say seeing our home planet from space is the most beautiful thing they've ever seen. 💙</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 7: MARS + MINI QUIZ ===== -->
+  <div class="page" data-page="7">
+    <div class="story-page">
+      <div class="page-corner">07</div>
+      <div class="story-header"><span class="chapter-badge" style="background:rgba(239,68,68,.2);border-color:rgba(239,68,68,.4);color:#fca5a5;">♂ Planet 4</span><h2 class="story-title">Mars — The Red Planet! 🔴</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p><span class="hw">Mars</span> is called the <span class="hw2">Red Planet</span> because its soil is full of rusty iron — just like old nails that turn red! 🔴</p>
+          <p>Mars has the <span class="hw">biggest volcano</span> in the entire Solar System — <span class="hw2">Olympus Mons</span>! It's 3 times taller than Mount Everest, the tallest mountain on Earth!</p>
+          <p>Mars has <span class="hw">2 tiny moons</span> named Phobos and Deimos — those mean "Fear" and "Dread" in Greek!</p>
+          <p>Scientists have sent <span class="hw2">robots called rovers</span> 🤖 to drive around Mars and take photos. Someday, <span class="hw">humans might visit Mars</span>!</p>
+          <p>A day on Mars is almost the same as Earth — just <span class="hw">24 hours 37 minutes</span>!</p>
+        </div>
+        <div class="story-art" style="background:radial-gradient(circle,#2d1b0e,#0c0604);">
+          <div style="width:95px;height:95px;background:radial-gradient(circle at 35% 35%,#f87171,#b91c1c);border-radius:50%;margin:10px auto;box-shadow:inset -15px -10px 20px rgba(0,0,0,.5),0 0 18px rgba(239,68,68,.3);"></div>
+          <div class="planet-label" style="color:#fca5a5;font-size:13px;">Mars ♂ — The Red Planet</div>
+          <div class="planet-facts" style="margin-top:8px;">
+            <div class="fact-row"><span class="fact-icon">🔴</span><span>Rusty red soil</span></div>
+            <div class="fact-row"><span class="fact-icon">🌋</span><span>Biggest volcano: Olympus Mons</span></div>
+            <div class="fact-row"><span class="fact-icon">🌙</span><span>2 moons: Phobos &amp; Deimos</span></div>
+            <div class="fact-row"><span class="fact-icon">🤖</span><span>Rovers explore Mars now!</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble" id="qz7">
+        <div class="quiz-title">🌟 Quick Question!</div>
+        <p style="font-family:'Fredoka One',cursive;font-size:16px;color:white;margin-bottom:10px;">What colour is Mars and why?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','qz7fb')">💙 Blue — it has oceans</button>
+          <button class="q-opt" onclick="miniQuiz(this,'correct','qz7fb')">🔴 Red — rusty iron in soil</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','qz7fb')">💛 Yellow — sandy deserts</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','qz7fb')">🟢 Green — covered in trees</button>
+        </div>
+        <div class="quiz-feedback" id="qz7fb"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 8: ASTEROID BELT ===== -->
+  <div class="page" data-page="8">
+    <div class="story-page">
+      <div class="page-corner">08</div>
+      <div class="story-header"><span class="chapter-badge">🪨 In Between</span><h2 class="story-title">The Asteroid Belt! 🪨</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p>Between Mars and Jupiter lies the <span class="hw">Asteroid Belt</span> — a giant ring of millions of <span class="hw2">rocky chunks</span> floating in space!</p>
+          <p>Asteroids are like leftover building blocks from when the Solar System was formed. Jupiter's strong gravity stopped them from joining together to make a planet.</p>
+          <p>Most asteroids are quite small — like rocks and pebbles. But some are enormous! The biggest one is called <span class="hw">Ceres</span> and it's so big it's classified as a <span class="hw2">dwarf planet</span>!</p>
+          <p>Don't worry — our spaceship has a <span class="hw">force field</span>! 🛡️ Let's zoom through carefully...</p>
+          <p style="font-style:italic;color:#64748b;">Fun fact: Space movies always show asteroids very close together, but in real life there's lots of space between them!</p>
+        </div>
+        <div class="story-art" style="background:radial-gradient(circle,#161616,#030303);">
+          <svg width="160" height="160" viewBox="0 0 160 160">
+            <circle cx="80" cy="80" r="12" fill="#fbbf24" opacity="0.9"/>
+            <text x="80" y="86" text-anchor="middle" font-size="16">☀️</text>
+            <circle cx="80" cy="80" r="38" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3,2" opacity="0.6"/>
+            <circle cx="80" cy="80" r="60" fill="none" stroke="#f97316" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.5"/>
+            <g opacity="0.7">
+              <circle cx="60" cy="28" r="3" fill="#9ca3af"/><circle cx="100" cy="22" r="2" fill="#6b7280"/>
+              <circle cx="128" cy="50" r="2.5" fill="#9ca3af"/><circle cx="134" cy="88" r="2" fill="#6b7280"/>
+              <circle cx="118" cy="128" r="3" fill="#9ca3af"/><circle cx="78" cy="138" r="2" fill="#6b7280"/>
+              <circle cx="40" cy="125" r="2.5" fill="#9ca3af"/><circle cx="20" cy="90" r="2" fill="#6b7280"/>
+              <circle cx="24" cy="55" r="3" fill="#9ca3af"/><circle cx="50" cy="22" r="2" fill="#6b7280"/>
+              <circle cx="72" cy="20" r="2" fill="#9ca3af"/><circle cx="110" cy="35" r="2.5" fill="#6b7280"/>
+              <circle cx="137" cy="70" r="2" fill="#9ca3af"/><circle cx="130" cy="110" r="2.5" fill="#6b7280"/>
+              <circle cx="95" cy="138" r="2" fill="#9ca3af"/><circle cx="55" cy="135" r="3" fill="#6b7280"/>
+              <circle cx="18" cy="105" r="2" fill="#9ca3af"/><circle cx="22" cy="68" r="2.5" fill="#6b7280"/>
+            </g>
+            <text x="42" y="82" font-size="10" fill="#ef4444">Mars</text>
+            <text x="100" y="82" font-size="9" fill="#f97316">Jupiter →</text>
+          </svg>
+          <div class="planet-label">The Asteroid Belt</div>
+          <div style="background:rgba(0,0,0,.3);border-radius:10px;padding:8px;width:100%;margin-top:6px;">
+            <div style="font-size:12px;color:#94a3b8;">⚪ Millions of rocky chunks</div>
+            <div style="font-size:12px;color:#94a3b8;margin-top:4px;">🌐 Biggest: Ceres (dwarf planet)</div>
+            <div style="font-size:12px;color:#94a3b8;margin-top:4px;">🚀 Spacecraft can fly through!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 9: JUPITER ===== -->
+  <div class="page" data-page="9">
+    <div class="story-page">
+      <div class="page-corner">09</div>
+      <div class="story-header"><span class="chapter-badge" style="background:rgba(251,146,60,.15);border-color:rgba(251,146,60,.35);color:#fdba74;">♃ Planet 5</span><h2 class="story-title">Jupiter — The Giant! 🌪️</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p><span class="hw">Jupiter</span> is the <span class="hw2">BIGGEST planet</span> in our Solar System — so big that all the other planets could fit inside it with room to spare!</p>
+          <p>Jupiter is a <span class="hw">gas giant</span> — it doesn't have a solid surface to stand on. It's made entirely of swirling gases!</p>
+          <p>The most famous feature of Jupiter is the <span class="hw2">Great Red Spot</span> — a massive storm that has been raging for over <span class="hw">350 years</span>! That storm is bigger than the entire Earth!</p>
+          <p>Jupiter has at least <span class="hw">95 moons</span> 🌕 — that's the most moons of any planet! Its biggest moon, <span class="hw2">Ganymede</span>, is bigger than the planet Mercury!</p>
+        </div>
+        <div class="story-art" style="background:radial-gradient(circle,#2d1810,#0c0604);">
+          <div style="width:108px;height:108px;background:linear-gradient(180deg,#f97316,#fbbf24,#c2410c,#fb923c,#fbbf24);border-radius:50%;margin:8px auto;position:relative;overflow:hidden;box-shadow:inset -15px -10px 20px rgba(0,0,0,.5),0 0 22px rgba(251,146,60,.35);">
+            <div style="position:absolute;top:38%;left:20%;width:50%;height:20%;background:rgba(185,28,28,.6);border-radius:50%;"></div>
+          </div>
+          <div class="planet-label" style="color:#fdba74;font-size:13px;">Jupiter ♃ — The Giant</div>
+          <div class="planet-facts" style="margin-top:8px;">
+            <div class="fact-row"><span class="fact-icon">🏆</span><span>BIGGEST planet</span></div>
+            <div class="fact-row"><span class="fact-icon">🌪️</span><span>Great Red Spot storm: 350+ yrs</span></div>
+            <div class="fact-row"><span class="fact-icon">🌕</span><span>95 moons!</span></div>
+            <div class="fact-row"><span class="fact-icon">💨</span><span>Made of gas — no solid ground</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🤯 Jupiter is a GIANT!</div>
+        <div class="fun-fact-text">Jupiter is so massive that it acts like a giant vacuum cleaner for the Solar System! Its strong gravity pulls in asteroids and comets, protecting the inner planets (including Earth!) from getting hit. Jupiter is our bodyguard! 🛡️</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 10: SATURN + MINI QUIZ ===== -->
+  <div class="page" data-page="10">
+    <div class="story-page">
+      <div class="page-corner">10</div>
+      <div class="story-header"><span class="chapter-badge" style="background:rgba(234,179,8,.15);border-color:rgba(234,179,8,.35);color:#fde047;">🪐 Planet 6</span><h2 class="story-title">Saturn — The Ring Master! 🪐</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p><span class="hw">Saturn</span> is famous for its stunning <span class="hw2">rings</span> — the most beautiful sight in the Solar System! These rings are made of billions of pieces of <span class="hw">ice and rock</span>, ranging from tiny pebbles to huge boulders.</p>
+          <p>Saturn is also a <span class="hw">gas giant</span> like Jupiter, made mostly of hydrogen gas. It's so light that if you had a bathtub big enough, Saturn would <span class="hw2">float on water</span>!</p>
+          <p>Saturn has <span class="hw">146 moons</span> — the most of any planet! Its biggest moon, <span class="hw2">Titan</span>, even has its own thick atmosphere and lakes — but the lakes are made of liquid gas, not water!</p>
+          <p>Saturn is so far away that it takes <span class="hw">29 Earth years</span> to go around the Sun once!</p>
+        </div>
+        <div class="story-art" style="background:radial-gradient(circle,#1c1a04,#0a0902);">
+          <svg width="160" height="130" viewBox="0 0 160 130" style="overflow:visible;">
+            <ellipse cx="80" cy="65" rx="70" ry="12" fill="none" stroke="#eab308" stroke-width="8" opacity="0.4"/>
+            <circle cx="80" cy="65" r="42" fill="url(#satGrad)"/>
+            <ellipse cx="80" cy="65" rx="70" ry="12" fill="none" stroke="#fde047" stroke-width="5" opacity="0.6" stroke-dasharray="none"/>
+            <ellipse cx="80" cy="65" rx="58" ry="9" fill="none" stroke="#ca8a04" stroke-width="3" opacity="0.5"/>
+            <defs><radialGradient id="satGrad" cx="40%" cy="35%"><stop offset="0%" stop-color="#fef08a"/><stop offset="60%" stop-color="#ca8a04"/><stop offset="100%" stop-color="#78350f"/></radialGradient></defs>
+          </svg>
+          <div class="planet-label" style="color:#fde047;font-size:13px;">Saturn 🪐 — The Ring Master</div>
+          <div class="planet-facts" style="margin-top:8px;">
+            <div class="fact-row"><span class="fact-icon">💍</span><span>Beautiful rings of ice &amp; rock</span></div>
+            <div class="fact-row"><span class="fact-icon">🌊</span><span>Would FLOAT on water!</span></div>
+            <div class="fact-row"><span class="fact-icon">🌕</span><span>146 moons (most ever!)</span></div>
+            <div class="fact-row"><span class="fact-icon">📅</span><span>1 year = 29 Earth years</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble" id="qz10">
+        <div class="quiz-title">🌟 Quick Question!</div>
+        <p style="font-family:'Fredoka One',cursive;font-size:16px;color:white;margin-bottom:10px;">Which planet is famous for its beautiful rings?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','qz10fb')">♃ Jupiter</button>
+          <button class="q-opt" onclick="miniQuiz(this,'correct','qz10fb')">🪐 Saturn</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','qz10fb')">⛢ Uranus</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','qz10fb')">♆ Neptune</button>
+        </div>
+        <div class="quiz-feedback" id="qz10fb"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 11: URANUS ===== -->
+  <div class="page" data-page="11">
+    <div class="story-page">
+      <div class="page-corner">11</div>
+      <div class="story-header"><span class="chapter-badge" style="background:rgba(94,234,212,.1);border-color:rgba(94,234,212,.3);color:#5eead4;">⛢ Planet 7</span><h2 class="story-title">Uranus — The Tilted One! 🔄</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p><span class="hw">Uranus</span> is an <span class="hw2">ice giant</span> — it's not made of regular gas like Jupiter or Saturn, but of a slushy mix of ice and water!</p>
+          <p>Uranus is beautiful blue-green colour because of a gas called <span class="hw">methane</span> in its atmosphere. Methane absorbs red light and reflects blue-green light!</p>
+          <p>The most amazing thing about Uranus is that it <span class="hw">rolls on its side</span>! It's tilted at 98 degrees — almost completely sideways! Scientists think a huge space rock crashed into it long ago and knocked it over! 😲</p>
+          <p>Uranus has <span class="hw">27 moons</span>, and they're all named after characters from Shakespeare's plays and Alexander Pope's poems! 📚</p>
+        </div>
+        <div class="story-art" style="background:radial-gradient(circle,#042f2e,#011a19);">
+          <div style="position:relative;width:100px;height:100px;margin:10px auto;">
+            <div style="width:90px;height:90px;background:radial-gradient(circle at 38% 35%,#67e8f9,#0891b2);border-radius:50%;box-shadow:inset -12px -10px 18px rgba(0,0,0,.5),0 0 20px rgba(6,182,212,.3);transform:rotate(98deg);margin:5px auto;"></div>
+          </div>
+          <div class="planet-label" style="color:#5eead4;font-size:13px;">Uranus ⛢ — Tilted 98°!</div>
+          <div class="planet-facts" style="margin-top:8px;">
+            <div class="fact-row"><span class="fact-icon">🔄</span><span>Tilted 98°! Rolls on its side</span></div>
+            <div class="fact-row"><span class="fact-icon">🧊</span><span>Ice giant — slushy interior</span></div>
+            <div class="fact-row"><span class="fact-icon">🎨</span><span>Blue-green from methane gas</span></div>
+            <div class="fact-row"><span class="fact-icon">🌕</span><span>27 moons (Shakespeare names!)</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 12: NEPTUNE + MINI QUIZ ===== -->
+  <div class="page" data-page="12">
+    <div class="story-page">
+      <div class="page-corner">12</div>
+      <div class="story-header"><span class="chapter-badge" style="background:rgba(99,102,241,.2);border-color:rgba(99,102,241,.4);color:#a5b4fc;">♆ Planet 8</span><h2 class="story-title">Neptune — The Windy One! 🌬️</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p><span class="hw">Neptune</span> is the <span class="hw2">farthest planet</span> from the Sun — so far that sunlight takes 4 hours to reach it! On Earth, sunlight takes just 8 minutes.</p>
+          <p>Neptune has the <span class="hw">strongest winds</span> in the Solar System — up to <span class="hw2">2,100 km/h</span>! That's 6 times faster than the strongest hurricanes on Earth! 🌪️</p>
+          <p>Neptune is a deep, beautiful <span class="hw">dark blue</span> colour. Like Uranus, methane gas gives it that colour.</p>
+          <p>One year on Neptune lasts <span class="hw">165 Earth years</span>! When Neptune was discovered in 1846, it hasn't even completed one full orbit around the Sun until 2011!</p>
+        </div>
+        <div class="story-art" style="background:radial-gradient(circle,#12107a,#0a0826);">
+          <div style="width:95px;height:95px;background:radial-gradient(circle at 35% 35%,#818cf8,#3730a3);border-radius:50%;margin:10px auto;box-shadow:inset -15px -10px 20px rgba(0,0,0,.5),0 0 20px rgba(99,102,241,.4);"></div>
+          <div class="planet-label" style="color:#a5b4fc;font-size:13px;">Neptune ♆ — The Farthest</div>
+          <div class="planet-facts" style="margin-top:8px;">
+            <div class="fact-row"><span class="fact-icon">🥇</span><span>Farthest planet from Sun</span></div>
+            <div class="fact-row"><span class="fact-icon">🌬️</span><span>Fastest winds: 2,100 km/h!</span></div>
+            <div class="fact-row"><span class="fact-icon">📅</span><span>1 year = 165 Earth years</span></div>
+            <div class="fact-row"><span class="fact-icon">🌕</span><span>16 moons</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble" id="qz12">
+        <div class="quiz-title">🌟 Quick Question!</div>
+        <p style="font-family:'Fredoka One',cursive;font-size:16px;color:white;margin-bottom:10px;">How many planets are in our Solar System?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','qz12fb')">🔢 9 planets</button>
+          <button class="q-opt" onclick="miniQuiz(this,'correct','qz12fb')">🔢 8 planets</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','qz12fb')">🔢 10 planets</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','qz12fb')">🔢 7 planets</button>
+        </div>
+        <div class="quiz-feedback" id="qz12fb"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 13: PLUTO ===== -->
+  <div class="page" data-page="13">
+    <div class="story-page">
+      <div class="page-corner">13</div>
+      <div class="story-header"><span class="chapter-badge">🔮 Bonus Planet</span><h2 class="story-title">Poor Pluto! 🥺</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p>You may have heard of <span class="hw">Pluto</span>! It used to be the 9th planet, but in 2006, scientists decided it was too small to be a proper planet.</p>
+          <p>Now Pluto is called a <span class="hw2">dwarf planet</span> — like a mini-planet! It's smaller than our Moon!</p>
+          <p>Pluto is <span class="hw">very, very far away</span> — so far that when NASA sent a spacecraft (New Horizons) to visit it, the trip took <span class="hw2">9.5 years</span>!</p>
+          <p>When New Horizons reached Pluto in 2015, it took amazing photos — and we saw that Pluto has a huge <span class="hw">heart-shaped</span> ❤️ region on its surface! How cute!</p>
+          <p>Even though it's not a full planet, we still love Pluto! 💜</p>
+        </div>
+        <div class="story-art" style="background:radial-gradient(circle,#1e1527,#0a0610);">
+          <div style="position:relative;margin:10px auto;width:80px;height:80px;">
+            <div style="width:80px;height:80px;background:radial-gradient(circle at 38% 35%,#d8b4fe,#7c3aed);border-radius:50%;box-shadow:inset -10px -8px 16px rgba(0,0,0,.5),0 0 14px rgba(124,58,237,.3);"></div>
+            <div style="position:absolute;top:30%;left:25%;width:45%;height:35%;background:rgba(244,114,182,.4);border-radius:50% 50% 40% 40%/ 60% 60% 40% 40%;"></div>
+          </div>
+          <div class="planet-label" style="color:#c4b5fd;font-size:13px;">Pluto 🔮 — Dwarf Planet</div>
+          <div class="planet-facts" style="margin-top:8px;">
+            <div class="fact-row"><span class="fact-icon">🔮</span><span>Dwarf planet since 2006</span></div>
+            <div class="fact-row"><span class="fact-icon">🐭</span><span>Smaller than our Moon!</span></div>
+            <div class="fact-row"><span class="fact-icon">❤️</span><span>Heart-shaped region on surface</span></div>
+            <div class="fact-row"><span class="fact-icon">✈️</span><span>9.5 years to reach by spacecraft</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">😅 A Big Debate!</div>
+        <div class="fun-fact-text">Many people were sad when Pluto was "demoted" — some scientists still think it should be a full planet! What do YOU think? Should Pluto be a real planet? 🤔</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 14: SIZE COMPARISON ===== -->
+  <div class="page" data-page="14">
+    <div class="story-page">
+      <div class="page-corner">14</div>
+      <div class="story-header"><span class="chapter-badge">📏 Fun Facts</span><h2 class="story-title">How Big Are They? 📏</h2></div>
+      <p class="story-text" style="margin-bottom:14px;">Let's see how all the planets compare in size! The <span class="hw">Sun</span> is by far the biggest — and tiny <span class="hw2">Mercury</span> is the smallest. Roll over each planet to see its name!</p>
+      <div style="background:rgba(0,0,0,.3);border-radius:16px;padding:16px;border:1px solid rgba(255,255,255,.06);margin-bottom:14px;">
+        <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#64748b;text-align:center;margin-bottom:10px;">Size Comparison (not exactly to scale)</div>
+        <div class="size-row">
+          <div title="Sun" style="width:70px;height:70px;background:radial-gradient(circle at 35% 35%,#fef08a,#f97316);border-radius:50%;flex-shrink:0;cursor:pointer;" onclick="showSizeInfo('The Sun — 1,392,700 km wide!')">☀️</div>
+          <div title="Jupiter" style="width:44px;height:44px;background:radial-gradient(circle,#fb923c,#c2410c);border-radius:50%;cursor:pointer;" onclick="showSizeInfo('Jupiter — 142,984 km wide!')">J</div>
+          <div title="Saturn" style="width:38px;height:38px;background:radial-gradient(circle,#fde047,#ca8a04);border-radius:50%;cursor:pointer;" onclick="showSizeInfo('Saturn — 120,536 km wide!')">S</div>
+          <div title="Uranus" style="width:26px;height:26px;background:radial-gradient(circle,#67e8f9,#0e7490);border-radius:50%;cursor:pointer;" onclick="showSizeInfo('Uranus — 51,118 km wide!')">U</div>
+          <div title="Neptune" style="width:24px;height:24px;background:radial-gradient(circle,#818cf8,#3730a3);border-radius:50%;cursor:pointer;" onclick="showSizeInfo('Neptune — 49,528 km wide!')">N</div>
+          <div title="Earth" style="width:16px;height:16px;background:radial-gradient(circle,#60a5fa,#1d4ed8);border-radius:50%;cursor:pointer;" onclick="showSizeInfo('Earth — 12,756 km wide!')"></div>
+          <div title="Venus" style="width:15px;height:15px;background:radial-gradient(circle,#fef08a,#ca8a04);border-radius:50%;cursor:pointer;" onclick="showSizeInfo('Venus — 12,104 km wide!')"></div>
+          <div title="Mars" style="width:10px;height:10px;background:radial-gradient(circle,#f87171,#b91c1c);border-radius:50%;cursor:pointer;" onclick="showSizeInfo('Mars — 6,792 km wide!')"></div>
+          <div title="Mercury" style="width:7px;height:7px;background:#9ca3af;border-radius:50%;cursor:pointer;" onclick="showSizeInfo('Mercury — 4,879 km wide!')"></div>
+        </div>
+        <div style="display:flex;justify-content:space-around;flex-wrap:wrap;gap:4px;margin-top:6px;font-size:11px;color:#475569;font-family:'Fredoka One',cursive;">
+          <span>☀️ Sun</span><span style="color:#fb923c;">J Jupiter</span><span style="color:#fde047;">S Saturn</span><span style="color:#67e8f9;">U Uranus</span><span style="color:#818cf8;">N Neptune</span>
+        </div>
+        <div id="sizeInfo" style="text-align:center;font-family:'Fredoka One',cursive;font-size:14px;color:#a78bfa;margin-top:8px;min-height:20px;">👆 Tap a planet to see its size!</div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🤯 Mind-Blowing Distances!</div>
+        <div class="fun-fact-text">If Earth were the size of a marble 🔵, Jupiter would be the size of a basketball 🏀! And the Sun would be about the size of a door! The Solar System is ENORMOUS!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 15: MEMORY TRICK ===== -->
+  <div class="page" data-page="15">
+    <div class="story-page">
+      <div class="page-corner">15</div>
+      <div class="story-header"><span class="chapter-badge" style="background:rgba(34,197,94,.15);border-color:rgba(34,197,94,.3);color:#86efac;">🧠 Memory Trick</span><h2 class="story-title">Remember the Planets! 🧠</h2></div>
+      <p class="story-text" style="margin-bottom:14px;">How do you remember the order of all 8 planets? Use this fun sentence — each first letter matches a planet! <span class="hw">Tap each row</span> to reveal the planet!</p>
+      <div class="memory-card">
+        <div style="font-family:'Fredoka One',cursive;font-size:15px;color:#86efac;margin-bottom:10px;">🧠 Magic Memory Sentence:</div>
+        <div style="font-family:'Orbitron',monospace;font-size:17px;color:white;margin-bottom:14px;line-height:1.6;">"<span style="color:#fbbf24;">M</span>y <span style="color:#fde68a;">V</span>ery <span style="color:#60a5fa;">E</span>xcited <span style="color:#f87171;">M</span>other <span style="color:#fb923c;">J</span>ust <span style="color:#fde047;">S</span>erved <span style="color:#67e8f9;">U</span>s <span style="color:#818cf8;">N</span>achos!"</div>
+        <div id="memRows">
+          <div class="mem-row" onclick="revealMem(this)" style="cursor:pointer;background:rgba(255,255,255,.04);border-radius:8px;padding:6px 8px;margin-bottom:4px;">
+            <span class="mem-letter" style="color:#9ca3af;">M</span><span class="mem-word" style="color:#9ca3af;">My</span><span class="mem-planet" id="mp1" style="color:#464748;">Tap to reveal... →</span>
+          </div>
+          <div class="mem-row" onclick="revealMem(this)" style="cursor:pointer;background:rgba(255,255,255,.04);border-radius:8px;padding:6px 8px;margin-bottom:4px;">
+            <span class="mem-letter" style="color:#fde68a;">V</span><span class="mem-word" style="color:#fde68a;">Very</span><span class="mem-planet" id="mp2" style="color:#464748;">Tap to reveal... →</span>
+          </div>
+          <div class="mem-row" onclick="revealMem(this)" style="cursor:pointer;background:rgba(255,255,255,.04);border-radius:8px;padding:6px 8px;margin-bottom:4px;">
+            <span class="mem-letter" style="color:#60a5fa;">E</span><span class="mem-word" style="color:#60a5fa;">Excited</span><span class="mem-planet" id="mp3" style="color:#464748;">Tap to reveal... →</span>
+          </div>
+          <div class="mem-row" onclick="revealMem(this)" style="cursor:pointer;background:rgba(255,255,255,.04);border-radius:8px;padding:6px 8px;margin-bottom:4px;">
+            <span class="mem-letter" style="color:#f87171;">M</span><span class="mem-word" style="color:#f87171;">Mother</span><span class="mem-planet" id="mp4" style="color:#464748;">Tap to reveal... →</span>
+          </div>
+          <div class="mem-row" onclick="revealMem(this)" style="cursor:pointer;background:rgba(255,255,255,.04);border-radius:8px;padding:6px 8px;margin-bottom:4px;">
+            <span class="mem-letter" style="color:#fb923c;">J</span><span class="mem-word" style="color:#fb923c;">Just</span><span class="mem-planet" id="mp5" style="color:#464748;">Tap to reveal... →</span>
+          </div>
+          <div class="mem-row" onclick="revealMem(this)" style="cursor:pointer;background:rgba(255,255,255,.04);border-radius:8px;padding:6px 8px;margin-bottom:4px;">
+            <span class="mem-letter" style="color:#fde047;">S</span><span class="mem-word" style="color:#fde047;">Served</span><span class="mem-planet" id="mp6" style="color:#464748;">Tap to reveal... →</span>
+          </div>
+          <div class="mem-row" onclick="revealMem(this)" style="cursor:pointer;background:rgba(255,255,255,.04);border-radius:8px;padding:6px 8px;margin-bottom:4px;">
+            <span class="mem-letter" style="color:#67e8f9;">U</span><span class="mem-word" style="color:#67e8f9;">Us</span><span class="mem-planet" id="mp7" style="color:#464748;">Tap to reveal... →</span>
+          </div>
+          <div class="mem-row" onclick="revealMem(this)" style="cursor:pointer;background:rgba(255,255,255,.04);border-radius:8px;padding:6px 8px;margin-bottom:4px;">
+            <span class="mem-letter" style="color:#818cf8;">N</span><span class="mem-word" style="color:#818cf8;">Nachos</span><span class="mem-planet" id="mp8" style="color:#464748;">Tap to reveal... →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 16: FINAL QUIZ ===== -->
+  <div class="page" data-page="16">
+    <div class="quiz-page" id="quizPage">
+      <!-- Quiz active state -->
+      <div id="quizActive">
+        <div class="quiz-progress-row">
+          <div class="q-counter" id="qCounter">Question 1 of 6</div>
+          <div class="q-score-badge" id="qScoreBadge">Score: 0 / 6</div>
+        </div>
+        <div class="quiz-question-card">
+          <div class="quiz-q-emoji" id="qEmoji">🚀</div>
+          <div class="quiz-q-text" id="qText">Loading question...</div>
+        </div>
+        <div class="fquiz-options" id="fquizOptions"></div>
+        <div class="q-result-msg" id="qResultMsg"></div>
+        <button class="next-q-btn" id="nextQBtn" onclick="nextQuestion()" style="display:none;">Next Question →</button>
+      </div>
+      <!-- Pass screen -->
+      <div id="quizPass" style="display:none;" class="result-screen">
+        <div class="result-trophy">🏆</div>
+        <div class="result-title" style="background:linear-gradient(135deg,#fbbf24,#f97316,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Cosmic Champion!</div>
+        <div class="result-score" id="passScore"></div>
+        <div class="result-msg" id="passMsg"></div>
+        <button class="proceed-btn" onclick="goToCertificate()">Get My Certificate! 🎖️</button>
+      </div>
+      <!-- Fail screen -->
+      <div id="quizFail" style="display:none;" class="result-screen">
+        <div style="font-size:70px;margin-bottom:12px;">🚀</div>
+        <div class="result-title" style="color:#f87171;">Keep Exploring!</div>
+        <div class="result-score" id="failScore" style="color:#f87171;"></div>
+        <div class="result-msg" id="failMsg"></div>
+        <button class="retry-btn" onclick="restartQuiz()">🔄 Try Again! I Can Do It!</button>
+        <br>
+        <button onclick="goToPage(1)" style="background:rgba(255,255,255,.1);color:#94a3b8;border:1px solid rgba(255,255,255,.15);font-family:'Fredoka One',cursive;font-size:14px;padding:8px 20px;border-radius:20px;cursor:pointer;margin-top:8px;">📖 Review the Lessons</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 17: CERTIFICATE ===== -->
+  <div class="page" data-page="17">
+    <div class="cert-page">
+      <div class="page-corner" style="color:rgba(251,191,36,.4);">17</div>
+      <div class="story-header">
+        <span class="chapter-badge" style="background:rgba(251,191,36,.15);border-color:rgba(251,191,36,.35);color:#fde047;">🏆 Certificate</span>
+        <h2 class="story-title">Space Explorer Certificate!</h2>
+      </div>
+      <div class="cert-controls">
+        <input class="cert-name-input" id="certName" placeholder="Type the explorer's name here..." oninput="drawCert()"/>
+        <button class="cert-dl-btn" onclick="downloadCert()">⬇ Download PNG</button>
+        <button class="cert-print-btn" onclick="printCert()">🖨 Print</button>
+      </div>
+      <div class="cert-wrap">
+        <canvas id="cert" width="900" height="640"></canvas>
+      </div>
+      <p class="cert-hint">Type the name above, then download or print your certificate!</p>
+    </div>
+  </div>
+
+</div><!-- end app -->
+
+<script>
+/* ===== STARFIELD ===== */
+const sf=document.getElementById('starfield');
+for(let i=0;i<160;i++){
+  const s=document.createElement('div');
+  s.className='star-dot';
+  const sz=Math.random()*2.5+0.5;
+  s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${Math.random()*4+2}s;--delay:${Math.random()*4}s;opacity:${Math.random()*.6+.2}`;
+  sf.appendChild(s);
+}
+
+/* ===== NAVIGATION ===== */
+const TOTAL=17;
+let currentPage=0;
+const pages=document.querySelectorAll('.page');
+const prevBtn=document.getElementById('prevBtn');
+const nextBtn=document.getElementById('nextBtn');
+const dotsContainer=document.getElementById('pageDots');
+
+for(let i=0;i<=TOTAL;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' active':'');
+  d.onclick=()=>goToPage(i);
+  dotsContainer.appendChild(d);
+}
+
+function goToPage(n){
+  if(n<0||n>TOTAL)return;
+  if(n===17&&!quizPassed){alert('You need to pass the quiz with at least 5/6 to get your certificate! 🌟');return;}
+  pages[currentPage].classList.remove('active');
+  currentPage=n;
+  pages[currentPage].classList.add('active');
+  prevBtn.disabled=currentPage===0;
+  nextBtn.disabled=currentPage===TOTAL;
+  document.getElementById('progressFill').style.width=Math.round(currentPage/TOTAL*100)+'%';
+  document.getElementById('progressText').textContent='Page '+(currentPage+1)+' of '+(TOTAL+1);
+  document.querySelectorAll('.dot').forEach((d,i)=>{d.classList.toggle('active',i===currentPage);if(i<currentPage)d.classList.add('visited');});
+  if(currentPage===16)initQuiz();
+  if(currentPage===17)setTimeout(drawCert,120);
+}
+function changePage(d){goToPage(currentPage+d);}
+
+/* ===== ORBIT INTERACTIVE ===== */
+const orbitPlanets=[
+  {name:'Mercury',emoji:'☿',color:'#9ca3af',r:30,size:8},
+  {name:'Venus',emoji:'♀',color:'#fde68a',r:42,size:10},
+  {name:'Earth 🌍',emoji:'🌍',color:'#3b82f6',r:54,size:11},
+  {name:'Mars',emoji:'♂',color:'#ef4444',r:66,size:8},
+  {name:'Jupiter',emoji:'♃',color:'#fb923c',r:79,size:18},
+  {name:'Saturn 🪐',emoji:'🪐',color:'#eab308',r:92,size:15},
+  {name:'Uranus',emoji:'⛢',color:'#5eead4',r:102,size:12},
+  {name:'Neptune',emoji:'♆',color:'#6366f1',r:110,size:10},
+];
+window.addEventListener('load',()=>{
+  const od=document.getElementById('orbitDisplay');
+  if(!od)return;
+  const cx=od.offsetWidth/2||80,cy=110;
+  orbitPlanets.forEach((p,i)=>{
+    const angle=(i/orbitPlanets.length)*2*Math.PI;
+    const x=cx+p.r*Math.cos(angle)-p.size/2;
+    const y=cy+p.r*Math.sin(angle)*0.45-p.size/2;
+    const el=document.createElement('div');
+    el.className='orbit-planet-dot';
+    el.style.cssText=`left:${x}px;top:${y}px;width:${p.size}px;height:${p.size}px;background:${p.color};font-size:${p.size*0.7}px;`;
+    el.title=p.name;
+    const tip=document.createElement('div');
+    tip.className='orbit-tooltip';
+    tip.textContent=p.emoji+' '+p.name;
+    el.appendChild(tip);
+    el.addEventListener('mouseenter',()=>{tip.style.display='block';tip.style.left=(p.size+4)+'px';tip.style.top='-4px';});
+    el.addEventListener('mouseleave',()=>{tip.style.display='none';});
+    el.addEventListener('click',()=>{tip.style.display=tip.style.display==='block'?'none':'block';});
+    od.appendChild(el);
+  });
+});
+
+/* ===== MINI QUIZZES ===== */
+function miniQuiz(btn,type,fbId){
+  const container=btn.closest('.quiz-bubble');
+  const btns=container.querySelectorAll('.q-opt');
+  btns.forEach(b=>b.style.pointerEvents='none');
+  const fb=document.getElementById(fbId);
+  if(type==='correct'){
+    btn.classList.add('correct');
+    fb.innerHTML='<span style="color:#86efac;">🎉 Correct! Amazing work, Space Explorer!</span>';
+  } else {
+    btn.classList.add('wrong');
+    fb.innerHTML='<span style="color:#fca5a5;">Not quite! Keep reading to find out! 🚀</span>';
+    btns.forEach(b=>{if(b.dataset.correct==='true')b.classList.add('correct');});
+  }
+}
+
+/* ===== SIZE INFO ===== */
+function showSizeInfo(msg){document.getElementById('sizeInfo').textContent='✨ '+msg;}
+
+/* ===== MEMORY TRICK ===== */
+const memPlanets=['☿ Mercury — 1st planet!','♀ Venus — 2nd planet!','🌍 Earth — 3rd planet (us!)','♂ Mars — 4th planet!','♃ Jupiter — 5th planet!','🪐 Saturn — 6th planet!','⛢ Uranus — 7th planet!','♆ Neptune — 8th planet!'];
+let memReveal=0;
+function revealMem(row){
+  const span=row.querySelector('[id^="mp"]');
+  if(!span)return;
+  const idx=parseInt(span.id.replace('mp',''))-1;
+  if(span.style.color!=='#64748b'){
+    span.textContent=memPlanets[idx];
+    span.style.color='#94a3b8';
+    row.style.background='rgba(124,58,237,.1)';
+  }
+}
+
+/* ===== FINAL QUIZ ===== */
+const QUESTIONS=[
+  {emoji:'☀️',q:'What is the Sun?',opts:['A planet like Earth','A giant star made of burning gas','A very large moon','A space station'],ans:1},
+  {emoji:'🔴',q:'Why is Mars called the Red Planet?',opts:['It is covered in lava','Its sky is red at sunset','Its soil has rusty iron in it','It has red oceans'],ans:2},
+  {emoji:'🪐',q:'Which planet has famous beautiful rings around it?',opts:['Jupiter','Neptune','Uranus','Saturn'],ans:3},
+  {emoji:'🌍',q:'What makes Earth special compared to other planets?',opts:['It is the biggest planet','It is the closest to the Sun','It has liquid water and life on it','It has the most moons'],ans:2},
+  {emoji:'🔢',q:'How many planets are in our Solar System?',opts:['9','10','8','7'],ans:2},
+  {emoji:'🌪️',q:'Which planet is the HOTTEST?',opts:['Mercury — closest to Sun','Mars — it looks hot!','Venus — thick clouds trap heat','Jupiter — it is the biggest'],ans:2},
+];
+
+let qIdx=0,score=0,answered=false,quizPassed=false;
+
+function initQuiz(){
+  qIdx=0;score=0;answered=false;
+  document.getElementById('quizActive').style.display='block';
+  document.getElementById('quizPass').style.display='none';
+  document.getElementById('quizFail').style.display='none';
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q=QUESTIONS[qIdx];
+  document.getElementById('qEmoji').textContent=q.emoji;
+  document.getElementById('qText').textContent=q.q;
+  document.getElementById('qCounter').textContent='Question '+(qIdx+1)+' of 6';
+  document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';
+  document.getElementById('qResultMsg').textContent='';
+  document.getElementById('nextQBtn').style.display='none';
+  answered=false;
+  const opts=document.getElementById('fquizOptions');
+  opts.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const btn=document.createElement('button');
+    btn.className='fq-opt';
+    btn.textContent=o;
+    btn.onclick=()=>answerQ(i,btn);
+    opts.appendChild(btn);
+  });
+}
+
+function answerQ(i,btn){
+  if(answered)return;
+  answered=true;
+  const q=QUESTIONS[qIdx];
+  const allBtns=document.querySelectorAll('.fq-opt');
+  allBtns.forEach(b=>b.classList.add('locked'));
+  const msg=document.getElementById('qResultMsg');
+  if(i===q.ans){
+    btn.classList.add('correct');
+    score++;
+    const praise=['🎉 Brilliant! You are a space genius!','⭐ Correct! Cosmo is proud of you!','🚀 Amazing! That is exactly right!','🌟 Spot on! You remembered well!','💫 Outstanding, Space Explorer!'];
+    msg.innerHTML='<span style="color:#86efac;">'+praise[Math.floor(Math.random()*praise.length)]+'</span>';
+  } else {
+    btn.classList.add('wrong');
+    allBtns[q.ans].classList.add('correct');
+    msg.innerHTML='<span style="color:#fca5a5;">Not this time! The correct answer was highlighted in green. Keep going! 💪</span>';
+  }
+  document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';
+  document.getElementById('nextQBtn').style.display='block';
+  document.getElementById('nextQBtn').textContent=qIdx===5?'See My Result! 🏁':'Next Question →';
+}
+
+function nextQuestion(){
+  qIdx++;
+  if(qIdx>=6){showResult();return;}
+  renderQuestion();
+}
+
+function showResult(){
+  document.getElementById('quizActive').style.display='none';
+  if(score>=5){
+    quizPassed=true;
+    document.getElementById('quizPass').style.display='block';
+    document.getElementById('passScore').textContent=score+' / 6 ⭐';
+    const msgs={5:'So close to perfect! You are a brilliant Space Explorer! 🌟',6:'PERFECT SCORE! You are the ultimate Cosmic Champion! The entire Solar System salutes you! 🌌🏆'};
+    document.getElementById('passMsg').innerHTML=msgs[score]||'Amazing work!';
+  } else {
+    document.getElementById('quizFail').style.display='block';
+    document.getElementById('failScore').textContent=score+' / 6';
+    document.getElementById('failMsg').innerHTML='You got <strong style="color:#fbbf24;">'+score+' out of 6</strong>. You need at least 5 to earn your certificate. Don\'t worry — go back and read about the planets again, then try once more! Cosmo believes in you! 🚀<br><br><em style="color:#64748b;">Hint: Pay attention to the hottest planet, the ringed planet, and how many planets there are!</em>';
+  }
+}
+
+function restartQuiz(){initQuiz();}
+function goToCertificate(){goToPage(17);}
+
+/* ===== CERTIFICATE CANVAS ===== */
+const certCanvas=document.getElementById('cert');
+const ctx=certCanvas.getContext('2d');
+const CW=900,CH=640;
+
+function drawStar(cx,cy,r,pts,color){
+  ctx.save();ctx.fillStyle=color;ctx.beginPath();
+  for(let i=0;i<pts*2;i++){const a=(i*Math.PI/pts)-Math.PI/2,rd=i%2===0?r:r*.42;i===0?ctx.moveTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a)):ctx.lineTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a));}
+  ctx.closePath();ctx.fill();ctx.restore();
+}
+function rrect(x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();
+}
+const qrImage=new Image();let qrReady=false;qrImage.crossOrigin='anonymous';qrImage.onload=()=>{qrReady=true;drawCert();};qrImage.src='https://quickchart.io/qr?text='+encodeURIComponent('https://fivetofifteen.com/')+'&size=180';
+
+function drawCert(){
+  const name=document.getElementById('certName').value.trim()||'Space Explorer';
+  ctx.clearRect(0,0,CW,CH);
+
+  /* space background */
+  const bg=ctx.createRadialGradient(CW/2,CH/2,80,CW/2,CH/2,CW/2);
+  bg.addColorStop(0,'#0f172a');bg.addColorStop(.6,'#1e1b4b');bg.addColorStop(1,'#030712');
+  ctx.fillStyle=bg;rrect(0,0,CW,CH,24);ctx.fill();
+
+  /* stars bg */
+  ctx.fillStyle='white';
+  for(let i=0;i<80;i++){const x=Math.random()*CW,y=Math.random()*CH,r=Math.random()*1.5+.3;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${Math.random()*.7+.3})`;ctx.fill();}
+
+  /* outer border */
+  ctx.strokeStyle='#fbbf24';ctx.lineWidth=4;rrect(8,8,CW-16,CH-16,18);ctx.stroke();
+
+  /* inner dashed border */
+  ctx.strokeStyle='#7c3aed';ctx.lineWidth=2;ctx.setLineDash([8,5]);
+  rrect(20,20,CW-40,CH-40,12);ctx.stroke();ctx.setLineDash([]);
+
+  /* corner stars */
+  [[50,50],[CW-50,50],[50,CH-50],[CW-50,CH-50]].forEach(([x,y])=>drawStar(x,y,16,5,'#fbbf24'));
+  [[50,50],[CW-50,50],[50,CH-50],[CW-50,CH-50]].forEach(([x,y])=>drawStar(x,y,8,5,'rgba(251,191,36,.4)'));
+
+  /* top ribbon */
+  const rg=ctx.createLinearGradient(CW/2-220,0,CW/2+220,0);
+  rg.addColorStop(0,'#4c1d95');rg.addColorStop(.5,'#7c3aed');rg.addColorStop(1,'#4c1d95');
+  ctx.fillStyle=rg;rrect(CW/2-220,28,440,44,22);ctx.fill();
+  ctx.fillStyle='#fbbf24';ctx.font='bold 17px "Orbitron",monospace';ctx.textAlign='center';
+  ctx.fillText('⭐  MY TRIP TO THE SOLAR SYSTEM  ⭐',CW/2,57);
+
+  /* rocket */
+  ctx.font='64px serif';ctx.textAlign='center';ctx.fillText('🚀',CW/2,148);
+
+  /* title */
+  const tg=ctx.createLinearGradient(CW/2-200,0,CW/2+200,0);
+  tg.addColorStop(0,'#fbbf24');tg.addColorStop(.5,'#f97316');tg.addColorStop(1,'#a855f7');
+  ctx.fillStyle=tg;ctx.font='bold 40px "Orbitron",monospace';
+  ctx.fillText('Space Explorer Certificate',CW/2,200);
+
+  /* subtitle */
+  ctx.fillStyle='#94a3b8';ctx.font='17px "Nunito",sans-serif';
+  ctx.fillText('This certifies that the amazing explorer',CW/2,236);
+
+  /* name underline */
+  ctx.strokeStyle='#fbbf24';ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.moveTo(CW/2-240,282);ctx.lineTo(CW/2+240,282);ctx.stroke();
+
+  /* name */
+  ctx.fillStyle='#a78bfa';ctx.font='bold 38px "Fredoka One",cursive';
+  ctx.textAlign='center';ctx.fillText(name,CW/2,276);
+
+  /* description */
+  ctx.fillStyle='#cbd5e1';ctx.font='16px "Nunito",sans-serif';
+  ctx.fillText('has completed the Solar System Adventure and is now an official',CW/2,316);
+
+  ctx.fillStyle='#fbbf24';ctx.font='bold 24px "Fredoka One",cursive';
+  ctx.fillText('🌟 Certified Space Explorer 🌟',CW/2,350);
+
+  ctx.fillStyle='#94a3b8';ctx.font='14px "Nunito",sans-serif';
+  ctx.fillText('Scored 5 or more on the final cosmic quiz!',CW/2,376);
+
+  /* skill badges */
+  const badges=[
+    {t:'☀️ Knows the Sun',bg:'rgba(249,115,22,.25)',c:'#fdba74'},
+    {t:'🪐 Learnt all 8 planets',bg:'rgba(234,179,8,.2)',c:'#fde047'},
+    {t:'🔴 Mars Expert',bg:'rgba(239,68,68,.2)',c:'#fca5a5'},
+    {t:'🏆 Quiz Champion',bg:'rgba(34,197,94,.2)',c:'#86efac'},
+  ];
+  const bw=168,bh=30,bg3=10,tot=badges.length*(bw+bg3)-bg3;
+  let bx=CW/2-tot/2;
+  badges.forEach(b=>{
+    ctx.fillStyle=b.bg;rrect(bx,396,bw,bh,15);ctx.fill();
+    ctx.fillStyle=b.c;ctx.font='bold 12px "Nunito",sans-serif';ctx.textAlign='center';
+    ctx.fillText(b.t,bx+bw/2,415);bx+=bw+bg3;
+  });
+
+  /* planets row */
+  ctx.font='34px serif';ctx.textAlign='center';
+  ctx.fillText('☀️  ☿  ♀  🌍  ♂  ♃  🪐  ⛢  ♆',CW/2,476);
+
+  ctx.fillStyle='#ffffff';ctx.strokeStyle='rgba(255,255,255,.25)';ctx.lineWidth=2;rrect(CW-154,68,102,102,14);ctx.fill();ctx.stroke();
+  if(qrReady){ctx.drawImage(qrImage,CW-144,78,82,82);}else{ctx.fillStyle='#1e1b4b';ctx.fillRect(CW-144,78,82,82);ctx.fillStyle='#fbbf24';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('QR loading...',CW-103,122);}
+  ctx.fillStyle='#fbbf24';ctx.font='bold 10px "Nunito",sans-serif';ctx.textAlign='center';ctx.fillText('Scan to visit',CW-103,185);
+  ctx.fillStyle='#cbd5e1';ctx.font='bold 12px "Nunito",sans-serif';ctx.fillText('Presented by fivetofifteen.com',CW/2,548);
+  /* date */
+  const d=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
+  ctx.fillStyle='#374151';ctx.font='12px "Nunito",sans-serif';ctx.textAlign='center';
+  ctx.fillText('Awarded on '+d,CW/2,580);
+
+  /* deco stars scatter */
+  [[80,200],[CW-80,200],[80,430],[CW-80,430],[160,350],[CW-160,350]].forEach(([x,y])=>drawStar(x,y,9,5,'rgba(251,191,36,.35)'));
+}
+
+function downloadCert(){
+  drawCert();
+  const link=document.createElement('a');
+  link.download='space-explorer-certificate.png';
+  link.href=certCanvas.toDataURL('image/png');
+  link.click();
+}
+
+function printCert(){
+  drawCert();
+  const url=certCanvas.toDataURL('image/png');
+  const win=window.open('','_blank');
+  const html = [
+    '<!DOCTYPE html>',
+    '<html><head><title>Space Explorer Certificate</title>',
+    '<style>',
+    'body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#030712;}',
+    'img{max-width:100%;border-radius:12px;}',
+    '@media print{body{background:white;}img{width:100%;}}',
+    '</style>',
+    '</head><body>',
+    '<img src="' + url + '" alt="Space Explorer Certificate"/>',
+    '</body></html>'
+  ].join('');
+  win.document.open();
+  win.document.write(html);
+  win.document.close();
+  win.onload=()=>{win.focus();win.print();};
+}
+
+/* init */
+initQuiz();
+drawCert();
+</script>
+</body>
+</html>

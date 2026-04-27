@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-label="Cartoon night sky with tiny star">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#13284f"/>
+      <stop offset="60%" stop-color="#2b4f88"/>
+      <stop offset="100%" stop-color="#6c8ec7"/>
+    </linearGradient>
+    <radialGradient id="moonGlow" cx="82%" cy="22%" r="20%">
+      <stop offset="0%" stop-color="#fffad8" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#fffad8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="starGlow" cx="35%" cy="36%" r="18%">
+      <stop offset="0%" stop-color="#fff9a6" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#fff9a6" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="700" fill="url(#bg)"/>
+  <rect width="1200" height="700" fill="url(#moonGlow)"/>
+
+  <circle cx="980" cy="150" r="52" fill="#fff5c4"/>
+  <circle cx="980" cy="150" r="85" fill="#fff5c4" opacity="0.25" filter="url(#soft)"/>
+
+  <g opacity="0.92" fill="#ffffff">
+    <circle cx="130" cy="120" r="3"/>
+    <circle cx="260" cy="76" r="2.5"/>
+    <circle cx="380" cy="165" r="2"/>
+    <circle cx="540" cy="94" r="2.8"/>
+    <circle cx="640" cy="150" r="2.2"/>
+    <circle cx="810" cy="78" r="3"/>
+    <circle cx="1020" cy="260" r="2.5"/>
+    <circle cx="1110" cy="110" r="2"/>
+    <circle cx="980" cy="310" r="2.2"/>
+    <circle cx="730" cy="250" r="1.9"/>
+    <circle cx="420" cy="270" r="2.4"/>
+    <circle cx="190" cy="240" r="2.2"/>
+  </g>
+
+  <g>
+    <circle cx="420" cy="260" r="88" fill="url(#starGlow)"/>
+    <polygon points="420,186 442,236 497,242 455,278 466,334 420,303 374,334 385,278 343,242 398,236" fill="#ffe164"/>
+    <circle cx="402" cy="255" r="6" fill="#2d3f68"/>
+    <circle cx="438" cy="255" r="6" fill="#2d3f68"/>
+    <path d="M395 286 Q420 304 445 286" fill="none" stroke="#2d3f68" stroke-width="6" stroke-linecap="round"/>
+  </g>
+
+  <g fill="#ffffff" opacity="0.86">
+    <ellipse cx="250" cy="360" rx="90" ry="38"/>
+    <ellipse cx="320" cy="350" rx="95" ry="42"/>
+    <ellipse cx="390" cy="366" rx="85" ry="34"/>
+
+    <ellipse cx="740" cy="385" rx="84" ry="34"/>
+    <ellipse cx="805" cy="374" rx="92" ry="38"/>
+    <ellipse cx="876" cy="387" rx="82" ry="31"/>
+  </g>
+
+  <path d="M0 560 C160 520 250 610 390 570 C540 530 640 620 790 575 C920 538 1030 616 1200 560 L1200 700 L0 700 Z" fill="#2f5a93"/>
+  <path d="M0 605 C170 567 260 650 410 616 C540 587 700 666 860 618 C1020 570 1110 646 1200 620 L1200 700 L0 700 Z" fill="#4472aa" opacity="0.88"/>
+</svg>

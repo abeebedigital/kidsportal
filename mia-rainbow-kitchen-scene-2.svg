@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-label="Mia enters the magical Rainbow Kitchen">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4b3d93"/>
+      <stop offset="50%" stop-color="#7b5fc7"/>
+      <stop offset="100%" stop-color="#d18ed8"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="35%" r="45%">
+      <stop offset="0%" stop-color="#fff6c8" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#fff6c8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="700" fill="url(#bg)"/>
+  <rect width="1200" height="700" fill="url(#glow)"/>
+
+  <g>
+    <rect x="110" y="170" width="180" height="260" rx="24" fill="#8f6b4b"/>
+    <rect x="136" y="196" width="128" height="208" rx="14" fill="#b88c5f"/>
+    <circle cx="246" cy="300" r="10" fill="#f6d77b"/>
+  </g>
+
+  <g transform="translate(470 180)">
+    <rect x="0" y="0" width="620" height="330" rx="30" fill="rgba(255,255,255,0.16)" stroke="rgba(255,255,255,0.6)" stroke-width="3"/>
+    <text x="310" y="66" text-anchor="middle" font-family="Nunito, sans-serif" font-size="42" font-weight="800" fill="#fff8e8">Rainbow Kitchen</text>
+    <text x="310" y="128" text-anchor="middle" font-size="62" font-family="'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif">🍅 🥦 🌽 🫐 🍊</text>
+    <text x="310" y="184" text-anchor="middle" font-family="Nunito, sans-serif" font-size="30" font-weight="700" fill="#fff8e8">Ruby • Benny • Sunny • Bella • Otto</text>
+    <text x="310" y="242" text-anchor="middle" font-size="54" font-family="'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif">🥕✨🍓</text>
+    <text x="310" y="292" text-anchor="middle" font-family="Nunito, sans-serif" font-size="28" font-weight="700" fill="#fff8e8">"Every colour makes you stronger"</text>
+  </g>
+
+  <g transform="translate(300 360)">
+    <circle cx="90" cy="68" r="44" fill="#ffd8b1"/>
+    <path d="M52 58 Q90 18 128 58" fill="#cc5f3e"/>
+    <circle cx="77" cy="72" r="5" fill="#2e3d57"/>
+    <circle cx="103" cy="72" r="5" fill="#2e3d57"/>
+    <path d="M76 92 Q90 106 104 92" fill="none" stroke="#2e3d57" stroke-width="4" stroke-linecap="round"/>
+    <rect x="58" y="112" width="64" height="84" rx="14" fill="#6bcb77"/>
+  </g>
+
+  <text x="600" y="648" text-anchor="middle" font-family="Nunito, sans-serif" font-size="34" font-weight="800" fill="#fff8e8">The Magical Garden Door and Rainbow Friends</text>
+</svg>

@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Selective Exam Syllabus</title>
+  <meta name="description" content="A corrected, student-friendly selective exam syllabus page with the official test sections, simple examples, and a clear preparation plan." />
+  <meta name="theme-color" content="#0f766e" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <style>
+    /* global-font-boost */
+    html{font-size:18px;}
+    @media (max-width:500px){html{font-size:17px;}}
+
+    :root{
+      --teal:#0f766e;
+      --mint:#14b8a6;
+      --sky:#0ea5e9;
+      --sun:#f59e0b;
+      --berry:#be185d;
+      --violet:#7c3aed;
+      --ink:#20313a;
+      --soft:#5a6a75;
+      --line:#deebf2;
+      --paper:rgba(255,255,255,0.95);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Nunito',sans-serif;
+      color:var(--ink);
+      min-height:100vh;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.82), transparent 24%),
+        radial-gradient(circle at bottom right, rgba(254,240,138,0.32), transparent 28%),
+        linear-gradient(180deg,#f8fffd 0%,#eef7ff 48%,#fff8f2 100%);
+    }
+    header{
+      position:relative;
+      overflow:hidden;
+      padding:54px 20px 82px;
+      text-align:center;
+      background:linear-gradient(135deg,#0f766e 0%,#14b8a6 38%,#0ea5e9 70%,#7c3aed 100%);
+      color:#fff;
+    }
+    header::before,
+    header::after{
+      content:'';
+      position:absolute;
+      border-radius:50%;
+      opacity:.16;
+    }
+    header::before{width:240px;height:240px;background:#fff;top:-70px;left:-50px}
+    header::after{width:320px;height:320px;background:#fde68a;right:-120px;bottom:-140px}
+    .hero-badge{
+      position:relative;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 16px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.16);
+      border:1px solid rgba(255,255,255,0.26);
+      font-weight:800;
+      margin-bottom:16px;
+    }
+    h1{
+      position:relative;
+      font-family:'Fredoka One',cursive;
+      font-size:clamp(2.2rem,5vw,4rem);
+      color:#fbffea;
+      text-shadow:0 8px 18px rgba(0,0,0,0.18);
+    }
+    .hero-copy{
+      position:relative;
+      max-width:860px;
+      margin:16px auto 0;
+      line-height:1.75;
+      color:rgba(255,255,255,0.94);
+      font-size:1.08rem;
+    }
+    .hero-actions{
+      position:relative;
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:24px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      min-height:48px;
+      padding:13px 22px;
+      border-radius:999px;
+      text-decoration:none;
+      font-weight:800;
+      transition:transform .18s ease,box-shadow .18s ease;
+    }
+    .btn-primary{background:#fff8d5;color:#0f766e;box-shadow:0 14px 28px rgba(0,0,0,0.14)}
+    .btn-secondary{background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.26);color:#fff}
+    .btn:hover{transform:translateY(-2px)}
+    main{max-width:1160px;margin:-36px auto 0;padding:0 20px 72px;position:relative}
+    .card{
+      background:var(--paper);
+      border:1px solid rgba(0,0,0,0.05);
+      border-radius:28px;
+      padding:26px;
+      box-shadow:0 16px 36px rgba(0,0,0,0.07);
+      margin-bottom:24px;
+    }
+    .section-title{font-family:'Fredoka One',cursive;font-size:1.8rem;margin-bottom:10px}
+    .section-copy{color:var(--soft);line-height:1.75}
+    .prep-alert{
+      margin-top:18px;
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      padding:18px;
+      border-radius:24px;
+      background:linear-gradient(135deg,#fff8d5 0%,#fff1f2 100%);
+      border:1px solid rgba(245,158,11,0.28);
+      box-shadow:0 12px 26px rgba(245,158,11,0.12);
+    }
+    .prep-alert-icon{
+      width:48px;
+      height:48px;
+      border-radius:16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg,#f59e0b 0%,#fb7185 100%);
+      color:#fff;
+      font-size:1.5rem;
+      flex-shrink:0;
+    }
+    .prep-alert strong{
+      display:block;
+      font-family:'Fredoka One',cursive;
+      font-size:1.02rem;
+      margin-bottom:6px;
+      color:#7c2d12;
+    }
+    .prep-alert p{
+      color:#7c2d12;
+      line-height:1.65;
+      font-weight:700;
+    }
+    .hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:20px;align-items:center}
+    .snapshot-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:18px}
+    .snapshot{
+      padding:16px;
+      border-radius:22px;
+      color:#fff;
+      text-align:center;
+      box-shadow:0 12px 24px rgba(0,0,0,0.08);
+    }
+    .snapshot strong{display:block;font-family:'Fredoka One',cursive;font-size:1.14rem;margin-bottom:4px}
+    .cartoon-panel{
+      margin-top:18px;
+      background:linear-gradient(180deg,#fefeff 0%,#f7fbff 100%);
+      border:1px solid var(--line);
+      border-radius:26px;
+      padding:18px;
+      display:grid;
+      grid-template-columns:120px minmax(0,1fr);
+      gap:16px;
+      align-items:center;
+      box-shadow:0 12px 24px rgba(0,0,0,0.05);
+    }
+    .cartoon-figure{
+      position:relative;
+      width:110px;
+      height:110px;
+      margin:0 auto;
+      border-radius:28px;
+      background:radial-gradient(circle at top, #fde68a 0%, #fef3c7 38%, #dbeafe 39%, #bfdbfe 100%);
+      border:1px solid rgba(14,165,233,0.18);
+      overflow:hidden;
+    }
+    .cartoon-head{
+      position:absolute;
+      top:16px;
+      left:50%;
+      width:44px;
+      height:44px;
+      transform:translateX(-50%);
+      border-radius:50%;
+      background:#fde0c8;
+      box-shadow:inset 0 -4px 0 rgba(0,0,0,0.04);
+    }
+    .cartoon-head::before{
+      content:'';
+      position:absolute;
+      inset:-5px 4px 22px;
+      border-radius:20px 20px 14px 14px;
+      background:#5b3b2e;
+    }
+    .cartoon-body{
+      position:absolute;
+      left:50%;
+      top:58px;
+      width:56px;
+      height:34px;
+      transform:translateX(-50%);
+      border-radius:18px 18px 12px 12px;
+      background:linear-gradient(135deg,#14b8a6 0%,#0ea5e9 100%);
+    }
+    .cartoon-book{
+      position:absolute;
+      left:50%;
+      bottom:16px;
+      width:66px;
+      height:24px;
+      transform:translateX(-50%) rotate(-6deg);
+      border-radius:8px;
+      background:linear-gradient(135deg,#fff 0%,#fee2e2 100%);
+      border:2px solid rgba(190,24,93,0.18);
+    }
+    .cartoon-book::before,
+    .cartoon-book::after{
+      content:'';
+      position:absolute;
+      top:4px;
+      width:2px;
+      height:14px;
+      background:rgba(190,24,93,0.18);
+    }
+    .cartoon-book::before{left:22px}
+    .cartoon-book::after{right:22px}
+    .cartoon-copy strong{
+      display:block;
+      font-family:'Fredoka One',cursive;
+      font-size:1.05rem;
+      margin-bottom:8px;
+      color:#0f766e;
+    }
+    .cartoon-copy p{
+      color:var(--soft);
+      line-height:1.7;
+      font-size:.97rem;
+    }
+    .graphic-board{
+      position:relative;
+      border-radius:28px;
+      padding:22px;
+      background:linear-gradient(180deg,#f8fffd 0%,#fef9ff 100%);
+      border:1px solid var(--line);
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:1fr 154px 1fr;
+      grid-template-areas:
+        ". top ."
+        "left core right"
+        ". bottom .";
+      gap:16px;
+      align-items:center;
+      justify-items:center;
+    }
+    .graphic-board::before{
+      content:'';
+      position:absolute;
+      inset:18px;
+      border-radius:24px;
+      border:2px dashed rgba(15,118,110,0.14);
+      pointer-events:none;
+    }
+    .graphic-board::after{
+      content:'';
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:230px;
+      height:230px;
+      transform:translate(-50%,-50%);
+      border-radius:50%;
+      border:2px solid rgba(15,118,110,0.1);
+      pointer-events:none;
+    }
+    .exam-core{
+      grid-area:core;
+      width:154px;height:154px;border-radius:50%;
+      background:linear-gradient(135deg,#0f766e 0%,#14b8a6 100%);
+      color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;
+      font-family:'Fredoka One',cursive;font-size:1.15rem;line-height:1.3;
+      box-shadow:0 18px 36px rgba(15,118,110,0.2);
+      position:relative;
+      z-index:2;
+    }
+    .orbit{
+      width:100%;
+      max-width:190px;
+      padding:14px;
+      border-radius:22px;
+      background:#fff;
+      border:1px solid var(--line);
+      box-shadow:0 10px 24px rgba(0,0,0,0.06);
+      text-align:center;
+      position:relative;
+      z-index:2;
+    }
+    .orbit strong{display:block;font-family:'Fredoka One',cursive;font-size:1rem;margin:4px 0 6px}
+    .orbit span{display:block;color:var(--soft);font-size:.92rem;line-height:1.5}
+    .orbit-top{grid-area:top}
+    .orbit-left{grid-area:left}
+    .orbit-right{grid-area:right}
+    .orbit-bottom{grid-area:bottom}
+    .topic-grid,.steps-grid,.tips-grid{display:grid;gap:16px}
+    .topic-grid{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:18px}
+    .topic-card,.step-card,.tip-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:18px;
+      box-shadow:0 10px 22px rgba(0,0,0,0.05);
+    }
+    .topic-card .icon,.step-card .icon,.tip-card .icon{font-size:2rem;display:block;margin-bottom:10px}
+    .topic-card h3,.step-card h3,.tip-card h3{font-family:'Fredoka One',cursive;font-size:1.05rem;margin-bottom:8px}
+    .topic-card p,.step-card p,.tip-card p{color:var(--soft);line-height:1.65;font-size:.95rem}
+    .topic-list{margin-top:10px;display:grid;gap:8px}
+    .topic-list span{display:block;padding:9px 12px;border-radius:999px;background:#f8fbff;border:1px solid var(--line);font-size:.9rem;font-weight:700;color:#425563}
+    .steps-grid{grid-template-columns:repeat(5,minmax(0,1fr));margin-top:18px}
+    .step-card{position:relative;padding-top:48px}
+    .step-number{
+      position:absolute;top:14px;left:16px;
+      width:36px;height:36px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-family:'Fredoka One',cursive;color:#fff;background:linear-gradient(135deg,#0f766e 0%,#0ea5e9 100%);
+    }
+    .tips-grid{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:18px}
+    .link-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+    footer{text-align:center;padding:0 20px 42px;color:#60717d}
+    @media (max-width: 1024px){
+      .hero-grid,.snapshot-grid,.topic-grid,.steps-grid,.tips-grid{grid-template-columns:1fr 1fr}
+      .hero-grid{grid-template-columns:1fr}
+    }
+    @media (max-width: 820px){
+      .hero-grid,.snapshot-grid,.topic-grid,.steps-grid,.tips-grid{grid-template-columns:1fr}
+      .cartoon-panel{grid-template-columns:1fr}
+      .graphic-board{
+        padding:18px;
+        grid-template-columns:1fr;
+        grid-template-areas:"core" "top" "left" "right" "bottom";
+      }
+      .graphic-board::after{display:none}
+      .exam-core{width:100%;height:auto;border-radius:24px;padding:24px}
+      .orbit{max-width:none}
+    }
+  </style>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="hero-badge">🎯 Corrected Selective Syllabus</div>
+    <h1>Selective Exam Syllabus</h1>
+    <p class="hero-copy">
+      This page gives a corrected, student-friendly summary of the selective exam. It keeps the official test sections clear,
+      uses simple explanations first, and moves from easier ideas to harder ones so students can build confidence step by step.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#topics-overview">See the Main Topics</a>
+      <a class="btn btn-secondary" href="selective-school-exam.html">Open the Selective Hub</a></div>
+  </header>
+
+  <main>
+    <section class="card">
+      <div class="hero-grid">
+        <div>
+          <h2 class="section-title">A Quick Family-Friendly Explanation</h2>
+          <p class="section-copy">
+            For most families, the best way to think about the selective exam is this: it is a mix of accuracy, speed, reasoning, and confidence.
+            Children are expected to read questions carefully, notice patterns quickly, choose smart strategies, and stay calm when the work becomes challenging.
+          </p>
+          <div class="prep-alert">
+            <div class="prep-alert-icon">⏳</div>
+            <div>
+              <strong>When should preparation start?</strong>
+              <p>Almost 1.5 years before the exam is a smart time to begin. That gives children enough time to learn the skills properly, practise regularly, and build confidence without feeling rushed.</p>
+            </div>
+          </div>
+          <div class="snapshot-grid">
+            <div class="snapshot" style="background:linear-gradient(135deg,#0f766e 0%,#14b8a6 100%)"><strong>Reading</strong><span>45 min · 17 questions</span></div>
+            <div class="snapshot" style="background:linear-gradient(135deg,#b45309 0%,#f59e0b 100%)"><strong>Maths</strong><span>40 min · 35 questions</span></div>
+            <div class="snapshot" style="background:linear-gradient(135deg,#7c3aed 0%,#a855f7 100%)"><strong>Thinking</strong><span>40 min · 40 questions</span></div>
+            <div class="snapshot" style="background:linear-gradient(135deg,#be185d 0%,#fb7185 100%)"><strong>Writing</strong><span>30 min · 1 prompt</span></div>
+          </div>
+          <div class="cartoon-panel" aria-hidden="true">
+            <div class="cartoon-figure">
+              <div class="cartoon-head"></div>
+              <div class="cartoon-body"></div>
+              <div class="cartoon-book"></div>
+            </div>
+            <div class="cartoon-copy">
+              <strong>Little steps beat last-minute stress</strong>
+              <p>A cartoon reminder for families: start early, keep practice short and regular, and let children grow skill by skill instead of cramming close to the exam date.</p>
+            </div>
+          </div>
+        </div>
+        <div class="graphic-board" aria-hidden="true">
+          <div class="orbit orbit-top">🧠<strong>Thinking Skills</strong><span>Logic, arguments, patterns, and spatial reasoning.</span></div>
+          <div class="orbit orbit-left">➗<strong>Mathematical Reasoning</strong><span>Number sense, strategy, interpretation, and multistep problems.</span></div>
+          <div class="orbit orbit-right">📘<strong>Reading</strong><span>Inference, vocabulary, genre understanding, and synthesis.</span></div>
+          <div class="orbit orbit-bottom">✍️<strong>Writing</strong><span>Clear ideas, structure, language, grammar, and control.</span></div>
+          <div class="exam-core">Selective<br />Exam</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">The Four Main Sections</h2>
+          <p class="section-copy">Each section asks for a slightly different type of thinking. These are the big skill groups to practise.</p>
+        </div>
+      </div>
+      <div class="overview-grid">
+        <article class="overview-card">
+          <span class="icon">📘</span>
+          <h3>Reading</h3>
+          <p>Students answer questions about fiction, poetry, and non-fiction. They need to infer meaning, use evidence, and understand vocabulary in context.</p>
+        </article>
+        <article class="overview-card">
+          <span class="icon">➗</span>
+          <h3>Mathematical Reasoning</h3>
+          <p>Students solve problems using whole numbers, fractions, decimals, percentages, measurement, geometry, data, and probability.</p>
+        </article>
+        <article class="overview-card">
+          <span class="icon">🧠</span>
+          <h3>Thinking Skills</h3>
+          <p>Students work through logic, arguments, conclusions, spatial ideas, and rule-based number puzzles without relying on memorised facts.</p>
+        </article>
+        <article class="overview-card">
+          <span class="icon">✍️</span>
+          <h3>Writing</h3>
+          <p>Students produce one sustained response and are marked on ideas, structure, language, and control of grammar and punctuation.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="card" id="topics-overview">
+      <h2 class="section-title">The Main Topics That Usually Come Up</h2>
+      <p class="section-copy">
+        The exact paper can vary, but most preparation falls into four dependable areas. A child does better when they know the style of each area before attempting timed mixed practice.
+      </p>
+      <div class="topic-grid">
+        <article class="topic-card">
+          <span class="icon">➗</span>
+          <h3>Mathematical Reasoning</h3>
+          <p>Not just calculation. Children must choose methods, read tricky wording, and work through multistep questions.</p>
+          <div class="topic-list">
+            <span>Whole numbers and operations</span>
+            <span>Fractions, decimals, percentages</span>
+            <span>Measurement, geometry, coordinates</span>
+            <span>Data, averages, probability</span>
+          </div>
+        </article>
+        <article class="topic-card">
+          <span class="icon">🧠</span>
+          <h3>Thinking Skills</h3>
+          <p>This area checks flexible thinking. Children judge evidence, find patterns, draw conclusions, and spot weak logic.</p>
+          <div class="topic-list">
+            <span>Evaluating arguments</span>
+            <span>Drawing conclusions</span>
+            <span>Identifying flaws</span>
+            <span>Spatial reasoning puzzles</span>
+          </div>
+        </article>
+        <article class="topic-card">
+          <span class="icon">📘</span>
+          <h3>Reading</h3>
+          <p>Students read different text types and answer questions about meaning, tone, vocabulary, and what is implied rather than directly stated.</p>
+          <div class="topic-list">
+            <span>Fiction, poetry, non-fiction</span>
+            <span>Inference and evidence</span>
+            <span>Vocabulary in context</span>
+            <span>Synthesis across texts</span>
+          </div>
+        </article>
+        <article class="topic-card">
+          <span class="icon">✍️</span>
+          <h3>Writing</h3>
+          <p>Children must generate ideas quickly and organise them clearly while maintaining accurate grammar and punctuation.</p>
+          <div class="topic-list">
+            <span>Narrative, persuasive, discursive</span>
+            <span>Ideas and content</span>
+            <span>Structure and organisation</span>
+            <span>Language, grammar, punctuation</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="section-title">How to Prepare Without Panic</h2>
+      <p class="section-copy">
+        The strongest preparation is steady and structured. Children improve more with short, repeated practice than with long stressful sessions.
+      </p>
+      <div class="steps-grid">
+        <article class="step-card">
+          <div class="step-number">1</div>
+          <span class="icon">🔎</span>
+          <h3>Know the Format</h3>
+          <p>Start by understanding the four exam areas and the common question styles in each one.</p>
+        </article>
+        <article class="step-card">
+          <div class="step-number">2</div>
+          <span class="icon">🧩</span>
+          <h3>Practise by Topic</h3>
+          <p>Use topic pages first so children build confidence before mixing everything together.</p>
+        </article>
+        <article class="step-card">
+          <div class="step-number">3</div>
+          <span class="icon">⏱️</span>
+          <h3>Add Gentle Timing</h3>
+          <p>Once accuracy improves, introduce short timed bursts to build pace without stress.</p>
+        </article>
+        <article class="step-card">
+          <div class="step-number">4</div>
+          <span class="icon">📝</span>
+          <h3>Review Mistakes</h3>
+          <p>Most growth comes from checking errors and finding the reason behind them.</p>
+        </article>
+        <article class="step-card">
+          <div class="step-number">5</div>
+          <span class="icon">🌱</span>
+          <h3>Build Calm Confidence</h3>
+          <p>Sleep, routine, and a calm mindset matter. Preparation should feel organised, not overwhelming.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="section-title">What Helps Most</h2>
+      <p class="section-copy">
+        These habits usually make the biggest difference for upper-primary students preparing for selective-style papers.
+      </p>
+      <div class="tips-grid">
+        <article class="tip-card">
+          <span class="icon">📚</span>
+          <h3>Read Widely</h3>
+          <p>Regular reading improves vocabulary, inference, and writing ideas at the same time.</p>
+        </article>
+        <article class="tip-card">
+          <span class="icon">🧠</span>
+          <h3>Explain Thinking</h3>
+          <p>Ask children to talk through how they solved a problem, not just give the answer.</p>
+        </article>
+        <article class="tip-card">
+          <span class="icon">🎯</span>
+          <h3>Stay Specific</h3>
+          <p>Target one weak area at a time instead of trying to improve everything in one session.</p>
+        </article>
+      </div>
+      <div class="link-row">
+        <a class="btn btn-primary" href="selective-school-exam.html">Explore Topic Pages</a></div>
+    </section>
+  </main>
+
+  <footer>Built as part of Little Star's Learning World.</footer>
+</body>
+</html>

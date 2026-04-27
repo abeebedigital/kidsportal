@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Rocket Ready! 🚀</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+html{font-size:17px;}
+@media (max-width:500px){html{font-size:16px;}}
+:root{
+  --dark:#222a4d;
+  --card:#fffefb;
+  --bg:#f7fbff;
+  --navy:#315efb;
+  --sky:#8ad7ff;
+  --mint:#2fb26f;
+  --sun:#ffd166;
+  --peach:#ff9b63;
+  --violet:#7b5cff;
+  --pink:#ff6fb5;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overflow-x:hidden}
+.floaty{position:fixed;opacity:.08;z-index:0;pointer-events:none;animation:drift linear infinite}
+@keyframes drift{from{transform:translateX(-120px)}to{transform:translateX(calc(100vw + 120px))}}
+#app{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:12px}
+.tts-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.tts-btn{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--navy),var(--violet));color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s}
+.tts-btn:hover{transform:scale(1.05)}
+.tts-btn.speaking{animation:pulse 1s ease infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(49,94,251,.45)}50%{box-shadow:0 0 0 8px rgba(49,94,251,0)}}
+.tts-stop{background:linear-gradient(135deg,#95a5a6,#7f8c8d);color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer}
+.progress-strip{background:#fff;border-radius:12px;padding:8px 16px;display:flex;align-items:center;gap:10px;margin-bottom:8px;border:2px solid #dce6ff;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.progress-bar{flex:1;height:7px;background:#dce6ff;border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--mint),var(--navy),var(--pink));border-radius:4px;transition:width .5s ease}
+.progress-label{font-family:'Fredoka One',cursive;font-size:12px;color:#8084a0;white-space:nowrap}
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#fff;border-radius:16px;margin-bottom:10px;border:2px solid #dce6ff;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.nav-btn{background:var(--navy);color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:8px 22px;border-radius:20px;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:scale(1.06)}
+.nav-btn:disabled{background:#ddd;color:#999;cursor:not-allowed;transform:none}
+.page-dots{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;max-width:320px}
+.dot{width:9px;height:9px;border-radius:50%;background:#ddd;cursor:pointer;transition:all .2s;border:none;padding:0}
+.dot.active{background:var(--navy);transform:scale(1.3);box-shadow:0 0 6px var(--navy)}
+.dot.visited{background:rgba(49,94,251,.4)}
+.page{display:none;animation:pageIn .5s ease}
+.page.active{display:block}
+@keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.cover{background:linear-gradient(160deg,#041a44 0%,#1847b7 45%,#7fe3ff 100%);border-radius:22px;border:2px solid rgba(255,255,255,.35);padding:50px 30px;text-align:center;position:relative;overflow:hidden;min-height:540px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.cover-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:430px;height:430px;background:radial-gradient(circle,rgba(255,255,255,.18) 0%,transparent 70%)}
+.cover-title{font-family:'Fredoka One',cursive;font-size:38px;color:#fff;line-height:1.15;margin-bottom:8px;position:relative;z-index:2;text-shadow:0 4px 16px rgba(0,0,0,.2)}
+.cover-sub{font-family:'Fredoka One',cursive;font-size:20px;color:#eef6ff;position:relative;z-index:2;margin-bottom:10px}
+.cover-tagline{font-size:13px;color:rgba(255,255,255,.82);position:relative;z-index:2;margin-top:16px;font-style:italic}
+.cover-icons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:20px 0;position:relative;z-index:2}
+.cover-icon{font-size:38px;animation:bob var(--dur,3s) ease-in-out infinite var(--delay,0s)}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.hero-rocket{font-size:64px;position:relative;z-index:2;animation:heroFloat 3.2s ease-in-out infinite}
+@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+.story-page,.quiz-page,.cert-page{background:var(--card);border-radius:22px;padding:26px;min-height:540px;border:3px solid #dce6ff;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.page-corner{position:absolute;top:14px;right:16px;font-family:'Fredoka One',cursive;font-size:16px;color:#a7acc5}
+.story-header{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.chapter-badge{font-family:'Fredoka One',cursive;font-size:12px;padding:4px 13px;border-radius:16px;white-space:nowrap;color:#fff}
+.story-title{font-family:'Fredoka One',cursive;font-size:22px;color:var(--dark)}
+.story-body{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.story-text{font-size:15px;line-height:1.85;color:#444}
+.story-text p{margin-bottom:10px}
+.hw{font-weight:800;color:#1d4ed8}
+.hw2{font-weight:800;color:#7c3aed}
+.hw3{font-weight:800;color:#16a34a}
+.story-art{border-radius:16px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:8px;border:2px dashed #cfe0ff;background:linear-gradient(135deg,#f8fbff,#eef4ff)}
+.wonder-label{font-family:'Fredoka One',cursive;font-size:13px;color:#8e93b2;margin-top:4px;text-align:center}
+.wonder-facts{background:rgba(0,0,0,.03);border-radius:12px;padding:10px 14px;width:100%;border:1px solid rgba(0,0,0,.06)}
+.fact-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:13px;color:#555}
+.fact-row:last-child{border-bottom:none}
+.fact-icon{font-size:16px;min-width:22px}
+.quiz-bubble{background:linear-gradient(135deg,#eef2ff,#f5edff);border:2px solid #b6c4ff;border-radius:18px;padding:18px;margin-top:16px}
+.quiz-title{font-family:'Fredoka One',cursive;font-size:17px;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.quiz-options,.fquiz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.q-opt,.fq-opt{background:#fff;border:2px solid #dce6ff;border-radius:12px;padding:10px 14px;font-size:14px;color:var(--dark);cursor:pointer;transition:all .2s;text-align:left;font-family:'Nunito',sans-serif;font-weight:700}
+.q-opt:hover,.fq-opt:hover:not(.locked){background:#eef4ff;border-color:#a8bbff;transform:translateY(-2px)}
+.q-opt.correct,.fq-opt.correct{background:#d4edda;border-color:#27ae60;color:#155724}
+.q-opt.wrong,.fq-opt.wrong{background:#f8d7da;border-color:#c0392b;color:#721c24}
+.quiz-feedback,.q-result-msg{font-family:'Fredoka One',cursive;font-size:16px;margin-top:10px;min-height:24px;text-align:center}
+.fun-fact{background:#fff8dc;border:2px solid #ffd93d;border-radius:14px;padding:14px 16px;margin-top:14px}
+.fun-fact-title{font-family:'Fredoka One',cursive;font-size:15px;color:#8a6b00;margin-bottom:6px}
+.fun-fact-text{font-size:13px;color:#444;line-height:1.6}
+.memory-card{background:#eef4ff;border:2px solid #a8bbff;border-radius:14px;padding:14px;margin-top:14px}
+.mem-row{display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;transition:background .2s;border-radius:8px;padding:8px}
+.mem-row:hover{background:rgba(49,94,251,.08)}
+.mem-letter{font-family:'Fredoka One',cursive;font-size:18px;color:#1d4ed8;min-width:24px}
+.mem-word{color:#5b21b6;min-width:120px;font-weight:700}
+.mem-note{color:#bbb}
+.quiz-progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.q-counter{font-family:'Fredoka One',cursive;font-size:13px;color:#999}
+.q-score-badge{font-family:'Fredoka One',cursive;font-size:14px;background:#eef4ff;border:2px solid #b6c4ff;padding:4px 14px;border-radius:20px;color:#4c3ff5}
+.quiz-question-card{background:#fff;border-radius:16px;padding:20px;margin-bottom:16px;border:2px solid #dce6ff;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.quiz-q-text{font-family:'Fredoka One',cursive;font-size:19px;color:var(--dark);line-height:1.4;margin-bottom:4px}
+.quiz-q-emoji{font-size:40px;margin-bottom:10px}
+.fq-opt.locked{cursor:not-allowed;opacity:.72}
+.next-q-btn{display:block;margin:12px auto 0;background:linear-gradient(135deg,var(--navy),var(--violet));color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:16px;padding:10px 28px;border-radius:22px;cursor:pointer;transition:all .2s}
+.next-q-btn:hover{transform:scale(1.05)}
+.result-screen{text-align:center;padding:20px 10px}
+.result-trophy{font-size:80px;margin-bottom:12px;animation:bounce 1s ease infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+.result-title{font-family:'Fredoka One',cursive;font-size:28px;margin-bottom:10px}
+.result-score{font-family:'Fredoka One',cursive;font-size:48px;color:var(--sun)}
+.result-msg{font-size:16px;color:#888;margin:12px 0 20px;line-height:1.7}
+.retry-btn,.proceed-btn{color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:18px;padding:12px 32px;border-radius:24px;cursor:pointer;transition:all .2s;margin:8px}
+.retry-btn{background:linear-gradient(135deg,#e74c3c,#ff6b6b)}
+.proceed-btn{background:linear-gradient(135deg,#27ae60,#2ecc71)}
+.retry-btn:hover,.proceed-btn:hover{transform:scale(1.06)}
+.cert-page{border-color:#ffd93d}
+.cert-controls{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+.cert-name-input{font-family:'Nunito',sans-serif;font-size:16px;padding:10px 16px;border:2px solid #ffd93d;border-radius:12px;outline:none;flex:1;min-width:180px;color:#333}
+.cert-name-input:focus{border-color:var(--violet)}
+.cert-dl-btn,.cert-print-btn{color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:24px;cursor:pointer}
+.cert-dl-btn{background:var(--navy)}
+.cert-print-btn{background:#1565c0}
+.cert-wrap{background:#fff;border-radius:16px;padding:6px;border:3px solid #ffd93d;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+canvas#cert{width:100%;border-radius:12px;display:block}
+.cert-hint{font-size:12px;color:#aaa;margin-top:8px;text-align:center}
+.rocket-ship{font-size:86px;line-height:1}
+.rocket-stack{display:flex;flex-direction:column;gap:10px;width:100%}
+.rocket-part{background:#fff;border:2px solid #dce6ff;border-radius:14px;padding:10px 12px;text-align:left}
+.rocket-part strong{display:block;font-family:'Fredoka One',cursive;color:var(--dark);margin-bottom:4px}
+.example-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%}
+.example-card{background:#fff;border-radius:12px;border:2px solid #dce6ff;padding:10px;text-align:center}
+.example-card strong{display:block;font-family:'Fredoka One',cursive;color:var(--dark);margin-top:8px}
+.orbit-ring{width:190px;height:190px;border-radius:50%;border:4px dashed #9cc5ff;position:relative;background:radial-gradient(circle,#fefefe 0%,#eef5ff 100%)}
+.orbit-planet{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:54px}
+.orbit-sat{position:absolute;top:18px;left:120px;font-size:34px}
+@media(max-width:580px){
+  .story-body{grid-template-columns:1fr}
+  .cover-title{font-size:28px}
+  .quiz-options,.fquiz-options{grid-template-columns:1fr}
+  .cert-controls{flex-direction:column}
+  .example-grid{grid-template-columns:1fr}
+}
+</style>
+<script src="analytics.js" defer></script>
+<script src="site-drawer.js" defer></script>
+<script src="page-share.js" defer></script>
+<script src="natural-read-aloud.js" defer></script>
+<script src="slim-topbar.js" defer></script>
+</head>
+<body>
+
+<div id="floaties"></div>
+
+<div id="app"><div class="tts-bar">
+  <button class="tts-btn" id="ttsBtn" onclick="toggleReadAloud()">🔊 Read Aloud</button>
+  <button class="tts-stop" id="ttsStop" onclick="stopReadAloud()" style="display:none;">⏹ Stop</button>
+</div>
+
+<div class="progress-strip">
+  <span class="progress-label">🚀 Rocket Lesson...</span>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <span class="progress-label" id="progressText">Page 1 of 17</span>
+</div>
+
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Back</button>
+  <div class="page-dots" id="pageDots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+</div>
+
+<div class="page active" data-page="0">
+  <div class="cover">
+    <div class="cover-glow"></div>
+    <div class="hero-rocket">🚀</div>
+    <div class="cover-title">Rocket Ready!</div>
+    <div class="cover-sub">A Rocket Adventure for Curious Kids</div>
+    <div class="cover-icons">
+      <span class="cover-icon" style="--dur:3s;--delay:0s">🚀</span>
+      <span class="cover-icon" style="--dur:3.4s;--delay:.2s">🌍</span>
+      <span class="cover-icon" style="--dur:3.8s;--delay:.4s">⭐</span>
+      <span class="cover-icon" style="--dur:3.3s;--delay:.6s">🛰️</span>
+      <span class="cover-icon" style="--dur:3.9s;--delay:.8s">🌙</span>
+    </div>
+    <p class="cover-tagline">Learn what rockets do, how they lift off, and why they are useful for space travel. · For ages 5-9</p>
+  </div>
+</div>
+
+<div class="page" data-page="1">
+  <div class="story-page">
+    <div class="page-corner">p.1</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--mint);">Welcome!</span><h2 class="story-title">Meet Rori the Rocket Guide! 🚀</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Hello, space explorer! I am <span class="hw">Rori</span>, your rocket guide.</p>
+        <p>I love countdowns, bright stars, giant launch pads, and zooming high into the sky.</p>
+        <p>Today we will learn what a <span class="hw2">rocket</span> is and how it travels upward.</p>
+        <p>We will also learn about <span class="hw3">parts of a rocket</span>, <span class="hw3">thrust</span>, and why rockets carry astronauts, satellites, and supplies.</p>
+        <p>Ready to blast off and learn? 🚀✨</p>
+      </div>
+      <div class="story-art">
+        <div class="rocket-ship">🚀</div>
+        <div class="wonder-label">Rori the Rocket Guide</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🧑‍🚀</span> Loves space missions</div>
+          <div class="fact-row"><span class="fact-icon">🔢</span> Counts down to launch</div>
+          <div class="fact-row"><span class="fact-icon">🛰️</span> Delivers satellites</div>
+          <div class="fact-row"><span class="fact-icon">🌙</span> Dreams of moon trips</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="2">
+  <div class="story-page">
+    <div class="page-corner">p.2</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--navy);">Chapter 1</span><h2 class="story-title">What Is a Rocket?</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>A <span class="hw">rocket</span> is a vehicle that can push itself upward very, very fast.</p>
+        <p>Rockets can travel high into the sky and even out into <span class="hw2">space</span>.</p>
+        <p>They are much stronger than cars, buses, and planes because they need a huge push to leave the ground.</p>
+        <p>Some rockets carry <span class="hw3">astronauts</span>. Some carry <span class="hw3">satellites</span>. Some carry important tools and supplies.</p>
+        <p>Rockets are built to go where ordinary vehicles cannot go.</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:84px;">🚀</div>
+        <div class="wonder-label">A rocket is built for space travel</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">⬆️</span> Pushes upward with power</div>
+          <div class="fact-row"><span class="fact-icon">🌌</span> Can travel into space</div>
+          <div class="fact-row"><span class="fact-icon">🧑‍🚀</span> May carry astronauts</div>
+          <div class="fact-row"><span class="fact-icon">📦</span> May carry cargo too</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="3">
+  <div class="story-page">
+    <div class="page-corner">p.3</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--peach);">Step 1</span><h2 class="story-title">Parts of a Rocket</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Rockets have special parts that help them fly safely.</p>
+        <p>The <span class="hw">nose cone</span> is the pointy top. It helps the rocket move through the air.</p>
+        <p>The <span class="hw2">body</span> is the long middle part. It holds fuel, tools, or cargo.</p>
+        <p>The <span class="hw3">engines</span> are near the bottom. They make the push called thrust.</p>
+        <p>Some rockets also have <span class="hw">fins</span> to help keep them steady.</p>
+      </div>
+      <div class="story-art">
+        <div class="rocket-stack">
+          <div class="rocket-part"><strong>Nose cone</strong>Pointy top that cuts through the air.</div>
+          <div class="rocket-part"><strong>Body</strong>Holds fuel, cargo, or crew.</div>
+          <div class="rocket-part"><strong>Engines</strong>Push hot gas down to lift the rocket up.</div>
+          <div class="rocket-part"><strong>Fins</strong>Help some rockets stay balanced.</div>
+        </div>
+        <div class="wonder-label">Every rocket part has a job</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="4">
+  <div class="story-page">
+    <div class="page-corner">p.4</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--violet);">Step 2</span><h2 class="story-title">What Makes a Rocket Go Up?</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>A rocket uses <span class="hw">fuel</span> to make a very strong push.</p>
+        <p>When the engine burns fuel, hot gas rushes <span class="hw2">downward</span>.</p>
+        <p>That push downward makes the rocket move <span class="hw3">upward</span>.</p>
+        <p>This pushing force is called <span class="hw">thrust</span>.</p>
+        <p>If the thrust is stronger than the pull of gravity, the rocket can lift off the ground.</p>
+      </div>
+      <div class="story-art">
+        <div class="example-grid">
+          <div class="example-card">
+            <div style="font-size:34px;">⛽</div>
+            <strong>Fuel</strong>
+            <div style="font-size:12px;color:#777;">Gives energy</div>
+          </div>
+          <div class="example-card">
+            <div style="font-size:34px;">🔥</div>
+            <strong>Hot gas</strong>
+            <div style="font-size:12px;color:#777;">Shoots down</div>
+          </div>
+          <div class="example-card">
+            <div style="font-size:34px;">🚀</div>
+            <strong>Thrust</strong>
+            <div style="font-size:12px;color:#777;">Lifts up</div>
+          </div>
+        </div>
+        <div class="wonder-label">Downward gas helps the rocket rise upward</div>
+      </div>
+    </div>
+    <div class="fun-fact">
+      <div class="fun-fact-title">Cool Rocket Fact</div>
+      <div class="fun-fact-text">Rockets do not flap wings or spin wheels. They move because engines create a huge push.</div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="5">
+  <div class="story-page">
+    <div class="page-corner">p.5</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--mint);">Step 3</span><h2 class="story-title">Countdown to Launch</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Before a rocket launches, teams check many things very carefully.</p>
+        <p>They check the <span class="hw">weather</span>, the <span class="hw2">fuel</span>, and the <span class="hw3">equipment</span>.</p>
+        <p>Then comes the famous countdown: <span class="hw">5, 4, 3, 2, 1...</span> launch!</p>
+        <p>The countdown helps everyone get ready at the same time.</p>
+        <p>Rocket launches must be careful, calm, and planned.</p>
+      </div>
+      <div class="story-art">
+        <div style="font-family:'Fredoka One',cursive;font-size:44px;color:var(--navy);letter-spacing:4px;">5 4 3 2 1</div>
+        <div style="font-size:72px;">🚀</div>
+        <div class="wonder-label">A countdown helps the launch team stay ready</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">☁️</span> Check the weather</div>
+          <div class="fact-row"><span class="fact-icon">🛠️</span> Check the rocket</div>
+          <div class="fact-row"><span class="fact-icon">🔊</span> Count down together</div>
+          <div class="fact-row"><span class="fact-icon">✅</span> Launch when ready</div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">Quick Check</div>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">Rockets launch without any checking</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb1')">Teams check the rocket before launch</button>
+      </div>
+      <div class="quiz-feedback" id="fb1"></div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="6">
+  <div class="story-page">
+    <div class="page-corner">p.6</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--sun);color:#7a5a00;">Step 4</span><h2 class="story-title">Lift-Off and Stages</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>When the engines roar, the rocket begins its <span class="hw">lift-off</span>.</p>
+        <p>Some rockets are built in <span class="hw2">stages</span>. A stage is one part of the rocket used for part of the trip.</p>
+        <p>After a stage finishes its job, it can separate and fall away.</p>
+        <p>This makes the rocket lighter, so the next stage can keep going.</p>
+        <p>Using stages helps rockets travel farther and higher.</p>
+      </div>
+      <div class="story-art">
+        <div class="example-grid">
+          <div class="example-card">
+            <div style="font-size:34px;">1️⃣</div>
+            <strong>Stage 1</strong>
+            <div style="font-size:12px;color:#777;">Big lift from ground</div>
+          </div>
+          <div class="example-card">
+            <div style="font-size:34px;">2️⃣</div>
+            <strong>Stage 2</strong>
+            <div style="font-size:12px;color:#777;">Keeps climbing</div>
+          </div>
+          <div class="example-card">
+            <div style="font-size:34px;">⭐</div>
+            <strong>Lighter rocket</strong>
+            <div style="font-size:12px;color:#777;">Easier to keep moving</div>
+          </div>
+        </div>
+        <div class="wonder-label">Stages help rockets save power</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="7">
+  <div class="story-page">
+    <div class="page-corner">p.7</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--navy);">Chapter 2</span><h2 class="story-title">Sky, Air, and Space</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Near Earth, rockets travel through <span class="hw">air</span>.</p>
+        <p>Farther up, there is less and less air.</p>
+        <p>In <span class="hw2">space</span>, there is no air to breathe and no weather like rain or wind.</p>
+        <p>That is why rockets and astronauts need special equipment.</p>
+        <p>Space is beautiful, dark, and full of amazing places to explore.</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:76px;">🌍</div>
+        <div style="font-size:48px;">⬆️</div>
+        <div style="font-size:76px;">🌌</div>
+        <div class="wonder-label">Rockets travel from Earth toward space</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🌤️</span> Air is near Earth</div>
+          <div class="fact-row"><span class="fact-icon">🫧</span> Air gets thinner up high</div>
+          <div class="fact-row"><span class="fact-icon">🌌</span> Space has no air</div>
+          <div class="fact-row"><span class="fact-icon">🧑‍🚀</span> Astronauts need suits</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="8">
+  <div class="story-page">
+    <div class="page-corner">p.8</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--peach);">Step 5</span><h2 class="story-title">What Is Orbit?</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Some rockets take satellites or spacecraft into <span class="hw">orbit</span>.</p>
+        <p>An orbit is a path around Earth or another planet.</p>
+        <p>A satellite in orbit can help with <span class="hw2">maps</span>, <span class="hw2">weather</span>, <span class="hw2">phones</span>, and <span class="hw2">science</span>.</p>
+        <p>Rockets help place those satellites where they need to go.</p>
+        <p>Without rockets, it would be very hard to put machines into space.</p>
+      </div>
+      <div class="story-art">
+        <div class="orbit-ring">
+          <div class="orbit-planet">🌍</div>
+          <div class="orbit-sat">🛰️</div>
+        </div>
+        <div class="wonder-label">A satellite moving around Earth</div>
+      </div>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">Quick Check</div>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb2')">Orbit means moving around Earth or another planet</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">Orbit means hiding under the ground</button>
+      </div>
+      <div class="quiz-feedback" id="fb2"></div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="9">
+  <div class="story-page">
+    <div class="page-corner">p.9</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--violet);">Step 6</span><h2 class="story-title">What Do Rockets Carry?</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Different rockets carry different things.</p>
+        <p>Some carry <span class="hw">astronauts</span> inside a crew capsule.</p>
+        <p>Some carry <span class="hw2">satellites</span> that help us talk, watch weather, or learn about Earth.</p>
+        <p>Some carry <span class="hw3">cargo</span> like food, water, tools, and science experiments.</p>
+        <p>The mission decides what the rocket needs to carry.</p>
+      </div>
+      <div class="story-art">
+        <div class="example-grid">
+          <div class="example-card">
+            <div style="font-size:34px;">🧑‍🚀</div>
+            <strong>Astronauts</strong>
+            <div style="font-size:12px;color:#777;">People on missions</div>
+          </div>
+          <div class="example-card">
+            <div style="font-size:34px;">🛰️</div>
+            <strong>Satellites</strong>
+            <div style="font-size:12px;color:#777;">Machines in orbit</div>
+          </div>
+          <div class="example-card">
+            <div style="font-size:34px;">📦</div>
+            <strong>Cargo</strong>
+            <div style="font-size:12px;color:#777;">Supplies and tools</div>
+          </div>
+        </div>
+        <div class="wonder-label">Rockets carry what the mission needs</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="10">
+  <div class="story-page">
+    <div class="page-corner">p.10</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--mint);">Examples</span><h2 class="story-title">Rocket Jobs in Real Life</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Let us look at some <span class="hw">real rocket jobs</span>.</p>
+        <p>A weather satellite rocket can help scientists track storms.</p>
+        <p>A space station supply rocket can bring food and equipment.</p>
+        <p>An astronaut rocket can carry a crew for exploration.</p>
+        <p>These examples show that rockets are not all the same. They are built for different missions.</p>
+      </div>
+      <div class="story-art">
+        <div class="rocket-stack">
+          <div class="rocket-part"><strong>Weather mission</strong>Helps watch clouds, rain, and storms from space.</div>
+          <div class="rocket-part"><strong>Supply mission</strong>Brings boxes of tools, food, and science gear.</div>
+          <div class="rocket-part"><strong>Crew mission</strong>Takes astronauts on a journey.</div>
+        </div>
+        <div class="wonder-label">Different missions need different rocket plans</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="11">
+  <div class="story-page">
+    <div class="page-corner">p.11</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--sun);color:#7a5a00;">Think Time</span><h2 class="story-title">Rocket Example Match-Up</h2></div>
+    <div class="story-text" data-tts style="margin-bottom:14px;">
+      <p>Read each example and think about what the rocket is doing.</p>
+      <p><span class="hw">Example 1:</span> A rocket takes a machine to help show weather on maps.</p>
+      <p><span class="hw2">Example 2:</span> A rocket carries astronauts wearing space suits.</p>
+      <p><span class="hw3">Example 3:</span> A rocket carries food and tools to astronauts already in space.</p>
+    </div>
+    <div class="wonder-facts">
+      <div class="fact-row"><span class="fact-icon">🛰️</span> Example 1: satellite mission</div>
+      <div class="fact-row"><span class="fact-icon">🧑‍🚀</span> Example 2: crew mission</div>
+      <div class="fact-row"><span class="fact-icon">📦</span> Example 3: cargo mission</div>
+    </div>
+    <div class="fun-fact">
+      <div class="fun-fact-title">Why examples help</div>
+      <div class="fun-fact-text">Examples show how the same big idea can look different in real life. That makes learning easier to remember.</div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="12">
+  <div class="story-page">
+    <div class="page-corner">p.12</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--navy);">Science Note</span><h2 class="story-title">Gravity vs Thrust</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p><span class="hw">Gravity</span> pulls things down toward Earth.</p>
+        <p><span class="hw2">Thrust</span> pushes the rocket up.</p>
+        <p>At launch, the rocket needs enough thrust to beat gravity.</p>
+        <p>That is why rockets need strong engines and lots of fuel.</p>
+        <p>You can remember it like this: <span class="hw3">gravity pulls down, thrust pushes up</span>.</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:40px;">⬇️ 🌍 ⬆️</div>
+        <div class="example-grid">
+          <div class="example-card">
+            <div style="font-size:34px;">🌍</div>
+            <strong>Gravity</strong>
+            <div style="font-size:12px;color:#777;">Pulls down</div>
+          </div>
+          <div class="example-card">
+            <div style="font-size:34px;">🔥</div>
+            <strong>Engine</strong>
+            <div style="font-size:12px;color:#777;">Makes thrust</div>
+          </div>
+          <div class="example-card">
+            <div style="font-size:34px;">🚀</div>
+            <strong>Lift-off</strong>
+            <div style="font-size:12px;color:#777;">Moves up</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="13">
+  <div class="story-page">
+    <div class="page-corner">p.13</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--violet);">Memory Trick</span><h2 class="story-title">Remember the Rocket Clues!</h2></div>
+    <div class="story-text" data-tts style="margin-bottom:14px;">
+      <p>Use this simple clue sentence:</p>
+      <p style="text-align:center;font-family:'Fredoka One',cursive;font-size:18px;color:var(--navy);margin:12px 0;">🌟 "<span class="hw">F</span>uel makes <span class="hw2">T</span>hrust, and rockets go <span class="hw3">U</span>p!" 🌟</p>
+      <p>Tap each row to reveal the meaning.</p>
+    </div>
+    <div class="memory-card">
+      <div class="mem-row" onclick="revealMem(this)">
+        <span class="mem-letter">F</span>
+        <span class="mem-word">Fuel</span>
+        <span class="mem-note" id="mw1">⛽ ???</span>
+      </div>
+      <div class="mem-row" onclick="revealMem(this)">
+        <span class="mem-letter">T</span>
+        <span class="mem-word">Thrust</span>
+        <span class="mem-note" id="mw2">🔥 ???</span>
+      </div>
+      <div class="mem-row" onclick="revealMem(this)">
+        <span class="mem-letter">U</span>
+        <span class="mem-word">Up</span>
+        <span class="mem-note" id="mw3">⬆️ ???</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="14">
+  <div class="story-page">
+    <div class="page-corner">p.14</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#4c6ef5;">Review</span><h2 class="story-title">What We Learned</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p><span class="hw">1.</span> A rocket is built to travel high into the sky and into space.</p>
+        <p><span class="hw">2.</span> Rockets have parts like the nose cone, body, engines, and sometimes fins.</p>
+        <p><span class="hw">3.</span> Fuel helps engines make thrust.</p>
+        <p><span class="hw">4.</span> Thrust pushes upward while gravity pulls downward.</p>
+        <p><span class="hw">5.</span> Launch teams use a countdown and safety checks.</p>
+        <p><span class="hw">6.</span> Some rockets use stages to keep going higher.</p>
+        <p><span class="hw">7.</span> Rockets can carry astronauts, satellites, or cargo.</p>
+        <p><span class="hw">8.</span> Rockets help place satellites into orbit around Earth.</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:64px;">🚀 🌍 🛰️</div>
+        <div class="wonder-label">You are ready for the rocket challenge!</div>
+      </div>
+    </div>
+    <div class="fun-fact">
+      <div class="fun-fact-title">Ready?</div>
+      <div class="fun-fact-text">You need 5 out of 6 or better to earn your Rocket Explorer certificate.</div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="15">
+  <div class="quiz-page">
+    <div id="quizActive">
+      <div class="story-header"><span class="chapter-badge" style="background:var(--violet);">🏆 Final Quiz!</span><h2 class="story-title">The Rocket Challenge!</h2></div>
+      <p style="font-size:14px;color:#666;margin-bottom:16px;">Answer 6 rocket questions. You need <strong>at least 5 correct</strong> to earn your certificate.</p>
+      <div class="quiz-progress-row">
+        <span class="q-counter" id="qCounter">Question 1 of 6</span>
+        <span class="q-score-badge" id="qScoreBadge">Score: 0 / 6</span>
+      </div>
+      <div class="quiz-question-card">
+        <div class="quiz-q-emoji" id="qEmoji">🚀</div>
+        <div class="quiz-q-text" id="qText"></div>
+      </div>
+      <div class="fquiz-options" id="fquizOptions"></div>
+      <div class="q-result-msg" id="qResultMsg"></div>
+      <button class="next-q-btn" id="nextQBtn" onclick="nextQuestion()" style="display:none;">Next Question →</button>
+    </div>
+    <div id="quizPass" style="display:none;">
+      <div class="result-screen">
+        <div class="result-trophy">🏆</div>
+        <div class="result-title" style="color:var(--mint);">Amazing Rocket Work!</div>
+        <div class="result-score" id="passScore">6 / 6</div>
+        <div class="result-msg" id="passMsg"></div>
+        <button class="proceed-btn" onclick="goToCertificate()">🎓 Get My Certificate! →</button>
+      </div>
+    </div>
+    <div id="quizFail" style="display:none;">
+      <div class="result-screen">
+        <div class="result-trophy">⭐</div>
+        <div class="result-title" style="color:var(--peach);">Almost There!</div>
+        <div class="result-score" id="failScore">3 / 6</div>
+        <div class="result-msg">You need at least 5 correct answers to earn your certificate.<br>Read the rocket story once more and try again.</div>
+        <button class="retry-btn" onclick="restartQuiz()">🔄 Try Again!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="16">
+  <div class="cert-page">
+    <div class="page-corner">🎓</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#ffd93d;color:#856404;">🏆 Certificate</span><h2 class="story-title">Your Rocket Explorer Certificate!</h2></div>
+    <div class="cert-controls">
+      <input class="cert-name-input" id="certName" placeholder="Type the child's name here..." oninput="drawCert()"/>
+      <button class="cert-dl-btn" onclick="downloadCert()">⬇ Download PNG</button>
+      <button class="cert-print-btn" onclick="printCert()">🖨 Print</button>
+    </div>
+    <div class="cert-wrap">
+      <canvas id="cert" width="900" height="630"></canvas>
+    </div>
+    <p class="cert-hint">Type the name above, then click Download or Print.</p>
+  </div>
+</div>
+</div>
+
+<script>
+(function(){
+  const box=document.getElementById('floaties');
+  ['🚀','⭐','🌍','🛰️','🌙'].forEach((icon)=>{
+    for(let n=0;n<2;n++){
+      const el=document.createElement('div');
+      el.className='floaty';
+      el.textContent=icon;
+      el.style.top=(8+Math.random()*80)+'%';
+      el.style.animationDuration=(24+Math.random()*18)+'s';
+      el.style.animationDelay=(Math.random()*16)+'s';
+      el.style.fontSize=(34+Math.random()*24)+'px';
+      box.appendChild(el);
+    }
+  });
+})();
+
+const TOTAL=16;
+let currentPage=0;
+let quizPassed=false;
+const pages=document.querySelectorAll('.page');
+const prevBtn=document.getElementById('prevBtn');
+const nextBtn=document.getElementById('nextBtn');
+const dotsContainer=document.getElementById('pageDots');
+for(let i=0;i<=TOTAL;i++){
+  const d=document.createElement('button');
+  d.className='dot'+(i===0?' active':'');
+  d.onclick=()=>goToPage(i);
+  dotsContainer.appendChild(d);
+}
+
+function goToPage(n){
+  if(n<0||n>TOTAL)return;
+  if(n===16&&!quizPassed){alert('You need to pass the quiz with at least 5 out of 6 to get your certificate.');return;}
+  stopReadAloud();
+  pages[currentPage].classList.remove('active');
+  currentPage=n;
+  pages[currentPage].classList.add('active');
+  prevBtn.disabled=currentPage===0;
+  nextBtn.disabled=currentPage===TOTAL;
+  document.getElementById('progressFill').style.width=Math.round(currentPage/TOTAL*100)+'%';
+  document.getElementById('progressText').textContent='Page '+(currentPage+1)+' of '+(TOTAL+1);
+  document.querySelectorAll('.dot').forEach((d,i)=>{
+    d.classList.toggle('active',i===currentPage);
+    if(i<currentPage)d.classList.add('visited');
+  });
+  if(currentPage===15)initQuiz();
+  if(currentPage===16)setTimeout(drawCert,120);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function changePage(d){goToPage(currentPage+d);}
+
+let isSpeaking=false;
+let speechUtterance=null;
+function toggleReadAloud(){
+  if(isSpeaking){stopReadAloud();return;}
+  const active=pages[currentPage];
+  const ttsEl=active.querySelector('[data-tts]');
+  const fallback=active.querySelector('.story-text')||active.querySelector('.story-page')||active.querySelector('.quiz-page');
+  if(ttsEl)speakText(ttsEl.textContent); else if(fallback)speakText(fallback.textContent);
+}
+function cleanForSpeech(text){
+  return text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{200D}\u{20E3}]/gu,'').replace(/\s+/g,' ').trim();
+}
+function speakText(text){
+  if(!('speechSynthesis' in window))return;
+  stopReadAloud();
+  speechUtterance=new SpeechSynthesisUtterance(cleanForSpeech(text));
+  speechUtterance.rate=.84;
+  speechUtterance.pitch=1.1;
+  speechUtterance.lang='en-US';
+  const voices=speechSynthesis.getVoices();
+  const preferred=voices.find(v=>v.name.includes('Samantha'))||voices.find(v=>v.name.includes('Karen'))||voices.find(v=>v.lang.startsWith('en'));
+  if(preferred)speechUtterance.voice=preferred;
+  speechUtterance.onstart=()=>{isSpeaking=true;document.getElementById('ttsBtn').classList.add('speaking');document.getElementById('ttsBtn').textContent='🔊 Reading...';document.getElementById('ttsStop').style.display='inline-flex';};
+  speechUtterance.onend=resetTTSUI;
+  speechUtterance.onerror=resetTTSUI;
+  speechSynthesis.speak(speechUtterance);
+}
+function stopReadAloud(){if('speechSynthesis' in window)speechSynthesis.cancel();resetTTSUI();}
+function resetTTSUI(){isSpeaking=false;document.getElementById('ttsBtn').classList.remove('speaking');document.getElementById('ttsBtn').textContent='🔊 Read Aloud';document.getElementById('ttsStop').style.display='none';}
+if('speechSynthesis' in window){speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();}
+
+function miniQuiz(btn,type,fbId){
+  const container=btn.closest('.quiz-bubble');
+  const btns=container.querySelectorAll('.q-opt');
+  btns.forEach(b=>b.style.pointerEvents='none');
+  const fb=document.getElementById(fbId);
+  if(type==='correct'){
+    btn.classList.add('correct');
+    fb.innerHTML='<span style="color:#27ae60;">Correct! You are thinking like a rocket scientist.</span>';
+  } else {
+    btn.classList.add('wrong');
+    btns.forEach(b=>{if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'correct'"))b.classList.add('correct');});
+    fb.innerHTML='<span style="color:#c0392b;">Not quite. The green answer is correct. Keep going.</span>';
+  }
+}
+
+const memAnswers=['⛽ Gives energy','🔥 Pushes with force','⬆️ Rockets rise'];
+function revealMem(row){
+  const span=row.querySelector('.mem-note');
+  const idx=parseInt(span.id.replace('mw',''))-1;
+  if(idx>=0&&idx<memAnswers.length){
+    span.textContent=memAnswers[idx];
+    span.style.color='var(--navy)';
+    row.style.background='rgba(49,94,251,.08)';
+  }
+}
+
+const QUESTIONS=[
+  {emoji:'🚀',q:'What does a rocket use to move upward?',opts:['Paddles','Thrust from engines','Bicycle wheels','Rain clouds'],ans:1},
+  {emoji:'🔺',q:'What is the pointy top of a rocket called?',opts:['Window','Nose cone','Tail seat','Orbit cap'],ans:1},
+  {emoji:'🔢',q:'Why do launch teams count down?',opts:['To make the rocket sleepy','To help everyone get ready together','To paint the rocket','To slow the engines'],ans:1},
+  {emoji:'🛰️',q:'What can rockets place into orbit?',opts:['Fish tanks','Satellites','School buses','Trees'],ans:1},
+  {emoji:'🌍',q:'What pulls the rocket downward toward Earth?',opts:['Orbit','Gravity','Sunlight','Moon dust'],ans:1},
+  {emoji:'📦',q:'Which is an example of rocket cargo?',opts:['Food and tools','A swimming pool','A playground slide','A mountain'],ans:0},
+];
+let qIdx=0,score=0,answered=false;
+function initQuiz(){
+  qIdx=0;score=0;answered=false;
+  document.getElementById('quizActive').style.display='block';
+  document.getElementById('quizPass').style.display='none';
+  document.getElementById('quizFail').style.display='none';
+  renderQuestion();
+}
+function renderQuestion(){
+  const q=QUESTIONS[qIdx];
+  document.getElementById('qEmoji').textContent=q.emoji;
+  document.getElementById('qText').textContent=q.q;
+  document.getElementById('qCounter').textContent='Question '+(qIdx+1)+' of 6';
+  document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';
+  document.getElementById('qResultMsg').textContent='';
+  document.getElementById('nextQBtn').style.display='none';
+  answered=false;
+  const opts=document.getElementById('fquizOptions');
+  opts.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const btn=document.createElement('button');
+    btn.className='fq-opt';
+    btn.textContent=o;
+    btn.onclick=()=>answerQ(i,btn);
+    opts.appendChild(btn);
+  });
+}
+function answerQ(i,btn){
+  if(answered)return;
+  answered=true;
+  const q=QUESTIONS[qIdx];
+  const allBtns=document.querySelectorAll('.fq-opt');
+  allBtns.forEach(b=>b.classList.add('locked'));
+  const msg=document.getElementById('qResultMsg');
+  if(i===q.ans){
+    btn.classList.add('correct');
+    score++;
+    const praise=['Fantastic!','Brilliant!','Rocket star!','Great job!'];
+    msg.innerHTML='<span style="color:#27ae60;">'+praise[Math.floor(Math.random()*praise.length)]+'</span>';
+  } else {
+    btn.classList.add('wrong');
+    allBtns[q.ans].classList.add('correct');
+    msg.innerHTML='<span style="color:#c0392b;">Oops. The correct answer is highlighted in green.</span>';
+  }
+  document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';
+  document.getElementById('nextQBtn').style.display='block';
+  document.getElementById('nextQBtn').textContent=qIdx===5?'See My Result! 🏁':'Next Question →';
+}
+function nextQuestion(){qIdx++;if(qIdx>=6){showResult();return;}renderQuestion();}
+function showResult(){
+  document.getElementById('quizActive').style.display='none';
+  if(score>=5){
+    quizPassed=true;
+    document.getElementById('quizPass').style.display='block';
+    document.getElementById('passScore').textContent=score+' / 6';
+    document.getElementById('passMsg').innerHTML=score===6?'Perfect score! You are a true Rocket Explorer!':'Wonderful work! You understand rockets really well!';
+  } else {
+    document.getElementById('quizFail').style.display='block';
+    document.getElementById('failScore').textContent=score+' / 6';
+  }
+}
+function restartQuiz(){initQuiz();}
+function goToCertificate(){goToPage(16);}
+
+const certCanvas=document.getElementById('cert');
+const ctx=certCanvas.getContext('2d');
+const CW=900,CH=630;
+function drawStarShape(cx,cy,r,pts,color){
+  ctx.save();ctx.fillStyle=color;ctx.beginPath();
+  for(let i=0;i<pts*2;i++){const a=(i*Math.PI/pts)-Math.PI/2,rd=i%2===0?r:r*.45;i===0?ctx.moveTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a)):ctx.lineTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a));}
+  ctx.closePath();ctx.fill();ctx.restore();
+}
+function rr(x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();
+}
+const qrImage=new Image();let qrReady=false;qrImage.crossOrigin='anonymous';qrImage.onload=()=>{qrReady=true;drawCert();};qrImage.src='https://quickchart.io/qr?text='+encodeURIComponent('https://fivetofifteen.com/')+'&size=180';
+function drawCert(){
+  const name=document.getElementById('certName').value.trim()||'Explorer Name Here';
+  ctx.clearRect(0,0,CW,CH);
+  const bg=ctx.createLinearGradient(0,0,CW,CH);bg.addColorStop(0,'#f7fbff');bg.addColorStop(.5,'#ffffff');bg.addColorStop(1,'#eef4ff');
+  ctx.fillStyle=bg;rr(0,0,CW,CH,20);ctx.fill();
+  ctx.strokeStyle='#315efb';ctx.lineWidth=6;rr(8,8,CW-16,CH-16,16);ctx.stroke();
+  ctx.strokeStyle='#7c3aed';ctx.lineWidth=2;ctx.setLineDash([8,5]);rr(20,20,CW-40,CH-40,10);ctx.stroke();ctx.setLineDash([]);
+  [[52,52],[CW-52,52],[52,CH-52],[CW-52,CH-52]].forEach(([x,y])=>drawStarShape(x,y,18,5,'#7c3aed'));
+  const rg=ctx.createLinearGradient(CW/2-220,0,CW/2+220,0);rg.addColorStop(0,'#315efb');rg.addColorStop(.5,'#7c3aed');rg.addColorStop(1,'#315efb');
+  ctx.fillStyle=rg;rr(CW/2-220,28,440,44,22);ctx.fill();
+  ctx.fillStyle='#f4f3ff';ctx.font='bold 17px "Fredoka One",cursive';ctx.textAlign='center';ctx.fillText('🚀  ROCKET READY  🚀',CW/2,57);
+  ctx.font='64px serif';ctx.fillText('🚀',CW/2,142);
+  ctx.fillStyle='#30336b';ctx.font='bold 40px "Fredoka One",cursive';ctx.fillText('Rocket Explorer Certificate!',CW/2,196);
+  ctx.fillStyle='#888';ctx.font='17px "Nunito",sans-serif';ctx.fillText('This is to proudly certify that the amazing space learner',CW/2,232);
+  ctx.strokeStyle='#315efb';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(CW/2-240,276);ctx.lineTo(CW/2+240,276);ctx.stroke();
+  ctx.fillStyle='#1d4ed8';ctx.font='bold 38px "Fredoka One",cursive';ctx.fillText(name,CW/2,270);
+  ctx.fillStyle='#444';ctx.font='17px "Nunito",sans-serif';ctx.fillText('has completed the Rocket Ready adventure and is now an official',CW/2,310);
+  ctx.fillStyle='#7c3aed';ctx.font='bold 24px "Fredoka One",cursive';ctx.fillText('⭐ Certified Rocket Explorer ⭐',CW/2,344);
+  ctx.fillStyle='#888';ctx.font='14px "Nunito",sans-serif';ctx.fillText('Scored 5 or more on the final Rocket Challenge quiz.',CW/2,372);
+  const badges=[
+    {t:'✓ Rocket Parts',bg:'#e8f0ff',c:'#1d4ed8'},
+    {t:'✓ Thrust Power',bg:'#f3e8ff',c:'#7c3aed'},
+    {t:'✓ Orbit Facts',bg:'#ecfeff',c:'#0f766e'},
+    {t:'✓ Space Explorer',bg:'#fff7db',c:'#b7791f'}
+  ];
+  const bw=168,bh=30,gap=10,tot=badges.length*(bw+gap)-gap;let bx=CW/2-tot/2;
+  badges.forEach(b=>{ctx.fillStyle=b.bg;rr(bx,390,bw,bh,15);ctx.fill();ctx.fillStyle=b.c;ctx.font='bold 12px "Nunito",sans-serif';ctx.fillText(b.t,bx+bw/2,409);bx+=bw+gap;});
+  ctx.font='32px serif';ctx.fillStyle='#333';ctx.fillText('🌍  🛰️  🚀  ⭐  🌙',CW/2,468);
+  ctx.fillStyle='#fff';ctx.strokeStyle='#d7e2f4';ctx.lineWidth=2;rr(CW-154,68,102,102,14);ctx.fill();ctx.stroke();
+  if(qrReady){ctx.drawImage(qrImage,CW-144,78,82,82);}else{ctx.fillStyle='#eef7ff';ctx.fillRect(CW-144,78,82,82);ctx.fillStyle='#1d6fd6';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('QR loading...',CW-103,122);}
+  ctx.fillStyle='#1d6fd6';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('Scan to visit',CW-103,185);
+  const d=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
+  ctx.fillStyle='#9e9e9e';ctx.font='bold 12px "Nunito",sans-serif';ctx.fillText('Presented by fivetofifteen.com',CW/2,538);
+  ctx.fillStyle='#bbb';ctx.font='12px "Nunito",sans-serif';ctx.fillText('Awarded on '+d,CW/2,562);
+}
+function downloadCert(){drawCert();const link=document.createElement('a');link.download='rocket-explorer-certificate.png';link.href=certCanvas.toDataURL('image/png');link.click();}
+function printCert(){
+  drawCert();
+  const dataUrl=certCanvas.toDataURL('image/png');
+  const win=window.open('','_blank');
+  const html=[
+    '<!DOCTYPE html>',
+    '<html><head><title>Rocket Explorer Certificate<\\/title>',
+    '<style>body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f5f5f5;}img{max-width:100%;box-shadow:0 4px 20px rgba(0,0,0,.15);border-radius:12px;}@media print{body{background:#fff;}img{box-shadow:none;width:100%;}}<\\/style>',
+    '<\\/head><body>',
+    '<img src="'+dataUrl+'" alt="Certificate"/>',
+    '<\\/body><\\/html>'
+  ].join('');
+  win.document.write(html);win.document.close();win.onload=()=>{win.focus();win.print();};
+}
+drawCert();
+</script>
+</body>
+</html>

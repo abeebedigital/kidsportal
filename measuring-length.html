@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>How Long Is It? 📏 Measuring with a Ruler!</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+    /* story-font-boost */
+    html{font-size:17px;}
+    @media (max-width:500px){html{font-size:16px;}}
+:root{
+  --bg:#FFF9F0;
+  --card:#FFFFFF;
+  --yellow:#FFD93D;
+  --orange:#FF9F1C;
+  --coral:#FF6B6B;
+  --green:#6BCB77;
+  --blue:#4D96FF;
+  --purple:#845EF7;
+  --teal:#20C997;
+  --pink:#F06595;
+  --dark:#2D3436;
+  --mid:#636E72;
+  --light:#B2BEC3;
+  --ruler-wood:#C8952C;
+  --ruler-face:#F5C842;
+  --ruler-mark:#7B5800;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--dark);overflow-x:hidden;}
+
+/* ======= HOME LINK ======= */
+.home-link-wrap{max-width:900px;margin:0 auto;padding:12px 12px 0;}
+.home-link{display:inline-flex;align-items:center;gap:6px;background:#FFF3CD;border:1.5px solid var(--yellow);color:#856404;font-family:'Baloo 2',cursive;font-size:13px;padding:5px 14px;border-radius:20px;text-decoration:none;transition:all .2s;}
+.home-link:hover{background:var(--yellow);color:#5a4000;}
+
+/* ======= NAV ======= */
+.nav-wrap{max-width:900px;margin:0 auto;padding:0 12px;position:sticky;top:0;z-index:100;background:var(--bg);padding-top:6px;}
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:white;border-radius:18px;margin:10px 0;border:2px solid #F0E6C8;box-shadow:0 3px 12px rgba(0,0,0,.06);}
+.nav-btn{background:var(--orange);color:white;border:none;font-family:'Baloo 2',cursive;font-size:15px;padding:7px 20px;border-radius:18px;cursor:pointer;transition:all .2s;font-weight:700;}
+.nav-btn:hover{transform:scale(1.06);box-shadow:0 4px 14px rgba(255,159,28,.4);}
+.nav-btn:disabled{background:#ddd;cursor:not-allowed;transform:none;box-shadow:none;}
+.page-dots{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;max-width:300px;}
+.dot{width:10px;height:10px;border-radius:50%;background:#E0D5C8;cursor:pointer;transition:all .2s;}
+.dot.active{background:var(--orange);transform:scale(1.35);box-shadow:0 0 6px rgba(255,159,28,.5);}
+.dot.visited{background:#FFCC80;}
+.progress-strip{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.progress-bar{flex:1;height:7px;background:#F0E6C8;border-radius:4px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--orange),var(--coral));border-radius:4px;transition:width .5s ease;}
+.progress-label{font-family:'Baloo 2',cursive;font-size:12px;color:var(--mid);white-space:nowrap;}
+
+/* ======= PAGES ======= */
+#book{max-width:900px;margin:0 auto;padding:0 12px 20px;}
+.page{display:none;animation:fadeUp .45s ease;}
+.page.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ======= STORY PAGE BASE ======= */
+.story-page{background:white;border-radius:24px;padding:28px;border:2.5px solid #F0E6C8;box-shadow:0 4px 20px rgba(0,0,0,.06);position:relative;overflow:hidden;min-height:520px;}
+.page-num{position:absolute;top:14px;right:18px;font-family:'Baloo 2',cursive;font-size:15px;color:#D4C8B0;font-weight:700;}
+.story-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.badge{font-family:'Baloo 2',cursive;font-size:12px;font-weight:700;padding:4px 14px;border-radius:16px;white-space:nowrap;}
+.story-title{font-family:'Baloo 2',cursive;font-size:26px;font-weight:800;color:var(--dark);}
+.story-body{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start;}
+.story-text{font-size:15px;line-height:1.85;color:#444;}
+.story-text p{margin-bottom:10px;}
+.hl{font-weight:800;color:var(--orange);}
+.hl2{font-weight:800;color:var(--blue);}
+.hl3{font-weight:800;color:var(--green);}
+
+/* ART PANEL */
+.art-panel{border-radius:18px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:10px;border:2px dashed #E8DDD0;}
+
+/* COVER */
+.cover{background:linear-gradient(145deg,#FFF4D6,#FFE8B3,#FFDFA0);border-radius:24px;padding:44px 30px;text-align:center;min-height:520px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid var(--yellow);position:relative;overflow:hidden;}
+.cover::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:rgba(255,159,28,.12);border-radius:50%;}
+.cover::after{content:'';position:absolute;bottom:-30px;left:-30px;width:150px;height:150px;background:rgba(255,107,107,.1);border-radius:50%;}
+.cover-title{font-family:'Baloo 2',cursive;font-size:46px;font-weight:800;color:#C06000;line-height:1.1;margin-bottom:6px;position:relative;z-index:1;}
+.cover-sub{font-family:'Baloo 2',cursive;font-size:20px;color:var(--orange);margin-bottom:24px;position:relative;z-index:1;}
+.cover-ruler-wrap{position:relative;z-index:1;margin:10px 0;}
+.cover-tagline{font-size:14px;color:#A07840;font-style:italic;margin-top:16px;position:relative;z-index:1;}
+
+/* ======= RULER SVG COMPONENT ======= */
+.ruler-svg{display:block;width:100%;max-width:600px;margin:0 auto;}
+
+/* ======= INTERACTIVE MEASURE ZONE ======= */
+.measure-zone{background:linear-gradient(135deg,#F8F4EE,#FFF9F3);border-radius:18px;padding:20px;border:2px solid #F0E6C8;position:relative;overflow:hidden;}
+.measure-canvas-wrap{position:relative;width:100%;overflow:hidden;border-radius:12px;background:white;border:1.5px solid #E8DDD0;}
+canvas.measure-canvas{display:block;width:100%;cursor:grab;}
+canvas.measure-canvas:active{cursor:grabbing;}
+.measure-hint{font-family:'Baloo 2',cursive;font-size:13px;color:var(--mid);text-align:center;margin-top:8px;}
+.measure-result{font-family:'Baloo 2',cursive;font-size:20px;font-weight:700;text-align:center;margin-top:10px;min-height:32px;color:var(--orange);}
+.measure-controls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px;}
+.m-btn{background:var(--blue);color:white;border:none;font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;padding:7px 16px;border-radius:14px;cursor:pointer;transition:all .2s;}
+.m-btn:hover{transform:scale(1.05);}
+.m-btn.green{background:var(--green);}
+.m-btn.coral{background:var(--coral);}
+.m-btn.purple{background:var(--purple);}
+
+/* ======= OBJECT SELECTOR ======= */
+.obj-grid{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0;}
+.obj-card{background:white;border:2.5px solid #E8DDD0;border-radius:14px;padding:8px 14px;cursor:pointer;transition:all .2s;text-align:center;font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;color:var(--mid);}
+.obj-card:hover{border-color:var(--orange);transform:translateY(-2px);box-shadow:0 4px 12px rgba(255,159,28,.2);}
+.obj-card.selected{border-color:var(--orange);background:#FFF3E0;color:#C06000;box-shadow:0 4px 12px rgba(255,159,28,.25);}
+.obj-card .obj-emoji{font-size:26px;display:block;margin-bottom:2px;}
+
+/* ======= QUIZ BUBBLE ======= */
+.quiz-bubble{background:linear-gradient(135deg,#FFF3E0,#FFF9F3);border:2.5px solid var(--yellow);border-radius:18px;padding:18px;margin-top:14px;}
+.quiz-title{font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;color:#C06000;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.q-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.q-opt{background:white;border:2px solid #E8DDD0;border-radius:12px;padding:9px 13px;font-size:14px;font-weight:700;font-family:'Baloo 2',cursive;color:var(--dark);cursor:pointer;transition:all .2s;text-align:center;}
+.q-opt:hover:not(.locked){background:#FFF3E0;border-color:var(--orange);}
+.q-opt.correct{background:#D4EDDA;border-color:#28a745;color:#155724;}
+.q-opt.wrong{background:#F8D7DA;border-color:#dc3545;color:#721c24;}
+.q-opt.locked{cursor:not-allowed;}
+.q-fb{font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;text-align:center;margin-top:8px;min-height:22px;}
+
+/* ======= FUN FACT ======= */
+.fun-fact{background:#E8F5E9;border:2px solid #A5D6A7;border-radius:14px;padding:12px 16px;margin-top:12px;}
+.fun-fact-title{font-family:'Baloo 2',cursive;font-size:14px;font-weight:800;color:#2E7D32;margin-bottom:4px;}
+.fun-fact-text{font-size:13px;color:#333;line-height:1.6;}
+
+/* ======= DRAG RULER ACTIVITY ======= */
+.drag-activity{background:linear-gradient(135deg,#EEF2FF,#F5F3FF);border-radius:18px;padding:18px;border:2px solid #C7D2FE;position:relative;overflow:hidden;}
+.drag-activity h3{font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:var(--purple);margin-bottom:12px;text-align:center;}
+.drag-canvas-wrap{position:relative;width:100%;border-radius:12px;background:white;border:1.5px solid #C7D2FE;overflow:hidden;}
+canvas.drag-canvas{display:block;width:100%;touch-action:none;}
+.drag-hint{font-family:'Baloo 2',cursive;font-size:13px;color:var(--purple);text-align:center;margin-top:8px;}
+.drag-result{font-family:'Baloo 2',cursive;font-size:18px;font-weight:700;text-align:center;margin-top:8px;min-height:28px;color:var(--purple);}
+
+/* ======= CERTIFICATE ======= */
+.cert-page{background:white;border-radius:24px;padding:24px;border:2.5px solid var(--yellow);box-shadow:0 4px 20px rgba(255,159,28,.15);}
+.cert-controls{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
+.cert-input{font-family:'Nunito',sans-serif;font-size:16px;padding:9px 16px;border:2px solid var(--yellow);border-radius:12px;outline:none;flex:1;min-width:180px;color:#333;background:white;}
+.cert-input:focus{border-color:var(--orange);}
+.cert-dl{background:var(--purple);color:white;border:none;font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;padding:9px 18px;border-radius:18px;cursor:pointer;transition:transform .15s;}
+.cert-dl:hover{transform:scale(1.05);}
+.cert-print{background:var(--teal);color:white;border:none;font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;padding:9px 18px;border-radius:18px;cursor:pointer;transition:transform .15s;}
+.cert-print:hover{transform:scale(1.05);}
+.cert-wrap{border-radius:14px;padding:5px;border:2.5px solid var(--yellow);background:#FFFDF5;}
+canvas#cert{width:100%;border-radius:10px;display:block;}
+.cert-hint{font-size:12px;color:#aaa;text-align:center;margin-top:7px;}
+
+/* ======= FINAL QUIZ ======= */
+.final-quiz-page{background:white;border-radius:24px;padding:26px;border:2.5px solid var(--blue);min-height:520px;}
+.fq-header{text-align:center;margin-bottom:20px;}
+.fq-title{font-family:'Baloo 2',cursive;font-size:28px;font-weight:800;color:var(--blue);}
+.fq-counter{font-family:'Baloo 2',cursive;font-size:14px;color:var(--mid);margin-top:4px;}
+.fq-score-badge{display:inline-block;background:#E3F2FD;border:1.5px solid #90CAF9;border-radius:20px;padding:4px 16px;font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;color:#1565C0;margin-top:6px;}
+.fq-card{background:linear-gradient(135deg,#E3F2FD,#EDE7F6);border-radius:18px;padding:20px;margin-bottom:14px;border:1.5px solid #C7D2FE;}
+.fq-emoji{font-size:40px;text-align:center;margin-bottom:8px;}
+.fq-q{font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;color:var(--dark);margin-bottom:4px;text-align:center;}
+.fq-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+.fq-opt{background:white;border:2.5px solid #E0D5F0;border-radius:14px;padding:11px 14px;font-size:15px;font-weight:700;font-family:'Baloo 2',cursive;color:var(--dark);cursor:pointer;transition:all .2s;text-align:center;}
+.fq-opt:hover:not(.locked){background:#F3E8FF;border-color:var(--purple);transform:translateY(-2px);}
+.fq-opt.correct{background:#D4EDDA;border-color:#28a745;color:#155724;}
+.fq-opt.wrong{background:#F8D7DA;border-color:#dc3545;color:#721c24;}
+.fq-opt.locked{cursor:not-allowed;}
+.fq-result-msg{font-family:'Baloo 2',cursive;font-size:16px;font-weight:700;text-align:center;min-height:28px;margin-top:8px;}
+.fq-next{display:block;margin:12px auto 0;background:linear-gradient(135deg,var(--blue),var(--purple));color:white;border:none;font-family:'Baloo 2',cursive;font-size:16px;font-weight:700;padding:10px 28px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.fq-next:hover{transform:scale(1.05);}
+.pass-screen,.fail-screen{text-align:center;padding:20px 10px;}
+.result-trophy{font-size:76px;margin-bottom:12px;animation:bounce2 1s ease-in-out infinite;}
+@keyframes bounce2{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.result-title{font-family:'Baloo 2',cursive;font-size:32px;font-weight:800;margin-bottom:8px;}
+.result-score{font-family:'Baloo 2',cursive;font-size:52px;font-weight:800;color:var(--orange);}
+.result-msg{font-size:16px;color:var(--mid);margin:12px 0 20px;line-height:1.7;}
+.retry-btn{background:linear-gradient(135deg,var(--coral),var(--orange));color:white;border:none;font-family:'Baloo 2',cursive;font-size:18px;font-weight:700;padding:12px 30px;border-radius:22px;cursor:pointer;transition:all .2s;margin:6px;}
+.retry-btn:hover{transform:scale(1.06);}
+.proceed-btn{background:linear-gradient(135deg,var(--green),var(--teal));color:white;border:none;font-family:'Baloo 2',cursive;font-size:18px;font-weight:700;padding:12px 30px;border-radius:22px;cursor:pointer;transition:all .2s;margin:6px;}
+.proceed-btn:hover{transform:scale(1.06);}
+
+/* COMPARISON TABLE */
+.comp-table{width:100%;border-collapse:separate;border-spacing:0 6px;}
+.comp-table th{font-family:'Baloo 2',cursive;font-size:13px;font-weight:800;color:var(--mid);text-align:left;padding:4px 10px;}
+.comp-table td{padding:8px 12px;font-size:14px;font-weight:700;}
+.comp-table tr td:first-child{border-radius:10px 0 0 10px;}
+.comp-table tr td:last-child{border-radius:0 10px 10px 0;}
+
+/* STEP INDICATOR */
+.steps{display:flex;gap:6px;align-items:center;margin:12px 0;flex-wrap:wrap;}
+.step{background:#F0E6C8;border-radius:20px;padding:5px 14px;font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;color:#8A6A30;display:flex;align-items:center;gap:6px;}
+.step.active{background:var(--orange);color:white;}
+.step-num{background:rgba(0,0,0,.15);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:12px;}
+
+/* animated ruler */
+@keyframes rulerSlide{from{transform:translateX(-30px);opacity:0}to{transform:translateX(0);opacity:1}}
+.ruler-anim{animation:rulerSlide .7s ease both;}
+
+@media(max-width:600px){
+  .story-body{grid-template-columns:1fr;}
+  .cover-title{font-size:32px;}
+  .fq-opts,.q-opts{grid-template-columns:1fr;}
+  .cert-controls{flex-direction:column;}
+  .story-page,.cover,.final-quiz-page{min-height:auto;}
+}
+</style>
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+
+<div class="home-link-wrap"></div>
+
+<div class="nav-wrap">
+  <div class="progress-strip">
+    <span class="progress-label">📏 Learning...</span>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:5%"></div></div>
+    <span class="progress-label" id="progressText">Page 1 of 16</span>
+  </div>
+  <div class="nav-bar">
+    <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Back</button>
+    <div class="page-dots" id="pageDots"></div>
+    <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+  </div>
+</div>
+
+<div id="book">
+
+<!-- ===== PAGE 0: COVER ===== -->
+<div class="page active" data-page="0">
+<div class="cover">
+  <div style="font-size:60px;margin-bottom:10px;animation:bounce2 2.5s ease-in-out infinite;">📏</div>
+  <div class="cover-title">How Long Is It?</div>
+  <div class="cover-sub">A Story About Measuring Length!</div>
+  <div class="cover-ruler-wrap">
+    <svg width="520" height="54" viewBox="0 0 520 54" class="ruler-svg ruler-anim">
+      <rect x="0" y="8" width="520" height="40" rx="5" fill="#C8952C"/>
+      <rect x="2" y="10" width="516" height="36" rx="4" fill="#F5C842"/>
+      <!-- cm marks -->
+      <g fill="#7B5800">
+        <line x1="0" y1="10" x2="0" y2="46" stroke="#C8952C" stroke-width="2"/>
+        <!-- every 5px = 1mm roughly; 1 cm = 50px -->
+        <rect x="4" y="10" width="1.5" height="20" rx="1"/><!-- 0 -->
+        <rect x="54" y="10" width="1.5" height="20" rx="1"/><!-- 1 -->
+        <rect x="104" y="10" width="1.5" height="20" rx="1"/><!-- 2 -->
+        <rect x="154" y="10" width="1.5" height="20" rx="1"/><!-- 3 -->
+        <rect x="204" y="10" width="1.5" height="20" rx="1"/><!-- 4 -->
+        <rect x="254" y="10" width="1.5" height="20" rx="1"/><!-- 5 -->
+        <rect x="304" y="10" width="1.5" height="20" rx="1"/><!-- 6 -->
+        <rect x="354" y="10" width="1.5" height="20" rx="1"/><!-- 7 -->
+        <rect x="404" y="10" width="1.5" height="20" rx="1"/><!-- 8 -->
+        <rect x="454" y="10" width="1.5" height="20" rx="1"/><!-- 9 -->
+        <rect x="504" y="10" width="1.5" height="20" rx="1"/><!-- 10 -->
+        <!-- 5mm marks -->
+        <rect x="29" y="10" width="1" height="13" rx="1"/>
+        <rect x="79" y="10" width="1" height="13" rx="1"/>
+        <rect x="129" y="10" width="1" height="13" rx="1"/>
+        <rect x="179" y="10" width="1" height="13" rx="1"/>
+        <rect x="229" y="10" width="1" height="13" rx="1"/>
+        <rect x="279" y="10" width="1" height="13" rx="1"/>
+        <rect x="329" y="10" width="1" height="13" rx="1"/>
+        <rect x="379" y="10" width="1" height="13" rx="1"/>
+        <rect x="429" y="10" width="1" height="13" rx="1"/>
+        <rect x="479" y="10" width="1" height="13" rx="1"/>
+        <!-- mm marks subset -->
+        <rect x="15" y="10" width="1" height="8" rx="1"/><rect x="20" y="10" width="1" height="8" rx="1"/><rect x="25" y="10" width="1" height="8" rx="1"/>
+        <rect x="35" y="10" width="1" height="8" rx="1"/><rect x="40" y="10" width="1" height="8" rx="1"/><rect x="45" y="10" width="1" height="8" rx="1"/>
+        <rect x="65" y="10" width="1" height="8" rx="1"/><rect x="70" y="10" width="1" height="8" rx="1"/><rect x="75" y="10" width="1" height="8" rx="1"/>
+        <rect x="85" y="10" width="1" height="8" rx="1"/><rect x="90" y="10" width="1" height="8" rx="1"/><rect x="95" y="10" width="1" height="8" rx="1"/>
+        <!-- cm labels -->
+        <text x="2" y="44" font-size="9" font-family="Nunito,sans-serif" font-weight="700">0</text>
+        <text x="50" y="44" font-size="9" font-family="Nunito,sans-serif" font-weight="700">1</text>
+        <text x="100" y="44" font-size="9" font-family="Nunito,sans-serif" font-weight="700">2</text>
+        <text x="150" y="44" font-size="9" font-family="Nunito,sans-serif" font-weight="700">3</text>
+        <text x="200" y="44" font-size="9" font-family="Nunito,sans-serif" font-weight="700">4</text>
+        <text x="250" y="44" font-size="9" font-family="Nunito,sans-serif" font-weight="700">5</text>
+        <text x="300" y="44" font-size="9" font-family="Nunito,sans-serif" font-weight="700">6</text>
+        <text x="350" y="44" font-size="9" font-family="Nunito,sans-serif" font-weight="700">7</text>
+        <text x="400" y="44" font-size="9" font-family="Nunito,sans-serif" font-weight="700">8</text>
+        <text x="450" y="44" font-size="9" font-family="Nunito,sans-serif" font-weight="700">9</text>
+        <text x="498" y="44" font-size="9" font-family="Nunito,sans-serif" font-weight="700">10</text>
+        <text x="220" y="27" font-size="9" font-family="Nunito,sans-serif" font-weight="800" fill="#A07020">cm</text>
+      </g>
+    </svg>
+  </div>
+  <p class="cover-tagline">For curious kids aged 5–8 · 16 pages of measuring fun!</p>
+  <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;justify-content:center;">
+    <span style="background:white;border:2px solid var(--orange);border-radius:20px;padding:5px 14px;font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;color:var(--orange);">📖 Story + Activities</span>
+    <span style="background:white;border:2px solid var(--blue);border-radius:20px;padding:5px 14px;font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;color:var(--blue);">📏 Drag the Ruler!</span>
+    <span style="background:white;border:2px solid var(--green);border-radius:20px;padding:5px 14px;font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;color:var(--green);">🏆 Win a Certificate</span>
+  </div>
+</div>
+</div>
+
+<!-- ===== PAGE 1: MEET RULER REMY ===== -->
+<div class="page" data-page="1">
+<div class="story-page">
+  <div class="page-num">01</div>
+  <div class="story-header"><span class="badge" style="background:#FFF3E0;border:1.5px solid var(--orange);color:#C06000;">Meet Our Guide</span><h2 class="story-title">Hello from Remy the Ruler! 👋</h2></div>
+  <div class="story-body">
+    <div class="story-text">
+      <p>Hi there! I'm <span class="hl">Remy the Ruler</span> 📏 — and I love measuring things!</p>
+      <p>Do you ever wonder <span class="hl2">how long</span> a pencil is? Or how tall your favourite toy stands? Or how wide your book is?</p>
+      <p>That's what <span class="hl">measuring</span> is all about! Measuring helps us find out <span class="hl3">exactly how long something is</span>.</p>
+      <p>We use special tools to measure. The most popular one is the <span class="hl">ruler</span> — that flat stick with numbers on it!</p>
+      <p>Ready to learn how to use me? Let's go! 🚀</p>
+    </div>
+    <div class="art-panel" style="background:linear-gradient(135deg,#FFF9F0,#FFFDF5);">
+      <svg width="180" height="200" viewBox="0 0 180 200">
+        <!-- Ruler character -->
+        <rect x="30" y="60" width="120" height="50" rx="8" fill="#F5C842" stroke="#C8952C" stroke-width="3"/>
+        <!-- ruler marks on character -->
+        <line x1="50" y1="60" x2="50" y2="75" stroke="#7B5800" stroke-width="2"/>
+        <line x1="70" y1="60" x2="70" y2="75" stroke="#7B5800" stroke-width="2"/>
+        <line x1="90" y1="60" x2="90" y2="80" stroke="#7B5800" stroke-width="2.5"/>
+        <line x1="110" y1="60" x2="110" y2="75" stroke="#7B5800" stroke-width="2"/>
+        <line x1="130" y1="60" x2="130" y2="75" stroke="#7B5800" stroke-width="2"/>
+        <!-- face -->
+        <circle cx="60" cy="87" r="7" fill="#7B5800" opacity=".7"/>
+        <circle cx="120" cy="87" r="7" fill="#7B5800" opacity=".7"/>
+        <circle cx="62" cy="85" r="3" fill="white"/>
+        <circle cx="122" cy="85" r="3" fill="white"/>
+        <!-- smile -->
+        <path d="M75 98 Q90 112 105 98" stroke="#7B5800" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <!-- arms -->
+        <line x1="30" y1="80" x2="5" y2="70" stroke="#C8952C" stroke-width="5" stroke-linecap="round"/>
+        <line x1="150" y1="80" x2="175" y2="70" stroke="#C8952C" stroke-width="5" stroke-linecap="round"/>
+        <!-- hat -->
+        <rect x="70" y="35" width="40" height="28" rx="4" fill="#FF9F1C"/>
+        <rect x="60" y="58" width="60" height="8" rx="3" fill="#FF9F1C"/>
+        <text x="90" y="53" text-anchor="middle" font-size="14" font-family="Nunito" font-weight="800" fill="white">📏</text>
+        <!-- legs -->
+        <line x1="70" y1="110" x2="60" y2="145" stroke="#C8952C" stroke-width="6" stroke-linecap="round"/>
+        <line x1="110" y1="110" x2="120" y2="145" stroke="#C8952C" stroke-width="6" stroke-linecap="round"/>
+        <ellipse cx="60" cy="148" rx="12" ry="6" fill="#C8952C"/>
+        <ellipse cx="120" cy="148" rx="12" ry="6" fill="#C8952C"/>
+        <text x="90" y="180" text-anchor="middle" font-size="12" font-family="'Baloo 2',cursive" font-weight="700" fill="#C8952C">Remy the Ruler!</text>
+      </svg>
+    </div>
+  </div>
+  <div class="fun-fact">
+    <div class="fun-fact-title">📏 Did You Know?</div>
+    <div class="fun-fact-text">Long ago, people measured things using their body parts — like the length of a foot 🦶 or the width of a thumb! But everyone's body is different, so a "foot" wasn't the same for everyone. That's why we invented rulers — so everyone measures the same way!</div>
+  </div>
+</div>
+</div>
+
+<!-- ===== PAGE 2: WHAT IS LENGTH? ===== -->
+<div class="page" data-page="2">
+<div class="story-page">
+  <div class="page-num">02</div>
+  <div class="story-header"><span class="badge" style="background:#E3F2FD;border:1.5px solid var(--blue);color:#1565C0;">The Basics</span><h2 class="story-title">What Is Length? 🤔</h2></div>
+  <div class="story-body">
+    <div class="story-text">
+      <p><span class="hl">Length</span> is how long something is — from one end to the other end!</p>
+      <p>You can measure the length of lots of things:<br>
+        🖊️ A pencil<br>
+        📚 A book<br>
+        🐛 A worm<br>
+        🛏️ Your bed<br>
+        😊 Even your smile!</p>
+      <p>We measure length using units. The most common units are <span class="hl">centimetres (cm)</span> and <span class="hl2">metres (m)</span>.</p>
+      <p>Short things use <span class="hl">centimetres</span> — like a pencil. Really long things use <span class="hl2">metres</span> — like a swimming pool!</p>
+    </div>
+    <div class="art-panel" style="background:#F8F4EE;">
+      <!-- visual objects with arrows showing length -->
+      <svg width="200" height="220" viewBox="0 0 200 220">
+        <!-- pencil -->
+        <rect x="20" y="20" width="140" height="18" rx="4" fill="#FFD93D" stroke="#C8952C" stroke-width="1.5"/>
+        <polygon points="160,20 160,38 178,29" fill="#F87171"/>
+        <rect x="20" y="22" width="16" height="14" rx="2" fill="#C8952C"/>
+        <line x1="20" y1="44" x2="178" y2="44" stroke="#FF9F1C" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <polygon points="20,40 20,48 12,44" fill="#FF9F1C"/>
+        <polygon points="178,40 178,48 186,44" fill="#FF9F1C"/>
+        <text x="100" y="55" text-anchor="middle" font-size="11" font-family="'Baloo 2',cursive" font-weight="700" fill="#C06000">Length of pencil!</text>
+        <!-- book -->
+        <rect x="40" y="70" width="80" height="60" rx="4" fill="#4D96FF" stroke="#1565C0" stroke-width="1.5"/>
+        <rect x="40" y="70" width="10" height="60" rx="2" fill="#1565C0"/>
+        <text x="85" y="105" text-anchor="middle" font-size="10" font-family="Nunito" fill="white" font-weight="700">Book</text>
+        <!-- width arrow -->
+        <line x1="40" y1="140" x2="120" y2="140" stroke="#845EF7" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <polygon points="40,136 40,144 32,140" fill="#845EF7"/>
+        <polygon points="120,136 120,144 128,140" fill="#845EF7"/>
+        <text x="80" y="152" text-anchor="middle" font-size="11" font-family="'Baloo 2',cursive" font-weight="700" fill="#845EF7">Width of book!</text>
+        <!-- worm -->
+        <path d="M20 180 Q40 168 60 180 Q80 192 100 180 Q120 168 140 180 Q160 192 180 180" stroke="#6BCB77" stroke-width="8" fill="none" stroke-linecap="round"/>
+        <circle cx="180" cy="180" r="7" fill="#4CAF50"/>
+        <circle cx="183" cy="177" r="2" fill="white"/>
+        <circle cx="183" cy="183" r="2" fill="white"/>
+        <line x1="20" y1="200" x2="187" y2="200" stroke="#6BCB77" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="100" y="215" text-anchor="middle" font-size="11" font-family="'Baloo 2',cursive" font-weight="700" fill="#2E7D32">Length of worm!</text>
+      </svg>
+    </div>
+  </div>
+  <div class="quiz-bubble" id="qz2">
+    <div class="quiz-title">🌟 Quick Question!</div>
+    <p style="font-family:'Baloo 2',cursive;font-size:15px;color:#333;font-weight:700;margin-bottom:10px;">Which unit would you use to measure a pencil?</p>
+    <div class="q-opts">
+      <button class="q-opt" onclick="miniQ(this,'correct','qz2fb')">📏 Centimetres (cm)</button>
+      <button class="q-opt" onclick="miniQ(this,'wrong','qz2fb')">🏊 Metres (m)</button>
+      <button class="q-opt" onclick="miniQ(this,'wrong','qz2fb')">⚖️ Kilograms (kg)</button>
+      <button class="q-opt" onclick="miniQ(this,'wrong','qz2fb')">🌡️ Degrees</button>
+    </div>
+    <div class="q-fb" id="qz2fb"></div>
+  </div>
+</div>
+</div>
+
+<!-- ===== PAGE 3: PARTS OF A RULER ===== -->
+<div class="page" data-page="3">
+<div class="story-page">
+  <div class="page-num">03</div>
+  <div class="story-header"><span class="badge" style="background:#FFF3E0;border:1.5px solid var(--orange);color:#C06000;">Know Your Tool</span><h2 class="story-title">Parts of a Ruler 🔍</h2></div>
+  <p class="story-text" style="margin-bottom:16px;">Before we start measuring, let's get to know the ruler! <span class="hl">Tap each part</span> on the ruler below to learn what it does!</p>
+  
+  <!-- INTERACTIVE RULER ANATOMY -->
+  <div style="background:#FFF9F0;border-radius:16px;padding:20px;border:2px solid #F0E6C8;">
+    <svg id="rulerAnatomy" width="100%" viewBox="0 0 700 180" style="overflow:visible;display:block;">
+      <!-- ruler body -->
+      <rect x="10" y="60" width="660" height="60" rx="7" fill="#C8952C"/>
+      <rect x="12" y="62" width="656" height="56" rx="6" fill="#F5C842"/>
+      <!-- cm marks -->
+      <g id="rulerMarks" fill="#7B5800">
+        <!-- major cm lines and numbers 0-12 -->
+        <rect x="15" y="62" width="2" height="28" rx="1"/>
+        <rect x="65" y="62" width="2" height="28" rx="1"/>
+        <rect x="115" y="62" width="2" height="28" rx="1"/>
+        <rect x="165" y="62" width="2" height="28" rx="1"/>
+        <rect x="215" y="62" width="2" height="28" rx="1"/>
+        <rect x="265" y="62" width="2" height="28" rx="1"/>
+        <rect x="315" y="62" width="2" height="28" rx="1"/>
+        <rect x="365" y="62" width="2" height="28" rx="1"/>
+        <rect x="415" y="62" width="2" height="28" rx="1"/>
+        <rect x="465" y="62" width="2" height="28" rx="1"/>
+        <rect x="515" y="62" width="2" height="28" rx="1"/>
+        <rect x="565" y="62" width="2" height="28" rx="1"/>
+        <rect x="615" y="62" width="2" height="28" rx="1"/>
+        <rect x="665" y="62" width="2" height="28" rx="1"/>
+        <!-- 5mm marks -->
+        <rect x="40" y="62" width="1.5" height="18" rx="1"/>
+        <rect x="90" y="62" width="1.5" height="18" rx="1"/>
+        <rect x="140" y="62" width="1.5" height="18" rx="1"/>
+        <rect x="190" y="62" width="1.5" height="18" rx="1"/>
+        <rect x="240" y="62" width="1.5" height="18" rx="1"/>
+        <rect x="290" y="62" width="1.5" height="18" rx="1"/>
+        <rect x="340" y="62" width="1.5" height="18" rx="1"/>
+        <rect x="390" y="62" width="1.5" height="18" rx="1"/>
+        <rect x="440" y="62" width="1.5" height="18" rx="1"/>
+        <rect x="490" y="62" width="1.5" height="18" rx="1"/>
+        <rect x="540" y="62" width="1.5" height="18" rx="1"/>
+        <rect x="590" y="62" width="1.5" height="18" rx="1"/>
+        <rect x="640" y="62" width="1.5" height="18" rx="1"/>
+        <!-- mm marks -->
+        <rect x="25" y="62" width="1" height="10" rx="1"/>
+        <rect x="30" y="62" width="1" height="10" rx="1"/>
+        <rect x="35" y="62" width="1" height="10" rx="1"/>
+        <rect x="45" y="62" width="1" height="10" rx="1"/>
+        <rect x="50" y="62" width="1" height="10" rx="1"/>
+        <rect x="55" y="62" width="1" height="10" rx="1"/>
+        <rect x="75" y="62" width="1" height="10" rx="1"/>
+        <rect x="80" y="62" width="1" height="10" rx="1"/>
+        <rect x="85" y="62" width="1" height="10" rx="1"/>
+        <rect x="95" y="62" width="1" height="10" rx="1"/>
+        <rect x="100" y="62" width="1" height="10" rx="1"/>
+        <rect x="105" y="62" width="1" height="10" rx="1"/>
+        <!-- Numbers -->
+        <text x="13" y="104" font-size="11" font-family="Nunito,sans-serif" font-weight="700">0</text>
+        <text x="62" y="104" font-size="11" font-family="Nunito,sans-serif" font-weight="700">1</text>
+        <text x="112" y="104" font-size="11" font-family="Nunito,sans-serif" font-weight="700">2</text>
+        <text x="162" y="104" font-size="11" font-family="Nunito,sans-serif" font-weight="700">3</text>
+        <text x="212" y="104" font-size="11" font-family="Nunito,sans-serif" font-weight="700">4</text>
+        <text x="262" y="104" font-size="11" font-family="Nunito,sans-serif" font-weight="700">5</text>
+        <text x="312" y="104" font-size="11" font-family="Nunito,sans-serif" font-weight="700">6</text>
+        <text x="362" y="104" font-size="11" font-family="Nunito,sans-serif" font-weight="700">7</text>
+        <text x="412" y="104" font-size="11" font-family="Nunito,sans-serif" font-weight="700">8</text>
+        <text x="462" y="104" font-size="11" font-family="Nunito,sans-serif" font-weight="700">9</text>
+        <text x="510" y="104" font-size="11" font-family="Nunito,sans-serif" font-weight="700">10</text>
+        <text x="560" y="104" font-size="11" font-family="Nunito,sans-serif" font-weight="700">11</text>
+        <text x="610" y="104" font-size="11" font-family="Nunito,sans-serif" font-weight="700">12</text>
+        <text x="325" y="112" font-size="10" font-family="Nunito,sans-serif" font-weight="800">cm</text>
+      </g>
+      <!-- Clickable hotspots with labels -->
+      <!-- Zero edge -->
+      <rect id="hs1" x="5" y="55" width="40" height="72" rx="4" fill="transparent" stroke="transparent" style="cursor:pointer;" onclick="showRulerPart(1)"/>
+      <!-- Numbers -->
+      <rect id="hs2" x="55" y="90" width="220" height="28" rx="4" fill="transparent" stroke="transparent" style="cursor:pointer;" onclick="showRulerPart(2)"/>
+      <!-- cm lines -->
+      <rect id="hs3" x="55" y="55" width="220" height="40" rx="4" fill="transparent" stroke="transparent" style="cursor:pointer;" onclick="showRulerPart(3)"/>
+      <!-- mm lines -->
+      <rect id="hs4" x="280" y="55" width="200" height="30" rx="4" fill="transparent" stroke="transparent" style="cursor:pointer;" onclick="showRulerPart(4)"/>
+      <!-- ruler edge -->
+      <rect id="hs5" x="0" y="115" width="680" height="10" rx="4" fill="transparent" stroke="transparent" style="cursor:pointer;" onclick="showRulerPart(5)"/>
+      <!-- highlight overlay -->
+      <rect id="rulerHighlight" x="0" y="0" width="0" height="0" rx="4" fill="rgba(255,159,28,.25)" stroke="#FF9F1C" stroke-width="2" pointer-events="none"/>
+      <!-- tap hint arrows -->
+      <text x="15" y="48" font-size="11" font-family="'Baloo 2',cursive" fill="#FF9F1C" font-weight="700">👆 Tap!</text>
+      <text x="120" y="130" font-size="11" font-family="'Baloo 2',cursive" fill="#FF9F1C" font-weight="700">👆 Numbers</text>
+      <text x="300" y="48" font-size="11" font-family="'Baloo 2',cursive" fill="#845EF7" font-weight="700">👆 Small marks</text>
+      <text x="500" y="130" font-size="11" font-family="'Baloo 2',cursive" fill="#4D96FF" font-weight="700">👆 Straight edge</text>
+    </svg>
+    <div id="rulerPartInfo" style="background:white;border-radius:12px;padding:12px 16px;border:2px solid #F0E6C8;margin-top:10px;min-height:52px;font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;color:#C06000;text-align:center;">
+      👆 Tap any part of the ruler above to learn about it!
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ===== PAGE 4: HOW TO MEASURE — STEPS ===== -->
+<div class="page" data-page="4">
+<div class="story-page">
+  <div class="page-num">04</div>
+  <div class="story-header"><span class="badge" style="background:#E8F5E9;border:1.5px solid var(--green);color:#2E7D32;">How To Measure</span><h2 class="story-title">3 Easy Steps to Measure! 🎯</h2></div>
+  <p class="story-text" style="margin-bottom:14px;">Measuring with a ruler is easy if you follow these 3 steps! <span class="hl">Tap each step</span> to see it in action!</p>
+  <div class="steps">
+    <div class="step active" id="step1btn" onclick="showStep(1)"><span class="step-num">1</span>Line up the zero</div>
+    <div style="color:#E0D5C8;font-size:20px;">→</div>
+    <div class="step" id="step2btn" onclick="showStep(2)"><span class="step-num">2</span>Keep it straight</div>
+    <div style="color:#E0D5C8;font-size:20px;">→</div>
+    <div class="step" id="step3btn" onclick="showStep(3)"><span class="step-num">3</span>Read the number</div>
+  </div>
+  
+  <!-- Step demo canvas -->
+  <div style="background:white;border-radius:16px;padding:16px;border:2px solid #F0E6C8;margin-bottom:14px;">
+    <canvas id="stepCanvas" width="700" height="180" style="width:100%;display:block;border-radius:8px;"></canvas>
+    <div id="stepDesc" style="font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;color:var(--orange);text-align:center;margin-top:8px;min-height:22px;">
+      Step 1: Place the ruler so the 0 mark is exactly at the START of the object!
+    </div>
+  </div>
+  
+  <div class="fun-fact">
+    <div class="fun-fact-title">⚠️ Common Mistake!</div>
+    <div class="fun-fact-text">Never start measuring from the edge of the ruler — always start from the <strong style="color:#C06000;">0 mark</strong>! On some rulers the 0 is a little bit away from the edge. Always look for the zero!</div>
+  </div>
+</div>
+</div>
+
+<!-- ===== PAGE 5: MEASURE THE PENCIL — VISUAL ===== -->
+<div class="page" data-page="5">
+<div class="story-page">
+  <div class="page-num">05</div>
+  <div class="story-header"><span class="badge" style="background:#FFF3E0;border:1.5px solid var(--orange);color:#C06000;">Let's Practice!</span><h2 class="story-title">Measuring Remy's Pencil ✏️</h2></div>
+  <p class="story-text" style="margin-bottom:14px;">Remy wants to measure his pencil. Watch how he does it! <span class="hl">Drag the ruler</span> to line it up with the pencil and measure it!</p>
+  
+  <div class="drag-activity">
+    <h3>🖊️ Drag the Ruler to Measure!</h3>
+    <div class="drag-canvas-wrap">
+      <canvas id="dragCanvas1" class="drag-canvas" width="700" height="200" style="height:200px;"></canvas>
+    </div>
+    <div class="drag-hint">👆 Touch and drag the ruler left/right to line up the 0 with the pencil start!</div>
+    <div class="drag-result" id="drag1Result">Line up the ruler and measure! 📏</div>
+    <div class="measure-controls">
+      <button class="m-btn green" onclick="checkMeasure('drag1',4)">✅ I measured it!</button>
+      <button class="m-btn coral" onclick="resetDrag('drag1')">🔄 Reset</button>
+    </div>
+  </div>
+  
+  <div class="quiz-bubble" id="qz5" style="margin-top:12px;">
+    <div class="quiz-title">✏️ What's the pencil's length?</div>
+    <div class="q-opts">
+      <button class="q-opt" onclick="miniQ(this,'wrong','qz5fb')">📏 2 cm</button>
+      <button class="q-opt" onclick="miniQ(this,'wrong','qz5fb')">📏 3 cm</button>
+      <button class="q-opt" onclick="miniQ(this,'correct','qz5fb')">📏 4 cm</button>
+      <button class="q-opt" onclick="miniQ(this,'wrong','qz5fb')">📏 6 cm</button>
+    </div>
+    <div class="q-fb" id="qz5fb"></div>
+  </div>
+</div>
+</div>
+
+<!-- ===== PAGE 6: CENTIMETRES AND METRES ===== -->
+<div class="page" data-page="6">
+<div class="story-page">
+  <div class="page-num">06</div>
+  <div class="story-header"><span class="badge" style="background:#E3F2FD;border:1.5px solid var(--blue);color:#1565C0;">Units</span><h2 class="story-title">Centimetres & Metres 📐</h2></div>
+  <div class="story-body">
+    <div class="story-text">
+      <p>We measure in <span class="hl">centimetres (cm)</span> for small things and <span class="hl2">metres (m)</span> for big things!</p>
+      <p>🔢 <span class="hl">100 centimetres = 1 metre</span></p>
+      <p>Imagine 100 ants lined up in a row — that would be about 1 metre! 🐜×100</p>
+      <p>Your ruler shows <span class="hl">centimetres</span>. For metres, you'd use a measuring tape — the long stretchy one!</p>
+      <p>Here's a trick to remember:<br>
+        <span class="hl">cm</span> = small things (pencil, eraser, leaf)<br>
+        <span class="hl2">m</span> = big things (door, car, classroom)</p>
+    </div>
+    <div class="art-panel" style="background:#F0F4FF;">
+      <svg width="190" height="230" viewBox="0 0 190 230">
+        <!-- cm example -->
+        <rect x="10" y="15" width="80" height="16" rx="4" fill="#FFD93D" stroke="#C8952C" stroke-width="1.5"/>
+        <polygon points="90,15 90,31 100,23" fill="#F87171"/>
+        <rect x="10" y="13" width="10" height="20" rx="2" fill="#C8952C"/>
+        <text x="50" y="45" text-anchor="middle" font-size="12" font-family="'Baloo 2',cursive" font-weight="800" fill="#C06000">Pencil ≈ 15 cm</text>
+        <!-- line divider -->
+        <line x1="10" y1="58" x2="180" y2="58" stroke="#E0D5C8" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <!-- metre example: door -->
+        <rect x="60" y="68" width="60" height="100" rx="4" fill="#4D96FF" stroke="#1565C0" stroke-width="2"/>
+        <circle cx="65" cy="118" r="4" fill="#FFD93D"/>
+        <rect x="60" y="65" width="60" height="8" rx="3" fill="#1565C0"/>
+        <text x="90" y="190" text-anchor="middle" font-size="12" font-family="'Baloo 2',cursive" font-weight="800" fill="#1565C0">Door ≈ 2 m</text>
+        <!-- arrow showing 2m -->
+        <line x1="128" y1="68" x2="128" y2="168" stroke="#1565C0" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <polygon points="124,68 132,68 128,60" fill="#1565C0"/>
+        <polygon points="124,168 132,168 128,176" fill="#1565C0"/>
+        <text x="145" y="120" font-size="11" font-family="'Baloo 2',cursive" font-weight="700" fill="#1565C0">2 m</text>
+        <!-- ant row -->
+        <text x="10" y="215" font-size="9" font-family="Nunito,sans-serif" fill="#6BCB77">🐜🐜🐜🐜🐜🐜🐜🐜🐜🐜 = 10 cm</text>
+        <text x="10" y="228" font-size="9" font-family="Nunito,sans-serif" fill="#2E7D32">100 ants = 1 m!</text>
+      </svg>
+    </div>
+  </div>
+  <!-- Visual comparison table -->
+  <div style="background:#F8F4EE;border-radius:14px;padding:14px;border:1.5px solid #E0D5C8;margin-top:10px;">
+    <div style="font-family:'Baloo 2',cursive;font-size:14px;font-weight:800;color:#C06000;margin-bottom:8px;">📊 What unit do we use?</div>
+    <table class="comp-table">
+      <tr style="background:#FFF3E0;"><td style="background:#FFF3E0;border-radius:10px 0 0 10px;">📏 Centimetres (cm)</td><td style="background:#FFF3E0;">✏️ Pencil, 🍎 Apple, 📱 Phone, 📚 Book</td><td style="background:#FFF3E0;border-radius:0 10px 10px 0;color:var(--orange);">Small things!</td></tr>
+      <tr><td style="height:6px;"></td></tr>
+      <tr style="background:#E3F2FD;"><td style="background:#E3F2FD;border-radius:10px 0 0 10px;">📐 Metres (m)</td><td style="background:#E3F2FD;">🚪 Door, 🏊 Pool, 🚗 Car, 🌳 Tree</td><td style="background:#E3F2FD;border-radius:0 10px 10px 0;color:var(--blue);">Big things!</td></tr>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- ===== PAGE 7: INTERACTIVE MEASURE OBJECTS ===== -->
+<div class="page" data-page="7">
+<div class="story-page">
+  <div class="page-num">07</div>
+  <div class="story-header"><span class="badge" style="background:#F3E8FF;border:1.5px solid var(--purple);color:#5C3A9E;">Interactive!</span><h2 class="story-title">Measure Different Objects! 🔬</h2></div>
+  <p class="story-text" style="margin-bottom:12px;">Pick an object below and drag the ruler to measure it! <span class="hl">Try all 5 objects!</span></p>
+  
+  <div class="obj-grid" id="objGrid">
+    <div class="obj-card selected" onclick="selectObj(0)" data-i="0"><span class="obj-emoji">✏️</span>Pencil</div>
+    <div class="obj-card" onclick="selectObj(1)" data-i="1"><span class="obj-emoji">🍌</span>Banana</div>
+    <div class="obj-card" onclick="selectObj(2)" data-i="2"><span class="obj-emoji">🐛</span>Caterpillar</div>
+    <div class="obj-card" onclick="selectObj(3)" data-i="3"><span class="obj-emoji">🔑</span>Key</div>
+    <div class="obj-card" onclick="selectObj(4)" data-i="4"><span class="obj-emoji">🦕</span>Dino</div>
+  </div>
+  
+  <div class="drag-activity">
+    <div class="drag-canvas-wrap">
+      <canvas id="dragCanvas2" class="drag-canvas" width="700" height="210" style="height:210px;"></canvas>
+    </div>
+    <div class="drag-hint">👆 Drag the ruler to line up the 0 with the left edge of the object!</div>
+    <div class="drag-result" id="drag2Result">Select an object above, then measure it!</div>
+    <div class="measure-controls">
+      <button class="m-btn green" onclick="revealMeasure2()">✅ Reveal Answer!</button>
+      <button class="m-btn coral" onclick="resetDrag('drag2')">🔄 Reset Ruler</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ===== PAGE 8: WHICH IS LONGER? ===== -->
+<div class="page" data-page="8">
+<div class="story-page">
+  <div class="page-num">08</div>
+  <div class="story-header"><span class="badge" style="background:#E8F5E9;border:1.5px solid var(--green);color:#2E7D32;">Compare!</span><h2 class="story-title">Which One Is Longer? 🏆</h2></div>
+  <p class="story-text" style="margin-bottom:14px;">Remy is at the market and needs to know which things are bigger! <span class="hl">Tap each object</span> to measure it, then figure out which is longer!</p>
+  
+  <div id="compareZone" style="background:#F8F4EE;border-radius:18px;padding:18px;border:2px solid #E0D5C8;">
+    <canvas id="compareCanvas" width="700" height="260" style="width:100%;display:block;border-radius:12px;background:white;border:1.5px solid #E8DDD0;"></canvas>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;">
+      <button onclick="measureCompareObj(0)" style="background:var(--coral);color:white;border:none;font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;padding:8px;border-radius:12px;cursor:pointer;">📏 Measure Object A</button>
+      <button onclick="measureCompareObj(1)" style="background:var(--blue);color:white;border:none;font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;padding:8px;border-radius:12px;cursor:pointer;">📏 Measure Object B</button>
+    </div>
+    <div id="compareResult" style="font-family:'Baloo 2',cursive;font-size:17px;font-weight:700;text-align:center;margin-top:10px;min-height:28px;color:var(--purple);">Tap a button to measure!</div>
+  </div>
+  
+  <div class="quiz-bubble" id="qz8" style="margin-top:12px;">
+    <div class="quiz-title">🏆 Which object is longer?</div>
+    <div class="q-opts">
+      <button class="q-opt" onclick="miniQ(this,'wrong','qz8fb')">🟠 Object A is longer</button>
+      <button class="q-opt" onclick="miniQ(this,'correct','qz8fb')">🔵 Object B is longer</button>
+      <button class="q-opt" onclick="miniQ(this,'wrong','qz8fb')">🟰 They are the same</button>
+      <button class="q-opt" onclick="miniQ(this,'wrong','qz8fb')">🤷 Can't tell</button>
+    </div>
+    <div class="q-fb" id="qz8fb"></div>
+  </div>
+</div>
+</div>
+
+<!-- ===== PAGE 9: READING THE RULER CLOSE UP ===== -->
+<div class="page" data-page="9">
+<div class="story-page">
+  <div class="page-num">09</div>
+  <div class="story-header"><span class="badge" style="background:#FFF3E0;border:1.5px solid var(--orange);color:#C06000;">Close Up!</span><h2 class="story-title">Reading Between the Lines! 🔎</h2></div>
+  <p class="story-text" style="margin-bottom:14px;">The big lines on a ruler show <span class="hl">centimetres</span>. But there are also smaller lines between them — those are <span class="hl2">half centimetres</span> and <span class="hl3">millimetres</span>! Click the ruler to zoom in!</p>
+  
+  <div style="background:white;border-radius:16px;padding:16px;border:2px solid #F0E6C8;margin-bottom:12px;">
+    <!-- Zoomed ruler section showing 3-6 cm -->
+    <svg width="100%" viewBox="0 0 680 140" style="display:block;">
+      <!-- ruler body zoomed 3-6cm area -->
+      <rect x="10" y="20" width="660" height="80" rx="8" fill="#C8952C"/>
+      <rect x="12" y="22" width="656" height="76" rx="6" fill="#F5C842"/>
+      <!-- Show 3cm to 6cm zoomed. Each cm = ~165px -->
+      <g fill="#7B5800">
+        <!-- 3cm mark -->
+        <rect x="20" y="22" width="3" height="40" rx="1"/>
+        <text x="19" y="76" font-size="16" font-family="Nunito" font-weight="900">3</text>
+        <!-- 3.5cm half mark -->
+        <rect x="100" y="22" width="2" height="27" rx="1"/>
+        <text x="85" y="64" font-size="10" font-family="Nunito" font-weight="700" fill="#A07020">3.5</text>
+        <!-- mm marks 3-4 region -->
+        <rect x="36" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="52" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="68" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="84" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="116" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="132" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="148" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="164" y="22" width="1.5" height="15" rx="1"/>
+        <!-- 4cm -->
+        <rect x="180" y="22" width="3" height="40" rx="1"/>
+        <text x="179" y="76" font-size="16" font-family="Nunito" font-weight="900">4</text>
+        <!-- 4.5 -->
+        <rect x="258" y="22" width="2" height="27" rx="1"/>
+        <text x="243" y="64" font-size="10" font-family="Nunito" font-weight="700" fill="#A07020">4.5</text>
+        <rect x="196" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="212" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="228" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="244" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="274" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="290" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="306" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="322" y="22" width="1.5" height="15" rx="1"/>
+        <!-- 5cm -->
+        <rect x="338" y="22" width="3" height="40" rx="1"/>
+        <text x="337" y="76" font-size="16" font-family="Nunito" font-weight="900">5</text>
+        <!-- 5.5 -->
+        <rect x="416" y="22" width="2" height="27" rx="1"/>
+        <text x="401" y="64" font-size="10" font-family="Nunito" font-weight="700" fill="#A07020">5.5</text>
+        <rect x="354" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="370" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="386" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="402" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="432" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="448" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="464" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="480" y="22" width="1.5" height="15" rx="1"/>
+        <!-- 6cm -->
+        <rect x="496" y="22" width="3" height="40" rx="1"/>
+        <text x="495" y="76" font-size="16" font-family="Nunito" font-weight="900">6</text>
+        <rect x="512" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="528" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="544" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="560" y="22" width="2" height="27" rx="1"/>
+        <text x="548" y="64" font-size="10" font-family="Nunito" font-weight="700" fill="#A07020">6.5</text>
+        <rect x="576" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="592" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="608" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="624" y="22" width="1.5" height="15" rx="1"/>
+        <rect x="640" y="22" width="3" height="40" rx="1"/>
+        <text x="639" y="76" font-size="16" font-family="Nunito" font-weight="900">7</text>
+        <text x="300" y="92" font-size="11" font-family="Nunito" font-weight="800">cm</text>
+      </g>
+      <!-- Label annotations -->
+      <text x="22" y="115" font-size="12" font-family="'Baloo 2',cursive" font-weight="800" fill="#C06000">Big mark = 1 cm</text>
+      <text x="88" y="115" font-size="12" font-family="'Baloo 2',cursive" font-weight="800" fill="#845EF7">Medium = 0.5 cm</text>
+      <text x="196" y="115" font-size="12" font-family="'Baloo 2',cursive" font-weight="800" fill="#4D96FF">Small = 1 mm</text>
+      <!-- Annotation lines -->
+      <line x1="21" y1="22" x2="60" y2="108" stroke="#C06000" stroke-width="1" stroke-dasharray="3,2"/>
+      <line x1="100" y1="49" x2="120" y2="108" stroke="#845EF7" stroke-width="1" stroke-dasharray="3,2"/>
+      <line x1="36" y1="37" x2="220" y2="108" stroke="#4D96FF" stroke-width="1" stroke-dasharray="3,2"/>
+    </svg>
+  </div>
+  
+  <!-- interactive: which number does the arrow point to? -->
+  <div style="background:#F3E8FF;border-radius:14px;padding:14px;border:2px solid #C4B5FD;text-align:center;">
+    <div style="font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;color:var(--purple);margin-bottom:8px;">🔎 What number does the red arrow point to?</div>
+    <canvas id="readCanvas" width="600" height="90" style="width:100%;max-width:600px;display:block;margin:0 auto;border-radius:8px;background:white;border:1px solid #E0D5F0;"></canvas>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px;">
+      <button onclick="checkRead(3)" class="m-btn" style="background:#E0D5F0;color:var(--purple);">3 cm</button>
+      <button onclick="checkRead(4)" class="m-btn" style="background:#E0D5F0;color:var(--purple);">4 cm</button>
+      <button onclick="checkRead(4.5)" class="m-btn" style="background:#E0D5F0;color:var(--purple);">4.5 cm</button>
+      <button onclick="checkRead(5)" class="m-btn" style="background:#E0D5F0;color:var(--purple);">5 cm</button>
+    </div>
+    <div id="readResult" style="font-family:'Baloo 2',cursive;font-size:16px;font-weight:700;margin-top:8px;min-height:24px;"></div>
+    <button onclick="newReadQ()" class="m-btn green" style="margin-top:6px;">Next Question 🎲</button>
+  </div>
+</div>
+</div>
+
+<!-- ===== PAGE 10: ESTIMATE FIRST! ===== -->
+<div class="page" data-page="10">
+<div class="story-page">
+  <div class="page-num">10</div>
+  <div class="story-header"><span class="badge" style="background:#E8F5E9;border:1.5px solid var(--green);color:#2E7D32;">Estimate!</span><h2 class="story-title">Guess First, Measure Second! 🤔</h2></div>
+  <div class="story-body">
+    <div class="story-text">
+      <p>Before you measure, it's fun to <span class="hl">estimate</span> — that means make a smart guess!</p>
+      <p>Remy has a secret trick: he knows that his <span class="hl2">thumb is about 1 cm wide</span>! So he uses his thumb to make a rough guess before measuring.</p>
+      <p>How to estimate:<br>
+        1️⃣ Look at the object<br>
+        2️⃣ Think: How many thumbs wide is it?<br>
+        3️⃣ That's your estimate in cm!<br>
+        4️⃣ Then measure to check!</p>
+      <p>Good estimates help you check if your measurement makes sense. If you measure a pencil and get "52 cm" — that's too big! Something went wrong!</p>
+    </div>
+    <div class="art-panel" style="background:#F0FFF4;">
+      <svg width="190" height="220" viewBox="0 0 190 220">
+        <!-- thumb -->
+        <ellipse cx="95" cy="80" rx="24" ry="36" fill="#FDBCAA" stroke="#E8956D" stroke-width="2"/>
+        <ellipse cx="95" cy="50" rx="20" ry="16" fill="#FDBCAA" stroke="#E8956D" stroke-width="1.5"/>
+        <!-- 1cm label -->
+        <line x1="71" y1="90" x2="119" y2="90" stroke="#FF9F1C" stroke-width="2"/>
+        <polygon points="71,86 71,94 63,90" fill="#FF9F1C"/>
+        <polygon points="119,86 119,94 127,90" fill="#FF9F1C"/>
+        <text x="95" y="108" text-anchor="middle" font-size="13" font-family="'Baloo 2',cursive" font-weight="800" fill="#C06000">≈ 1 cm</text>
+        <!-- eraser being estimated -->
+        <rect x="30" y="130" width="130" height="30" rx="6" fill="#F06595" stroke="#C2185B" stroke-width="1.5"/>
+        <text x="95" y="150" text-anchor="middle" font-size="12" font-family="Nunito" font-weight="700" fill="white">Eraser</text>
+        <!-- thumb widths shown -->
+        <line x1="30" y1="170" x2="160" y2="170" stroke="#E0D5C8" stroke-width="1" stroke-dasharray="2,1"/>
+        <rect x="30" y="172" width="24" height="14" rx="3" fill="rgba(253,188,170,.4)" stroke="#E8956D" stroke-width="1"/>
+        <rect x="58" y="172" width="24" height="14" rx="3" fill="rgba(253,188,170,.4)" stroke="#E8956D" stroke-width="1"/>
+        <rect x="86" y="172" width="24" height="14" rx="3" fill="rgba(253,188,170,.4)" stroke="#E8956D" stroke-width="1"/>
+        <rect x="114" y="172" width="24" height="14" rx="3" fill="rgba(253,188,170,.4)" stroke="#E8956D" stroke-width="1"/>
+        <rect x="142" y="172" width="18" height="14" rx="3" fill="rgba(253,188,170,.3)" stroke="#E8956D" stroke-width="1" stroke-dasharray="2,1"/>
+        <text x="95" y="202" text-anchor="middle" font-size="12" font-family="'Baloo 2',cursive" font-weight="800" fill="#845EF7">About 4–5 thumbs!</text>
+        <text x="95" y="218" text-anchor="middle" font-size="11" font-family="'Baloo 2',cursive" font-weight="700" fill="#A07840">Estimate: ~4-5 cm</text>
+      </svg>
+    </div>
+  </div>
+  <!-- Estimate game -->
+  <div id="estimateGame" style="background:#FFF9F0;border-radius:14px;padding:14px;border:2px solid #F0E6C8;">
+    <div style="font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;color:#C06000;margin-bottom:8px;">🤔 Estimate, Then Check!</div>
+    <canvas id="estimateCanvas" width="640" height="80" style="width:100%;display:block;border-radius:8px;background:white;border:1px solid #E0D5C8;margin-bottom:8px;"></canvas>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:8px;">
+      <button onclick="guessEstimate(2)" class="m-btn" style="background:#FFF3E0;color:#C06000;border:2px solid var(--orange);">2 cm</button>
+      <button onclick="guessEstimate(3)" class="m-btn" style="background:#FFF3E0;color:#C06000;border:2px solid var(--orange);">3 cm</button>
+      <button onclick="guessEstimate(4)" class="m-btn" style="background:#FFF3E0;color:#C06000;border:2px solid var(--orange);">4 cm</button>
+      <button onclick="guessEstimate(5)" class="m-btn" style="background:#FFF3E0;color:#C06000;border:2px solid var(--orange);">5 cm</button>
+      <button onclick="guessEstimate(6)" class="m-btn" style="background:#FFF3E0;color:#C06000;border:2px solid var(--orange);">6 cm</button>
+    </div>
+    <div id="estimateResult" style="font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;text-align:center;min-height:22px;color:var(--purple);"></div>
+    <button onclick="newEstimate()" class="m-btn green" style="margin-top:6px;display:block;margin-left:auto;margin-right:auto;">🎲 New Object!</button>
+  </div>
+</div>
+</div>
+
+<!-- ===== PAGE 11: REAL WORLD MEASUREMENTS ===== -->
+<div class="page" data-page="11">
+<div class="story-page">
+  <div class="page-num">11</div>
+  <div class="story-header"><span class="badge" style="background:#E3F2FD;border:1.5px solid var(--blue);color:#1565C0;">Real World</span><h2 class="story-title">Measuring in Real Life! 🌍</h2></div>
+  <p class="story-text" style="margin-bottom:14px;">Remy measures things every day! Let's see where measuring is used in real life. <span class="hl">Tap each scene</span> to learn more!</p>
+  
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;" id="realWorldGrid">
+    <div onclick="showRealWorld(0)" style="cursor:pointer;background:white;border:2.5px solid #E0D5C8;border-radius:14px;padding:12px;text-align:center;transition:all .2s;" class="rw-card">
+      <div style="font-size:36px;">👗</div>
+      <div style="font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;color:var(--mid);margin-top:4px;">Clothes</div>
+    </div>
+    <div onclick="showRealWorld(1)" style="cursor:pointer;background:white;border:2.5px solid #E0D5C8;border-radius:14px;padding:12px;text-align:center;transition:all .2s;" class="rw-card">
+      <div style="font-size:36px;">🏗️</div>
+      <div style="font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;color:var(--mid);margin-top:4px;">Building</div>
+    </div>
+    <div onclick="showRealWorld(2)" style="cursor:pointer;background:white;border:2.5px solid #E0D5C8;border-radius:14px;padding:12px;text-align:center;transition:all .2s;" class="rw-card">
+      <div style="font-size:36px;">👨‍⚕️</div>
+      <div style="font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;color:var(--mid);margin-top:4px;">Doctor</div>
+    </div>
+    <div onclick="showRealWorld(3)" style="cursor:pointer;background:white;border:2.5px solid #E0D5C8;border-radius:14px;padding:12px;text-align:center;transition:all .2s;" class="rw-card">
+      <div style="font-size:36px;">🏃</div>
+      <div style="font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;color:var(--mid);margin-top:4px;">Sports</div>
+    </div>
+    <div onclick="showRealWorld(4)" style="cursor:pointer;background:white;border:2.5px solid #E0D5C8;border-radius:14px;padding:12px;text-align:center;transition:all .2s;" class="rw-card">
+      <div style="font-size:36px;">🍕</div>
+      <div style="font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;color:var(--mid);margin-top:4px;">Cooking</div>
+    </div>
+    <div onclick="showRealWorld(5)" style="cursor:pointer;background:white;border:2.5px solid #E0D5C8;border-radius:14px;padding:12px;text-align:center;transition:all .2s;" class="rw-card">
+      <div style="font-size:36px;">🎨</div>
+      <div style="font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;color:var(--mid);margin-top:4px;">Art</div>
+    </div>
+  </div>
+  <div id="rwInfo" style="background:#EDE7F6;border-radius:14px;padding:14px;border:2px solid #C4B5FD;font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;color:#5C3A9E;min-height:52px;text-align:center;">
+    👆 Tap a picture to learn how measuring helps in that area!
+  </div>
+</div>
+</div>
+
+<!-- ===== PAGE 12: BIG ACTIVITY - MEASURE MY BEDROOM ===== -->
+<div class="page" data-page="12">
+<div class="story-page">
+  <div class="page-num">12</div>
+  <div class="story-header"><span class="badge" style="background:#F3E8FF;border:1.5px solid var(--purple);color:#5C3A9E;">Activity!</span><h2 class="story-title">Remy's Bedroom Measuring! 🛏️</h2></div>
+  <p class="story-text" style="margin-bottom:12px;">Remy is measuring things in his bedroom! <span class="hl">Tap each object</span> to measure it with the ruler! Can you read all the measurements correctly?</p>
+  
+  <div style="background:linear-gradient(135deg,#F5F0FF,#EDE7F6);border-radius:18px;padding:14px;border:2px solid #C4B5FD;">
+    <canvas id="bedroomCanvas" width="700" height="280" style="width:100%;display:block;border-radius:12px;background:white;border:1.5px solid #C4B5FD;cursor:pointer;"></canvas>
+    <div id="bedroomInfo" style="font-family:'Baloo 2',cursive;font-size:16px;font-weight:700;color:var(--purple);text-align:center;margin-top:10px;min-height:28px;">
+      👆 Tap any object in the bedroom to measure it!
+    </div>
+    <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:8px;" id="bedroomBtns"></div>
+  </div>
+  
+  <div class="fun-fact" style="margin-top:12px;">
+    <div class="fun-fact-title">🏠 Remy's Measuring Challenge!</div>
+    <div class="fun-fact-text">At home, grab a ruler and measure 3 things in your own room! Write them down and compare — which is longest? Which is shortest? You're a real measuring pro!</div>
+  </div>
+</div>
+</div>
+
+<!-- ===== PAGE 13: LONGER SHORTER SAME ===== -->
+<div class="page" data-page="13">
+<div class="story-page">
+  <div class="page-num">13</div>
+  <div class="story-header"><span class="badge" style="background:#E8F5E9;border:1.5px solid var(--green);color:#2E7D32;">Compare</span><h2 class="story-title">Longer, Shorter, Same! ↔️</h2></div>
+  <div class="story-body">
+    <div class="story-text">
+      <p>After measuring, we can <span class="hl">compare</span> lengths!</p>
+      <p>🔵 <span class="hl">Longer</span> = bigger number<br>🟠 <span class="hl2">Shorter</span> = smaller number<br>🟢 <span class="hl3">Same</span> = equal numbers</p>
+      <p>Example: A pencil is <b>8 cm</b>. A crayon is <b>6 cm</b>.<br>The pencil is <span class="hl">longer</span> because 8 > 6!</p>
+      <p>Top Tip: Line both objects up at the same starting point — then it's easy to see which sticks out further on the right!</p>
+    </div>
+    <div class="art-panel" style="background:#F8F4EE;">
+      <svg width="200" height="230" viewBox="0 0 200 230">
+        <!-- object A longer -->
+        <text x="10" y="18" font-size="11" font-family="'Baloo 2',cursive" font-weight="700" fill="#C06000">Object A (8 cm)</text>
+        <rect x="10" y="22" width="160" height="20" rx="5" fill="#4D96FF" stroke="#1565C0" stroke-width="1.5"/>
+        <!-- ruler under A -->
+        <rect x="10" y="46" width="160" height="12" rx="3" fill="#F5C842" stroke="#C8952C" stroke-width="1"/>
+        <text x="10" y="56" font-size="7" font-family="Nunito" fill="#7B5800">0    1    2    3    4    5    6    7    8</text>
+        <line x1="10" y1="62" x2="170" y2="62" stroke="#4D96FF" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="90" y="74" text-anchor="middle" font-size="10" font-family="'Baloo 2',cursive" font-weight="700" fill="#4D96FF">8 cm</text>
+        <!-- object B shorter -->
+        <line x1="10" y1="85" x2="190" y2="85" stroke="#E0D5C8" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="10" y="100" font-size="11" font-family="'Baloo 2',cursive" font-weight="700" fill="#C06000">Object B (6 cm)</text>
+        <rect x="10" y="104" width="120" height="20" rx="5" fill="#FF9F1C" stroke="#C06000" stroke-width="1.5"/>
+        <rect x="10" y="128" width="160" height="12" rx="3" fill="#F5C842" stroke="#C8952C" stroke-width="1"/>
+        <text x="10" y="138" font-size="7" font-family="Nunito" fill="#7B5800">0    1    2    3    4    5    6    7    8</text>
+        <line x1="10" y1="144" x2="130" y2="144" stroke="#FF9F1C" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="70" y="156" text-anchor="middle" font-size="10" font-family="'Baloo 2',cursive" font-weight="700" fill="#FF9F1C">6 cm</text>
+        <!-- Winner badge -->
+        <rect x="10" y="170" width="180" height="50" rx="10" fill="#D4EDDA" stroke="#28a745" stroke-width="2"/>
+        <text x="100" y="190" text-anchor="middle" font-size="13" font-family="'Baloo 2',cursive" font-weight="800" fill="#155724">🏆 A is LONGER!</text>
+        <text x="100" y="208" text-anchor="middle" font-size="11" font-family="'Baloo 2',cursive" fill="#155724">8 cm > 6 cm</text>
+      </svg>
+    </div>
+  </div>
+  <!-- Sort activity -->
+  <div style="background:#F8F4EE;border-radius:14px;padding:14px;border:2px solid #E0D5C8;margin-top:10px;">
+    <div style="font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;color:#C06000;margin-bottom:8px;">🏆 Order from shortest to longest!</div>
+    <canvas id="sortCanvas" width="640" height="100" style="width:100%;display:block;border-radius:8px;background:white;border:1px solid #E0D5C8;margin-bottom:8px;"></canvas>
+    <div id="sortBtns" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;"></div>
+    <div id="sortResult" style="font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;text-align:center;margin-top:8px;min-height:22px;color:var(--purple);"></div>
+  </div>
+</div>
+</div>
+
+<!-- ===== PAGE 14: FINAL PRACTICE ===== -->
+<div class="page" data-page="14">
+<div class="story-page">
+  <div class="page-num">14</div>
+  <div class="story-header"><span class="badge" style="background:#FFF3E0;border:1.5px solid var(--orange);color:#C06000;">Practice!</span><h2 class="story-title">Measure the Zoo Animals! 🦒</h2></div>
+  <p class="story-text" style="margin-bottom:12px;">Remy is at the zoo measuring the animals' features! <span class="hl">Drag the ruler</span> to measure each animal part and discover amazing facts!</p>
+  
+  <div class="drag-activity">
+    <h3>🦒 Measure the Animals!</h3>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:10px;" id="animalBtns">
+      <button onclick="selectAnimal(0)" class="m-btn" style="background:#E8F5E9;color:#2E7D32;border:2px solid var(--green);">🦕 Dino Claw</button>
+      <button onclick="selectAnimal(1)" class="m-btn" style="background:#FFF3E0;color:#C06000;border:2px solid var(--orange);">🐍 Snake</button>
+      <button onclick="selectAnimal(2)" class="m-btn" style="background:#E3F2FD;color:#1565C0;border:2px solid var(--blue);">🦴 Bone</button>
+      <button onclick="selectAnimal(3)" class="m-btn" style="background:#F3E8FF;color:#5C3A9E;border:2px solid var(--purple);">🐛 Caterpillar</button>
+    </div>
+    <div class="drag-canvas-wrap">
+      <canvas id="dragCanvas3" class="drag-canvas" width="700" height="200" style="height:200px;"></canvas>
+    </div>
+    <div class="drag-hint">👆 Drag the ruler to measure! Line up the 0 with the left end of the object.</div>
+    <div class="drag-result" id="drag3Result">Select an animal to measure!</div>
+    <div class="measure-controls">
+      <button class="m-btn green" onclick="revealAnimal()">✅ Reveal Measurement!</button>
+      <button class="m-btn coral" onclick="resetDrag('drag3')">🔄 Reset</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ===== PAGE 15: QUIZ ===== -->
+<div class="page" data-page="15">
+<div class="final-quiz-page" id="quizPage">
+  <div id="quizActive">
+    <div class="fq-header">
+      <div class="fq-title">📏 Measurement Quiz!</div>
+      <div class="fq-counter" id="fqCounter">Question 1 of 6</div>
+      <div class="fq-score-badge" id="fqScore">Score: 0 / 6</div>
+    </div>
+    <div class="fq-card">
+      <div class="fq-emoji" id="fqEmoji">📏</div>
+      <div class="fq-q" id="fqQ">Loading...</div>
+    </div>
+    <div class="fq-opts" id="fqOpts"></div>
+    <div class="fq-result-msg" id="fqMsg"></div>
+    <button class="fq-next" id="fqNext" onclick="nextFQ()" style="display:none;">Next →</button>
+  </div>
+  <div id="quizPass" style="display:none;" class="pass-screen">
+    <div class="result-trophy">🏆</div>
+    <div class="result-title" style="color:var(--orange);">Measuring Master!</div>
+    <div class="result-score" id="passScore"></div>
+    <div class="result-msg" id="passMsg"></div>
+    <button class="proceed-btn" onclick="goToPage(15)">Get My Certificate! 🎖️</button>
+  </div>
+  <div id="quizFail" style="display:none;" class="fail-screen" style="text-align:center;padding:20px;">
+    <div style="font-size:70px;margin-bottom:12px;">📏</div>
+    <div class="result-title" style="color:var(--coral);">Keep Practicing!</div>
+    <div class="result-score" id="failScore" style="color:var(--coral);font-family:'Baloo 2',cursive;font-size:52px;font-weight:800;"></div>
+    <div class="result-msg" id="failMsg"></div>
+    <button class="retry-btn" onclick="restartQuiz()">🔄 Try Again! I Can Do It!</button>
+    <br>
+    <button onclick="goToPage(1)" style="background:rgba(0,0,0,.06);color:var(--mid);border:2px solid #E0D5C8;font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;padding:8px 20px;border-radius:18px;cursor:pointer;margin-top:8px;">📖 Review Lessons</button>
+  </div>
+</div>
+</div>
+
+<!-- ===== PAGE 16: CERTIFICATE ===== -->
+<div class="page" data-page="15">
+<div class="cert-page">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+    <span class="badge" style="background:#FFF3E0;border:1.5px solid var(--orange);color:#C06000;font-size:13px;padding:5px 14px;">🏆 Certificate</span>
+    <h2 style="font-family:'Baloo 2',cursive;font-size:24px;font-weight:800;color:var(--dark);">Measuring Length Certificate!</h2>
+  </div>
+  <div class="cert-controls">
+    <input class="cert-input" id="certName" placeholder="Type the child's name here..." oninput="drawCert()"/>
+    <button class="cert-dl" onclick="downloadCert()">⬇ Download PNG</button>
+    <button class="cert-print" onclick="printCert()">🖨 Print</button>
+  </div>
+  <div class="cert-wrap">
+    <canvas id="cert" width="900" height="640"></canvas>
+  </div>
+  <p class="cert-hint">Type the name above, then download or print your certificate!</p>
+</div>
+</div>
+
+</div><!-- end book -->
+
+<script>
+/* ============================================================
+   NAVIGATION
+============================================================ */
+const TOTAL=15;
+let curPage=0;
+const allPages=document.querySelectorAll('.page');
+const prevBtn=document.getElementById('prevBtn');
+const nextBtn=document.getElementById('nextBtn');
+const dotsWrap=document.getElementById('pageDots');
+for(let i=0;i<=TOTAL;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' active':'');
+  d.onclick=()=>goToPage(i);
+  dotsWrap.appendChild(d);
+}
+function goToPage(n){
+  if(n<0||n>TOTAL)return;
+  allPages[curPage].classList.remove('active');
+  curPage=n;
+  allPages[curPage].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  prevBtn.disabled=curPage===0;
+  nextBtn.disabled=curPage===TOTAL;
+  document.getElementById('progressFill').style.width=Math.round(curPage/TOTAL*100)+'%';
+  document.getElementById('progressText').textContent='Page '+(curPage+1)+' of '+(TOTAL+1);
+  document.querySelectorAll('.dot').forEach((d,i)=>{d.classList.toggle('active',i===curPage);if(i<curPage)d.classList.add('visited');});
+  // init per-page
+  if(curPage===4)initStepDemo();
+  if(curPage===5)initDrag1();
+  if(curPage===7){initDrag2();initCompare();}
+  if(curPage===9)initReadQ();
+  if(curPage===10)newEstimate();
+  if(curPage===12)initBedroom();
+  if(curPage===13)initSort();
+  if(curPage===14)initDrag3();
+  if(curPage===15)initQuiz();
+  if(curPage===TOTAL)setTimeout(drawCert,120);
+}
+function changePage(d){goToPage(curPage+d);}
+
+/* ============================================================
+   MINI QUIZ
+============================================================ */
+function miniQ(btn,type,fbId){
+  const container=btn.closest('.quiz-bubble');
+  container.querySelectorAll('.q-opt').forEach(b=>{b.style.pointerEvents='none';b.classList.add('locked');});
+  const fb=document.getElementById(fbId);
+  if(type==='correct'){btn.classList.add('correct');fb.innerHTML='<span style="color:#155724;">🎉 Correct! Amazing work!</span>';}
+  else{btn.classList.add('wrong');fb.innerHTML='<span style="color:#721c24;">Not quite! Try again next time! 💪</span>';}
+}
+
+/* ============================================================
+   RULER ANATOMY
+============================================================ */
+const rulerParts={
+  1:{text:'⬅️ The ZERO EDGE — This is where you ALWAYS start measuring! Line up this 0 mark with the start of your object.',hl:[5,55,35,72]},
+  2:{text:'🔢 The NUMBERS — These are centimetre numbers (1, 2, 3…). When the object ends at a number, that is its length in cm!',hl:[50,90,230,30]},
+  3:{text:'📏 The BIG LINES (cm marks) — Each big line is 1 centimetre apart. Count the spaces between them!',hl:[50,55,230,42]},
+  4:{text:'🔬 The SMALL LINES (mm marks) — These tiny lines are millimetres! 10 millimetres = 1 centimetre.',hl:[280,55,200,32]},
+  5:{text:'📐 The STRAIGHT EDGE — This flat side goes along your object. Keep it touching the object while you measure!',hl:[0,115,680,12]},
+};
+function showRulerPart(n){
+  const p=rulerParts[n];
+  document.getElementById('rulerPartInfo').textContent=p.text;
+  const h=document.getElementById('rulerHighlight');
+  h.setAttribute('x',p.hl[0]);h.setAttribute('y',p.hl[1]);h.setAttribute('width',p.hl[2]);h.setAttribute('height',p.hl[3]);
+}
+
+/* ============================================================
+   STEP DEMO (page 4)
+============================================================ */
+let stepNum=1;
+function initStepDemo(){stepNum=1;drawStepDemo();}
+function showStep(n){
+  stepNum=n;
+  ['step1btn','step2btn','step3btn'].forEach((id,i)=>{
+    document.getElementById(id).classList.toggle('active',i+1===n);
+  });
+  drawStepDemo();
+}
+function drawStepDemo(){
+  const c=document.getElementById('stepCanvas');if(!c)return;
+  const ctx=c.getContext('2d');
+  ctx.clearRect(0,0,700,180);
+  const W=c.width,H=c.height;
+  ctx.fillStyle='#FAFAFA';ctx.fillRect(0,0,W,H);
+  // Draw the object (crayon)
+  const objX=120,objY=80,objW=280,objH=36;
+  ctx.fillStyle='#FF6B6B';
+  ctx.beginPath();ctx.roundRect(objX,objY,objW,objH,6);ctx.fill();
+  ctx.fillStyle='#FFD93D';
+  ctx.beginPath();ctx.roundRect(objX,objY+6,14,objH-12,3);ctx.fill();
+  ctx.fillStyle='white';ctx.font='bold 14px Nunito';ctx.textAlign='center';
+  ctx.fillText('🖍 Crayon',objX+objW/2,objY+22);
+  // ruler
+  let rulerX=stepNum===1?objX-20:(stepNum===2?objX:objX);
+  const rulerY=objY+objH+12;
+  // ruler body
+  ctx.fillStyle='#C8952C';ctx.beginPath();ctx.roundRect(rulerX,rulerY,350,30,5);ctx.fill();
+  ctx.fillStyle='#F5C842';ctx.beginPath();ctx.roundRect(rulerX+2,rulerY+2,346,26,4);ctx.fill();
+  // marks
+  ctx.fillStyle='#7B5800';
+  for(let i=0;i<=7;i++){
+    const mx=rulerX+i*50;
+    ctx.fillRect(mx,rulerY+2,2,14);
+    ctx.font='10px Nunito';ctx.textAlign='left';
+    ctx.fillText(i,mx+2,rulerY+28);
+  }
+  for(let i=0;i<=6;i++){ctx.fillRect(rulerX+i*50+25,rulerY+2,1.5,9);}
+  ctx.font='10px Nunito';ctx.fillText('cm',rulerX+170,rulerY+22);
+  // step-specific highlights
+  if(stepNum===1){
+    // red arrow at 0
+    ctx.fillStyle='#FF3B30';ctx.strokeStyle='#FF3B30';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(rulerX,rulerY-8);ctx.lineTo(rulerX,rulerY+2);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(rulerX-6,rulerY-8);ctx.lineTo(rulerX,rulerY-20);ctx.lineTo(rulerX+6,rulerY-8);ctx.closePath();ctx.fill();
+    ctx.fillStyle='#FF3B30';ctx.font='bold 13px Baloo 2,cursive';ctx.textAlign='center';
+    ctx.fillText('Start at 0!',rulerX+30,rulerY-24);
+    // highlight mismatch
+    ctx.strokeStyle='rgba(255,59,48,.4)';ctx.lineWidth=2;ctx.setLineDash([4,3]);
+    ctx.beginPath();ctx.moveTo(rulerX,rulerY);ctx.lineTo(objX,rulerY);ctx.stroke();
+    ctx.setLineDash([]);
+    document.getElementById('stepDesc').textContent='Step 1: Place the ruler so the 0 mark lines up with the LEFT end of the object!';
+  } else if(stepNum===2){
+    // show ruler aligned straight
+    ctx.strokeStyle='#6BCB77';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(objX,objY+objH/2);ctx.lineTo(objX,rulerY+15);ctx.stroke();
+    ctx.strokeStyle='rgba(107,203,119,.5)';ctx.lineWidth=2;ctx.setLineDash([4,3]);
+    ctx.beginPath();ctx.moveTo(rulerX,rulerY-2);ctx.lineTo(rulerX+350,rulerY-2);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#2E7D32';ctx.font='bold 13px Baloo 2,cursive';ctx.textAlign='center';
+    ctx.fillText('✅ Keep the ruler straight!',rulerX+175,rulerY-8);
+    document.getElementById('stepDesc').textContent='Step 2: Keep the ruler perfectly straight along the object — don\'t tilt it!';
+  } else {
+    // show reading
+    const endX=rulerX+objW;
+    ctx.strokeStyle='#845EF7';ctx.lineWidth=2;ctx.setLineDash([4,3]);
+    ctx.beginPath();ctx.moveTo(objX+objW,objY);ctx.lineTo(endX,rulerY+2);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#845EF7';ctx.beginPath();ctx.arc(endX,rulerY+10,10,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='white';ctx.font='bold 11px Nunito';ctx.textAlign='center';
+    ctx.fillText((objW/50).toFixed(0),endX,rulerY+14);
+    ctx.fillStyle='#845EF7';ctx.font='bold 14px Baloo 2,cursive';ctx.textAlign='center';
+    ctx.fillText('Read the number here! = '+(objW/50).toFixed(0)+' cm',endX,rulerY-8);
+    document.getElementById('stepDesc').textContent='Step 3: Look where the RIGHT end of the object lines up on the ruler — that number is the length!';
+  }
+}
+
+/* ============================================================
+   DRAG RULER SYSTEM
+============================================================ */
+function makeRulerDrag(canvasId,config){
+  const c=document.getElementById(canvasId);if(!c)return;
+  const ctx=c.getContext('2d');
+  const W=c.width,H=c.height;
+  let rulerX=20,dragging=false,startX=0,startRulerX=0;
+  const PX_PER_CM=50;
+
+  function drawObj(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#FAFAFA';ctx.fillRect(0,0,W,H);
+    // grid lines subtle
+    ctx.strokeStyle='rgba(0,0,0,.04)';ctx.lineWidth=1;
+    for(let y=0;y<H;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+    // draw object
+    config.draw(ctx,config.objX,config.objY,config.objW,config.objH);
+
+    // draw ruler
+    const ry=config.objY+config.objH+18;
+    // shadow
+    ctx.fillStyle='rgba(0,0,0,.08)';ctx.beginPath();ctx.roundRect(rulerX+3,ry+3,config.rulerW+6,36,5);ctx.fill();
+    // body
+    ctx.fillStyle='#C8952C';ctx.beginPath();ctx.roundRect(rulerX,ry,config.rulerW+6,36,5);ctx.fill();
+    ctx.fillStyle='#F5C842';ctx.beginPath();ctx.roundRect(rulerX+2,ry+2,config.rulerW+2,32,4);ctx.fill();
+    // marks
+    ctx.fillStyle='#7B5800';
+    const maxCm=Math.ceil(config.rulerW/PX_PER_CM)+1;
+    for(let i=0;i<=maxCm;i++){
+      const mx=rulerX+i*PX_PER_CM;
+      if(mx>rulerX+config.rulerW+6)break;
+      ctx.fillRect(mx,ry+2,2,16);
+      ctx.font='10px Nunito';ctx.textAlign='left';ctx.fillStyle='#7B5800';
+      ctx.fillText(i,mx+2,ry+32);
+      if(i<maxCm){
+        ctx.fillRect(mx+PX_PER_CM/2,ry+2,1.5,11);
+        for(let j=1;j<=4;j++){if(j===2)continue;ctx.fillRect(mx+j*10,ry+2,1,7);}
+      }
+    }
+    ctx.font='10px Nunito';ctx.fillText('cm',rulerX+config.rulerW/2,ry+30);
+
+    // alignment guide
+    if(Math.abs(rulerX-config.objX)<12){
+      ctx.strokeStyle='rgba(107,203,119,.5)';ctx.lineWidth=1.5;ctx.setLineDash([3,2]);
+      ctx.beginPath();ctx.moveTo(config.objX,config.objY);ctx.lineTo(config.objX,ry);ctx.stroke();
+      ctx.setLineDash([]);
+    }
+    // end guide
+    const endObj=config.objX+config.objW;
+    const endOnRuler=endObj-rulerX;
+    const measuredCm=(endOnRuler/PX_PER_CM).toFixed(1);
+    if(endOnRuler>0&&rulerX<=config.objX+4){
+      ctx.strokeStyle='rgba(132,94,247,.5)';ctx.lineWidth=1.5;ctx.setLineDash([3,2]);
+      ctx.beginPath();ctx.moveTo(endObj,config.objY);ctx.lineTo(endObj,ry);ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle='rgba(132,94,247,.9)';ctx.beginPath();ctx.roundRect(endObj-28,config.objY-30,56,22,10);ctx.fill();
+      ctx.fillStyle='white';ctx.font='bold 12px Baloo 2,cursive';ctx.textAlign='center';
+      ctx.fillText(measuredCm+' cm',endObj,config.objY-15);
+    }
+  }
+
+  function getX(e){return (e.touches?e.touches[0].clientX:e.clientX)-c.getBoundingClientRect().left;}
+  c.addEventListener('mousedown',e=>{dragging=true;startX=getX(e);startRulerX=rulerX;});
+  c.addEventListener('touchstart',e=>{e.preventDefault();dragging=true;startX=getX(e);startRulerX=rulerX;},{passive:false});
+  c.addEventListener('mousemove',e=>{if(!dragging)return;rulerX=Math.max(-20,Math.min(W-100,startRulerX+(getX(e)-startX)));drawObj();});
+  c.addEventListener('touchmove',e=>{e.preventDefault();if(!dragging)return;rulerX=Math.max(-20,Math.min(W-100,startRulerX+(getX(e)-startX)));drawObj();},{passive:false});
+  c.addEventListener('mouseup',()=>{dragging=false;});
+  c.addEventListener('touchend',()=>{dragging=false;});
+  c.dataset.getRulerX=()=>rulerX;
+  c._rulerRef={getX:()=>rulerX,reset:()=>{rulerX=20;drawObj();},draw:drawObj};
+  drawObj();
+  return c._rulerRef;
+}
+
+/* ============================================================
+   PAGE 5 — PENCIL DRAG
+============================================================ */
+let drag1Ref;
+function initDrag1(){
+  drag1Ref=makeRulerDrag('dragCanvas1',{
+    objX:100,objY:60,objW:200,objH:28,rulerW:350,
+    draw:(ctx,x,y,w,h)=>{
+      ctx.fillStyle='#FFD93D';ctx.beginPath();ctx.roundRect(x,y,w,h,5);ctx.fill();
+      ctx.fillStyle='#F87171';ctx.beginPath();ctx.moveTo(x+w,y);ctx.lineTo(x+w+20,y+h/2);ctx.lineTo(x+w,y+h);ctx.closePath();ctx.fill();
+      ctx.fillStyle='#C8952C';ctx.fillRect(x,y+4,14,h-8);
+      ctx.fillStyle='#333';ctx.font='bold 14px Nunito';ctx.textAlign='center';ctx.fillText('✏️ Pencil',x+w/2,y+19);
+      ctx.strokeStyle='rgba(255,159,28,.3)';ctx.lineWidth=1;ctx.setLineDash([4,3]);
+      ctx.beginPath();ctx.moveTo(x,y-8);ctx.lineTo(x+w,y-8);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle='rgba(255,159,28,.7)';
+      ctx.beginPath();ctx.moveTo(x-4,y-12);ctx.lineTo(x,y-4);ctx.lineTo(x+4,y-12);ctx.closePath();ctx.fill();
+      ctx.beginPath();ctx.moveTo(x+w-4,y-12);ctx.lineTo(x+w,y-4);ctx.lineTo(x+w+4,y-12);ctx.closePath();ctx.fill();
+    }
+  });
+}
+function checkMeasure(id,expectedCm){
+  const ref=id==='drag1'?drag1Ref:null;if(!ref)return;
+  const canvas=document.getElementById('dragCanvas1');
+  const rulerX=ref.getX();
+  const objX=100,objW=200;
+  const endOnRuler=objX+objW-rulerX;
+  const measured=(endOnRuler/50).toFixed(1);
+  const correct=Math.abs(parseFloat(measured)-expectedCm)<0.8;
+  const res=document.getElementById(id+'Result');
+  if(correct){res.style.color='#2E7D32';res.textContent='🎉 Great! The pencil is '+expectedCm+' cm long!';}
+  else{res.style.color='#C06000';res.textContent='Try again! Line up the 0 with the left end of the pencil first! (got ~'+measured+' cm)';}
+}
+function resetDrag(id){
+  if(id==='drag1'&&drag1Ref){drag1Ref.reset();document.getElementById('drag1Result').textContent='Line up the ruler and measure! 📏';}
+  if(id==='drag2'&&drag2Ref){drag2Ref.reset();document.getElementById('drag2Result').textContent='Select an object above, then measure it!';}
+  if(id==='drag3'&&drag3Ref){drag3Ref.reset();document.getElementById('drag3Result').textContent='Select an animal to measure!';}
+}
+
+/* ============================================================
+   PAGE 7 — OBJECTS
+============================================================ */
+const OBJECTS=[
+  {name:'Pencil',emoji:'✏️',cm:4,color:'#FFD93D',draw:(ctx,x,y,w,h)=>{ctx.fillStyle='#FFD93D';ctx.beginPath();ctx.roundRect(x,y,w,h,5);ctx.fill();ctx.fillStyle='#F87171';ctx.beginPath();ctx.moveTo(x+w,y);ctx.lineTo(x+w+16,y+h/2);ctx.lineTo(x+w,y+h);ctx.closePath();ctx.fill();ctx.fillStyle='#C8952C';ctx.fillRect(x,y+3,12,h-6);ctx.fillStyle='#555';ctx.font='bold 12px Nunito';ctx.textAlign='center';ctx.fillText('✏️',x+w/2,y+17);}},
+  {name:'Banana',emoji:'🍌',cm:6,color:'#FFE082',draw:(ctx,x,y,w,h)=>{ctx.fillStyle='#FFD54F';ctx.beginPath();ctx.moveTo(x,y+h);ctx.quadraticCurveTo(x+w/2,y-10,x+w,y+h/2);ctx.quadraticCurveTo(x+w-10,y+h+10,x,y+h);ctx.closePath();ctx.fill();ctx.strokeStyle='#F9A825';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,y+h);ctx.quadraticCurveTo(x+w/2,y-10,x+w,y+h/2);ctx.stroke();ctx.fillStyle='#555';ctx.font='bold 14px Nunito';ctx.textAlign='center';ctx.fillText('🍌',x+w/2,y+h/2+5);}},
+  {name:'Caterpillar',emoji:'🐛',cm:5,color:'#81C784',draw:(ctx,x,y,w,h)=>{const seg=6;const sw=w/seg;for(let i=0;i<seg;i++){const cx2=x+i*sw+sw/2,cy2=y+h/2;const r=sw/2-2;ctx.fillStyle=i%2===0?'#66BB6A':'#81C784';ctx.beginPath();ctx.arc(cx2,cy2,r,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#2E7D32';ctx.lineWidth=1;ctx.stroke();}ctx.fillStyle='#4CAF50';ctx.beginPath();ctx.arc(x+w+8,y+h/2,sw/2+2,0,Math.PI*2);ctx.fill();ctx.fillStyle='white';ctx.beginPath();ctx.arc(x+w+10,y+h/2-3,3,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(x+w+6,y+h/2-3,3,0,Math.PI*2);ctx.fill();}},
+  {name:'Key',emoji:'🔑',cm:3,color:'#FFD93D',draw:(ctx,x,y,w,h)=>{ctx.fillStyle='#FFD93D';ctx.beginPath();ctx.arc(x+h/2,y+h/2,h/2,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#C8952C';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='#FFF9F0';ctx.beginPath();ctx.arc(x+h/2,y+h/2,h/4,0,Math.PI*2);ctx.fill();ctx.fillStyle='#C8952C';ctx.fillRect(x+h-2,y+h/2-3,w-h+4,6);ctx.fillRect(x+w-10,y+h/2-3,4,10);ctx.fillRect(x+w-20,y+h/2-3,4,8);}},
+  {name:'Dino',emoji:'🦕',cm:7,color:'#80CBC4',draw:(ctx,x,y,w,h)=>{ctx.fillStyle='#80CBC4';ctx.beginPath();ctx.roundRect(x,y+h/3,w*0.65,h*0.55,8);ctx.fill();ctx.beginPath();ctx.roundRect(x+w*0.65,y,w*0.35,h*0.45,8);ctx.fill();ctx.fillStyle='#4DB6AC';ctx.beginPath();ctx.roundRect(x+w*0.6,y+h*0.25,8,h*0.35,4);ctx.fill();const lw=w*0.16;for(let i=0;i<4;i++){ctx.beginPath();ctx.roundRect(x+i*lw+lw/3,y+h*0.8,lw*0.5,h*0.2,4);ctx.fill();}ctx.fillStyle='white';ctx.beginPath();ctx.arc(x+w*0.88,y+h*0.12,4,0,Math.PI*2);ctx.fill();}},
+];
+let selObj=0;
+let drag2Ref;
+function selectObj(i){
+  selObj=i;
+  document.querySelectorAll('#objGrid .obj-card').forEach((c,j)=>c.classList.toggle('selected',j===i));
+  initDrag2();
+  document.getElementById('drag2Result').textContent='Drag the ruler to measure the '+OBJECTS[i].name+'!';
+}
+function initDrag2(){
+  const obj=OBJECTS[selObj];
+  const objW=obj.cm*50;
+  drag2Ref=makeRulerDrag('dragCanvas2',{
+    objX:80,objY:55,objW:objW,objH:40,rulerW:400,
+    draw:obj.draw
+  });
+}
+function revealMeasure2(){
+  const obj=OBJECTS[selObj];
+  document.getElementById('drag2Result').style.color='#2E7D32';
+  document.getElementById('drag2Result').textContent='🎉 The '+obj.emoji+' '+obj.name+' is '+obj.cm+' cm long!';
+}
+
+/* ============================================================
+   PAGE 8 — COMPARE
+============================================================ */
+const compareObjs=[{name:'Object A',cm:3,color:'#FF6B6B'},{name:'Object B',cm:5,color:'#4D96FF'}];
+let compareRevealed=[false,false];
+function initCompare(){
+  compareRevealed=[false,false];
+  document.getElementById('compareResult').textContent='Tap a button to measure!';
+  drawCompare();
+}
+function drawCompare(){
+  const c=document.getElementById('compareCanvas');if(!c)return;
+  const ctx=c.getContext('2d');
+  ctx.clearRect(0,0,700,260);
+  ctx.fillStyle='#FAFAFA';ctx.fillRect(0,0,700,260);
+  const PX=50;
+  compareObjs.forEach((obj,i)=>{
+    const y=50+i*110;
+    const w=obj.cm*PX;
+    ctx.fillStyle=obj.color;
+    ctx.beginPath();ctx.roundRect(80,y,w,40,8);ctx.fill();
+    ctx.fillStyle='white';ctx.font='bold 14px Nunito';ctx.textAlign='center';
+    ctx.fillText(obj.name,80+w/2,y+25);
+    // ruler
+    ctx.fillStyle='#C8952C';ctx.beginPath();ctx.roundRect(80,y+44,350,22,4);ctx.fill();
+    ctx.fillStyle='#F5C842';ctx.beginPath();ctx.roundRect(82,y+46,346,18,3);ctx.fill();
+    ctx.fillStyle='#7B5800';
+    for(let j=0;j<=7;j++){
+      ctx.fillRect(80+j*PX,y+46,2,12);
+      ctx.font='9px Nunito';ctx.textAlign='left';ctx.fillText(j,82+j*PX,y+66);
+    }
+    if(compareRevealed[i]){
+      ctx.strokeStyle=obj.color;ctx.lineWidth=2;ctx.setLineDash([4,3]);
+      ctx.beginPath();ctx.moveTo(80+w,y);ctx.lineTo(80+w,y+44);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle=obj.color;ctx.beginPath();ctx.roundRect(80+w-28,y-28,56,22,10);ctx.fill();
+      ctx.fillStyle='white';ctx.font='bold 13px Baloo 2,cursive';ctx.textAlign='center';
+      ctx.fillText(obj.cm+' cm',80+w,y-14);
+    }
+  });
+  if(compareRevealed[0]&&compareRevealed[1]){
+    const winner=compareObjs[0].cm>compareObjs[1].cm?compareObjs[0]:compareObjs[1];
+    document.getElementById('compareResult').textContent='🏆 '+winner.name+' is longer! ('+winner.cm+' cm > '+(compareObjs[0]===winner?compareObjs[1].cm:compareObjs[0].cm)+' cm)';
+  }
+}
+function measureCompareObj(i){compareRevealed[i]=true;drawCompare();}
+
+/* ============================================================
+   PAGE 9 — READ THE RULER
+============================================================ */
+const readQs=[
+  {arrow:225,answer:4.5,choices:[3,4,4.5,5]},
+  {arrow:150,answer:3,choices:[2,3,3.5,4]},
+  {arrow:250,answer:5,choices:[4,4.5,5,6]},
+  {arrow:175,answer:3.5,choices:[3,3.5,4,4.5]},
+  {arrow:100,answer:2,choices:[1,1.5,2,2.5]},
+];
+let curReadQ=0;
+function initReadQ(){curReadQ=0;drawReadQ();}
+function drawReadQ(){
+  const c=document.getElementById('readCanvas');if(!c)return;
+  const ctx=c.getContext('2d');
+  const W=600,H=90;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='white';ctx.fillRect(0,0,W,H);
+  const ry=10,PX=50,maxCm=7;
+  ctx.fillStyle='#C8952C';ctx.beginPath();ctx.roundRect(20,ry,maxCm*PX+30,32,5);ctx.fill();
+  ctx.fillStyle='#F5C842';ctx.beginPath();ctx.roundRect(22,ry+2,maxCm*PX+26,28,4);ctx.fill();
+  ctx.fillStyle='#7B5800';
+  for(let i=0;i<=maxCm;i++){
+    ctx.fillRect(20+i*PX,ry+2,2,16);
+    ctx.font='10px Nunito';ctx.textAlign='left';ctx.fillText(i,22+i*PX,ry+30);
+    if(i<maxCm)ctx.fillRect(20+i*PX+PX/2,ry+2,1.5,10);
+  }
+  ctx.font='9px Nunito';ctx.fillText('cm',20+maxCm*PX-10,ry+24);
+  // red arrow
+  const q=readQs[curReadQ];
+  const ax=20+q.arrow;
+  ctx.fillStyle='#FF3B30';
+  ctx.beginPath();ctx.moveTo(ax-7,H-2);ctx.lineTo(ax+7,H-2);ctx.lineTo(ax,ry+2);ctx.closePath();ctx.fill();
+  ctx.strokeStyle='#FF3B30';ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(ax,H-2);ctx.lineTo(ax,ry+20);ctx.stroke();
+  ctx.fillStyle='#FF3B30';ctx.font='bold 12px Baloo 2,cursive';ctx.textAlign='center';
+  ctx.fillText('↑ What number?',ax,H-4);
+  // Update answer buttons
+  const btns=document.querySelectorAll('#readResult').length;
+  const wrap=document.querySelector('#readCanvas').closest('div').querySelector('div');
+  if(wrap){
+    wrap.querySelectorAll('button').forEach((btn,i)=>{
+      btn.textContent=q.choices[i]+' cm';
+      btn.onclick=()=>checkRead(q.choices[i]);
+      btn.style.background='#E0D5F0';btn.style.color=varPurple;
+    });
+  }
+  document.getElementById('readResult').textContent='';
+}
+const varPurple='#5C3A9E';
+function checkRead(val){
+  const q=readQs[curReadQ];
+  const res=document.getElementById('readResult');
+  if(val===q.answer){res.style.color='#155724';res.textContent='🎉 Correct! The arrow points to '+q.answer+' cm!';}
+  else{res.style.color='#721c24';res.textContent='Not quite! The arrow points to '+q.answer+' cm. Try again!';}
+}
+function newReadQ(){curReadQ=(curReadQ+1)%readQs.length;drawReadQ();}
+
+/* ============================================================
+   PAGE 10 — ESTIMATE
+============================================================ */
+const estimateItems=[
+  {name:'Eraser',color:'#F06595',cm:4},
+  {name:'Leaf',color:'#66BB6A',cm:5},
+  {name:'Phone',color:'#5C6BC0',cm:7},
+  {name:'Stamp',color:'#FF9F1C',cm:2},
+  {name:'Crayon',color:'#EF5350',cm:6},
+];
+let curEstimate=0;
+function newEstimate(){
+  curEstimate=Math.floor(Math.random()*estimateItems.length);
+  document.getElementById('estimateResult').textContent='';
+  drawEstimate();
+}
+function drawEstimate(){
+  const c=document.getElementById('estimateCanvas');if(!c)return;
+  const ctx=c.getContext('2d');
+  const W=640,H=80;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='white';ctx.fillRect(0,0,W,H);
+  const item=estimateItems[curEstimate];
+  const objW=item.cm*40;
+  ctx.fillStyle=item.color;
+  ctx.beginPath();ctx.roundRect(40,20,objW,36,6);ctx.fill();
+  ctx.fillStyle='white';ctx.font='bold 14px Nunito';ctx.textAlign='center';
+  ctx.fillText(item.name,40+objW/2,42);
+  // thumb guides
+  for(let i=0;i<Math.ceil(item.cm);i++){
+    ctx.strokeStyle='rgba(253,188,170,.6)';ctx.lineWidth=1;ctx.setLineDash([2,1]);
+    ctx.beginPath();ctx.moveTo(40+i*40,60);ctx.lineTo(40+(i+1)*40,60);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(253,188,170,.3)';
+    ctx.fillRect(40+i*40+1,64,38,12);
+  }
+}
+function guessEstimate(val){
+  const item=estimateItems[curEstimate];
+  const res=document.getElementById('estimateResult');
+  const diff=Math.abs(val-item.cm);
+  if(diff===0){res.style.color='#155724';res.textContent='🎉 Perfect estimate! The '+item.name+' is exactly '+item.cm+' cm!';}
+  else if(diff<=1){res.style.color='#856404';res.textContent='👍 Great guess! The '+item.name+' is '+item.cm+' cm. You were only '+diff+' cm off!';}
+  else{res.style.color='#721c24';res.textContent='Keep practicing! The '+item.name+' is '+item.cm+' cm. Your guess was '+val+' cm.';}
+}
+
+/* ============================================================
+   PAGE 11 — REAL WORLD
+============================================================ */
+const rwInfos=[
+  '👗 CLOTHES: Tailors measure your chest, waist, arms, and height in centimetres to make clothes that fit perfectly!',
+  '🏗️ BUILDING: Builders measure walls, doors, and floors in metres to make sure everything fits together correctly!',
+  '👨‍⚕️ DOCTOR: The doctor measures your height in centimetres to check that you are growing healthy and strong!',
+  '🏃 SPORTS: In long jump, athletes measure how far they jumped in metres! In swimming, pools are 25 or 50 metres long!',
+  '🍕 COOKING: Bakers measure the length and width of cake tins in centimetres to get the right amount of batter!',
+  '🎨 ART: Artists measure the size of their canvas in centimetres to plan their drawing before they start!',
+];
+function showRealWorld(i){
+  document.querySelectorAll('.rw-card').forEach((c,j)=>{
+    c.style.borderColor=j===i?'var(--purple)':'#E0D5C8';
+    c.style.background=j===i?'#F3E8FF':'white';
+  });
+  document.getElementById('rwInfo').textContent=rwInfos[i];
+}
+
+/* ============================================================
+   PAGE 12 — BEDROOM
+============================================================ */
+const bedroomObjects=[
+  {name:'Bed',emoji:'🛏️',x:50,y:60,w:200,h:100,cm:10,color:'#90CAF9'},
+  {name:'Book',emoji:'📚',x:300,y:80,w:60,h:80,cm:3,color:'#FF8A65'},
+  {name:'Pencil',emoji:'✏️',x:420,y:100,w:120,h:18,cm:6,color:'#FFD54F'},
+  {name:'Toy car',emoji:'🚗',x:560,y:160,w:80,h:50,cm:4,color:'#EF9A9A'},
+  {name:'Window',emoji:'🪟',x:50,y:190,w:70,h:70,cm:3,color:'#B3E5FC'},
+];
+function initBedroom(){
+  const c=document.getElementById('bedroomCanvas');if(!c)return;
+  const ctx=c.getContext('2d');
+  drawBedroom(ctx,-1);
+  // buttons
+  const btns=document.getElementById('bedroomBtns');
+  btns.innerHTML='';
+  bedroomObjects.forEach((obj,i)=>{
+    const btn=document.createElement('button');
+    btn.className='m-btn';btn.style.background='#EDE7F6';btn.style.color='#5C3A9E';
+    btn.textContent=obj.emoji+' '+obj.name;
+    btn.onclick=()=>{drawBedroom(ctx,i);document.getElementById('bedroomInfo').textContent='📏 '+obj.name+' ('+obj.emoji+'): '+obj.cm+' cm long!';};
+    btns.appendChild(btn);
+  });
+  c.onclick=e=>{
+    const rect=c.getBoundingClientRect();
+    const sx=(e.clientX-rect.left)/rect.width*700;
+    const sy=(e.clientY-rect.top)/rect.height*280;
+    bedroomObjects.forEach((obj,i)=>{if(sx>=obj.x&&sx<=obj.x+obj.w&&sy>=obj.y&&sy<=obj.y+obj.h){drawBedroom(ctx,i);document.getElementById('bedroomInfo').textContent='📏 '+obj.name+' ('+obj.emoji+'): '+obj.cm+' cm long!';}});
+  };
+}
+function drawBedroom(ctx,sel){
+  const W=700,H=280;
+  ctx.clearRect(0,0,W,H);
+  // room
+  ctx.fillStyle='#FFF8F0';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#F0E6C8';ctx.fillRect(0,H-40,W,40); // floor
+  ctx.fillStyle='#E8DDD0';ctx.fillRect(0,H-42,W,4);
+  // draw objects
+  bedroomObjects.forEach((obj,i)=>{
+    const isSelected=i===sel;
+    if(isSelected){ctx.shadowColor='rgba(132,94,247,.5)';ctx.shadowBlur=12;}
+    ctx.fillStyle=obj.color;ctx.beginPath();ctx.roundRect(obj.x,obj.y,obj.w,obj.h,6);ctx.fill();
+    ctx.shadowBlur=0;
+    if(isSelected){ctx.strokeStyle='#845EF7';ctx.lineWidth=3;ctx.beginPath();ctx.roundRect(obj.x,obj.y,obj.w,obj.h,6);ctx.stroke();}
+    ctx.font='bold 14px Nunito';ctx.textAlign='center';ctx.fillStyle='rgba(0,0,0,.6)';
+    ctx.fillText(obj.emoji,obj.x+obj.w/2,obj.y+obj.h/2+5);
+    if(isSelected){
+      // ruler overlay
+      const ry=obj.y+obj.h+8;
+      ctx.fillStyle='#C8952C';ctx.beginPath();ctx.roundRect(obj.x,ry,obj.w+10,18,3);ctx.fill();
+      ctx.fillStyle='#F5C842';ctx.beginPath();ctx.roundRect(obj.x+1,ry+1,obj.w+8,16,2);ctx.fill();
+      ctx.fillStyle='#7B5800';ctx.font='9px Nunito';ctx.textAlign='center';
+      ctx.fillText(obj.cm+' cm',obj.x+obj.w/2,ry+12);
+      // measurement bubble
+      ctx.fillStyle='#845EF7';ctx.beginPath();ctx.roundRect(obj.x+obj.w/2-32,obj.y-34,64,24,10);ctx.fill();
+      ctx.fillStyle='white';ctx.font='bold 13px Baloo 2,cursive';ctx.textAlign='center';
+      ctx.fillText(obj.cm+' cm',obj.x+obj.w/2,obj.y-18);
+    }
+  });
+  ctx.fillStyle='rgba(0,0,0,.3)';ctx.font='12px Baloo 2,cursive';ctx.textAlign='center';
+  ctx.fillText("Remy's Bedroom 🏠",W/2,H-12);
+}
+
+/* ============================================================
+   PAGE 13 — SORT
+============================================================ */
+const sortItems=[{name:'Stamp',cm:2,color:'#FF9F1C'},{name:'Key',cm:3,color:'#FFD93D'},{name:'Pencil',cm:5,color:'#4D96FF'},{name:'Banana',cm:7,color:'#81C784'}];
+let sortOrder=[],sortDone=false;
+function initSort(){
+  sortOrder=[];sortDone=false;
+  drawSortCanvas();
+  const btns=document.getElementById('sortBtns');
+  btns.innerHTML='';
+  const shuffled=[...sortItems].sort(()=>Math.random()-.5);
+  shuffled.forEach(item=>{
+    const btn=document.createElement('button');
+    btn.className='m-btn';btn.style.background='white';btn.style.color=item.color;
+    btn.style.border='2.5px solid '+item.color;btn.style.fontSize='13px';
+    btn.textContent=item.name+' ('+item.cm+' cm)';
+    btn.onclick=()=>{
+      if(sortDone)return;
+      sortOrder.push(item);btn.disabled=true;btn.style.opacity='.4';
+      document.getElementById('sortResult').textContent='';
+      if(sortOrder.length===4){checkSort();}
+    };
+    btns.appendChild(btn);
+  });
+  document.getElementById('sortResult').textContent='';
+}
+function drawSortCanvas(){
+  const c=document.getElementById('sortCanvas');if(!c)return;
+  const ctx=c.getContext('2d');
+  ctx.clearRect(0,0,640,100);ctx.fillStyle='white';ctx.fillRect(0,0,640,100);
+  sortItems.forEach((item,i)=>{
+    const x=20+i*155;
+    ctx.fillStyle=item.color;ctx.beginPath();ctx.roundRect(x,20,item.cm*12,40,5);ctx.fill();
+    ctx.fillStyle='white';ctx.font='bold 12px Nunito';ctx.textAlign='center';
+    ctx.fillText(item.name,x+item.cm*6,44);
+    ctx.fillStyle=item.color;ctx.font='bold 10px Nunito';ctx.textAlign='center';
+    ctx.fillText(item.cm+' cm',x+item.cm*6,72);
+  });
+}
+function checkSort(){
+  sortDone=true;
+  const correct=sortOrder.every((item,i)=>item.cm===sortItems[i].cm);
+  const r=document.getElementById('sortResult');
+  if(correct){r.style.color='#155724';r.textContent='🎉 Perfect! Shortest to longest: Stamp→Key→Pencil→Banana!';}
+  else{r.style.color='#721c24';r.textContent='Not quite! Try again! Remember: shortest=smallest cm number. 💪';setTimeout(()=>{initSort();},1500);}
+}
+
+/* ============================================================
+   PAGE 14 — ANIMAL DRAG
+============================================================ */
+const animalObjs=[
+  {name:'Dino Claw',emoji:'🦕',cm:5,color:'#80CBC4',draw:(ctx,x,y,w,h)=>{ctx.fillStyle='#80CBC4';ctx.beginPath();ctx.moveTo(x,y+h);ctx.quadraticCurveTo(x+w*0.3,y,x+w,y+h*0.3);ctx.lineTo(x+w-6,y+h*0.3+12);ctx.quadraticCurveTo(x+w*0.3+10,y+16,x+12,y+h);ctx.closePath();ctx.fill();ctx.fillStyle='white';ctx.font='20px serif';ctx.textAlign='center';ctx.fillText('🦕',x+w/2,y+h/2+6);}},
+  {name:'Snake',emoji:'🐍',cm:7,color:'#66BB6A',draw:(ctx,x,y,w,h)=>{ctx.strokeStyle='#66BB6A';ctx.lineWidth=h*0.55;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x,y+h/2);ctx.quadraticCurveTo(x+w/2,y,x+w,y+h/2);ctx.stroke();ctx.fillStyle='#4CAF50';ctx.beginPath();ctx.arc(x+w,y+h/2,h*0.3,0,Math.PI*2);ctx.fill();ctx.fillStyle='white';ctx.beginPath();ctx.arc(x+w+3,y+h/2-4,3,0,Math.PI*2);ctx.fill();}},
+  {name:'Bone',emoji:'🦴',cm:4,color:'#FFF9C4',draw:(ctx,x,y,w,h)=>{ctx.fillStyle='#FFF9C4';ctx.strokeStyle='#E0CC70';ctx.lineWidth=2;const bw=w*0.65,bh=h*0.35,bx=x+w*0.175,by=y+h*0.3;ctx.fillRect(bx,by,bw,bh);ctx.stroke();[{cx:x+6,cy:y+8},{cx:x+6,cy:y+h-8},{cx:x+w-6,cy:y+8},{cx:x+w-6,cy:y+h-8}].forEach(p=>{ctx.beginPath();ctx.arc(p.cx,p.cy,8,0,Math.PI*2);ctx.fill();ctx.stroke();});}},
+  {name:'Caterpillar',emoji:'🐛',cm:6,color:'#81C784',draw:(ctx,x,y,w,h)=>{const seg=7;const sw=w/seg;for(let i=0;i<seg;i++){const cx2=x+i*sw+sw/2,cy2=y+h/2,r=sw/2-1;ctx.fillStyle=i%2===0?'#66BB6A':'#A5D6A7';ctx.beginPath();ctx.arc(cx2,cy2,r,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#2E7D32';ctx.lineWidth=1;ctx.stroke();}ctx.fillStyle='#4CAF50';ctx.beginPath();ctx.arc(x+w+10,y+h/2,sw/2+3,0,Math.PI*2);ctx.fill();ctx.fillStyle='white';ctx.beginPath();ctx.arc(x+w+12,y+h/2-4,3,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(x+w+8,y+h/2-4,3,0,Math.PI*2);ctx.fill();}},
+];
+let selAnimal=0;
+let drag3Ref;
+function selectAnimal(i){
+  selAnimal=i;
+  document.querySelectorAll('#animalBtns button').forEach((b,j)=>{b.style.opacity=j===i?'1':'.6';});
+  initDrag3();
+  document.getElementById('drag3Result').textContent='Drag the ruler to measure the '+animalObjs[i].name+'!';
+}
+function initDrag3(){
+  const obj=animalObjs[selAnimal];
+  const objW=obj.cm*50;
+  drag3Ref=makeRulerDrag('dragCanvas3',{
+    objX:80,objY:50,objW:objW,objH:44,rulerW:400,
+    draw:obj.draw
+  });
+}
+function revealAnimal(){
+  const obj=animalObjs[selAnimal];
+  document.getElementById('drag3Result').style.color='#2E7D32';
+  document.getElementById('drag3Result').textContent='🎉 The '+obj.emoji+' '+obj.name+' is '+obj.cm+' cm long!';
+}
+
+/* ============================================================
+   FINAL QUIZ
+============================================================ */
+const QUIZ_QS=[
+  {emoji:'📏',q:'Which end of a ruler should you always start measuring from?',opts:['The middle','The end with the biggest number','The 0 mark','Any end is fine'],ans:2},
+  {emoji:'✏️',q:'A pencil measures from 0 to 8 on the ruler. How long is it?',opts:['7 cm','8 cm','9 cm','6 cm'],ans:1},
+  {emoji:'🐛',q:'Which unit would you use to measure a caterpillar?',opts:['Metres (m)','Kilometres (km)','Centimetres (cm)','Hours'],ans:2},
+  {emoji:'🔵🟠',q:'Object A is 6 cm. Object B is 4 cm. Which is LONGER?',opts:['Object B (4 cm)','They are equal','Object A (6 cm)','Can\'t tell'],ans:2},
+  {emoji:'🦶',q:'Why do we use rulers instead of body parts to measure?',opts:['Rulers are more colourful','So everyone measures the same way','Rulers are cheaper','Body parts are too small'],ans:1},
+  {emoji:'🚪',q:'A door is about 2 metres tall. Which tool would you use to measure it?',opts:['A small ruler','A measuring tape','A pencil','A clock'],ans:1},
+];
+let fqIdx=0,fqScore=0,fqAnswered=false;
+function initQuiz(){fqIdx=0;fqScore=0;fqAnswered=false;document.getElementById('quizActive').style.display='block';document.getElementById('quizPass').style.display='none';document.getElementById('quizFail').style.display='none';renderFQ();}
+function renderFQ(){
+  const q=QUIZ_QS[fqIdx];
+  document.getElementById('fqEmoji').textContent=q.emoji;
+  document.getElementById('fqQ').textContent=q.q;
+  document.getElementById('fqCounter').textContent='Question '+(fqIdx+1)+' of 6';
+  document.getElementById('fqScore').textContent='Score: '+fqScore+' / 6';
+  document.getElementById('fqMsg').textContent='';
+  document.getElementById('fqNext').style.display='none';
+  fqAnswered=false;
+  const opts=document.getElementById('fqOpts');
+  opts.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='fq-opt';b.textContent=o;
+    b.onclick=()=>answerFQ(i,b);
+    opts.appendChild(b);
+  });
+}
+function answerFQ(i,btn){
+  if(fqAnswered)return;fqAnswered=true;
+  const q=QUIZ_QS[fqIdx];
+  document.querySelectorAll('.fq-opt').forEach(b=>b.classList.add('locked'));
+  const msg=document.getElementById('fqMsg');
+  if(i===q.ans){btn.classList.add('correct');fqScore++;msg.innerHTML='<span style="color:#155724;">🎉 Correct! Great job!</span>';}
+  else{btn.classList.add('wrong');document.querySelectorAll('.fq-opt')[q.ans].classList.add('correct');msg.innerHTML='<span style="color:#721c24;">Not this time! The correct answer is highlighted.</span>';}
+  document.getElementById('fqScore').textContent='Score: '+fqScore+' / 6';
+  document.getElementById('fqNext').style.display='block';
+  document.getElementById('fqNext').textContent=fqIdx===5?'See My Result! 🏁':'Next Question →';
+}
+function nextFQ(){fqIdx++;if(fqIdx>=6){showFQResult();return;}renderFQ();}
+function showFQResult(){
+  document.getElementById('quizActive').style.display='none';
+  if(fqScore>=5){
+    document.getElementById('quizPass').style.display='block';
+    document.getElementById('passScore').textContent=fqScore+' / 6 ⭐';
+    document.getElementById('passMsg').textContent=fqScore===6?'PERFECT SCORE! You are a true Measuring Master! Every answer correct! 🌟':'So close to perfect! You clearly understand measuring really well! 🎉';
+  } else {
+    document.getElementById('quizFail').style.display='block';
+    document.getElementById('failScore').textContent=fqScore+' / 6';
+    document.getElementById('failMsg').innerHTML='You got <strong style="color:var(--orange);">'+fqScore+' out of 6</strong>. You need at least 5 to earn your certificate. Go back and practice with the drag activities, then try again! You can do it! 💪';
+  }
+}
+function restartQuiz(){initQuiz();}
+
+/* ============================================================
+   CERTIFICATE
+============================================================ */
+function rrect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();}
+function dStar(ctx,cx,cy,r,pts,color){ctx.save();ctx.fillStyle=color;ctx.beginPath();for(let i=0;i<pts*2;i++){const a=(i*Math.PI/pts)-Math.PI/2,rd=i%2===0?r:r*.42;i===0?ctx.moveTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a)):ctx.lineTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a));}ctx.closePath();ctx.fill();ctx.restore();}
+const qrImage=new Image();let qrReady=false;qrImage.crossOrigin='anonymous';qrImage.onload=()=>{qrReady=true;drawCert();};qrImage.src='https://quickchart.io/qr?text='+encodeURIComponent('https://fivetofifteen.com/')+'&size=180';
+function drawCert(){
+  const c=document.getElementById('cert');if(!c)return;
+  const ctx=c.getContext('2d');
+  const CW=900,CH=640;
+  const name=document.getElementById('certName').value.trim()||'Young Measurer';
+  ctx.clearRect(0,0,CW,CH);
+  // bg gradient
+  const bg=ctx.createLinearGradient(0,0,CW,CH);
+  bg.addColorStop(0,'#FFFBF0');bg.addColorStop(.5,'#FFF5E0');bg.addColorStop(1,'#FFF0F5');
+  ctx.fillStyle=bg;rrect(ctx,0,0,CW,CH,24);ctx.fill();
+  // outer border
+  ctx.strokeStyle='#FF9F1C';ctx.lineWidth=5;rrect(ctx,8,8,CW-16,CH-16,18);ctx.stroke();
+  // inner dashed
+  ctx.strokeStyle='#845EF7';ctx.lineWidth=2;ctx.setLineDash([7,5]);
+  rrect(ctx,20,20,CW-40,CH-40,12);ctx.stroke();ctx.setLineDash([]);
+  // corner stars
+  [[52,52],[CW-52,52],[52,CH-52],[CW-52,CH-52]].forEach(([x,y])=>{dStar(ctx,x,y,18,5,'#FFD93D');dStar(ctx,x,y,8,5,'rgba(255,159,28,.4)');});
+  // ruler decorations top and bottom
+  const rulerDraw=(y,flip)=>{
+    ctx.fillStyle='#C8952C';rrect(ctx,30,y,CW-60,24,4);ctx.fill();
+    ctx.fillStyle='#F5C842';rrect(ctx,32,y+2,CW-64,20,3);ctx.fill();
+    ctx.fillStyle='#7B5800';
+    for(let i=0;i<=16;i++){ctx.fillRect(32+i*52,y+2,2,flip?-12:12);if(i<16){ctx.font='7px Nunito';ctx.textAlign='left';ctx.fillText(i,34+i*52,flip?y+2:y+22);}}
+  };
+  rulerDraw(32,false);rulerDraw(CH-56,true);
+  // top ribbon
+  const rg=ctx.createLinearGradient(CW/2-200,0,CW/2+200,0);
+  rg.addColorStop(0,'#FF9F1C');rg.addColorStop(.5,'#FF6B6B');rg.addColorStop(1,'#FF9F1C');
+  ctx.fillStyle=rg;rrect(ctx,CW/2-210,56,420,40,20);ctx.fill();
+  ctx.fillStyle='white';ctx.font='bold 16px Orbitron,Nunito,sans-serif';ctx.textAlign='center';
+  ctx.fillText('📏  HOW LONG IS IT? — MEASURING ACADEMY',CW/2,82);
+  // ruler emoji
+  ctx.font='60px serif';ctx.textAlign='center';ctx.fillText('📏',CW/2,160);
+  // title
+  const tg=ctx.createLinearGradient(CW/2-200,0,CW/2+200,0);
+  tg.addColorStop(0,'#FF9F1C');tg.addColorStop(.5,'#845EF7');tg.addColorStop(1,'#FF9F1C');
+  ctx.fillStyle=tg;ctx.font='bold 38px Baloo 2,cursive';ctx.textAlign='center';
+  ctx.fillText('Measuring Length Certificate',CW/2,210);
+  // subtitle
+  ctx.fillStyle='#636E72';ctx.font='16px Nunito,sans-serif';ctx.textAlign='center';
+  ctx.fillText('This certifies that the amazing measuring expert',CW/2,242);
+  // name line
+  ctx.strokeStyle='#FF9F1C';ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.moveTo(CW/2-230,284);ctx.lineTo(CW/2+230,284);ctx.stroke();
+  ctx.fillStyle='#845EF7';ctx.font='bold 38px Baloo 2,cursive';ctx.textAlign='center';ctx.fillText(name,CW/2,278);
+  // desc
+  ctx.fillStyle='#555';ctx.font='15px Nunito,sans-serif';ctx.textAlign='center';
+  ctx.fillText('has mastered the art of measuring length and is now an official',CW/2,314);
+  ctx.fillStyle='#FF9F1C';ctx.font='bold 22px Baloo 2,cursive';
+  ctx.fillText('⭐ Certified Measuring Master ⭐',CW/2,346);
+  ctx.fillStyle='#94a3b8';ctx.font='13px Nunito,sans-serif';
+  ctx.fillText('Correctly measured with rulers, centimetres & metres!',CW/2,372);
+  // badges
+  const badges=[
+    {t:'📏 Knows a Ruler',bg:'#FFF3E0',c:'#C06000'},
+    {t:'🔢 Reads cm marks',bg:'#EDE7F6',c:'#5C3A9E'},
+    {t:'🔵 Can compare lengths',bg:'#E3F2FD',c:'#1565C0'},
+    {t:'🏆 Quiz Champion',bg:'#E8F5E9',c:'#2E7D32'},
+  ];
+  const bw=166,bh=28,bgap=8,tot=badges.length*(bw+bgap)-bgap;
+  let bx=CW/2-tot/2;
+  badges.forEach(b=>{
+    ctx.fillStyle=b.bg;rrect(ctx,bx,394,bw,bh,14);ctx.fill();
+    ctx.fillStyle=b.c;ctx.font='bold 12px Nunito,sans-serif';ctx.textAlign='center';
+    ctx.fillText(b.t,bx+bw/2,411);bx+=bw+bgap;
+  });
+  // ruler icons row
+  ctx.font='32px serif';ctx.textAlign='center';
+  ctx.fillText('📏  ✏️  📐  🔑  🍌  🐛  🦴  🚗',CW/2,478);
+  ctx.fillStyle='#ffffff';ctx.strokeStyle='#ece2f4';ctx.lineWidth=2;rrect(ctx,CW-154,68,102,102,14);ctx.fill();ctx.stroke();
+  if(qrReady){ctx.drawImage(qrImage,CW-144,78,82,82);}else{ctx.fillStyle='#faf1ff';ctx.fillRect(CW-144,78,82,82);ctx.fillStyle='#845EF7';ctx.font='bold 10px Nunito,sans-serif';ctx.fillText('QR loading...',CW-103,122);}
+  ctx.fillStyle='#845EF7';ctx.font='bold 10px Nunito,sans-serif';ctx.textAlign='center';ctx.fillText('Scan to visit',CW-103,185);
+  ctx.fillStyle='#9e9e9e';ctx.font='bold 12px Nunito,sans-serif';ctx.fillText('Presented by fivetofifteen.com',CW/2,548);
+  // date
+  const d=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
+  ctx.fillStyle='#bbb';ctx.font='12px Nunito,sans-serif';ctx.textAlign='center';
+  ctx.fillText('Awarded on '+d,CW/2,576);
+  // deco
+  [[80,200],[CW-80,200],[80,430],[CW-80,430]].forEach(([x,y])=>dStar(ctx,x,y,9,5,'rgba(255,159,28,.35)'));
+}
+function downloadCert(){
+  drawCert();
+  const link=document.createElement('a');link.download='measuring-length-certificate.png';link.href=document.getElementById('cert').toDataURL('image/png');link.click();
+}
+function printCert(){
+  drawCert();
+  const url=document.getElementById('cert').toDataURL('image/png');
+  const win=window.open('','_blank');
+  win.document.write('<!DOCTYPE html><html><head><title>Certificate</title><style>body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f5f5f5;}img{max-width:100%;border-radius:12px;}@media print{body{background:white;}img{width:100%;}}</style></head><body><img src="'+url+'"/><\\/body><\\/html>');
+  win.document.close();win.onload=()=>{win.focus();win.print();};
+}
+
+/* ============================================================
+   INIT
+============================================================ */
+window.addEventListener('load',()=>{
+  initStepDemo();
+  initDrag1();
+  initDrag2();
+  initCompare();
+  initReadQ();
+  newEstimate();
+  initBedroom();
+  initSort();
+  initDrag3();
+  initQuiz();
+  drawCert();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-label="Mia eats a rainbow plate and feels strong and happy">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2d6b4f"/>
+      <stop offset="50%" stop-color="#53a56d"/>
+      <stop offset="100%" stop-color="#a7d68b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="700" fill="url(#bg)"/>
+  <rect y="470" width="1200" height="230" fill="#e5d2b3"/>
+
+  <g transform="translate(350 180)">
+    <circle cx="140" cy="90" r="54" fill="#ffd8b1"/>
+    <path d="M95 76 Q140 24 185 76" fill="#cc5f3e"/>
+    <circle cx="124" cy="94" r="6" fill="#2e3d57"/>
+    <circle cx="158" cy="94" r="6" fill="#2e3d57"/>
+    <path d="M122 120 Q140 138 160 120" fill="none" stroke="#2e3d57" stroke-width="5" stroke-linecap="round"/>
+    <rect x="94" y="146" width="92" height="108" rx="18" fill="#4d96ff"/>
+  </g>
+
+  <g transform="translate(620 380)">
+    <ellipse cx="130" cy="38" rx="200" ry="50" fill="#ffffff"/>
+    <ellipse cx="130" cy="32" rx="178" ry="36" fill="#f3f7ff"/>
+    <circle cx="36" cy="30" r="16" fill="#d33c32"/>
+    <circle cx="72" cy="28" r="16" fill="#2e8b57"/>
+    <circle cx="108" cy="29" r="16" fill="#f1c232"/>
+    <circle cx="144" cy="30" r="16" fill="#3c78d8"/>
+    <circle cx="180" cy="29" r="16" fill="#f39c12"/>
+    <g fill="#f8c046">
+      <rect x="210" y="14" width="12" height="30" rx="4" transform="rotate(-8 216 29)"/>
+      <rect x="228" y="12" width="12" height="32" rx="4" transform="rotate(7 234 28)"/>
+      <rect x="246" y="14" width="12" height="30" rx="4" transform="rotate(-4 252 29)"/>
+    </g>
+  </g>
+
+  <text x="600" y="90" text-anchor="middle" font-family="Nunito, sans-serif" font-size="52" font-weight="800" fill="#f8ffe8">Mia's Rainbow Plate</text>
+  <text x="600" y="145" text-anchor="middle" font-family="Nunito, sans-serif" font-size="30" font-weight="700" fill="#f8ffe8">Fruits • Vegetables • Grains • Good habits • Imagination</text>
+  <text x="600" y="650" text-anchor="middle" font-family="Nunito, sans-serif" font-size="34" font-weight="800" fill="#315439">"I'm painting my rainbow!"</text>
+</svg>

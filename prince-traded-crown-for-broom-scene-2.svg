@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-label="He Met The Happiest Sweeper">
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6f4350"/>
+      <stop offset="55%" stop-color="#8c5562"/>
+      <stop offset="100%" stop-color="#c08b7f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1400" height="900" fill="url(#bg)"/>
+  <path d="M0 620 C200 560 340 660 540 618 C730 578 950 668 1200 616 C1290 598 1350 608 1400 620 L1400 900 L0 900 Z" fill="rgba(36,62,52,0.26)"/>
+  <path d="M0 690 C210 640 380 724 600 682 C820 640 1030 730 1260 688 C1330 676 1380 684 1400 690 L1400 900 L0 900 Z" fill="rgba(24,45,38,0.34)"/>
+  <g fill="#ffffff" opacity="0.22">
+    <circle cx="120" cy="100" r="6"/><circle cx="280" cy="88" r="5"/><circle cx="510" cy="120" r="6"/>
+    <circle cx="760" cy="92" r="6"/><circle cx="980" cy="110" r="5"/><circle cx="1220" cy="96" r="6"/>
+  </g>
+
+  <path d="M80 700 L1320 700" stroke="#d6bf93" stroke-width="120"/>
+  <g transform="translate(520 620) scale(2)">
+    <circle cx="0" cy="-58" r="24" fill="#ffd8b1"/>
+    <path d="M-22 -65 Q0 -96 22 -65" fill="#5b3f2d"/>
+    <circle cx="-8" cy="-58" r="3.5" fill="#2e3d57"/>
+    <circle cx="8" cy="-58" r="3.5" fill="#2e3d57"/>
+    <path d="M-8 -46 Q0 -40 8 -46" stroke="#2e3d57" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <rect x="-20" y="-32" width="40" height="58" rx="12" fill="#6bcb77"/>
+    <rect x="-30" y="-26" width="10" height="46" rx="5" fill="#6bcb77"/>
+    <rect x="20" y="-26" width="10" height="46" rx="5" fill="#6bcb77"/>
+    <rect x="-16" y="24" width="12" height="34" rx="6" fill="#2f649f"/>
+    <rect x="4" y="24" width="12" height="34" rx="6" fill="#2f649f"/>
+  </g>
+  <g transform="translate(820 620) scale(2)">
+    <circle cx="0" cy="-58" r="24" fill="#ffd8b1"/>
+    <path d="M-22 -65 Q0 -96 22 -65" fill="#6b4b36"/>
+    <circle cx="-8" cy="-58" r="3.5" fill="#2e3d57"/>
+    <circle cx="8" cy="-58" r="3.5" fill="#2e3d57"/>
+    <path d="M-8 -46 Q0 -40 8 -46" stroke="#2e3d57" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <rect x="-20" y="-32" width="40" height="58" rx="12" fill="#f39c12"/>
+    <rect x="-30" y="-26" width="10" height="46" rx="5" fill="#f39c12"/>
+    <rect x="20" y="-26" width="10" height="46" rx="5" fill="#f39c12"/>
+    <rect x="-16" y="24" width="12" height="34" rx="6" fill="#2f649f"/>
+    <rect x="4" y="24" width="12" height="34" rx="6" fill="#2f649f"/>
+  </g>
+  <line x1="868" y1="586" x2="918" y2="674" stroke="#7e5b3f" stroke-width="8"/>
+  <line x1="918" y1="674" x2="946" y2="690" stroke="#a5855f" stroke-width="8"/>
+  <line x1="918" y1="674" x2="892" y2="690" stroke="#a5855f" stroke-width="8"/>
+
+  <text x="700" y="110" text-anchor="middle" font-family="Nunito, sans-serif" font-size="52" font-weight="900" fill="#fff6e5">He Met The Happiest Sweeper</text>
+  <text x="700" y="844" text-anchor="middle" font-family="Nunito, sans-serif" font-size="32" font-weight="800" fill="#fff6e5">Dinu smiled, served, and greeted everyone kindly.</text>
+</svg>

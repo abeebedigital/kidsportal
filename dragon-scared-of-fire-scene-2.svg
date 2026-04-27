@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-label="Wildfire Rushed Toward The Village">
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5f3d47"/>
+      <stop offset="55%" stop-color="#7a4f5b"/>
+      <stop offset="100%" stop-color="#a8797c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1400" height="900" fill="url(#bg)"/>
+  <path d="M0 620 C200 560 340 660 540 618 C730 578 950 668 1200 616 C1290 598 1350 608 1400 620 L1400 900 L0 900 Z" fill="rgba(36,62,52,0.26)"/>
+  <path d="M0 690 C210 640 380 724 600 682 C820 640 1030 730 1260 688 C1330 676 1380 684 1400 690 L1400 900 L0 900 Z" fill="rgba(24,45,38,0.34)"/>
+  <g fill="#ffffff" opacity="0.22">
+    <circle cx="120" cy="100" r="6"/><circle cx="280" cy="88" r="5"/><circle cx="510" cy="120" r="6"/>
+    <circle cx="760" cy="92" r="6"/><circle cx="980" cy="110" r="5"/><circle cx="1220" cy="96" r="6"/>
+  </g>
+
+  <g transform="translate(180 540) scale(1.2)">
+    <rect x="0" y="34" width="150" height="108" rx="12" fill="#f6ddb3"/>
+    <polygon points="-10,34 75,-22 160,34" fill="#cf5f55"/>
+    <rect x="22" y="64" width="30" height="24" rx="4" fill="#8bc2ff"/>
+    <rect x="62" y="64" width="30" height="24" rx="4" fill="#8bc2ff"/>
+    <rect x="106" y="64" width="22" height="78" rx="4" fill="#88624a"/>
+  </g><g transform="translate(1020 540) scale(1.2)">
+    <rect x="0" y="34" width="150" height="108" rx="12" fill="#f6ddb3"/>
+    <polygon points="-10,34 75,-22 160,34" fill="#d97158"/>
+    <rect x="22" y="64" width="30" height="24" rx="4" fill="#8bc2ff"/>
+    <rect x="62" y="64" width="30" height="24" rx="4" fill="#8bc2ff"/>
+    <rect x="106" y="64" width="22" height="78" rx="4" fill="#88624a"/>
+  </g>
+  <path d="M560 700 C650 640 760 650 860 610" stroke="#ff7b32" stroke-width="24" fill="none"/>
+  <path d="M620 690 C700 640 820 640 920 590" stroke="#ffb045" stroke-width="20" fill="none"/>
+  <polygon points="560,620 590,540 620,620" fill="#ff9a3d"/>
+  <polygon points="700,620 730,540 760,620" fill="#ff9a3d"/>
+  <polygon points="840,620 870,540 900,620" fill="#ff9a3d"/>
+
+  <text x="700" y="110" text-anchor="middle" font-family="Nunito, sans-serif" font-size="52" font-weight="900" fill="#fff6e5">Wildfire Rushed Toward The Village</text>
+  <text x="700" y="844" text-anchor="middle" font-family="Nunito, sans-serif" font-size="32" font-weight="800" fill="#fff6e5">The flames spread fast through dry trees.</text>
+</svg>

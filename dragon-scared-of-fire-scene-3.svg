@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-label="Ember&amp;apos;s Cool Breath Saved Everyone">
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5f3d47"/>
+      <stop offset="55%" stop-color="#7a4f5b"/>
+      <stop offset="100%" stop-color="#a8797c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1400" height="900" fill="url(#bg)"/>
+  <path d="M0 620 C200 560 340 660 540 618 C730 578 950 668 1200 616 C1290 598 1350 608 1400 620 L1400 900 L0 900 Z" fill="rgba(36,62,52,0.26)"/>
+  <path d="M0 690 C210 640 380 724 600 682 C820 640 1030 730 1260 688 C1330 676 1380 684 1400 690 L1400 900 L0 900 Z" fill="rgba(24,45,38,0.34)"/>
+  <g fill="#ffffff" opacity="0.22">
+    <circle cx="120" cy="100" r="6"/><circle cx="280" cy="88" r="5"/><circle cx="510" cy="120" r="6"/>
+    <circle cx="760" cy="92" r="6"/><circle cx="980" cy="110" r="5"/><circle cx="1220" cy="96" r="6"/>
+  </g>
+
+  <g transform="translate(180 540) scale(1.2)">
+    <rect x="0" y="34" width="150" height="108" rx="12" fill="#f6ddb3"/>
+    <polygon points="-10,34 75,-22 160,34" fill="#cf5f55"/>
+    <rect x="22" y="64" width="30" height="24" rx="4" fill="#8bc2ff"/>
+    <rect x="62" y="64" width="30" height="24" rx="4" fill="#8bc2ff"/>
+    <rect x="106" y="64" width="22" height="78" rx="4" fill="#88624a"/>
+  </g><g transform="translate(1020 540) scale(1.2)">
+    <rect x="0" y="34" width="150" height="108" rx="12" fill="#f6ddb3"/>
+    <polygon points="-10,34 75,-22 160,34" fill="#d97158"/>
+    <rect x="22" y="64" width="30" height="24" rx="4" fill="#8bc2ff"/>
+    <rect x="62" y="64" width="30" height="24" rx="4" fill="#8bc2ff"/>
+    <rect x="106" y="64" width="22" height="78" rx="4" fill="#88624a"/>
+  </g>
+  <g transform="translate(700 620) scale(2)">
+    <ellipse cx="0" cy="0" rx="62" ry="34" fill="#7a6bc5"/>
+    <circle cx="58" cy="-16" r="22" fill="#7a6bc5"/>
+    <circle cx="64" cy="-20" r="3.5" fill="#1f1f30"/>
+    <polygon points="18,-34 30,-58 42,-34" fill="#594cab"/>
+    <polygon points="-6,-34 6,-58 18,-34" fill="#594cab"/>
+    <polygon points="-38,-6 -76,-24 -56,10" fill="#6b5fc2"/>
+    <rect x="-26" y="22" width="12" height="18" rx="5" fill="#7a6bc5"/>
+    <rect x="2" y="22" width="12" height="18" rx="5" fill="#7a6bc5"/>
+  </g>
+  <path d="M760 598 C850 560 980 560 1080 610" stroke="#b8ecff" stroke-width="24" fill="none" stroke-linecap="round"/>
+  <path d="M760 624 C850 590 980 590 1080 640" stroke="#d9f6ff" stroke-width="18" fill="none" stroke-linecap="round"/>
+  <circle cx="1110" cy="624" r="34" fill="#d9f6ff" opacity="0.5"/>
+
+  <text x="700" y="110" text-anchor="middle" font-family="Nunito, sans-serif" font-size="52" font-weight="900" fill="#fff6e5">Ember&amp;apos;s Cool Breath Saved Everyone</text>
+  <text x="700" y="844" text-anchor="middle" font-family="Nunito, sans-serif" font-size="32" font-weight="800" fill="#fff6e5">Her difference became the village&amp;apos;s greatest gift.</text>
+</svg>

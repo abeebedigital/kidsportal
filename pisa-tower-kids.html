@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Leaning Tower of Pisa! 🏛️</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+    /* story-font-boost */
+    html{font-size:17px;}
+    @media (max-width:500px){html{font-size:16px;}}
+:root{
+  --sky:#eef6ff;
+  --paper:#fffdf8;
+  --gold:#f4c95d;
+  --terracotta:#c76b3c;
+  --sage:#68b684;
+  --sea:#4d96ff;
+  --violet:#7c3aed;
+  --dark:#2d3436;
+  --muted:#637381;
+  --rose:#ff6b6b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(180deg,#fffdf7 0%,var(--sky) 100%);color:var(--dark);min-height:100vh;overflow-x:hidden}
+#app{max-width:880px;margin:0 auto;padding:12px}
+.home-link{display:inline-flex;align-items:center;gap:6px;background:var(--sage);color:#fff;text-decoration:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:999px;margin-bottom:10px}
+.home-link:hover{transform:scale(1.04)}
+.tts-bar,.progress-strip,.nav-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.tts-btn,.tts-stop,.nav-btn,.next-q-btn,.retry-btn,.proceed-btn,.cert-btn{border:none;border-radius:22px;color:#fff;cursor:pointer;font-family:'Fredoka One',cursive}
+.tts-btn,.tts-stop{font-size:13px;padding:7px 16px}
+.tts-btn{background:linear-gradient(135deg,#f39c12,#e67e22)}
+.tts-stop{background:#7f8c8d}
+.progress-strip,.nav-bar{background:#fff;border:2px solid #efe4d2;border-radius:16px;padding:10px 16px;box-shadow:0 3px 12px rgba(0,0,0,.06)}
+.progress-bar{flex:1;height:7px;background:#f1e7d8;border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--terracotta),var(--gold),var(--sea));border-radius:999px;transition:width .4s ease}
+.progress-label{font-family:'Fredoka One',cursive;font-size:12px;color:#8a8f98;white-space:nowrap}
+.nav-bar{justify-content:space-between}
+.nav-btn{background:linear-gradient(135deg,var(--rose),#ff8f6b);font-size:15px;padding:8px 22px}
+.nav-btn:disabled{background:#ddd;color:#999;cursor:not-allowed}
+.page-dots{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;max-width:280px}
+.dot{width:9px;height:9px;border-radius:50%;background:#ddd;cursor:pointer}
+.dot.active{background:var(--terracotta);transform:scale(1.28)}
+.dot.visited{background:#f6c28b}
+.page{display:none;animation:fadeUp .45s ease}
+.page.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.cover,.story-page,.quiz-page,.cert-page,.end-cover{background:var(--paper);border-radius:24px;padding:28px;min-height:560px;border:3px solid #efe4d2;box-shadow:0 6px 24px rgba(0,0,0,.06)}
+.cover{background:linear-gradient(160deg,#fff2cc 0%,#ffd9a0 35%,#f8c291 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
+.cover::before{content:'';position:absolute;top:-40px;right:-30px;width:220px;height:220px;background:rgba(255,255,255,.25);border-radius:50%}
+.cover::after{content:'';position:absolute;bottom:-50px;left:-20px;width:180px;height:180px;background:rgba(77,150,255,.12);border-radius:50%}
+.cover-icon{font-size:66px;animation:bob 2.6s ease-in-out infinite;position:relative;z-index:1}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.cover-title{font-family:'Fredoka One',cursive;font-size:40px;line-height:1.1;color:#8a4d19;position:relative;z-index:1;margin-top:12px}
+.cover-sub{font-family:'Fredoka One',cursive;font-size:20px;color:var(--terracotta);position:relative;z-index:1;margin-top:8px}
+.cover-badges{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:22px;position:relative;z-index:1}
+.cover-badge{background:rgba(255,255,255,.76);border:1px solid rgba(0,0,0,.05);border-radius:999px;padding:8px 14px;font-size:12px;font-weight:800;color:#76503f;text-transform:uppercase;letter-spacing:.5px}
+.cover-tagline{font-size:14px;color:#8e6e5e;max-width:560px;line-height:1.7;position:relative;z-index:1;margin-top:16px}
+.page-corner{position:absolute;top:14px;right:16px;font-family:'Fredoka One',cursive;font-size:14px;color:#d9b89f}
+.story-header{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.chapter-badge{font-family:'Fredoka One',cursive;font-size:12px;padding:4px 12px;border-radius:999px;color:#fff;background:linear-gradient(135deg,var(--terracotta),#e59866)}
+.story-title{font-family:'Fredoka One',cursive;font-size:23px}
+.story-body{display:grid;grid-template-columns:1.05fr .95fr;gap:20px;align-items:start}
+.story-text{font-size:15px;line-height:1.85;color:#444}
+.story-text p{margin-bottom:10px}
+.hl{font-weight:800;color:var(--terracotta)}
+.hl2{font-weight:800;color:var(--sea)}
+.hl3{font-weight:800;color:var(--sage)}
+.story-art{border-radius:18px;padding:18px;background:linear-gradient(135deg,#fffaf0,#f0f8ff);border:2px dashed #e6d6bf}
+.tower-card{text-align:center}
+.tower-emoji{font-size:88px;display:block;margin-bottom:10px;transform:rotate(-8deg)}
+.tower-caption{font-family:'Fredoka One',cursive;font-size:14px;color:#8f6a58;margin-bottom:10px}
+.fact-list{display:grid;gap:8px}
+.fact-item{display:flex;gap:8px;align-items:flex-start;background:rgba(255,255,255,.7);border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.5;color:#555}
+.quiz-bubble{background:linear-gradient(135deg,#fff2ea,#f3ebff);border:2px solid #dfc7ff;border-radius:18px;padding:18px;margin-top:16px}
+.quiz-title{font-family:'Fredoka One',cursive;font-size:17px;color:var(--violet);margin-bottom:10px}
+.quiz-question{font-size:15px;font-weight:800;color:#4c5160;line-height:1.6;margin-bottom:12px}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.q-opt{background:#fff;border:2px solid #e2d8ce;border-radius:12px;padding:10px 14px;font-size:14px;font-weight:700;color:var(--dark);cursor:pointer;text-align:left}
+.q-opt:hover{background:#faf3ff;border-color:#caa8ff}
+.q-opt.correct{background:#d4edda;border-color:#2e7d32;color:#155724}
+.q-opt.wrong{background:#f8d7da;border-color:#c62828;color:#721c24}
+.quiz-feedback{font-family:'Fredoka One',cursive;font-size:15px;text-align:center;min-height:22px;margin-top:10px}
+.fun-fact{background:#eef8f2;border:2px solid #b8dfc7;border-radius:14px;padding:14px 16px;margin-top:14px}
+.fun-fact-title{font-family:'Fredoka One',cursive;font-size:14px;color:#2f7a4f;margin-bottom:6px}
+.fun-fact-text{font-size:13px;line-height:1.6;color:#445}
+.tilt-meter{margin-top:14px;background:#fff;border:2px solid #f0e0d2;border-radius:16px;padding:14px}
+.meter-bar{height:12px;background:#f1ede7;border-radius:999px;overflow:hidden;margin:10px 0}
+.meter-fill{height:100%;width:16%;background:linear-gradient(90deg,var(--sea),var(--gold),var(--terracotta));border-radius:999px}
+.meter-legend{font-size:13px;color:#6b7280;line-height:1.6}
+.quiz-page{border-color:#cdb6ff}
+.quiz-progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.q-counter{font-family:'Fredoka One',cursive;font-size:13px;color:#8a8f98}
+.q-score-badge{font-family:'Fredoka One',cursive;font-size:14px;background:#f6eeff;border:2px solid #d7b7ff;padding:4px 14px;border-radius:999px;color:var(--violet)}
+.quiz-question-card{background:#fff;border-radius:16px;padding:20px;margin-bottom:16px;border:2px solid #efe4d2}
+.quiz-q-emoji{font-size:40px;margin-bottom:10px}
+.quiz-q-text{font-family:'Fredoka One',cursive;font-size:19px;line-height:1.4;margin-bottom:4px}
+.fquiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fq-opt{background:#fff;border:2px solid #e2d8ce;border-radius:14px;padding:12px 16px;font-size:15px;font-weight:700;color:var(--dark);cursor:pointer;text-align:left}
+.fq-opt:hover:not(.locked){background:#faf3ff;border-color:#caa8ff;transform:translateY(-2px)}
+.fq-opt.correct{background:#d4edda;border-color:#2e7d32;color:#155724}
+.fq-opt.wrong{background:#f8d7da;border-color:#c62828;color:#721c24}
+.fq-opt.locked{cursor:not-allowed;opacity:.8}
+.q-result-msg{font-family:'Fredoka One',cursive;font-size:16px;min-height:28px;text-align:center;margin-top:8px}
+.next-q-btn{display:block;margin:12px auto 0;background:linear-gradient(135deg,var(--terracotta),#ff8f6b);font-size:16px;padding:10px 28px}
+.result-screen{text-align:center;padding:20px 10px}
+.result-icon{font-size:78px;margin-bottom:12px;animation:bob 1.2s ease-in-out infinite}
+.result-title{font-family:'Fredoka One',cursive;font-size:30px;margin-bottom:8px}
+.result-score{font-family:'Fredoka One',cursive;font-size:50px;color:var(--terracotta)}
+.result-msg{font-size:16px;color:#6b7280;line-height:1.7;margin:12px 0 20px}
+.retry-btn,.proceed-btn{font-size:18px;padding:12px 30px;margin:6px}
+.retry-btn{background:linear-gradient(135deg,var(--rose),#ff8f6b)}
+.proceed-btn{background:linear-gradient(135deg,var(--sage),#4d96ff)}
+.cert-controls{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+.cert-name-input{flex:1;min-width:180px;font-family:'Nunito',sans-serif;font-size:16px;padding:10px 16px;border:2px solid var(--gold);border-radius:12px;outline:none}
+.cert-name-input:focus{border-color:var(--violet)}
+.cert-btn{font-size:15px;padding:10px 20px}
+.cert-download{background:linear-gradient(135deg,var(--violet),#b984ff)}
+.cert-print{background:linear-gradient(135deg,var(--sea),#76b8ff)}
+.cert-wrap{background:#fff;border-radius:16px;padding:6px;border:3px solid var(--gold)}
+canvas#cert{width:100%;display:block;border-radius:12px}
+.cert-hint{font-size:12px;color:#8a8f98;margin-top:8px;text-align:center}
+.end-cover{background:linear-gradient(160deg,#fff6de,#ffe7b3,#ffd2a8);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.end-quote{background:rgba(255,255,255,.72);border-radius:20px;padding:22px;max-width:500px}
+@media(max-width:620px){
+  .story-body,.quiz-options,.fquiz-options{grid-template-columns:1fr}
+  .cert-controls{flex-direction:column}
+  .cover-title{font-size:29px}
+}
+</style>
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="natural-read-aloud.js" defer></script>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+<div id="app"><div class="tts-bar">
+    <button class="tts-btn" id="ttsBtn" onclick="toggleReadAloud()">🔊 Read Aloud</button>
+    <button class="tts-stop" id="ttsStop" onclick="stopReadAloud()" style="display:none;">⏹ Stop</button>
+  </div>
+
+  <div class="progress-strip">
+    <span class="progress-label">🏛️ Adventure Progress</span>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <span class="progress-label" id="progressText">Page 1 of 11</span>
+  </div>
+
+  <div class="nav-bar">
+    <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Back</button>
+    <div class="page-dots" id="pageDots"></div>
+    <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+  </div>
+
+  <div class="page active" data-page="0">
+    <div class="cover">
+      <div class="cover-icon">🏛️</div>
+      <div class="cover-title">The Leaning Tower of Pisa!</div>
+      <div class="cover-sub">A Wobbly Wonder in Italy</div>
+      <div class="cover-badges">
+        <span class="cover-badge">History</span>
+        <span class="cover-badge">Architecture</span>
+        <span class="cover-badge">Travel Adventure</span>
+      </div>
+      <p class="cover-tagline">Travel to Italy, meet a famous tower that tilts to one side, and discover why people around the world still love this amazing building.</p>
+    </div>
+  </div>
+
+  <div class="page" data-page="1">
+    <div class="story-page">
+      <div class="page-corner">p.1</div>
+      <div class="story-header"><span class="chapter-badge">Arrival</span><h2 class="story-title">A Tower That Doesn't Stand Straight</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Mila stepped into a sunny square in <span class="hl">Pisa, Italy</span> and gasped. In front of her stood a tall white tower that looked as if it was <span class="hl2">leaning sideways</span>.</p>
+          <p>"Is it falling over?" she whispered.</p>
+          <p>Her guide smiled. "Not today! This is the <span class="hl">Leaning Tower of Pisa</span>, one of the most famous buildings in the world."</p>
+          <p>The tower is made of pale stone and decorated with graceful arches. Even though it tilts, it has been standing for hundreds of years.</p>
+        </div>
+        <div class="story-art">
+          <div class="tower-card">
+            <span class="tower-emoji">🏛️</span>
+            <div class="tower-caption">A bell tower with a famous lean</div>
+          </div>
+          <div class="fact-list">
+            <div class="fact-item">📍 Found in Pisa, a city in Italy</div>
+            <div class="fact-item">⛪ Built beside a cathedral</div>
+            <div class="fact-item">🌍 Known all over the world</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">Quick Quiz Time!</div>
+        <div class="quiz-question">Which country is the Leaning Tower of Pisa in?</div>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="checkMini(this,0,'B','fb1')">A. France</button>
+          <button class="q-opt" onclick="checkMini(this,0,'B','fb1')">B. Italy</button>
+          <button class="q-opt" onclick="checkMini(this,0,'B','fb1')">C. Spain</button>
+          <button class="q-opt" onclick="checkMini(this,0,'B','fb1')">D. Egypt</button>
+        </div>
+        <div class="quiz-feedback" id="fb1"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="2">
+    <div class="story-page">
+      <div class="page-corner">p.2</div>
+      <div class="story-header"><span class="chapter-badge">Mystery</span><h2 class="story-title">Why Does It Lean?</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Long ago, builders started making the tower on <span class="hl3">soft ground</span>. One side of the soil was weaker than the other.</p>
+          <p>As the tower grew taller, the ground underneath could not hold it evenly. Little by little, the tower began to <span class="hl2">tilt</span>.</p>
+          <p>Instead of giving up, builders kept working carefully. They even tried to make small adjustments as they built higher and higher.</p>
+          <p>That leaning shape, once a big problem, became the tower's most famous feature.</p>
+        </div>
+        <div class="story-art">
+          <div class="tilt-meter">
+            <div style="font-family:'Fredoka One',cursive;color:#8a4d19;">Tower Tilt Meter</div>
+            <div class="meter-bar"><div class="meter-fill"></div></div>
+            <div class="meter-legend">Soft soil under one side of the tower made the base sink unevenly.</div>
+          </div>
+          <div class="fun-fact">
+            <div class="fun-fact-title">Fun Fact</div>
+            <div class="fun-fact-text">The tower was not planned to lean. The tilt happened because of the ground below it.</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">Quick Quiz Time!</div>
+        <div class="quiz-question">Why did the tower begin to lean?</div>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="checkMini(this,1,'C','fb2')">A. It was pushed by wind</button>
+          <button class="q-opt" onclick="checkMini(this,1,'C','fb2')">B. It was built from paper</button>
+          <button class="q-opt" onclick="checkMini(this,1,'C','fb2')">C. The ground underneath was soft</button>
+          <button class="q-opt" onclick="checkMini(this,1,'C','fb2')">D. It was moved by a crane</button>
+        </div>
+        <div class="quiz-feedback" id="fb2"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="3">
+    <div class="story-page">
+      <div class="page-corner">p.3</div>
+      <div class="story-header"><span class="chapter-badge">Purpose</span><h2 class="story-title">More Than Just a Tower</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>The Leaning Tower of Pisa is actually a <span class="hl">bell tower</span>. A bell tower is built to hold bells high above the ground.</p>
+          <p>It stands beside the <span class="hl2">cathedral</span> and other important buildings in a large grassy square.</p>
+          <p>When its bells rang, people in the city could hear them from far away. So the tower was not just beautiful. It had a job to do.</p>
+          <p>Today, people still admire its arches, columns, and elegant design.</p>
+        </div>
+        <div class="story-art">
+          <div class="fact-list">
+            <div class="fact-item">🔔 The tower holds bells</div>
+            <div class="fact-item">⛪ It stands beside a cathedral</div>
+            <div class="fact-item">🎨 It is both useful and beautiful</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">Quick Quiz Time!</div>
+        <div class="quiz-question">What kind of building was the tower made to be?</div>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="checkMini(this,2,'A','fb3')">A. It was built as a bell tower</button>
+          <button class="q-opt" onclick="checkMini(this,2,'A','fb3')">B. It was a lighthouse</button>
+          <button class="q-opt" onclick="checkMini(this,2,'A','fb3')">C. It was a castle</button>
+          <button class="q-opt" onclick="checkMini(this,2,'A','fb3')">D. It was a train station</button>
+        </div>
+        <div class="quiz-feedback" id="fb3"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="4">
+    <div class="story-page">
+      <div class="page-corner">p.4</div>
+      <div class="story-header"><span class="chapter-badge">Rescue</span><h2 class="story-title">Saving the Tower</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>For many years, experts worried that the tower might lean too much. Engineers studied it carefully and worked out ways to make it <span class="hl3">safer</span>.</p>
+          <p>They removed some soil, strengthened the ground, and watched the tower closely. Bit by bit, they helped reduce the danger.</p>
+          <p>Now the tower is still leaning, but it is much more <span class="hl2">stable</span> than before.</p>
+          <p>That means visitors can keep enjoying this strange and wonderful building.</p>
+        </div>
+        <div class="story-art">
+          <div class="fact-list">
+            <div class="fact-item">🛠 Engineers studied the tower</div>
+            <div class="fact-item">🧪 They strengthened the ground</div>
+            <div class="fact-item">✅ The tower is safer today</div>
+          </div>
+          <div class="fun-fact">
+            <div class="fun-fact-title">Fun Fact</div>
+            <div class="fun-fact-text">Experts wanted to save the tower without making it perfectly straight, because its lean is part of its identity.</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">Quick Quiz Time!</div>
+        <div class="quiz-question">What did engineers do to help make the tower safer?</div>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="checkMini(this,3,'D','fb4')">A. They painted it green</button>
+          <button class="q-opt" onclick="checkMini(this,3,'D','fb4')">B. They knocked it down</button>
+          <button class="q-opt" onclick="checkMini(this,3,'D','fb4')">C. They covered it with wood</button>
+          <button class="q-opt" onclick="checkMini(this,3,'D','fb4')">D. They strengthened the ground</button>
+        </div>
+        <div class="quiz-feedback" id="fb4"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="5">
+    <div class="story-page">
+      <div class="page-corner">p.5</div>
+      <div class="story-header"><span class="chapter-badge">Travel</span><h2 class="story-title">Why People Love Visiting</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Every year, people travel from all over the world to see the Leaning Tower of Pisa. Some take silly photos that look as if they are <span class="hl">holding it up</span>.</p>
+          <p>Others climb the tower's steps and look out over the city. From the top, Pisa stretches into the distance under the Italian sky.</p>
+          <p>Visitors love the tower because it is <span class="hl2">beautiful</span>, unusual, and full of history all at once.</p>
+          <p>Mila smiled. "It leans, but it still stands proud. That makes it even more special."</p>
+        </div>
+        <div class="story-art">
+          <div class="fact-list">
+            <div class="fact-item">📷 Visitors take funny leaning photos</div>
+            <div class="fact-item">🥾 Some climb to the top</div>
+            <div class="fact-item">💛 People love its history and shape</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">Quick Quiz Time!</div>
+        <div class="quiz-question">Why do many people love visiting the tower?</div>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="checkMini(this,4,'B','fb5')">A. Because it is made of ice</button>
+          <button class="q-opt" onclick="checkMini(this,4,'B','fb5')">B. Because it is unusual and historic</button>
+          <button class="q-opt" onclick="checkMini(this,4,'B','fb5')">C. Because it is the tallest building on Earth</button>
+          <button class="q-opt" onclick="checkMini(this,4,'B','fb5')">D. Because it floats in the sea</button>
+        </div>
+        <div class="quiz-feedback" id="fb5"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="6">
+    <div class="story-page">
+      <div class="page-corner">p.6</div>
+      <div class="story-header"><span class="chapter-badge">Science</span><h2 class="story-title">A Famous Science Story</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Some people connect the tower with the scientist <span class="hl">Galileo Galilei</span>, who was born in Pisa.</p>
+          <p>A famous story says he may have used the tower to think about how objects <span class="hl2">fall</span>. Whether every detail of that tale is true or not, the tower became linked with ideas about <span class="hl3">science and discovery</span>.</p>
+          <p>That makes the Leaning Tower of Pisa more than a travel landmark. It also sparks curiosity about how the world works.</p>
+          <p>Mila loved that idea. "So this tower is part history, part engineering, and part science story too!"</p>
+        </div>
+        <div class="story-art">
+          <div class="fact-list">
+            <div class="fact-item">🧪 Pisa is linked with science history</div>
+            <div class="fact-item">🧠 The tower inspires curiosity</div>
+            <div class="fact-item">🌍 Famous places can teach many subjects</div>
+          </div>
+          <div class="fun-fact">
+            <div class="fun-fact-title">Fun Fact</div>
+            <div class="fun-fact-text">The Leaning Tower of Pisa is often used in stories about engineering and gravity because its shape makes people ask great questions.</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">Quick Quiz Time!</div>
+        <div class="quiz-question">What ideas is the tower often connected with?</div>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="checkMini(this,5,'C','fb6')">A. Only art</button>
+          <button class="q-opt" onclick="checkMini(this,5,'C','fb6')">B. Only food</button>
+          <button class="q-opt" onclick="checkMini(this,5,'C','fb6')">C. Science and discovery</button>
+          <button class="q-opt" onclick="checkMini(this,5,'C','fb6')">D. Ocean swimming</button>
+        </div>
+        <div class="quiz-feedback" id="fb6"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="7">
+    <div class="story-page">
+      <div class="page-corner">p.7</div>
+      <div class="story-header"><span class="chapter-badge">Compare</span><h2 class="story-title">What Makes Pisa Special?</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Lots of towers in the world are tall. Some are old. Some are beautifully designed. But the Leaning Tower of Pisa stands out because it combines <span class="hl">beauty</span>, <span class="hl2">history</span>, and a famous <span class="hl3">lean</span>.</p>
+          <p>That lean was once a problem. Today it is the very thing that makes the tower unforgettable.</p>
+          <p>Mila wrote in her travel journal:</p>
+          <p>"The tower leans, yet it still welcomes visitors. It reminds us that even unusual mistakes can become part of a story worth telling."</p>
+        </div>
+        <div class="story-art">
+          <div class="fact-list">
+            <div class="fact-item">🏛️ Beautiful architecture</div>
+            <div class="fact-item">📜 Hundreds of years of history</div>
+            <div class="fact-item">📐 A lean that made it world-famous</div>
+          </div>
+          <div class="tilt-meter">
+            <div style="font-family:'Fredoka One',cursive;color:#8a4d19;">Why People Remember Pisa</div>
+            <div class="meter-bar"><div class="meter-fill" style="width:82%"></div></div>
+            <div class="meter-legend">History + design + the famous tilt = a landmark people never forget.</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">Quick Quiz Time!</div>
+        <div class="quiz-question">What makes the Leaning Tower of Pisa so special?</div>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="checkMini(this,6,'D','fb7')">A. It changes shape every day</button>
+          <button class="q-opt" onclick="checkMini(this,6,'D','fb7')">B. It is hidden underground</button>
+          <button class="q-opt" onclick="checkMini(this,6,'D','fb7')">C. It is made of glass</button>
+          <button class="q-opt" onclick="checkMini(this,6,'D','fb7')">D. It mixes history, beauty, and a famous lean</button>
+        </div>
+        <div class="quiz-feedback" id="fb7"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="8">
+    <div class="quiz-page" id="quizPage">
+      <div id="quizActive">
+        <div class="quiz-progress-row">
+          <div class="q-counter" id="qCounter">Question 1 of 6</div>
+          <div class="q-score-badge" id="qScore">Score: 0</div>
+        </div>
+        <p style="font-size:14px;color:#666;margin-bottom:16px;">Answer 6 questions about the Leaning Tower of Pisa. Get at least <strong>5 correct</strong> to unlock your certificate! 🌟</p>
+        <div class="quiz-question-card">
+          <div class="quiz-q-emoji" id="qEmoji">🏛️</div>
+          <div class="quiz-q-text" id="qText"></div>
+        </div>
+        <div class="fquiz-options" id="fquizOptions"></div>
+        <div class="q-result-msg" id="qResultMsg"></div>
+        <button class="next-q-btn" id="nextQBtn" onclick="nextQuizQuestion()" style="display:none;">Next Question →</button>
+      </div>
+
+      <div id="quizPass" style="display:none;" class="result-screen">
+        <div class="result-icon">🏆</div>
+        <div class="result-title">Amazing Explorer!</div>
+        <div class="result-score" id="passScore">6/6</div>
+        <div class="result-msg">You know why the tower leans, what it was built for, and why it is still one of Italy's best-loved landmarks.</div>
+        <button class="proceed-btn" onclick="goToPage(9)">Get My Certificate →</button>
+      </div>
+
+      <div id="quizFail" style="display:none;" class="result-screen">
+        <div class="result-icon">🙂</div>
+        <div class="result-title">Good Try!</div>
+        <div class="result-score" id="failScore">3/6</div>
+        <div class="result-msg">You need at least 5 correct answers to earn your certificate. Read the adventure again and try once more!</div>
+        <button class="retry-btn" onclick="resetQuiz()">Try Again</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="9">
+    <div class="cert-page">
+      <div class="story-header"><span class="chapter-badge">Certificate</span><h2 class="story-title">Pisa Tower Explorer Certificate</h2></div>
+      <div class="cert-controls">
+        <input class="cert-name-input" id="certName" placeholder="Type your name here" />
+        <button class="cert-btn cert-download" onclick="downloadCert()">Download</button>
+        <button class="cert-btn cert-print" onclick="printCert()">Print</button>
+      </div>
+      <div class="cert-wrap"><canvas id="cert" width="1400" height="900"></canvas></div>
+      <div class="cert-hint">Type a name to personalise the certificate.</div>
+    </div>
+  </div>
+
+  <div class="page" data-page="10">
+    <div class="end-cover">
+      <div class="cover-icon">🌍</div>
+      <div class="cover-title" style="font-size:34px;">Adventure Complete!</div>
+      <div class="cover-sub">You explored one of the world's most famous towers.</div>
+      <div class="end-quote">
+        <p style="font-size:16px;line-height:1.8;color:#6b5a4b;">The Leaning Tower of Pisa teaches us that even something imperfect can become extraordinary. Its tilt made it famous, but the story behind it made it unforgettable.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="pisa-tower-kids.js" defer></script>
+</body>
+</html>

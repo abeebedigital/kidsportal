@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The 7 Wonders of the World! 🌍</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet"/>
+<style>
+    /* story-font-boost */
+    html{font-size:17px;}
+    @media (max-width:500px){html{font-size:16px;}}
+:root{
+  --sand:#f5e6c8;
+  --terracotta:#c0392b;
+  --jungle:#27ae60;
+  --ocean:#2980b9;
+  --gold:#f1c40f;
+  --purple:#8e44ad;
+  --dark:#2c3e50;
+  --card-bg:#fffef5;
+  --warm-bg:#fff8f0;
+  --coral:#ff6b6b;
+  --mint:#6bcb77;
+  --blue:#4d96ff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--warm-bg);min-height:100vh;overflow-x:hidden;}
+
+/* FLOATING CLOUDS */
+.cloud{position:fixed;opacity:.06;font-size:60px;z-index:0;animation:drift linear infinite;pointer-events:none;}
+@keyframes drift{from{transform:translateX(-100px)}to{transform:translateX(calc(100vw + 100px))}}
+
+/* LAYOUT */
+#app{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:12px;}
+
+/* HOME LINK */
+.home-link{display:inline-flex;align-items:center;gap:6px;background:var(--mint);color:white;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;text-decoration:none;transition:all .2s;margin-bottom:10px;}
+.home-link:hover{transform:scale(1.05);background:#4db860;}
+
+/* READ ALOUD */
+.tts-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.tts-btn{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#f39c12,#e67e22);color:white;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.tts-btn:hover{transform:scale(1.05);}
+.tts-btn.speaking{background:linear-gradient(135deg,#e74c3c,#c0392b);animation:pulse 1s ease infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(231,76,60,.4)}50%{box-shadow:0 0 0 8px rgba(231,76,60,0)}}
+.tts-stop{background:linear-gradient(135deg,#95a5a6,#7f8c8d);color:white;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s;}
+
+/* PROGRESS */
+.progress-strip{background:white;border-radius:12px;padding:8px 16px;display:flex;align-items:center;gap:10px;margin-bottom:8px;border:2px solid #f0e6c8;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.progress-bar{flex:1;height:7px;background:#f0e6c8;border-radius:4px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--jungle),var(--ocean),var(--purple));border-radius:4px;transition:width .5s ease;}
+.progress-label{font-family:'Fredoka One',cursive;font-size:12px;color:#999;white-space:nowrap;}
+
+/* NAV */
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:white;border-radius:16px;margin-bottom:10px;border:2px solid #f0e6c8;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.nav-btn{background:var(--coral);color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:8px 22px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.nav-btn:hover{transform:scale(1.06);box-shadow:0 4px 12px rgba(255,107,107,.3);}
+.nav-btn:disabled{background:#ddd;cursor:not-allowed;transform:none;box-shadow:none;color:#999;}
+.page-dots{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;max-width:300px;}
+.dot{width:9px;height:9px;border-radius:50%;background:#ddd;cursor:pointer;transition:all .2s;}
+.dot.active{background:var(--coral);transform:scale(1.3);box-shadow:0 0 6px var(--coral);}
+.dot.visited{background:rgba(255,107,107,.4);}
+
+/* PAGES */
+.page{display:none;animation:pageIn .5s ease;}
+.page.active{display:block;}
+@keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* COVER */
+.cover{
+  background:linear-gradient(160deg,#1a1a2e 0%,#16213e 40%,#0f3460 100%);
+  border-radius:22px;border:2px solid rgba(241,196,15,.3);
+  padding:50px 30px;text-align:center;
+  position:relative;overflow:hidden;min-height:540px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.cover-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(241,196,15,.12) 0%,transparent 70%);pointer-events:none;}
+.cover-wonders{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:20px 0;position:relative;z-index:2;}
+.cover-wonder{font-size:36px;animation:wonderBounce var(--wb,3s) ease-in-out infinite var(--wd,0s);}
+@keyframes wonderBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.cover-title{font-family:'Fredoka One',cursive;font-size:38px;color:#f1c40f;position:relative;z-index:2;line-height:1.15;margin-bottom:8px;text-shadow:0 4px 20px rgba(0,0,0,.4);}
+.cover-sub{font-family:'Fredoka One',cursive;font-size:20px;color:#e0aaff;position:relative;z-index:2;margin-bottom:6px;}
+.cover-tagline{font-size:13px;color:rgba(255,255,255,.6);position:relative;z-index:2;margin-top:16px;font-style:italic;}
+.explorer-anim{font-size:52px;animation:explorerFloat 3s ease-in-out infinite;position:relative;z-index:2;}
+@keyframes explorerFloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-12px) rotate(5deg)}}
+.cover svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
+
+/* STORY PAGES */
+.story-page{
+  background:var(--card-bg);
+  border-radius:22px;padding:26px;min-height:540px;
+  border:3px solid #f0e6c8;
+  position:relative;overflow:hidden;
+  box-shadow:0 4px 20px rgba(0,0,0,.06);
+}
+.page-corner{position:absolute;top:14px;right:16px;font-family:'Fredoka One',cursive;font-size:16px;color:#d4b896;}
+.story-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.chapter-badge{font-family:'Fredoka One',cursive;font-size:12px;padding:4px 13px;border-radius:16px;white-space:nowrap;color:white;}
+.story-title{font-family:'Fredoka One',cursive;font-size:22px;color:var(--dark);}
+.story-body{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+.story-text{font-size:15px;line-height:1.85;color:#444;}
+.story-text p{margin-bottom:10px;}
+.hw{font-weight:800;color:var(--terracotta);}
+.hw2{font-weight:800;color:var(--ocean);}
+.hw3{font-weight:800;color:var(--jungle);}
+.story-art{border-radius:16px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:8px;border:2px dashed #e0d5c0;background:linear-gradient(135deg,#fdf6ec,#f0faf0);}
+
+/* WONDER CARD */
+.wonder-display{text-align:center;padding:12px;}
+.wonder-emoji{font-size:80px;display:block;margin:8px auto;animation:gentleSpin 30s linear infinite;}
+@keyframes gentleSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.wonder-no-spin{animation:none!important;}
+.wonder-label{font-family:'Fredoka One',cursive;font-size:13px;color:#999;margin-top:4px;}
+.wonder-facts{background:rgba(0,0,0,.03);border-radius:12px;padding:10px 14px;width:100%;border:1px solid rgba(0,0,0,.06);}
+.fact-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:13px;color:#555;}
+.fact-row:last-child{border-bottom:none;}
+.fact-icon{font-size:16px;min-width:22px;}
+
+/* QUIZ BUBBLE */
+.quiz-bubble{
+  background:linear-gradient(135deg,#f3e8ff,#e0f7fa);
+  border:2px solid #c084fc;
+  border-radius:18px;padding:18px;margin-top:16px;
+}
+.quiz-title{font-family:'Fredoka One',cursive;font-size:17px;color:var(--purple);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.q-opt{background:white;border:2px solid #e0d5c0;border-radius:12px;padding:10px 14px;font-size:14px;color:var(--dark);cursor:pointer;transition:all .2s;text-align:left;font-family:'Nunito',sans-serif;font-weight:600;}
+.q-opt:hover{background:#f3e8ff;border-color:#c084fc;transform:translateY(-2px);}
+.q-opt.correct{background:#d4edda;border-color:#27ae60;color:#155724;}
+.q-opt.wrong{background:#f8d7da;border-color:#c0392b;color:#721c24;}
+.quiz-feedback{font-family:'Fredoka One',cursive;font-size:16px;margin-top:10px;min-height:24px;text-align:center;}
+
+/* FUN FACT BOX */
+.fun-fact{background:#fff3cd;border:2px solid #f1c40f;border-radius:14px;padding:14px 16px;margin-top:14px;}
+.fun-fact-title{font-family:'Fredoka One',cursive;font-size:15px;color:#856404;margin-bottom:6px;}
+.fun-fact-text{font-size:13px;color:#444;line-height:1.6;}
+
+/* MEMORY CARD */
+.memory-card{background:#f3e8ff;border:2px solid #c084fc;border-radius:14px;padding:14px;margin-top:14px;}
+.mem-row{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:14px;cursor:pointer;transition:background .2s;border-radius:8px;padding-left:8px;}
+.mem-row:hover{background:rgba(192,132,252,.1);}
+.mem-letter{font-family:'Fredoka One',cursive;font-size:18px;color:var(--terracotta);min-width:24px;}
+.mem-word{color:var(--purple);min-width:110px;font-weight:700;}
+.mem-wonder{color:#888;}
+
+/* FINAL QUIZ */
+.quiz-page{background:var(--card-bg);border-radius:22px;padding:26px;min-height:540px;border:3px solid #c084fc;box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.quiz-progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.q-counter{font-family:'Fredoka One',cursive;font-size:13px;color:#999;}
+.q-score-badge{font-family:'Fredoka One',cursive;font-size:14px;background:#f3e8ff;border:2px solid #c084fc;padding:4px 14px;border-radius:20px;color:var(--purple);}
+.quiz-question-card{background:white;border-radius:16px;padding:20px;margin-bottom:16px;border:2px solid #f0e6c8;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.quiz-q-text{font-family:'Fredoka One',cursive;font-size:19px;color:var(--dark);line-height:1.4;margin-bottom:4px;}
+.quiz-q-emoji{font-size:40px;margin-bottom:10px;}
+.fquiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.fq-opt{background:white;border:2px solid #e0d5c0;border-radius:14px;padding:12px 16px;font-size:15px;color:var(--dark);cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif;font-weight:700;}
+.fq-opt:hover:not(.locked){background:#f3e8ff;border-color:#c084fc;transform:translateY(-2px);}
+.fq-opt.correct{background:#d4edda;border-color:#27ae60;color:#155724;}
+.fq-opt.wrong{background:#f8d7da;border-color:#c0392b;color:#721c24;}
+.fq-opt.locked{cursor:not-allowed;opacity:.7;}
+.q-result-msg{font-family:'Fredoka One',cursive;font-size:16px;text-align:center;min-height:28px;margin-top:8px;}
+.next-q-btn{display:block;margin:12px auto 0;background:linear-gradient(135deg,var(--coral),#ff8787);color:white;border:none;font-family:'Fredoka One',cursive;font-size:16px;padding:10px 28px;border-radius:22px;cursor:pointer;transition:all .2s;}
+.next-q-btn:hover{transform:scale(1.05);}
+
+/* RESULT SCREENS */
+.result-screen{text-align:center;padding:20px 10px;}
+.result-trophy{font-size:80px;margin-bottom:12px;animation:bounce 1s ease infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+.result-title{font-family:'Fredoka One',cursive;font-size:28px;margin-bottom:10px;}
+.result-score{font-family:'Fredoka One',cursive;font-size:48px;color:var(--gold);}
+.result-msg{font-size:16px;color:#888;margin:12px 0 20px;line-height:1.7;}
+.retry-btn{background:linear-gradient(135deg,#e74c3c,#ff6b6b);color:white;border:none;font-family:'Fredoka One',cursive;font-size:18px;padding:12px 32px;border-radius:24px;cursor:pointer;transition:all .2s;margin:8px;}
+.retry-btn:hover{transform:scale(1.06);}
+.proceed-btn{background:linear-gradient(135deg,#27ae60,#2ecc71);color:white;border:none;font-family:'Fredoka One',cursive;font-size:18px;padding:12px 32px;border-radius:24px;cursor:pointer;transition:all .2s;margin:8px;}
+.proceed-btn:hover{transform:scale(1.06);}
+
+/* CERTIFICATE */
+.cert-page{background:var(--card-bg);border-radius:22px;padding:24px;min-height:540px;border:3px solid #f1c40f;box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.cert-controls{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+.cert-name-input{font-family:'Nunito',sans-serif;font-size:16px;padding:10px 16px;border:2px solid #f1c40f;border-radius:12px;outline:none;flex:1;min-width:180px;color:#333;}
+.cert-name-input:focus{border-color:var(--purple);}
+.cert-dl-btn{background:var(--purple);color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:24px;cursor:pointer;transition:transform .15s;white-space:nowrap;}
+.cert-dl-btn:hover{transform:scale(1.05);}
+.cert-print-btn{background:#1565c0;color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:24px;cursor:pointer;transition:transform .15s;}
+.cert-print-btn:hover{transform:scale(1.05);}
+.cert-wrap{background:white;border-radius:16px;padding:6px;border:3px solid #f1c40f;box-shadow:0 4px 20px rgba(0,0,0,.08);}
+canvas#cert{width:100%;border-radius:12px;display:block;}
+.cert-hint{font-size:12px;color:#aaa;margin-top:8px;text-align:center;}
+
+/* WONDER SIZE COMPARISON */
+.size-row{display:flex;align-items:flex-end;gap:8px;justify-content:center;flex-wrap:wrap;padding:12px 0;}
+.size-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:transform .2s;}
+.size-item:hover{transform:scale(1.1);}
+.size-bar{border-radius:6px 6px 0 0;min-width:30px;display:flex;align-items:flex-end;justify-content:center;font-size:11px;color:white;font-family:'Fredoka One',cursive;padding:4px 2px;}
+.size-label{font-size:10px;color:#888;text-align:center;max-width:50px;font-weight:700;}
+
+/* END COVER */
+.end-cover{background:linear-gradient(160deg,#1b5e20,#2e7d32,#388e3c);border-radius:22px;padding:40px 30px;text-align:center;position:relative;overflow:hidden;min-height:540px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.2);}
+.end-quote{background:rgba(255,255,255,.15);border-radius:20px;padding:22px;max-width:480px;margin:0 auto 18px;}
+
+@media(max-width:580px){
+  .story-body{grid-template-columns:1fr;}
+  .cover-title{font-size:26px;}
+  .fquiz-options{grid-template-columns:1fr;}
+  .quiz-options{grid-template-columns:1fr;}
+  .cert-controls{flex-direction:column;}
+}
+</style>
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="natural-read-aloud.js" defer></script>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+
+<!-- FLOATING CLOUDS -->
+<div id="clouds"></div>
+
+<div id="app">
+
+  <!-- HOME LINK --><!-- READ ALOUD -->
+  <div class="tts-bar">
+    <button class="tts-btn" id="ttsBtn" onclick="toggleReadAloud()">🔊 Read Aloud</button>
+    <button class="tts-stop" id="ttsStop" onclick="stopReadAloud()" style="display:none;">⏹ Stop</button>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-strip">
+    <span class="progress-label">🌍 Exploring...</span>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <span class="progress-label" id="progressText">Page 1 of 16</span>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav-bar">
+    <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Back</button>
+    <div class="page-dots" id="pageDots"></div>
+    <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+  </div>
+
+  <!-- ===== PAGE 0: COVER ===== -->
+  <div class="page active" data-page="0">
+    <div class="cover">
+      <svg viewBox="0 0 820 540" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="40" r="2" fill="white" opacity=".6"/><circle cx="120" cy="80" r="1.5" fill="white" opacity=".5"/>
+        <circle cx="200" cy="25" r="2.5" fill="white" opacity=".7"/><circle cx="300" cy="60" r="1.5" fill="white" opacity=".6"/>
+        <circle cx="400" cy="30" r="2" fill="white" opacity=".5"/><circle cx="500" cy="70" r="1.5" fill="white" opacity=".4"/>
+        <circle cx="600" cy="45" r="2" fill="white" opacity=".6"/><circle cx="700" cy="20" r="2.5" fill="white" opacity=".5"/>
+        <circle cx="750" cy="90" r="1.5" fill="white" opacity=".4"/><circle cx="380" cy="110" r="2" fill="#f1c40f" opacity=".5"/>
+      </svg>
+      <div class="cover-glow"></div>
+      <div class="explorer-anim">🧭</div>
+      <div class="cover-title">The 7 Wonders<br>of the World!</div>
+      <div class="cover-sub">An Amazing Adventure for Kids!</div>
+      <div class="cover-wonders">
+        <span class="cover-wonder" style="--wb:3s;--wd:0s">🏯</span>
+        <span class="cover-wonder" style="--wb:3.5s;--wd:0.3s">🏛️</span>
+        <span class="cover-wonder" style="--wb:4s;--wd:0.6s">🗿</span>
+        <span class="cover-wonder" style="--wb:3.2s;--wd:0.9s">⛰️</span>
+        <span class="cover-wonder" style="--wb:3.8s;--wd:1.2s">🏟️</span>
+        <span class="cover-wonder" style="--wb:3.3s;--wd:1.5s">🕌</span>
+        <span class="cover-wonder" style="--wb:4.2s;--wd:1.8s">🌎</span>
+      </div>
+      <p class="cover-tagline">Explore amazing places that people built long, long ago! · For ages 5–8</p>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 1: MEET AVA ===== -->
+  <div class="page" data-page="1">
+    <div class="story-page">
+      <div class="page-corner">p.1</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--coral);">Welcome!</span><h2 class="story-title">Meet Ava the Explorer! 🧭</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Hello, young explorer! 👋</p>
+          <p>My name is <span class="hw">Ava</span>, and I travel the whole world looking for <span class="hw">amazing places</span>!</p>
+          <p>Today, I want to take YOU on the most exciting adventure ever — we're going to visit the <span class="hw2">7 Wonders of the World</span>! 🌍</p>
+          <p>These are buildings and places so beautiful and incredible that people from everywhere agree — they are the most <span class="hw3">WONDERFUL</span> things humans have ever made!</p>
+          <p>Ready? Pack your bags, grab your passport, and let's GO! ✈️</p>
+        </div>
+        <div class="story-art">
+          <div style="font-size:70px;">🧑‍✈️</div>
+          <div class="wonder-label">Ava the Explorer</div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">🎒</span> Always carries a backpack</div>
+            <div class="fact-row"><span class="fact-icon">📸</span> Loves taking photos</div>
+            <div class="fact-row"><span class="fact-icon">🗺️</span> Has visited 50 countries!</div>
+            <div class="fact-row"><span class="fact-icon">🌟</span> Favourite thing: sharing stories</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 2: WHAT ARE THE 7 WONDERS? ===== -->
+  <div class="page" data-page="2">
+    <div class="story-page">
+      <div class="page-corner">p.2</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--ocean);">Chapter 1</span><h2 class="story-title">What Are the 7 Wonders? 🤔</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>A long time ago, people looked around and said: <em>"What are the most amazing things in our world?"</em></p>
+          <p>So people from <span class="hw2">every country voted</span> and picked <span class="hw">7 special places</span>. These places are called the <span class="hw">New 7 Wonders of the World</span>!</p>
+          <p>Each wonder is in a <span class="hw3">different country</span>, and each one has an incredible story to tell.</p>
+          <p>Let's fly around the world and visit them all! ✈️🌍</p>
+        </div>
+        <div class="story-art">
+          <div style="font-size:50px;text-align:center;">🌍✨</div>
+          <div class="wonder-label">7 Amazing Places!</div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">🏯</span> Great Wall of China</div>
+            <div class="fact-row"><span class="fact-icon">🏛️</span> Petra, Jordan</div>
+            <div class="fact-row"><span class="fact-icon">🗿</span> Christ the Redeemer, Brazil</div>
+            <div class="fact-row"><span class="fact-icon">⛰️</span> Machu Picchu, Peru</div>
+            <div class="fact-row"><span class="fact-icon">🏛️</span> Chichen Itza, Mexico</div>
+            <div class="fact-row"><span class="fact-icon">🏟️</span> Colosseum, Italy</div>
+            <div class="fact-row"><span class="fact-icon">🕌</span> Taj Mahal, India</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 3: GREAT WALL OF CHINA ===== -->
+  <div class="page" data-page="3">
+    <div class="story-page">
+      <div class="page-corner">p.3</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#c0392b;">Wonder 1</span><h2 class="story-title">🏯 The Great Wall of China</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Our first stop is <span class="hw">China</span>! 🇨🇳</p>
+          <p>Imagine a wall so long that if you walked along it every day, it would take you <span class="hw">more than a year</span> to reach the end!</p>
+          <p>The Great Wall is over <span class="hw2">21,000 kilometres long</span> — that's like going halfway around the whole Earth! 🌏</p>
+          <p>It was built by <span class="hw3">millions of workers</span> over many, many years to protect China from invaders. They used stones, bricks, and even sticky rice as glue!</p>
+          <p>If you stood on the wall, you could see green mountains stretching as far as your eyes can see! 🏔️</p>
+        </div>
+        <div class="story-art">
+          <div class="wonder-display">
+            <span class="wonder-emoji wonder-no-spin">🏯</span>
+            <div class="wonder-label">Great Wall of China</div>
+          </div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">📏</span> 21,196 km long!</div>
+            <div class="fact-row"><span class="fact-icon">📅</span> Over 2,300 years old</div>
+            <div class="fact-row"><span class="fact-icon">🧱</span> Made of stone & brick</div>
+            <div class="fact-row"><span class="fact-icon">🍚</span> Sticky rice was used as glue!</div>
+          </div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🌟 Fun Fact!</div>
+        <div class="fun-fact-text">The Great Wall is NOT visible from space with the naked eye — that's actually a myth! But it IS so amazing that astronauts always look for it! 👀🚀</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 4: PETRA + MINI QUIZ ===== -->
+  <div class="page" data-page="4">
+    <div class="story-page">
+      <div class="page-corner">p.4</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#e67e22;">Wonder 2</span><h2 class="story-title">🏛️ Petra — The Rose City</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Next, we fly to <span class="hw">Jordan</span>! 🇯🇴</p>
+          <p>Hidden between tall, red cliffs in the desert is a SECRET city called <span class="hw">Petra</span>!</p>
+          <p>People carved beautiful buildings right into the <span class="hw2">pink and red rock</span>. That's why it's called the <span class="hw">"Rose City"</span>! 🌹</p>
+          <p>Petra is over <span class="hw3">2,000 years old</span>. Clever people called the Nabataeans built it. They even made a system to collect rainwater in the desert!</p>
+          <p>To enter Petra, you walk through a narrow, winding path between towering cliffs. It feels like entering a magical world! ✨</p>
+        </div>
+        <div class="story-art">
+          <div class="wonder-display">
+            <span class="wonder-emoji wonder-no-spin">🏛️</span>
+            <div class="wonder-label">Petra, Jordan</div>
+          </div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">🌹</span> Called "Rose City"</div>
+            <div class="fact-row"><span class="fact-icon">⛏️</span> Carved into rock cliffs</div>
+            <div class="fact-row"><span class="fact-icon">📅</span> Over 2,000 years old</div>
+            <div class="fact-row"><span class="fact-icon">💧</span> Had clever water systems</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">🧠 Quick Quiz Time!</div>
+        <p style="font-size:14px;color:#555;margin-bottom:10px;">How long is the Great Wall of China?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅰️ 100 kilometres</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅱️ 1,000 kilometres</button>
+          <button class="q-opt" onclick="miniQuiz(this,'correct','fb1')">🅲 Over 21,000 kilometres</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅳 50 kilometres</button>
+        </div>
+        <div class="quiz-feedback" id="fb1"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 5: CHRIST THE REDEEMER ===== -->
+  <div class="page" data-page="5">
+    <div class="story-page">
+      <div class="page-corner">p.5</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#27ae60;">Wonder 3</span><h2 class="story-title">🗿 Christ the Redeemer</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Now we fly to sunny <span class="hw">Brazil</span>! 🇧🇷</p>
+          <p>High up on a mountain called <span class="hw2">Corcovado</span>, there stands an enormous statue with its arms stretched wide open!</p>
+          <p>It is called <span class="hw">Christ the Redeemer</span>, and it is <span class="hw3">30 metres tall</span> — that's as tall as a 10-story building! 🏢</p>
+          <p>The statue looks over the beautiful city of <span class="hw2">Rio de Janeiro</span>. From up there, you can see beaches, forests, and the sparkling ocean!</p>
+          <p>It took <span class="hw">9 years</span> to build, and it's made of concrete and a special stone called soapstone.</p>
+        </div>
+        <div class="story-art">
+          <div class="wonder-display">
+            <span class="wonder-emoji wonder-no-spin" style="font-size:90px;">🗿</span>
+            <div class="wonder-label">Christ the Redeemer, Brazil</div>
+          </div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">📏</span> 30 metres tall</div>
+            <div class="fact-row"><span class="fact-icon">⛰️</span> On top of Corcovado mountain</div>
+            <div class="fact-row"><span class="fact-icon">📅</span> Built in 1931</div>
+            <div class="fact-row"><span class="fact-icon">⚡</span> Gets struck by lightning!</div>
+          </div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">⚡ Fun Fact!</div>
+        <div class="fun-fact-text">Christ the Redeemer gets struck by lightning about 3 to 6 times every year! Don't worry — it has special lightning rods to stay safe! ⚡🗿</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 6: MACHU PICCHU + MINI QUIZ ===== -->
+  <div class="page" data-page="6">
+    <div class="story-page">
+      <div class="page-corner">p.6</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#2980b9;">Wonder 4</span><h2 class="story-title">⛰️ Machu Picchu — City in the Clouds</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Our next stop is <span class="hw">Peru</span>! 🇵🇪</p>
+          <p>Way up high in the <span class="hw2">Andes mountains</span>, hidden by clouds and mist, is an ancient city called <span class="hw">Machu Picchu</span>!</p>
+          <p>It was built by the amazing <span class="hw3">Inca people</span> over 500 years ago. They built it so high up that clouds float right through the buildings! ☁️</p>
+          <p>The most incredible thing? The stones fit together <span class="hw">perfectly</span> — without any glue or cement! It's like the world's most amazing jigsaw puzzle! 🧩</p>
+          <p>Machu Picchu was hidden from the world for hundreds of years until an explorer found it in 1911!</p>
+        </div>
+        <div class="story-art">
+          <div class="wonder-display">
+            <span class="wonder-emoji wonder-no-spin">⛰️</span>
+            <div class="wonder-label">Machu Picchu, Peru</div>
+          </div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">🏔️</span> 2,430 metres up in the mountains</div>
+            <div class="fact-row"><span class="fact-icon">📅</span> Built around 1450</div>
+            <div class="fact-row"><span class="fact-icon">🧩</span> Stones fit without glue!</div>
+            <div class="fact-row"><span class="fact-icon">🔍</span> Rediscovered in 1911</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">🧠 Quick Quiz Time!</div>
+        <p style="font-size:14px;color:#555;margin-bottom:10px;">Why is Petra called the "Rose City"?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅰️ They grow lots of roses there</button>
+          <button class="q-opt" onclick="miniQuiz(this,'correct','fb2')">🅱️ It's carved into pink-red rock</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅲 The buildings are painted rose</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅳 It smells like roses</button>
+        </div>
+        <div class="quiz-feedback" id="fb2"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 7: CHICHEN ITZA ===== -->
+  <div class="page" data-page="7">
+    <div class="story-page">
+      <div class="page-corner">p.7</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#8e44ad;">Wonder 5</span><h2 class="story-title">🏛️ Chichen Itza — The Pyramid</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Let's fly to <span class="hw">Mexico</span>! 🇲🇽</p>
+          <p>In the jungles of Mexico stands a magnificent pyramid called <span class="hw">El Castillo</span> — that means "The Castle" in Spanish! 🏰</p>
+          <p>It was built by the clever <span class="hw2">Maya people</span> over 1,000 years ago. The pyramid has exactly <span class="hw3">365 steps</span> — one for each day of the year! 📅</p>
+          <p>And here's the magical part: Every spring and autumn, the sunlight creates a shadow that looks like a <span class="hw">giant snake sliding down</span> the pyramid! 🐍</p>
+          <p>If you clap your hands near the pyramid, the echo sounds like a bird singing! How cool is that? 👏🐦</p>
+        </div>
+        <div class="story-art">
+          <div class="wonder-display">
+            <span class="wonder-emoji wonder-no-spin" style="font-size:80px;">🏛️</span>
+            <div class="wonder-label">Chichen Itza, Mexico</div>
+          </div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">📐</span> 365 steps (1 for each day!)</div>
+            <div class="fact-row"><span class="fact-icon">🐍</span> Shadow snake trick!</div>
+            <div class="fact-row"><span class="fact-icon">👏</span> Echo sounds like a bird</div>
+            <div class="fact-row"><span class="fact-icon">📅</span> Over 1,000 years old</div>
+          </div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🐍 Fun Fact!</div>
+        <div class="fun-fact-text">The Maya people were so good at maths and science that they created their own calendar! The pyramid of Chichen Itza is like a giant calendar made of stone! 📅🏛️</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 8: COLOSSEUM + MINI QUIZ ===== -->
+  <div class="page" data-page="8">
+    <div class="story-page">
+      <div class="page-corner">p.8</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#c0392b;">Wonder 6</span><h2 class="story-title">🏟️ The Colosseum — Battle Arena!</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Next stop — <span class="hw">Italy</span>! 🇮🇹</p>
+          <p>In the city of <span class="hw2">Rome</span> stands the biggest amphitheatre ever built — the <span class="hw">Colosseum</span>!</p>
+          <p>Imagine a stadium that could hold <span class="hw3">50,000 people</span> — that's a LOT of cheering fans! 📣</p>
+          <p>Almost 2,000 years ago, people came here to watch gladiators compete. The Colosseum even had a <span class="hw">special floor</span> that could be flooded with water for pretend sea battles! 🌊⚔️</p>
+          <p>Today, part of the Colosseum has crumbled, but it still looks magnificent and millions of people visit every year!</p>
+        </div>
+        <div class="story-art">
+          <div class="wonder-display">
+            <span class="wonder-emoji wonder-no-spin" style="font-size:80px;">🏟️</span>
+            <div class="wonder-label">Colosseum, Rome, Italy</div>
+          </div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">👥</span> Held 50,000 people!</div>
+            <div class="fact-row"><span class="fact-icon">📅</span> Almost 2,000 years old</div>
+            <div class="fact-row"><span class="fact-icon">🌊</span> Could be flooded for sea battles</div>
+            <div class="fact-row"><span class="fact-icon">🏗️</span> Took only 8 years to build</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">🧠 Quick Quiz Time!</div>
+        <p style="font-size:14px;color:#555;margin-bottom:10px;">How many steps does the Chichen Itza pyramid have?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅰️ 100 steps</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅱️ 200 steps</button>
+          <button class="q-opt" onclick="miniQuiz(this,'correct','fb3')">🅲 365 steps</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅳 500 steps</button>
+        </div>
+        <div class="quiz-feedback" id="fb3"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 9: TAJ MAHAL ===== -->
+  <div class="page" data-page="9">
+    <div class="story-page">
+      <div class="page-corner">p.9</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#2980b9;">Wonder 7</span><h2 class="story-title">🕌 The Taj Mahal — A Love Story</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Our last wonder is in <span class="hw">India</span>! 🇮🇳</p>
+          <p>The <span class="hw">Taj Mahal</span> is the most beautiful building many people have ever seen! It's made of sparkling <span class="hw2">white marble</span> and shines like a jewel! 💎</p>
+          <p>A king called <span class="hw3">Shah Jahan</span> built it because he loved his wife Mumtaz Mahal SO much. When she passed away, he wanted to build the most beautiful place in the world for her. 💕</p>
+          <p>It took <span class="hw">22 years</span> and over <span class="hw2">20,000 workers</span> to build! The walls are decorated with precious gems and beautiful flower patterns.</p>
+          <p>The coolest thing? The Taj Mahal <span class="hw3">changes colour</span> during the day — it looks pink at sunrise, white during the day, and golden at sunset! 🌅</p>
+        </div>
+        <div class="story-art">
+          <div class="wonder-display">
+            <span class="wonder-emoji wonder-no-spin" style="font-size:80px;">🕌</span>
+            <div class="wonder-label">Taj Mahal, India</div>
+          </div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">💎</span> Made of white marble</div>
+            <div class="fact-row"><span class="fact-icon">💕</span> Built for love</div>
+            <div class="fact-row"><span class="fact-icon">📅</span> Took 22 years to build</div>
+            <div class="fact-row"><span class="fact-icon">🌅</span> Changes colour with sunlight!</div>
+          </div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">💎 Fun Fact!</div>
+        <div class="fun-fact-text">The Taj Mahal has 28 different types of precious and semi-precious gemstones set into the marble! Gems came from places as far as Tibet, Egypt, and Sri Lanka! 💎🌏</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 10: TAJ MAHAL CONTINUED + MINI QUIZ ===== -->
+  <div class="page" data-page="10">
+    <div class="story-page">
+      <div class="page-corner">p.10</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#e67e22;">Wonder 7</span><h2 class="story-title">🕌 More About the Taj Mahal!</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>The Taj Mahal sits on the banks of the <span class="hw2">Yamuna River</span> in a city called <span class="hw">Agra</span>.</p>
+          <p>Around the Taj Mahal there are four tall towers called <span class="hw3">minarets</span>. They lean slightly outward — on purpose! If they ever fell, they would fall AWAY from the Taj Mahal to protect it! 🏗️</p>
+          <p>The gardens in front have beautiful fountains and the Taj Mahal reflects perfectly in the water. It looks like there are <span class="hw">TWO Taj Mahals</span>! 🪞</p>
+          <p>About <span class="hw2">8 million visitors</span> come to see it every year. That's like the whole population of a big city!</p>
+        </div>
+        <div class="story-art">
+          <div style="font-size:50px;text-align:center;">🕌🪞🕌</div>
+          <div class="wonder-label">Reflection in the water!</div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">🗼</span> 4 minarets lean outward</div>
+            <div class="fact-row"><span class="fact-icon">🌳</span> Beautiful gardens & fountains</div>
+            <div class="fact-row"><span class="fact-icon">👥</span> 8 million visitors per year</div>
+            <div class="fact-row"><span class="fact-icon">🏗️</span> 20,000+ workers built it</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">🧠 Quick Quiz Time!</div>
+        <p style="font-size:14px;color:#555;margin-bottom:10px;">How many people could the Colosseum hold?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅰️ 5,000 people</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅱️ 10,000 people</button>
+          <button class="q-opt" onclick="miniQuiz(this,'correct','fb4')">🅲 50,000 people</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅳 100,000 people</button>
+        </div>
+        <div class="quiz-feedback" id="fb4"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 11: SIZE COMPARISON ===== -->
+  <div class="page" data-page="11">
+    <div class="story-page">
+      <div class="page-corner">p.11</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--purple);">Fun Page</span><h2 class="story-title">📏 How Old Are They?</h2></div>
+      <div class="story-text" data-tts style="margin-bottom:16px;">
+        <p>Let's compare how OLD each wonder is! Click on each bar to learn more. The taller the bar, the older it is!</p>
+      </div>
+      <div class="size-row">
+        <div class="size-item" onclick="showAgeInfo('Great Wall — started over 2,300 years ago! That is REALLY old!')">
+          <div class="size-bar" style="height:140px;background:linear-gradient(180deg,#c0392b,#e74c3c);width:40px;">2300</div>
+          <div class="size-label">🏯 Great Wall</div>
+        </div>
+        <div class="size-item" onclick="showAgeInfo('Petra — over 2,000 years old! Carved right into the rock!')">
+          <div class="size-bar" style="height:126px;background:linear-gradient(180deg,#e67e22,#f39c12);width:40px;">2000</div>
+          <div class="size-label">🏛️ Petra</div>
+        </div>
+        <div class="size-item" onclick="showAgeInfo('Colosseum — almost 2,000 years old! Ancient Romans built it!')">
+          <div class="size-bar" style="height:120px;background:linear-gradient(180deg,#8e44ad,#9b59b6);width:40px;">1950</div>
+          <div class="size-label">🏟️ Colosseum</div>
+        </div>
+        <div class="size-item" onclick="showAgeInfo('Chichen Itza — about 1,000 years old! The Maya were brilliant!')">
+          <div class="size-bar" style="height:80px;background:linear-gradient(180deg,#27ae60,#2ecc71);width:40px;">1000</div>
+          <div class="size-label">🏛️ Chichen Itza</div>
+        </div>
+        <div class="size-item" onclick="showAgeInfo('Machu Picchu — about 575 years old! Hidden in the clouds!')">
+          <div class="size-bar" style="height:55px;background:linear-gradient(180deg,#2980b9,#3498db);width:40px;">575</div>
+          <div class="size-label">⛰️ Machu Picchu</div>
+        </div>
+        <div class="size-item" onclick="showAgeInfo('Taj Mahal — about 370 years old! A monument of love!')">
+          <div class="size-bar" style="height:42px;background:linear-gradient(180deg,#1abc9c,#16a085);width:40px;">370</div>
+          <div class="size-label">🕌 Taj Mahal</div>
+        </div>
+        <div class="size-item" onclick="showAgeInfo('Christ the Redeemer — about 95 years old! The newest wonder!')">
+          <div class="size-bar" style="height:20px;background:linear-gradient(180deg,#f39c12,#f1c40f);width:40px;">95</div>
+          <div class="size-label">🗿 Christ</div>
+        </div>
+      </div>
+      <div style="text-align:center;font-family:'Fredoka One',cursive;font-size:14px;color:#999;margin:8px 0;">⬆️ Years old (tap a bar!)</div>
+      <div style="text-align:center;font-family:'Fredoka One',cursive;font-size:15px;color:var(--purple);min-height:40px;padding:8px;" id="ageInfo">👆 Tap a bar to learn more!</div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 12: WORLD MAP OVERVIEW ===== -->
+  <div class="page" data-page="12">
+    <div class="story-page">
+      <div class="page-corner">p.12</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--ocean);">Fun Page</span><h2 class="story-title">🗺️ Where in the World?</h2></div>
+      <div class="story-text" data-tts style="margin-bottom:14px;">
+        <p>The 7 Wonders are spread across the globe! Each one is on a <span class="hw">different continent</span>. Let's see where they all are!</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="background:#fff3cd;border-radius:14px;padding:14px;text-align:center;border:2px solid #f1c40f;">
+          <div style="font-size:32px;">🏯</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#856404;">Great Wall</div>
+          <div style="font-size:12px;color:#999;">🌏 Asia — China</div>
+        </div>
+        <div style="background:#fce4ec;border-radius:14px;padding:14px;text-align:center;border:2px solid #e91e63;">
+          <div style="font-size:32px;">🏛️</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#880e4f;">Petra</div>
+          <div style="font-size:12px;color:#999;">🌍 Asia — Jordan</div>
+        </div>
+        <div style="background:#e8f5e9;border-radius:14px;padding:14px;text-align:center;border:2px solid #4caf50;">
+          <div style="font-size:32px;">🗿</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#2e7d32;">Christ the Redeemer</div>
+          <div style="font-size:12px;color:#999;">🌎 South America — Brazil</div>
+        </div>
+        <div style="background:#e3f2fd;border-radius:14px;padding:14px;text-align:center;border:2px solid #2196f3;">
+          <div style="font-size:32px;">⛰️</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#1565c0;">Machu Picchu</div>
+          <div style="font-size:12px;color:#999;">🌎 South America — Peru</div>
+        </div>
+        <div style="background:#f3e5f5;border-radius:14px;padding:14px;text-align:center;border:2px solid #9c27b0;">
+          <div style="font-size:32px;">🏛️</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#6a1b9a;">Chichen Itza</div>
+          <div style="font-size:12px;color:#999;">🌎 North America — Mexico</div>
+        </div>
+        <div style="background:#ffebee;border-radius:14px;padding:14px;text-align:center;border:2px solid #f44336;">
+          <div style="font-size:32px;">🏟️</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#c62828;">Colosseum</div>
+          <div style="font-size:12px;color:#999;">🌍 Europe — Italy</div>
+        </div>
+        <div style="background:#e0f2f1;border-radius:14px;padding:14px;text-align:center;border:2px solid #009688;grid-column:1/-1;">
+          <div style="font-size:32px;">🕌</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#00695c;">Taj Mahal</div>
+          <div style="font-size:12px;color:#999;">🌏 Asia — India</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 13: MEMORY TRICK ===== -->
+  <div class="page" data-page="13">
+    <div class="story-page">
+      <div class="page-corner">p.13</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--purple);">Memory Trick</span><h2 class="story-title">🧠 Remember All 7!</h2></div>
+      <div class="story-text" data-tts style="margin-bottom:14px;">
+        <p>Here's a fun trick to remember all 7 Wonders! Remember the sentence:</p>
+        <p style="text-align:center;font-family:'Fredoka One',cursive;font-size:18px;color:var(--terracotta);margin:12px 0;">🌟 "<span class="hw">G</span>reat <span class="hw">P</span>eople <span class="hw">C</span>an <span class="hw">M</span>ake <span class="hw">C</span>ool <span class="hw">C</span>ool <span class="hw">T</span>hings!" 🌟</p>
+        <p>Each first letter stands for a Wonder! Tap each row to reveal! 👇</p>
+      </div>
+      <div class="memory-card">
+        <div class="mem-row" onclick="revealMem(this)">
+          <span class="mem-letter">G</span>
+          <span class="mem-word">Great</span>
+          <span class="mem-wonder" id="mw1" style="color:#ccc;">🏯 ??? (tap to reveal!)</span>
+        </div>
+        <div class="mem-row" onclick="revealMem(this)">
+          <span class="mem-letter">P</span>
+          <span class="mem-word">People</span>
+          <span class="mem-wonder" id="mw2" style="color:#ccc;">🏛️ ??? (tap to reveal!)</span>
+        </div>
+        <div class="mem-row" onclick="revealMem(this)">
+          <span class="mem-letter">C</span>
+          <span class="mem-word">Can</span>
+          <span class="mem-wonder" id="mw3" style="color:#ccc;">🗿 ??? (tap to reveal!)</span>
+        </div>
+        <div class="mem-row" onclick="revealMem(this)">
+          <span class="mem-letter">M</span>
+          <span class="mem-word">Make</span>
+          <span class="mem-wonder" id="mw4" style="color:#ccc;">⛰️ ??? (tap to reveal!)</span>
+        </div>
+        <div class="mem-row" onclick="revealMem(this)">
+          <span class="mem-letter">C</span>
+          <span class="mem-word">Cool</span>
+          <span class="mem-wonder" id="mw5" style="color:#ccc;">🏛️ ??? (tap to reveal!)</span>
+        </div>
+        <div class="mem-row" onclick="revealMem(this)">
+          <span class="mem-letter">C</span>
+          <span class="mem-word">Cool</span>
+          <span class="mem-wonder" id="mw6" style="color:#ccc;">🏟️ ??? (tap to reveal!)</span>
+        </div>
+        <div class="mem-row" onclick="revealMem(this)">
+          <span class="mem-letter">T</span>
+          <span class="mem-word">Things</span>
+          <span class="mem-wonder" id="mw7" style="color:#ccc;">🕌 ??? (tap to reveal!)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 14: FINAL QUIZ ===== -->
+  <div class="page" data-page="14">
+    <div class="quiz-page" id="quizPage">
+      <!-- QUIZ ACTIVE -->
+      <div id="quizActive">
+        <div class="story-header"><span class="chapter-badge" style="background:var(--purple);">🏆 Final Quiz!</span><h2 class="story-title">The Wonder Challenge!</h2></div>
+        <p style="font-size:14px;color:#666;margin-bottom:16px;">Ava wants to test what you've learned! Answer 6 questions. You need <strong>at least 5 correct</strong> to earn your certificate! 🌟</p>
+        <div class="quiz-progress-row">
+          <span class="q-counter" id="qCounter">Question 1 of 6</span>
+          <span class="q-score-badge" id="qScoreBadge">Score: 0 / 6</span>
+        </div>
+        <div class="quiz-question-card">
+          <div class="quiz-q-emoji" id="qEmoji">🏯</div>
+          <div class="quiz-q-text" id="qText"></div>
+        </div>
+        <div class="fquiz-options" id="fquizOptions"></div>
+        <div class="q-result-msg" id="qResultMsg"></div>
+        <button class="next-q-btn" id="nextQBtn" onclick="nextQuestion()" style="display:none;">Next Question →</button>
+      </div>
+      <!-- PASS -->
+      <div id="quizPass" style="display:none;">
+        <div class="result-screen">
+          <div class="result-trophy">🏆</div>
+          <div class="result-title" style="color:var(--jungle);">AMAZING! You Did It!</div>
+          <div class="result-score" id="passScore">6 / 6</div>
+          <div class="result-msg" id="passMsg"></div>
+          <button class="proceed-btn" onclick="goToCertificate()">🎓 Get My Certificate! →</button>
+        </div>
+      </div>
+      <!-- FAIL -->
+      <div id="quizFail" style="display:none;">
+        <div class="result-screen">
+          <div class="result-trophy">🌟</div>
+          <div class="result-title" style="color:var(--coral);">Almost There!</div>
+          <div class="result-score" id="failScore">3 / 6</div>
+          <div class="result-msg">You need at least 5 correct answers to earn your certificate.<br>Don't worry — you can try again! Read the stories once more and come back even stronger! 💪</div>
+          <button class="retry-btn" onclick="restartQuiz()">🔄 Try Again!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 15: CERTIFICATE ===== -->
+  <div class="page" data-page="15">
+    <div class="cert-page">
+      <div class="page-corner">🎓</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#f1c40f;color:#856404;">🏆 Certificate</span><h2 class="story-title">Your Explorer Certificate!</h2></div>
+      <div class="cert-controls">
+        <input class="cert-name-input" id="certName" placeholder="Type the child's name here..." oninput="drawCert()"/>
+        <button class="cert-dl-btn" onclick="downloadCert()">⬇ Download PNG</button>
+        <button class="cert-print-btn" onclick="printCert()">🖨 Print</button>
+      </div>
+      <div class="cert-wrap">
+        <canvas id="cert" width="900" height="630"></canvas>
+      </div>
+      <p class="cert-hint">Type the name above, then click Download or Print!</p>
+    </div>
+  </div>
+
+</div><!-- end app -->
+
+<script>
+/* ===== FLOATING CLOUDS ===== */
+(function(){
+  const c=document.getElementById('clouds');
+  const emojis=['☁️','⛅','🌤️'];
+  for(let i=0;i<6;i++){
+    const el=document.createElement('div');
+    el.className='cloud';
+    el.textContent=emojis[i%emojis.length];
+    el.style.top=(Math.random()*80)+'%';
+    el.style.animationDuration=(20+Math.random()*30)+'s';
+    el.style.animationDelay=(Math.random()*20)+'s';
+    el.style.fontSize=(40+Math.random()*30)+'px';
+    c.appendChild(el);
+  }
+})();
+
+/* ===== NAVIGATION ===== */
+const TOTAL=15;
+let currentPage=0;
+const pages=document.querySelectorAll('.page');
+const prevBtn=document.getElementById('prevBtn');
+const nextBtn=document.getElementById('nextBtn');
+const dotsContainer=document.getElementById('pageDots');
+
+for(let i=0;i<=TOTAL;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' active':'');
+  d.onclick=()=>goToPage(i);
+  dotsContainer.appendChild(d);
+}
+
+function goToPage(n){
+  if(n<0||n>TOTAL)return;
+  if(n===15&&!quizPassed){alert('You need to pass the quiz with at least 5/6 to get your certificate! 🌟');return;}
+  stopReadAloud();
+  pages[currentPage].classList.remove('active');
+  currentPage=n;
+  pages[currentPage].classList.add('active');
+  prevBtn.disabled=currentPage===0;
+  nextBtn.disabled=currentPage===TOTAL;
+  document.getElementById('progressFill').style.width=Math.round(currentPage/TOTAL*100)+'%';
+  document.getElementById('progressText').textContent='Page '+(currentPage+1)+' of '+(TOTAL+1);
+  document.querySelectorAll('.dot').forEach((d,i)=>{
+    d.classList.toggle('active',i===currentPage);
+    if(i<currentPage)d.classList.add('visited');
+  });
+  if(currentPage===14)initQuiz();
+  if(currentPage===15)setTimeout(drawCert,120);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function changePage(d){goToPage(currentPage+d);}
+
+/* ===== TEXT-TO-SPEECH ===== */
+let isSpeaking=false;
+let speechUtterance=null;
+
+function toggleReadAloud(){
+  if(isSpeaking){stopReadAloud();return;}
+  const activePage=pages[currentPage];
+  const ttsEl=activePage.querySelector('[data-tts]');
+  if(!ttsEl){
+    /* Try reading any story-text */
+    const fallback=activePage.querySelector('.story-text')||activePage.querySelector('.story-page');
+    if(!fallback)return;
+    speakText(fallback.textContent);
+    return;
+  }
+  speakText(ttsEl.textContent);
+}
+
+function cleanForSpeech(text){
+  /* Remove all emojis, icons, symbols */
+  text=text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{200D}\u{20E3}\u{E0020}-\u{E007F}]/gu,'');
+  /* Remove leftover unicode symbols like arrows, stars, etc */
+  text=text.replace(/[☀☿♀♂♃♆⛢⭐✨✈️⚡🅰🅱🅲🅳←→⬆️⬇️▶️◀️★●►]/g,'');
+  /* Remove multiple spaces and clean up */
+  text=text.replace(/\s+/g,' ').trim();
+  /* Remove awkward punctuation combos */
+  text=text.replace(/\s*[—–]\s*/g,', ');
+  text=text.replace(/\s*\.\.\.\s*/g,'. ');
+  /* Make abbreviations more speakable */
+  text=text.replace(/(\d+),(\d+)/g,'$1$2');
+  text=text.replace(/km\b/gi,'kilometres');
+  /* Add gentle pauses after sentences for kids */
+  text=text.replace(/([.!?])\s+/g,'$1 ... ');
+  return text;
+}
+
+function speakText(text){
+  if(!('speechSynthesis' in window))return;
+  stopReadAloud();
+  text=cleanForSpeech(text);
+  speechUtterance=new SpeechSynthesisUtterance(text);
+  speechUtterance.rate=0.78;
+  speechUtterance.pitch=1.15;
+  speechUtterance.volume=1;
+  speechUtterance.lang='en-US';
+  /* Try to pick a friendly, clear voice */
+  const voices=speechSynthesis.getVoices();
+  const preferred=voices.find(v=>v.name.includes('Samantha'))
+    ||voices.find(v=>v.name.includes('Karen'))
+    ||voices.find(v=>v.name.includes('Google UK English Female'))
+    ||voices.find(v=>v.name.includes('Google')&&v.lang.startsWith('en'))
+    ||voices.find(v=>v.lang.startsWith('en')&&v.name.toLowerCase().includes('female'))
+    ||voices.find(v=>v.lang.startsWith('en'));
+  if(preferred)speechUtterance.voice=preferred;
+
+  speechUtterance.onstart=()=>{
+    isSpeaking=true;
+    document.getElementById('ttsBtn').classList.add('speaking');
+    document.getElementById('ttsBtn').textContent='🔊 Reading...';
+    document.getElementById('ttsStop').style.display='inline-flex';
+  };
+  speechUtterance.onend=()=>{resetTTSUI();};
+  speechUtterance.onerror=()=>{resetTTSUI();};
+  speechSynthesis.speak(speechUtterance);
+}
+
+function stopReadAloud(){
+  if('speechSynthesis' in window)speechSynthesis.cancel();
+  resetTTSUI();
+}
+
+function resetTTSUI(){
+  isSpeaking=false;
+  document.getElementById('ttsBtn').classList.remove('speaking');
+  document.getElementById('ttsBtn').textContent='🔊 Read Aloud';
+  document.getElementById('ttsStop').style.display='none';
+}
+
+/* Load voices (some browsers need this) */
+if('speechSynthesis' in window){
+  speechSynthesis.onvoiceschanged=()=>{speechSynthesis.getVoices();};
+}
+
+/* ===== MINI QUIZZES ===== */
+function miniQuiz(btn,type,fbId){
+  const container=btn.closest('.quiz-bubble');
+  const btns=container.querySelectorAll('.q-opt');
+  btns.forEach(b=>b.style.pointerEvents='none');
+  const fb=document.getElementById(fbId);
+  if(type==='correct'){
+    btn.classList.add('correct');
+    fb.innerHTML='<span style="color:#27ae60;">🎉 Correct! Awesome job, Explorer!</span>';
+  } else {
+    btn.classList.add('wrong');
+    btns.forEach(b=>{if(b.onclick&&b.onclick.toString().includes("'correct'"))b.classList.add('correct');});
+    fb.innerHTML='<span style="color:#c0392b;">Not quite! The green one is correct. Keep exploring! 💪</span>';
+  }
+}
+
+/* ===== AGE INFO ===== */
+function showAgeInfo(msg){document.getElementById('ageInfo').textContent='✨ '+msg;}
+
+/* ===== MEMORY TRICK ===== */
+const memAnswers=['🏯 Great Wall of China!','🏛️ Petra, Jordan!','🗿 Christ the Redeemer, Brazil!','⛰️ Machu Picchu, Peru!','🏛️ Chichen Itza, Mexico!','🏟️ Colosseum, Italy!','🕌 Taj Mahal, India!'];
+
+function revealMem(row){
+  const spans=row.querySelectorAll('.mem-wonder');
+  if(!spans.length)return;
+  const span=spans[0];
+  const idx=parseInt(span.id.replace('mw',''))-1;
+  if(idx>=0&&idx<memAnswers.length){
+    span.textContent=memAnswers[idx];
+    span.style.color='var(--purple)';
+    row.style.background='rgba(192,132,252,.1)';
+  }
+}
+
+/* ===== FINAL QUIZ ===== */
+const QUESTIONS=[
+  {emoji:'🏯',q:'How long is the Great Wall of China?',opts:['About 100 kilometres','About 1,000 kilometres','Over 21,000 kilometres','About 500 kilometres'],ans:2},
+  {emoji:'🕌',q:'Why was the Taj Mahal built?',opts:['As a school for children','As a king\'s love for his wife','As a market to sell gems','As a fort for soldiers'],ans:1},
+  {emoji:'🏛️',q:'How many steps does Chichen Itza have?',opts:['100 steps','200 steps','365 steps — one for each day!','500 steps'],ans:2},
+  {emoji:'🏟️',q:'How many people could the Colosseum hold?',opts:['5,000 people','10,000 people','50,000 people','100,000 people'],ans:2},
+  {emoji:'⛰️',q:'What is special about the stones in Machu Picchu?',opts:['They are made of gold','They fit perfectly without glue!','They glow in the dark','They are painted bright colours'],ans:1},
+  {emoji:'🗿',q:'Where is Christ the Redeemer?',opts:['Mexico','India','Italy','Brazil'],ans:3},
+];
+
+let qIdx=0,score=0,answered=false,quizPassed=false;
+
+function initQuiz(){
+  qIdx=0;score=0;answered=false;
+  document.getElementById('quizActive').style.display='block';
+  document.getElementById('quizPass').style.display='none';
+  document.getElementById('quizFail').style.display='none';
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q=QUESTIONS[qIdx];
+  document.getElementById('qEmoji').textContent=q.emoji;
+  document.getElementById('qText').textContent=q.q;
+  document.getElementById('qCounter').textContent='Question '+(qIdx+1)+' of 6';
+  document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';
+  document.getElementById('qResultMsg').textContent='';
+  document.getElementById('nextQBtn').style.display='none';
+  answered=false;
+  const opts=document.getElementById('fquizOptions');
+  opts.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const btn=document.createElement('button');
+    btn.className='fq-opt';
+    btn.textContent=o;
+    btn.onclick=()=>answerQ(i,btn);
+    opts.appendChild(btn);
+  });
+}
+
+function answerQ(i,btn){
+  if(answered)return;
+  answered=true;
+  const q=QUESTIONS[qIdx];
+  const allBtns=document.querySelectorAll('.fq-opt');
+  allBtns.forEach(b=>b.classList.add('locked'));
+  const msg=document.getElementById('qResultMsg');
+  if(i===q.ans){
+    btn.classList.add('correct');
+    score++;
+    const praise=['🎉 Fantastic!','🌟 Brilliant!','✨ Super Smart!','🏆 Amazing Explorer!','🎊 You Rock!'];
+    msg.innerHTML='<span style="color:#27ae60;">'+praise[Math.floor(Math.random()*praise.length)]+'</span>';
+  } else {
+    btn.classList.add('wrong');
+    allBtns[q.ans].classList.add('correct');
+    msg.innerHTML='<span style="color:#c0392b;">Oops! The correct answer is highlighted in green. 💪</span>';
+  }
+  document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';
+  document.getElementById('nextQBtn').style.display='block';
+  document.getElementById('nextQBtn').textContent=qIdx===5?'See My Result! 🏁':'Next Question →';
+}
+
+function nextQuestion(){
+  qIdx++;
+  if(qIdx>=6){showResult();return;}
+  renderQuestion();
+}
+
+function showResult(){
+  document.getElementById('quizActive').style.display='none';
+  if(score>=5){
+    quizPassed=true;
+    document.getElementById('quizPass').style.display='block';
+    document.getElementById('passScore').textContent=score+' / 6';
+    const msgs={5:'Wow! So close to perfect! You\'re a true Wonder Explorer! 🌍✨',6:'PERFECT SCORE! You know ALL the Wonders! You\'re absolutely incredible! 🏆🌟🎉'};
+    document.getElementById('passMsg').innerHTML=msgs[score]||'Amazing work, Explorer!';
+  } else {
+    document.getElementById('quizFail').style.display='block';
+    document.getElementById('failScore').textContent=score+' / 6';
+  }
+}
+
+function restartQuiz(){initQuiz();}
+function goToCertificate(){goToPage(15);}
+
+/* ===== CERTIFICATE CANVAS ===== */
+const certCanvas=document.getElementById('cert');
+const ctx=certCanvas.getContext('2d');
+const CW=900,CH=630;
+
+function drawStarShape(cx,cy,r,pts,color){
+  ctx.save();ctx.fillStyle=color;ctx.beginPath();
+  for(let i=0;i<pts*2;i++){const a=(i*Math.PI/pts)-Math.PI/2,rd=i%2===0?r:r*.45;i===0?ctx.moveTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a)):ctx.lineTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a));}
+  ctx.closePath();ctx.fill();ctx.restore();
+}
+function rr(x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();
+}
+const qrImage=new Image();let qrReady=false;qrImage.crossOrigin='anonymous';qrImage.onload=()=>{qrReady=true;drawCert();};qrImage.src='https://quickchart.io/qr?text='+encodeURIComponent('https://fivetofifteen.com/')+'&size=180';
+
+function drawCert(){
+  const name=document.getElementById('certName').value.trim()||'Explorer Name Here';
+  ctx.clearRect(0,0,CW,CH);
+
+  /* warm background */
+  const bg=ctx.createLinearGradient(0,0,CW,CH);
+  bg.addColorStop(0,'#FFF8F0');bg.addColorStop(.5,'#FFFBF0');bg.addColorStop(1,'#F0F8FF');
+  ctx.fillStyle=bg;rr(0,0,CW,CH,20);ctx.fill();
+
+  /* outer border */
+  ctx.strokeStyle='#f1c40f';ctx.lineWidth=6;rr(8,8,CW-16,CH-16,16);ctx.stroke();
+
+  /* inner dashed border */
+  ctx.strokeStyle='#8e44ad';ctx.lineWidth=2;ctx.setLineDash([8,5]);
+  rr(20,20,CW-40,CH-40,10);ctx.stroke();ctx.setLineDash([]);
+
+  /* corner stars */
+  [[52,52],[CW-52,52],[52,CH-52],[CW-52,CH-52]].forEach(([x,y])=>drawStarShape(x,y,18,5,'#f1c40f'));
+
+  /* top ribbon */
+  const rg=ctx.createLinearGradient(CW/2-220,0,CW/2+220,0);
+  rg.addColorStop(0,'#8e44ad');rg.addColorStop(.5,'#9b59b6');rg.addColorStop(1,'#8e44ad');
+  ctx.fillStyle=rg;rr(CW/2-220,28,440,44,22);ctx.fill();
+  ctx.fillStyle='#f1c40f';ctx.font='bold 17px "Fredoka One",cursive';ctx.textAlign='center';
+  ctx.fillText('🌟  7 WONDERS OF THE WORLD  🌟',CW/2,57);
+
+  /* globe */
+  ctx.font='64px serif';ctx.textAlign='center';ctx.fillText('🌍',CW/2,142);
+
+  /* title */
+  ctx.fillStyle='#c0392b';ctx.font='bold 40px "Fredoka One",cursive';
+  ctx.fillText('Wonder Explorer Certificate!',CW/2,196);
+
+  /* subtitle */
+  ctx.fillStyle='#888';ctx.font='17px "Nunito",sans-serif';
+  ctx.fillText('This is to proudly certify that the amazing explorer',CW/2,232);
+
+  /* name underline */
+  ctx.strokeStyle='#f1c40f';ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(CW/2-240,276);ctx.lineTo(CW/2+240,276);ctx.stroke();
+
+  /* name */
+  ctx.fillStyle='#8e44ad';ctx.font='bold 38px "Fredoka One",cursive';
+  ctx.fillText(name,CW/2,270);
+
+  /* description */
+  ctx.fillStyle='#444';ctx.font='17px "Nunito",sans-serif';
+  ctx.fillText('has completed the 7 Wonders Adventure and is now an official',CW/2,310);
+
+  ctx.fillStyle='#c0392b';ctx.font='bold 24px "Fredoka One",cursive';
+  ctx.fillText('🌟 Certified Wonder Explorer 🌟',CW/2,344);
+
+  ctx.fillStyle='#888';ctx.font='14px "Nunito",sans-serif';
+  ctx.fillText('Scored 5 or more on the final Wonder Challenge quiz!',CW/2,372);
+
+  /* skill badges */
+  const badges=[
+    {t:'✓ Knows all 7 Wonders',bg:'#e8f5e9',c:'#2e7d32'},
+    {t:'✓ History Expert',bg:'#fff3e0',c:'#e65100'},
+    {t:'✓ World Traveller',bg:'#e3f2fd',c:'#1565c0'},
+    {t:'✓ Wonder Explorer!',bg:'#f3e5f5',c:'#6a1b9a'},
+  ];
+  const bw=168,bh=30,bg2=10,tot=badges.length*(bw+bg2)-bg2;
+  let bx=CW/2-tot/2;
+  badges.forEach(b=>{
+    ctx.fillStyle=b.bg;rr(bx,390,bw,bh,15);ctx.fill();
+    ctx.fillStyle=b.c;ctx.font='bold 12px "Nunito",sans-serif';ctx.textAlign='center';
+    ctx.fillText(b.t,bx+bw/2,409);bx+=bw+bg2;
+  });
+
+  /* wonders row */
+  ctx.font='32px serif';ctx.textAlign='center';
+  ctx.fillText('🏯  🏛️  🗿  ⛰️  🏛️  🏟️  🕌',CW/2,468);
+
+  ctx.fillStyle='#ffffff';ctx.strokeStyle='#ece2f4';ctx.lineWidth=2;rr(CW-154,68,102,102,14);ctx.fill();ctx.stroke();
+  if(qrReady){ctx.drawImage(qrImage,CW-144,78,82,82);}else{ctx.fillStyle='#faf1ff';ctx.fillRect(CW-144,78,82,82);ctx.fillStyle='#8e44ad';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('QR loading...',CW-103,122);}
+  ctx.fillStyle='#8e44ad';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('Scan to visit',CW-103,185);
+
+  /* date */
+  const d=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
+  ctx.fillStyle='#9e9e9e';ctx.font='bold 12px "Nunito",sans-serif';ctx.textAlign='center';
+  ctx.fillText('Presented by fivetofifteen.com',CW/2,538);
+  ctx.fillStyle='#bbb';ctx.font='12px "Nunito",sans-serif';
+  ctx.fillText('Awarded on '+d,CW/2,562);
+
+  /* decorative stars */
+  [[80,200],[CW-80,200],[80,420],[CW-80,420],[150,340],[CW-150,340]].forEach(([x,y])=>drawStarShape(x,y,10,5,'rgba(241,196,15,.35)'));
+}
+
+function downloadCert(){
+  drawCert();
+  const link=document.createElement('a');
+  link.download='7-wonders-explorer-certificate.png';
+  link.href=certCanvas.toDataURL('image/png');
+  link.click();
+}
+
+function printCert(){
+  drawCert();
+  const dataUrl=certCanvas.toDataURL('image/png');
+  const win=window.open('','_blank');
+  win.document.write('<!DOCTYPE html><html><head><title>Wonder Explorer Certificate<\/title><style>body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f5f5f5;}img{max-width:100%;box-shadow:0 4px 20px rgba(0,0,0,.15);border-radius:12px;}@media print{body{background:white;}img{box-shadow:none;width:100%;}}<\/style><\/head><body><img src="'+dataUrl+'"/><\/body><\/html>');
+  win.document.close();
+  win.onload=()=>{win.focus();win.print();};
+}
+
+/* ===== INIT ===== */
+drawCert();
+</script>
+</body>
+</html>

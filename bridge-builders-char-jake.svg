@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="980" viewBox="0 0 840 980" role="img" aria-label="Portrait of Jake Torres">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e4e5e8"/>
+      <stop offset="100%" stop-color="#d2d5db"/>
+    </linearGradient>
+    <linearGradient id="shirt" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7a7d84"/>
+      <stop offset="100%" stop-color="#595e67"/>
+    </linearGradient>
+    <filter id="grain" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.76" numOctaves="2" seed="29"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="table" tableValues="0 0.032"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="840" height="980" fill="url(#bg)"/>
+  <circle cx="130" cy="160" r="140" fill="#ffffff" opacity="0.15"/>
+  <circle cx="690" cy="860" r="170" fill="#9ca4b0" opacity="0.18"/>
+  <rect width="840" height="980" filter="url(#grain)"/>
+
+  <g transform="translate(420 530)">
+    <ellipse cx="0" cy="318" rx="186" ry="44" fill="#6d7380" opacity="0.23"/>
+    <ellipse cx="0" cy="-188" rx="94" ry="112" fill="#c99373"/>
+    <path d="M-100 -206 Q-64 -300 0 -312 Q74 -302 102 -206 Q58 -238 0 -236 Q-54 -238 -100 -206 Z" fill="#2e2a2a"/>
+    <circle cx="-22" cy="-198" r="8" fill="#2e2a2a"/>
+    <circle cx="-2" cy="-206" r="8" fill="#2e2a2a"/>
+    <circle cx="18" cy="-202" r="8" fill="#2e2a2a"/>
+
+    <ellipse cx="-34" cy="-172" rx="13" ry="8" fill="#fff"/>
+    <ellipse cx="28" cy="-170" rx="13" ry="8" fill="#fff"/>
+    <circle cx="-34" cy="-172" r="4" fill="#39271f"/>
+    <circle cx="28" cy="-170" r="4" fill="#39271f"/>
+    <path d="M-40 -140 Q-4 -128 32 -142" stroke="#815745" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <line x1="-52" y1="-188" x2="-38" y2="-196" stroke="#a66d5a" stroke-width="3"/>
+
+    <path d="M-220 -20 Q-156 -132 0 -144 Q154 -132 220 -20 L192 224 Q120 280 0 292 Q-120 280 -192 224 Z" fill="url(#shirt)"/>
+    <path d="M-50 -112 L50 -112 L34 294 L-34 294 Z" fill="#696f79"/>
+
+    <path d="M-238 28 Q-208 76 -200 140 Q-226 170 -260 150 Q-272 96 -238 28 Z" fill="#c99373"/>
+    <path d="M238 28 Q208 76 200 140 Q226 170 260 150 Q272 96 238 28 Z" fill="#c99373"/>
+
+    <rect x="-88" y="236" width="64" height="126" rx="12" fill="#2f3339"/>
+    <rect x="24" y="236" width="64" height="126" rx="12" fill="#2f3339"/>
+    <rect x="-98" y="364" width="82" height="28" rx="8" fill="#505965"/>
+    <rect x="16" y="364" width="82" height="28" rx="8" fill="#505965"/>
+
+    <path d="M-218 148 L-118 148 L-136 200 L-236 200 Z" fill="#4a4f58"/>
+    <line x1="-206" y1="162" x2="-148" y2="162" stroke="#818896" stroke-width="4"/>
+    <line x1="-206" y1="176" x2="-154" y2="176" stroke="#818896" stroke-width="4"/>
+
+    <text x="0" y="404" text-anchor="middle" font-family="Georgia, serif" font-size="42" fill="#424953">Jake Torres</text>
+  </g>
+</svg>

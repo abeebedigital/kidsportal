@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mia and the Rainbow Kitchen 🌈</title>
+<meta name="description" content="A long-form interactive moral story for kids ages 5-10 about colourful food, healthy habits, and imagination."/>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<script src="analytics.js" defer></script>
+<script src="site-drawer.js" defer></script>
+<script src="page-share.js" defer></script>
+<style>
+  html{font-size:17px;}
+  @media (max-width:500px){html{font-size:16px;}}
+  :root{
+    --gold:#ffd86b;
+    --orange:#ff9f1c;
+    --coral:#ff6b6b;
+    --mint:#6bcb77;
+    --blue:#4d96ff;
+    --purple:#b28dff;
+    --ink:#2d3436;
+    --card:#fffefb;
+    --line:#e9def9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Nunito',sans-serif;
+    background:
+      radial-gradient(circle at 8% 18%, rgba(178,141,255,.20) 0 120px, transparent 121px),
+      radial-gradient(circle at 86% 10%, rgba(255,216,107,.20) 0 130px, transparent 131px),
+      linear-gradient(180deg,#f8f5ff 0%,#fffdf8 100%);
+    color:var(--ink);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    background-image:
+      radial-gradient(circle at 14% 26%, rgba(255,255,255,.55) 0 2px, transparent 3px),
+      radial-gradient(circle at 78% 18%, rgba(255,255,255,.45) 0 2px, transparent 3px),
+      radial-gradient(circle at 64% 42%, rgba(255,255,255,.36) 0 2px, transparent 3px),
+      radial-gradient(circle at 28% 62%, rgba(255,255,255,.4) 0 2px, transparent 3px),
+      radial-gradient(circle at 86% 76%, rgba(255,255,255,.33) 0 2px, transparent 3px);
+    background-size:100% 100%;
+    opacity:.8;
+  }
+  body::after{
+    content:'';
+    position:fixed;
+    inset:-8% -10% auto auto;
+    width:360px;
+    height:360px;
+    pointer-events:none;
+    z-index:0;
+    background:radial-gradient(circle, rgba(255,227,156,.35) 0%, rgba(255,227,156,0) 70%);
+  }
+  .floaty{position:fixed;opacity:.12;font-size:52px;z-index:0;pointer-events:none;animation:drift linear infinite}
+  @keyframes drift{from{transform:translateX(-120px)}to{transform:translateX(calc(100vw + 120px))}}
+  #app{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:14px}
+  .home-link{
+    display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#6bcb77,#4d96ff);color:#fff;text-decoration:none;
+    padding:8px 16px;border-radius:20px;font-family:'Fredoka One',cursive;font-size:13px;margin-bottom:8px
+  }
+  .tts-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .tts-btn,.tts-stop{border:none;border-radius:20px;padding:8px 16px;color:#fff;font-family:'Fredoka One',cursive;font-size:13px;cursor:pointer}
+  .tts-btn{background:linear-gradient(135deg,#f39c12,#e67e22)}
+  .tts-btn.speaking{background:linear-gradient(135deg,#e74c3c,#c0392b)}
+  .tts-stop{background:linear-gradient(135deg,#95a5a6,#7f8c8d)}
+
+  .progress-strip{background:#fff;border-radius:14px;padding:8px 14px;display:flex;gap:10px;align-items:center;margin-bottom:8px;border:2px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,.06)}
+  .progress-bar{flex:1;height:8px;background:#efe7ff;border-radius:999px;overflow:hidden}
+  .progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--mint),var(--blue),var(--purple));transition:width .4s ease}
+  .progress-label{font-family:'Fredoka One',cursive;font-size:12px;color:#8a7f73;white-space:nowrap}
+
+  .nav-bar{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:16px;padding:10px 14px;margin-bottom:10px;border:2px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,.06)}
+  .nav-btn{border:none;background:var(--coral);color:#fff;font-family:'Fredoka One',cursive;font-size:15px;padding:9px 20px;border-radius:22px;cursor:pointer}
+  .nav-btn:disabled{background:#d9d9d9;color:#999;cursor:not-allowed}
+  .page-dots{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;max-width:320px}
+  .dot{width:10px;height:10px;border-radius:50%;background:#ddd;cursor:pointer;border:none}
+  .dot.active{background:var(--coral);transform:scale(1.25)}
+  .dot.visited{background:rgba(255,107,107,.45)}
+
+  .page{display:none;animation:fadeIn .4s ease}
+  .page.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+  .cover{background:linear-gradient(160deg,#6b3fa8 0%,#a663d4 52%,#f8c25d 100%);border-radius:24px;padding:46px 24px;min-height:560px;text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative;overflow:hidden;border:2px solid rgba(255,255,255,.14)}
+  .cover::before,.cover::after{content:'';position:absolute;border-radius:50%;background:rgba(255,255,255,.08)}
+  .cover::before{width:240px;height:240px;top:-40px;left:-50px}
+  .cover::after{width:180px;height:180px;bottom:-30px;right:-40px}
+  .cover-emoji{font-size:70px;animation:bob 2.4s ease-in-out infinite;margin-bottom:10px}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .cover-title{font-family:'Fredoka One',cursive;font-size:clamp(2rem,5vw,3.3rem);line-height:1.1;color:#fff4bb;margin-bottom:10px}
+  .cover-sub{font-family:'Fredoka One',cursive;font-size:1.16rem;color:#fff1d2;margin-bottom:10px}
+  .cover-tagline{max-width:700px;color:#f4f8ff;line-height:1.75;font-size:1.02rem}
+  .hero-icons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:18px 0 6px}
+  .hero-icon{font-size:34px;animation:popFloat 3s ease-in-out infinite var(--d,0s)}
+  @keyframes popFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+  .story-page{background:var(--card);border-radius:24px;padding:26px;min-height:560px;border:3px solid var(--line);box-shadow:0 6px 18px rgba(0,0,0,.06);position:relative;overflow:hidden}
+  .page-corner{position:absolute;top:14px;right:18px;font-family:'Fredoka One',cursive;font-size:15px;color:#b59fcb}
+  .story-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .story-icon{font-size:44px}
+  .story-title{font-family:'Fredoka One',cursive;font-size:1.8rem;color:#30486e}
+  .story-sub{margin-top:4px;color:#707997;font-weight:700}
+  .story-body{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+  .story-text{font-size:1rem;line-height:1.82;color:#414b64}
+  .story-text p{margin:0 0 12px}
+  .story-text strong{color:#1f5ea6}
+  .story-art{background:linear-gradient(180deg,#fffaf0 0%,#f4f4ff 100%);border:2px dashed #e0d4f4;border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:12px}
+  .story-art h4{font-family:'Fredoka One',cursive;color:#4b3f7b;font-size:1.12rem}
+
+  .scene-image{width:100%;border-radius:16px;border:2px solid #d7e3fa;box-shadow:0 8px 16px rgba(44,67,117,.14);display:block;background:#fff}
+  .scene-image.warm{border-color:#f2d5ad;box-shadow:0 8px 18px rgba(193,126,45,.18)}
+
+  .tip-box,.fun-fact,.review-card,.mini-quiz{border-radius:16px;padding:14px 16px}
+  .tip-box{background:#eef7ff;border:2px solid #cfe6ff}
+  .fun-fact{background:#fff4d7;border:2px solid #ffd36b}
+  .review-card{background:#f4ecff;border:2px solid #d7b9ff}
+  .tip-title,.fact-title,.review-title,.mini-title{font-family:'Fredoka One',cursive;font-size:1rem;margin-bottom:6px}
+  .tip-title{color:#2363ac}.fact-title{color:#b06d00}.review-title{color:#7a42bb}.mini-title{color:#a23535}
+
+  .visual-card{background:#fff;border:2px solid #e4eef9;border-radius:18px;padding:14px;text-align:center}
+  .visual-big{font-size:56px;margin-bottom:8px}
+  .visual-line{font-weight:900;color:#486080}
+
+  .steps{display:grid;gap:10px}
+  .step{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid #ece5d7;border-radius:14px;padding:10px 12px}
+  .step-no{min-width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--orange),#ffce6c);color:#5d3600;font-family:'Fredoka One',cursive;font-size:13px}
+
+  .mini-quiz{background:linear-gradient(135deg,#ffeef1,#f1efff);border:2px solid #e1c1d1}
+  .quiz-options,.fquiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .q-opt,.fq-opt{border:none;background:#fff;border:2px solid #e6ddd1;border-radius:14px;padding:12px 14px;text-align:left;font-family:'Nunito',sans-serif;font-weight:800;color:#1f406f !important;cursor:pointer}
+  .q-opt.correct,.fq-opt.correct{background:#dff5e5;border-color:#7dd49a;color:#1f6b35}
+  .q-opt.wrong,.fq-opt.wrong{background:#ffe5e5;border-color:#ef9e9e;color:#a33535}
+  .q-opt.locked,.fq-opt.locked{pointer-events:none;opacity:.94}
+  .quiz-feedback,.q-result-msg{min-height:26px;margin-top:10px;text-align:center;font-family:'Fredoka One',cursive;color:#7a42bb}
+
+  .memory-list{display:grid;gap:8px}
+  .memory-row{display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.72);border-radius:12px;padding:8px 10px}
+  .memory-letter{font-family:'Fredoka One',cursive;color:var(--coral);font-size:18px;min-width:22px}
+
+  .quiz-page{background:var(--card);border-radius:24px;padding:24px;min-height:560px;border:3px solid #dcc0ff;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+  .quiz-progress-row{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+  .q-counter{font-family:'Fredoka One',cursive;font-size:13px;color:#8a7f73}
+  .q-score-badge{font-family:'Fredoka One',cursive;font-size:14px;background:#f3ebff;border:2px solid #d8bcff;color:#7a42bb;padding:4px 14px;border-radius:20px}
+  .quiz-question-card{background:#fff;border:2px solid #ebdfce;border-radius:18px;padding:20px}
+  .quiz-q-emoji{font-size:40px;margin-bottom:8px}
+  .quiz-q-text{font-family:'Fredoka One',cursive;font-size:1.35rem;color:#1f4f95;line-height:1.4;margin-bottom:12px}
+  .next-q-btn,.retry-btn,.proceed-btn,.cert-btn{display:inline-flex;align-items:center;justify-content:center;border:none;border-radius:24px;padding:11px 26px;color:#fff;font-family:'Fredoka One',cursive;cursor:pointer}
+  .next-q-btn{background:linear-gradient(135deg,var(--coral),#ff8787);margin:12px auto 0}
+  .retry-btn{background:linear-gradient(135deg,#e74c3c,#ff6b6b)}
+  .proceed-btn{background:linear-gradient(135deg,#27ae60,#2ecc71)}
+  .result-screen{text-align:center;padding:16px 8px}
+  .result-emoji{font-size:80px;animation:bob 1.9s ease infinite;margin-bottom:8px}
+  .result-title{font-family:'Fredoka One',cursive;font-size:1.9rem;margin-bottom:8px}
+  .result-score{font-family:'Fredoka One',cursive;font-size:3rem;color:#ff9f1c}
+  .result-msg{color:#707997;line-height:1.75;margin:12px auto 20px;max-width:560px}
+
+  .cert-page{background:var(--card);border-radius:24px;padding:24px;min-height:560px;border:3px solid #ffd36b;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+  .cert-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .cert-name{flex:1;min-width:220px;padding:12px 14px;border-radius:14px;border:2px solid #ecd28f;font-size:1rem;font-weight:800}
+  .cert-btn{background:linear-gradient(135deg,var(--purple),#8f5be8)}
+  .cert-btn.print{background:linear-gradient(135deg,#1565c0,#4d96ff)}
+  .cert-wrap{background:#fff;border-radius:16px;padding:6px;border:3px solid #f1c40f;box-shadow:0 6px 16px rgba(0,0,0,.06)}
+  #cert{width:100%;display:block;border-radius:10px}
+
+  @media (max-width:700px){
+    .story-body{grid-template-columns:1fr}
+    .quiz-options,.fquiz-options{grid-template-columns:1fr}
+  }
+</style>
+<script src="natural-read-aloud.js" defer></script>
+<script src="slim-topbar.js" defer></script>
+</head>
+<body>
+<div id="floaties"></div>
+<div id="app">
+  <a class="home-link" href="index.html">← Back Home</a>
+
+  <div class="tts-bar">
+    <button class="tts-btn" id="ttsBtn" onclick="toggleReadAloud()">🔊 Read Aloud</button>
+    <button class="tts-stop" id="ttsStop" onclick="stopReadAloud()" style="display:none;">⏹ Stop</button>
+  </div>
+
+  <div class="progress-strip">
+    <span class="progress-label">🌈 Story Journey</span>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="progress-label" id="progressText">Page 1 of 10</span>
+  </div>
+
+  <div class="nav-bar">
+    <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Back</button>
+    <div class="page-dots" id="pageDots"></div>
+    <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+  </div>
+
+  <div class="page active">
+    <div class="cover" data-tts="Mia and the Rainbow Kitchen. A story for children ages five to ten. Fruits, vegetables, grains, good habits, and imagination help Mia discover healthy joy.">
+      <div class="cover-emoji">🌈</div>
+      <div class="cover-title">Mia and the<br>Rainbow Kitchen</div>
+      <div class="cover-sub">A Story For Children Ages 5 – 10</div>
+      <div class="hero-icons">
+        <span class="hero-icon" style="--d:0s">🍎</span>
+        <span class="hero-icon" style="--d:.3s">🥦</span>
+        <span class="hero-icon" style="--d:.6s">🌾</span>
+        <span class="hero-icon" style="--d:.9s">✨</span>
+        <span class="hero-icon" style="--d:1.2s">🌈</span>
+      </div>
+      <p class="cover-tagline">Fruits • Vegetables • Grains • Good habits • Imagination</p>
+      <p class="cover-tagline" style="margin-top:8px;">A cosy, magical adventure where every colour has a superpower.</p>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 2</div>
+      <div class="story-header">
+        <div class="story-icon">🍟</div>
+        <div>
+          <div class="story-title">Chapter 1 — The Picky Princess</div>
+          <div class="story-sub">Mia only wanted one thing: golden, crispy chips.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="Once upon a time, in a cosy little town surrounded by farms and fruit trees, lived a girl named Mia. Mia had curly red hair, bright green eyes, and one very big problem. She only ever wanted to eat one thing: golden crispy chips.">
+          <p>Once upon a time, in a cosy little town surrounded by farms and fruit trees, lived a girl named <strong>Mia</strong>.</p>
+          <p>Mia had curly red hair, bright green eyes, and one very big problem — she only ever wanted to eat one thing: <strong>golden, crispy chips</strong>.</p>
+          <p>Every morning, she crossed her arms at breakfast. "No eggs. No porridge. Just chips, please."</p>
+          <p>At lunchtime and dinnertime it was the same: chips, chips, chips. Her mum sighed. Her dad smiled gently. But nobody could change her mind.</p>
+          <div class="tip-box">
+            <div class="tip-title">Big idea</div>
+            <div>Our bodies need different foods, not just one favourite food every day.</div>
+          </div>
+        </div>
+        <div class="story-art">
+          <h4>Mia's Food Habit</h4>
+          <img class="scene-image" src="mia-rainbow-kitchen-real-1.svg?v=2" alt="Cartoon Mia eating only chips at the table"/>
+          <div class="fun-fact">
+            <div class="fact-title">Nutrition reminder</div>
+            <div>One colour of food gives one kind of help. A rainbow gives many kinds of help.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 3</div>
+      <div class="story-header">
+        <div class="story-icon">🚪</div>
+        <div>
+          <div class="story-title">Chapter 2 — The Magical Garden Door</div>
+          <div class="story-sub">A glowing little door led to the Rainbow Kitchen.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="One sunny Saturday, Mia noticed a tiny wooden door at the bottom of the old oak tree. It glowed with soft warm light. She opened it and whoosh, she was swept inside a magical kitchen.">
+          <p>One sunny Saturday, Mia was playing in the backyard when she noticed a tiny wooden door at the bottom of the old oak tree.</p>
+          <p>It glowed with soft, warm light. Curious, she knelt down and opened it — and <strong>whoosh!</strong> She was swept inside.</p>
+          <p>She landed in the most wonderful kitchen she had ever seen. Honeydew-melon walls. Orange-zest sparkle. Dancing carrots. Singing strawberries.</p>
+          <p>A sign above the door read: <strong>"Welcome to the Rainbow Kitchen — where every colour makes you stronger."</strong></p>
+        </div>
+        <div class="story-art">
+          <h4>The Glowing Door</h4>
+          <img class="scene-image" src="mia-rainbow-kitchen-real-2.svg?v=2" alt="Cartoon Mia discovering the magical door under the oak tree"/>
+          <div class="review-card">
+            <div class="review-title">Magic Message</div>
+            <div><strong>\"Welcome to the Rainbow Kitchen — where every colour makes you stronger.\"</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 4</div>
+      <div class="story-header">
+        <div class="story-icon">🍅</div>
+        <div>
+          <div class="story-title">Rainbow Friends Parade</div>
+          <div class="story-sub">Mia met the five food heroes and their superpowers.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="Ruby the Tomato helps the heart. Benny the Broccoli helps bones. Sunny the Corn gives energy. Bella the Blueberry helps memory and mind. Otto the Orange helps fight colds.">
+          <p>Inside the magical kitchen, Mia met five cheerful helpers:</p>
+          <p><strong>Ruby the Tomato</strong> for heart strength. <strong>Benny the Broccoli</strong> for strong bones.</p>
+          <p><strong>Sunny the Corn</strong> for energy. <strong>Bella the Blueberry</strong> for memory and focus.</p>
+          <p><strong>Otto the Orange</strong> to help the body fight colds.</p>
+          <p>Captain Crunch bowed and said, <strong>\"Different colours, different superpowers!\"</strong></p>
+        </div>
+        <div class="story-art">
+          <h4>Meet The Rainbow Friends</h4>
+          <img class="scene-image warm" src="mia-rainbow-kitchen-real-3.svg?v=2" alt="Cartoon lineup of the Rainbow Friends in the magical kitchen"/>
+          <div class="steps">
+            <div class="step"><div class="step-no">1</div><div><strong>Ruby the Tomato</strong> — strong heart</div></div>
+            <div class="step"><div class="step-no">2</div><div><strong>Benny the Broccoli</strong> — strong bones</div></div>
+            <div class="step"><div class="step-no">3</div><div><strong>Sunny the Corn</strong> — bright energy</div></div>
+            <div class="step"><div class="step-no">4</div><div><strong>Bella the Blueberry</strong> — sharp mind</div></div>
+            <div class="step"><div class="step-no">5</div><div><strong>Otto the Orange</strong> — fights colds</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 5</div>
+      <div class="story-header">
+        <div class="story-icon">🥕</div>
+        <div>
+          <div class="story-title">Chapter 3 — What Each Colour Does</div>
+          <div class="story-sub">Captain Crunch introduced each food superpower.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="A cheerful carrot named Captain Crunch bowed and welcomed Mia. Ruby said she helps the heart. Benny said he helps bones. Sunny gives energy. Bella helps memory. Otto helps fight colds.">
+          <p>A cheerful little carrot named <strong>Captain Crunch</strong> waddled up and bowed. "Hello, Mia! We've been waiting for you."</p>
+          <p>Ruby the Tomato danced. "I keep your heart strong and happy!"</p>
+          <p>Benny the Broccoli flexed. "I make your bones tough like a superhero shield!"</p>
+          <p>Sunny the Corn glowed. "I give you energy to run and jump!" Bella the Blueberry tapped her head. "I help your brain remember!" Otto the Orange spun. "I keep sniffles away!"</p>
+          <p>Mia stared in wonder. She had never imagined food could be so alive.</p>
+        </div>
+        <div class="story-art">
+          <h4>What Each Colour Does</h4>
+          <img class="scene-image" src="mia-rainbow-kitchen-real-3.svg?v=2" alt="Cartoon scene of colourful food characters and their strengths"/>
+          <div class="mini-quiz">
+            <div class="mini-title">Which friend helps with a sharp mind?</div>
+            <div style="margin-bottom:10px">Pick the best answer.</div>
+            <div class="quiz-options" id="miniQuizOne"></div>
+            <div class="quiz-feedback" id="miniQuizOneFeedback"></div>
+          </div>
+          <div class="review-card">
+            <div class="review-title">Power sentence</div>
+            <div><strong>Every colour has a job in your body.</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 6</div>
+      <div class="story-header">
+        <div class="story-icon">🥀</div>
+        <div>
+          <div class="story-title">Chapter 4 — The Wilting Garden</div>
+          <div class="story-sub">The kitchen lost colour when Mia saw her one-colour habit.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="Suddenly the Rainbow Kitchen flickered. Captain Crunch showed Mia a mirror where she looked pale and tired, with no energy and a runny nose. He explained that one colour of food gives only one kind of help.">
+          <p>Suddenly, the Rainbow Kitchen began to flicker. Colours faded. Songs stopped. Captain Crunch looked worried.</p>
+          <p>He led Mia to a mirror. She saw herself tired and pale, sitting with only chips, no sparkle in her eyes, no energy to play, and a runny nose.</p>
+          <p>"When you only eat one colour," Captain Crunch said softly, "your body only gets one kind of help."</p>
+          <p>"It's like painting a rainbow with one crayon. It cannot shine."</p>
+          <div class="tip-box">
+            <div class="tip-title">Important lesson</div>
+            <div>Balanced eating means giving your body many kinds of support.</div>
+          </div>
+        </div>
+        <div class="story-art">
+          <h4>Why The Magic Faded</h4>
+          <div class="steps">
+            <div class="step"><div class="step-no">1</div><div>Only one food colour was chosen.</div></div>
+            <div class="step"><div class="step-no">2</div><div>Mia missed other food superpowers.</div></div>
+            <div class="step"><div class="step-no">3</div><div>Energy and sparkle became low.</div></div>
+          </div>
+          <img class="scene-image" src="mia-rainbow-kitchen-real-4.svg?v=2" alt="Cartoon mirror scene with tired Mia and a fading kitchen"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 7</div>
+      <div class="story-header">
+        <div class="story-icon">🍽️</div>
+        <div>
+          <div class="story-title">Chapter 5 — Mia's Rainbow Plate</div>
+          <div class="story-sub">Mia tried a colourful plate and the magic returned.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="Mia asked if she could try a rainbow plate. Ruby, Benny, Sunny, Bella, and Otto stepped onto a magical golden plate. Captain Crunch added a small portion of chips too and said treats now and then are fine.">
+          <p>Mia took a deep breath. "Can I try?" she asked.</p>
+          <p>Captain Crunch smiled the biggest carrot smile she'd ever seen.</p>
+          <p>One by one, Ruby, Benny, Sunny, Bella, and Otto stepped onto a magical golden plate.</p>
+          <p>Captain Crunch winked and added a small portion of chips too: "A treat now and then is perfectly fine."</p>
+          <p>Mia tasted her first rainbow bite, and the kitchen burst back to life — brighter than ever.</p>
+        </div>
+        <div class="story-art">
+          <h4>Rainbow Plate In Action</h4>
+          <img class="scene-image warm" src="mia-rainbow-kitchen-real-5.svg?v=2" alt="Cartoon Mia taking her first rainbow bite as the kitchen glows"/>
+          <div class="fun-fact">
+            <div class="fact-title">Good habit</div>
+            <div>Balanced meals can include healthy foods first and small treats in moderation.</div>
+          </div>
+          <div class="mini-quiz">
+            <div class="mini-title">Quick Check</div>
+            <div style="margin-bottom:10px">What changed when Mia ate rainbow foods?</div>
+            <div class="quiz-options" id="miniQuizTwo"></div>
+            <div class="quiz-feedback" id="miniQuizTwoFeedback"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 8</div>
+      <div class="story-header">
+        <div class="story-icon">🌟</div>
+        <div>
+          <div class="story-title">Chapter 6 — The New Mia</div>
+          <div class="story-sub">"I'm painting my rainbow," Mia said at dinner.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="Mia returned to her backyard and found a card that said eat the rainbow every day. That evening she ate peas, tomatoes, corn, blueberries, and a few chips on the side. She smiled and said I am painting my rainbow.">
+          <p>Whoosh — Mia was back in her backyard under the oak tree. The little door was gone.</p>
+          <p>But in her hands was a card: <strong>"Eat the rainbow every day, and we'll always be with you."</strong></p>
+          <p>That evening she looked at her plate differently: peas, sliced tomatoes, sweetcorn, blueberries for dessert, and a few chips on the side.</p>
+          <p>"Mia, you're eating your vegetables!" her mum said, eyes wide.</p>
+          <p>Mia smiled brightly. <strong>"I'm painting my rainbow."</strong></p>
+          <p>From then on, Mia grew strong, sharp, full of energy, and almost never sneezed.</p>
+        </div>
+        <div class="story-art">
+          <h4>Memory Trick: RAINBOW</h4>
+          <img class="scene-image warm" src="mia-rainbow-kitchen-real-6.svg?v=2" alt="Cartoon Mia enjoying colourful dinner with her family"/>
+          <div class="memory-list">
+            <div class="memory-row"><div class="memory-letter">R</div><div><strong>Red foods</strong> help your heart.</div></div>
+            <div class="memory-row"><div class="memory-letter">A</div><div><strong>A rainbow plate</strong> gives full-body support.</div></div>
+            <div class="memory-row"><div class="memory-letter">I</div><div><strong>Imagination</strong> helps new habits feel fun.</div></div>
+            <div class="memory-row"><div class="memory-letter">N</div><div><strong>New foods</strong> can become new favourites.</div></div>
+            <div class="memory-row"><div class="memory-letter">B</div><div><strong>Balanced meals</strong> include grains, fruits, and vegetables.</div></div>
+            <div class="memory-row"><div class="memory-letter">O</div><div><strong>One treat sometimes</strong> is okay in moderation.</div></div>
+            <div class="memory-row"><div class="memory-letter">W</div><div><strong>Wellness</strong> grows with colourful choices.</div></div>
+          </div>
+          <div class="review-card">
+            <div class="review-title">MORAL</div>
+            <div><strong>Eating a rainbow of colourful foods gives your body everything it needs to be strong, smart, and full of joy.</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="quiz-page" data-tts="Final quiz about Mia and the Rainbow Kitchen. Answer all questions and earn your certificate.">
+      <div class="quiz-progress-row">
+        <div class="q-counter" id="quizCounter">Question 1 of 5</div>
+        <div class="q-score-badge" id="scoreBadge">Score: 0 / 5</div>
+      </div>
+      <div id="quizActive">
+        <div class="quiz-question-card">
+          <div class="quiz-q-emoji" id="quizEmoji">🌈</div>
+          <div class="quiz-q-text" id="quizText">Question text</div>
+          <div class="fquiz-options" id="quizOptions"></div>
+          <div class="q-result-msg" id="quizFeedback"></div>
+          <button class="next-q-btn" id="nextQBtn" onclick="nextQuestion()" style="display:none;">Next Question →</button>
+        </div>
+      </div>
+      <div id="quizPass" style="display:none;">
+        <div class="result-screen">
+          <div class="result-emoji">🌈</div>
+          <div class="result-title">Rainbow Food Hero!</div>
+          <div class="result-score" id="passScore">5 / 5</div>
+          <div class="result-msg">Wonderful work. You understood how colourful foods help the body and build strong habits.</div>
+          <button class="proceed-btn" onclick="goToCertificate()">Go to Certificate 🎓</button>
+        </div>
+      </div>
+      <div id="quizFail" style="display:none;">
+        <div class="result-screen">
+          <div class="result-emoji">🥕</div>
+          <div class="result-title">Try Again, Rainbow Friend!</div>
+          <div class="result-score" id="failScore">2 / 5</div>
+          <div class="result-msg">No worries. Revisit the chapters and try again. Good habits grow with practice.</div>
+          <button class="retry-btn" onclick="restartQuiz()">Try Again ↺</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="cert-page" data-tts="Certificate page. Type your name and download your Rainbow Kitchen certificate.">
+      <div class="story-header" style="margin-bottom:12px">
+        <div class="story-icon">🎓</div>
+        <div>
+          <div class="story-title">Your Certificate</div>
+          <div class="story-sub">Type your name and save your reward.</div>
+        </div>
+      </div>
+      <div class="cert-controls">
+        <input class="cert-name" id="certName" placeholder="Type your name here" oninput="drawCert()"/>
+        <button class="cert-btn" onclick="downloadCert()">Download PNG</button>
+        <button class="cert-btn print" onclick="printCert()">Print</button>
+      </div>
+      <div class="cert-wrap">
+        <canvas id="cert" width="900" height="630"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORY_DATA = {
+  floatyIcons:['🍎','🥦','🌽','🫐','🍊','🌈','🥕'],
+  miniQuiz1:{
+    answer:2,
+    options:['Ruby the Tomato','Sunny the Corn','Bella the Blueberry','Otto the Orange'],
+    success:'Correct! Bella the Blueberry helps with memory and a sharp mind.',
+    fail:'Not quite. Bella the Blueberry is the friend linked to a sharp mind.'
+  },
+  miniQuiz2:{
+    answer:1,
+    options:['The kitchen became darker','The kitchen burst back to life','Mia forgot all colours','Captain Crunch disappeared'],
+    success:'Yes! The kitchen became bright and magical again.',
+    fail:'Try again. Rainbow eating brought the magic and colours back.'
+  },
+  quiz:[
+    {emoji:'🍟',q:'What food did Mia ask for at every meal in Chapter 1?',opts:['Soup','Chips','Rice','Fruit salad'],a:1},
+    {emoji:'🚪',q:'Where did Mia find the magical door?',opts:['In her bedroom','Under the old oak tree','At school','In a market'],a:1},
+    {emoji:'🍅',q:'Who said, "I keep your heart strong and happy"?',opts:['Ruby the Tomato','Benny the Broccoli','Bella the Blueberry','Captain Crunch'],a:0},
+    {emoji:'🌈',q:'Why did the Rainbow Kitchen begin to fade?',opts:['It was nighttime','Mia only ate one colour of food','The door was locked','The music stopped'],a:1},
+    {emoji:'🍽️',q:'What is the moral of the story?',opts:['Eat only your favourite food','Colourful balanced eating supports a strong, smart, joyful body','Never eat treats','Vegetables are only for adults'],a:1}
+  ],
+  cert:{
+    defaultName:'Rainbow Learner',
+    header:'🌈  RAINBOW KITCHEN CERTIFICATE  🌈',
+    bigEmoji:'🍽️',
+    bigTitle:'Colour Food Hero Certificate',
+    lineText:'has learned to build healthy habits with colourful foods.',
+    traitLine:'🍎 Strong Body • 🧠 Sharp Mind • ✨ Joyful Energy',
+    badges:['✓ Eats colourful foods','✓ Builds good habits','✓ Uses imagination','✓ Balances treats wisely'],
+    motto:'COLOUR • BALANCE • GROW • SHINE',
+    fileName:'mia-rainbow-kitchen-certificate.png',
+    docTitle:'Rainbow Kitchen Certificate'
+  }
+};
+
+(function(){
+  const wrap=document.getElementById('floaties');
+  const icons=STORY_DATA.floatyIcons;
+  for(let i=0;i<7;i++){
+    const el=document.createElement('div');
+    el.className='floaty';
+    el.textContent=icons[i%icons.length];
+    el.style.top=(Math.random()*84)+'%';
+    el.style.animationDuration=(20+Math.random()*22)+'s';
+    el.style.animationDelay=(Math.random()*16)+'s';
+    el.style.fontSize=(36+Math.random()*28)+'px';
+    wrap.appendChild(el);
+  }
+})();
+
+const pages=[...document.querySelectorAll('.page')];
+const prevBtn=document.getElementById('prevBtn');
+const nextBtn=document.getElementById('nextBtn');
+const progressFill=document.getElementById('progressFill');
+const progressText=document.getElementById('progressText');
+const dotsWrap=document.getElementById('pageDots');
+const TOTAL_PAGES=pages.length;
+const QUIZ_PAGE_INDEX=pages.findIndex(page=>page.querySelector('.quiz-page'));
+const CERT_PAGE_INDEX=pages.findIndex(page=>page.querySelector('.cert-page'));
+let currentPage=0;
+let quizPassed=false;
+let speaking=false;
+
+for(let i=0;i<TOTAL_PAGES;i++){
+  const dot=document.createElement('button');
+  dot.className='dot'+(i===0?' active':'');
+  dot.onclick=()=>goToPage(i);
+  dotsWrap.appendChild(dot);
+}
+
+function updateNav(){
+  pages.forEach((p,i)=>p.classList.toggle('active',i===currentPage));
+  prevBtn.disabled=currentPage===0;
+  nextBtn.disabled=currentPage===TOTAL_PAGES-1;
+  progressFill.style.width=((currentPage)/(TOTAL_PAGES-1))*100+'%';
+  progressText.textContent='Page '+(currentPage+1)+' of '+TOTAL_PAGES;
+  [...document.querySelectorAll('.dot')].forEach((dot,i)=>{
+    dot.classList.toggle('active',i===currentPage);
+    if(i<currentPage) dot.classList.add('visited');
+  });
+}
+
+function goToPage(n){
+  if(n<0||n>=TOTAL_PAGES) return;
+  if(n===CERT_PAGE_INDEX && !quizPassed){
+    alert('Pass the final quiz first to unlock your certificate! 🌈');
+    return;
+  }
+  stopReadAloud();
+  currentPage=n;
+  updateNav();
+  if(currentPage===QUIZ_PAGE_INDEX) renderQuiz();
+  if(currentPage===CERT_PAGE_INDEX) setTimeout(drawCert,100);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function changePage(d){ goToPage(currentPage+d); }
+function goToCertificate(){ if(CERT_PAGE_INDEX>=0) goToPage(CERT_PAGE_INDEX); }
+updateNav();
+
+function getReadText(){
+  const active=pages[currentPage];
+  const source=active.querySelector('[data-tts]') || active;
+  return (source.textContent||'').replace(/\s+/g,' ').trim();
+}
+function toggleReadAloud(){
+  if(!('speechSynthesis' in window)) return;
+  if(speaking){ stopReadAloud(); return; }
+  const text=getReadText();
+  if(!text) return;
+  const utter=new SpeechSynthesisUtterance(text);
+  utter.rate=.9;
+  utter.pitch=1.05;
+  utter.lang='en-AU';
+  utter.onstart=()=>{
+    speaking=true;
+    document.getElementById('ttsBtn').classList.add('speaking');
+    document.getElementById('ttsBtn').textContent='🔊 Reading...';
+    document.getElementById('ttsStop').style.display='inline-flex';
+  };
+  utter.onend=resetTTS;
+  utter.onerror=resetTTS;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(utter);
+}
+function stopReadAloud(){
+  if('speechSynthesis' in window) window.speechSynthesis.cancel();
+  resetTTS();
+}
+function resetTTS(){
+  speaking=false;
+  document.getElementById('ttsBtn').classList.remove('speaking');
+  document.getElementById('ttsBtn').textContent='🔊 Read Aloud';
+  document.getElementById('ttsStop').style.display='none';
+}
+
+function setupMiniQuiz(targetId, feedbackId, answerIndex, options, successText, failText){
+  const target=document.getElementById(targetId);
+  target.innerHTML='';
+  options.forEach((text,i)=>{
+    const btn=document.createElement('button');
+    btn.className='q-opt';
+    btn.textContent=text;
+    btn.onclick=()=>{
+      [...target.children].forEach(b=>b.classList.add('locked'));
+      if(i===answerIndex){
+        btn.classList.add('correct');
+        document.getElementById(feedbackId).textContent=successText;
+      }else{
+        btn.classList.add('wrong');
+        target.children[answerIndex].classList.add('correct');
+        document.getElementById(feedbackId).textContent=failText;
+      }
+    };
+    target.appendChild(btn);
+  });
+}
+
+setupMiniQuiz('miniQuizOne','miniQuizOneFeedback',STORY_DATA.miniQuiz1.answer,STORY_DATA.miniQuiz1.options,STORY_DATA.miniQuiz1.success,STORY_DATA.miniQuiz1.fail);
+setupMiniQuiz('miniQuizTwo','miniQuizTwoFeedback',STORY_DATA.miniQuiz2.answer,STORY_DATA.miniQuiz2.options,STORY_DATA.miniQuiz2.success,STORY_DATA.miniQuiz2.fail);
+
+const QUIZ=STORY_DATA.quiz;
+let quizIndex=0,quizScore=0,quizLocked=false;
+
+function renderQuiz(){
+  document.getElementById('quizActive').style.display='block';
+  document.getElementById('quizPass').style.display='none';
+  document.getElementById('quizFail').style.display='none';
+  quizIndex=0; quizScore=0; quizLocked=false;
+  showQuestion();
+}
+function showQuestion(){
+  const item=QUIZ[quizIndex];
+  document.getElementById('quizCounter').textContent='Question '+(quizIndex+1)+' of '+QUIZ.length;
+  document.getElementById('scoreBadge').textContent='Score: '+quizScore+' / '+QUIZ.length;
+  document.getElementById('quizEmoji').textContent=item.emoji;
+  document.getElementById('quizText').textContent=item.q;
+  document.getElementById('quizFeedback').textContent='';
+  document.getElementById('nextQBtn').style.display='none';
+  quizLocked=false;
+  const wrap=document.getElementById('quizOptions');
+  wrap.innerHTML='';
+  item.opts.forEach((text,i)=>{
+    const btn=document.createElement('button');
+    btn.className='fq-opt';
+    btn.textContent=String.fromCharCode(65+i)+'. '+text;
+    btn.onclick=()=>answerQuiz(i,btn);
+    wrap.appendChild(btn);
+  });
+}
+function answerQuiz(i,btn){
+  if(quizLocked) return;
+  quizLocked=true;
+  const item=QUIZ[quizIndex];
+  const buttons=[...document.querySelectorAll('#quizOptions .fq-opt')];
+  buttons.forEach(b=>b.classList.add('locked'));
+  if(i===item.a){
+    quizScore++;
+    btn.classList.add('correct');
+    document.getElementById('quizFeedback').textContent='Great thinking!';
+  }else{
+    btn.classList.add('wrong');
+    buttons[item.a].classList.add('correct');
+    document.getElementById('quizFeedback').textContent='Good try. Check the best answer and continue.';
+  }
+  document.getElementById('scoreBadge').textContent='Score: '+quizScore+' / '+QUIZ.length;
+  document.getElementById('nextQBtn').style.display='inline-flex';
+  document.getElementById('nextQBtn').textContent=quizIndex===QUIZ.length-1?'See My Result! 🏁':'Next Question →';
+}
+function nextQuestion(){
+  quizIndex++;
+  if(quizIndex>=QUIZ.length){ showQuizResult(); return; }
+  showQuestion();
+}
+function showQuizResult(){
+  document.getElementById('quizActive').style.display='none';
+  if(quizScore>=4){
+    quizPassed=true;
+    document.getElementById('quizPass').style.display='block';
+    document.getElementById('passScore').textContent=quizScore+' / '+QUIZ.length;
+  }else{
+    document.getElementById('quizFail').style.display='block';
+    document.getElementById('failScore').textContent=quizScore+' / '+QUIZ.length;
+  }
+}
+function restartQuiz(){ renderQuiz(); }
+
+const certCanvas=document.getElementById('cert');
+const ctx=certCanvas.getContext('2d');
+const qrImage=new Image();
+let qrReady=false;
+qrImage.crossOrigin='anonymous';
+qrImage.onload=()=>{ qrReady=true; drawCert(); };
+qrImage.src='https://quickchart.io/qr?text='+encodeURIComponent('https://fivetofifteen.com/')+'&size=180';
+
+const CERT = STORY_DATA.cert;
+
+function rr(x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y);
+  ctx.arcTo(x+w,y,x+w,y+r,r);
+  ctx.lineTo(x+w,y+h-r);
+  ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+  ctx.lineTo(x+r,y+h);
+  ctx.arcTo(x,y+h,x,y+h-r,r);
+  ctx.lineTo(x,y+r);
+  ctx.arcTo(x,y,x+r,y,r);
+  ctx.closePath();
+}
+function drawStar(cx,cy,r,color){
+  ctx.save();
+  ctx.fillStyle=color;
+  ctx.beginPath();
+  for(let i=0;i<10;i++){
+    const a=(Math.PI/5)*i-Math.PI/2;
+    const rad=i%2===0?r:r*0.45;
+    const x=cx+Math.cos(a)*rad;
+    const y=cy+Math.sin(a)*rad;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawCert(){
+  const name=(document.getElementById('certName').value||CERT.defaultName).trim() || CERT.defaultName;
+  ctx.clearRect(0,0,900,630);
+
+  const bg=ctx.createLinearGradient(0,0,900,630);
+  bg.addColorStop(0,'#f8f5ff');
+  bg.addColorStop(.55,'#ffffff');
+  bg.addColorStop(1,'#eef7ff');
+  ctx.fillStyle=bg;
+  rr(0,0,900,630,20);
+  ctx.fill();
+
+  ctx.strokeStyle='#f0b726';
+  ctx.lineWidth=6;
+  rr(8,8,884,614,18);
+  ctx.stroke();
+
+  ctx.strokeStyle='#4d96ff';
+  ctx.lineWidth=2;
+  ctx.setLineDash([8,5]);
+  rr(20,20,860,590,12);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  [[54,54],[846,54],[54,576],[846,576]].forEach(([x,y])=>drawStar(x,y,18,'#ffd93d'));
+
+  const ribbon=ctx.createLinearGradient(220,0,680,0);
+  ribbon.addColorStop(0,'#4d96ff');
+  ribbon.addColorStop(.5,'#6bcb77');
+  ribbon.addColorStop(1,'#ff9f1c');
+  ctx.fillStyle=ribbon;
+  rr(220,30,460,44,22);
+  ctx.fill();
+
+  ctx.fillStyle='#fffef5';
+  ctx.font='bold 17px "Fredoka One",cursive';
+  ctx.textAlign='center';
+  ctx.fillText(CERT.header,450,58);
+
+  ctx.font='60px serif';
+  ctx.fillText(CERT.bigEmoji,450,142);
+  ctx.fillStyle='#274a7d';
+  ctx.font='bold 38px "Fredoka One",cursive';
+  ctx.fillText(CERT.bigTitle,450,196);
+
+  ctx.fillStyle='#888';
+  ctx.font='17px "Nunito",sans-serif';
+  ctx.fillText('This is to proudly certify that',450,232);
+
+  ctx.strokeStyle='#4d96ff';
+  ctx.lineWidth=3;
+  ctx.beginPath();
+  ctx.moveTo(210,278);
+  ctx.lineTo(690,278);
+  ctx.stroke();
+
+  ctx.fillStyle='#2f7d32';
+  ctx.font='bold 38px "Fredoka One",cursive';
+  ctx.fillText(name,450,270);
+
+  ctx.fillStyle='#444';
+  ctx.font='17px "Nunito",sans-serif';
+  ctx.fillText(CERT.lineText,450,314);
+
+  ctx.fillStyle='#ff8b1a';
+  ctx.font='bold 23px "Fredoka One",cursive';
+  ctx.fillText(CERT.traitLine,450,350);
+
+  let bx=100;
+  CERT.badges.forEach(t=>{
+    ctx.fillStyle='#eef7ff';
+    rr(bx,394,160,30,15);
+    ctx.fill();
+    ctx.fillStyle='#1565c0';
+    ctx.font='bold 12px "Nunito",sans-serif';
+    ctx.fillText(t,bx+80,413);
+    bx+=170;
+  });
+
+  ctx.font='31px serif';
+  ctx.fillText(CERT.motto,450,474);
+
+  ctx.fillStyle='#ffffff';
+  ctx.strokeStyle='#d7e2f4';
+  ctx.lineWidth=2;
+  rr(746,88,102,102,14);
+  ctx.fill();
+  ctx.stroke();
+
+  if(qrReady){
+    ctx.drawImage(qrImage,756,78,82,82);
+  }else{
+    ctx.fillStyle='#eef7ff';
+    ctx.fillRect(756,78,82,82);
+    ctx.fillStyle='#1d6fd6';
+    ctx.font='bold 10px "Nunito",sans-serif';
+    ctx.fillText('QR loading...',797,122);
+  }
+
+  ctx.fillStyle='#1d6fd6';
+  ctx.font='bold 10px "Nunito",sans-serif';
+  ctx.fillText('Scan to visit',797,185);
+
+  const d=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
+  ctx.fillStyle='#9e9e9e';
+  ctx.font='bold 12px "Nunito",sans-serif';
+  ctx.fillText('Presented by fivetofifteen.com',450,538);
+  ctx.fillStyle='#bbb';
+  ctx.font='12px "Nunito",sans-serif';
+  ctx.fillText('Awarded on '+d,450,562);
+}
+
+function downloadCert(){
+  drawCert();
+  const link=document.createElement('a');
+  link.download=CERT.fileName;
+  link.href=certCanvas.toDataURL('image/png');
+  link.click();
+}
+
+function printCert(){
+  drawCert();
+  const dataUrl=certCanvas.toDataURL('image/png');
+  const win=window.open('','_blank');
+  const html=[
+    '<!DOCTYPE html><html><head><title>'+CERT.docTitle+'<\\/title>',
+    '<style>body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f5f5f5;}img{max-width:100%;box-shadow:0 4px 20px rgba(0,0,0,.15);border-radius:12px;}@media print{body{background:white;}img{box-shadow:none;width:100%;}}<\\/style><\\/head><body>',
+    '<img src="'+dataUrl+'"/><\\/body><\\/html>'
+  ].join('');
+  win.document.write(html);
+  win.document.close();
+  win.onload=()=>{ win.focus(); win.print(); };
+}
+
+drawCert();
+</script>
+</body>
+</html>

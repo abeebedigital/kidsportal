@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solid, Liquid, Gas Express | FiveToFifteen</title>
+  <meta name="description" content="Year 3 chemistry story for kids covering Properties of solids, liquids and gases with diagrams, activities, and quizzes." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --dark: #2b335a;
+      --card: #fffefb;
+      --bg: #f6fbff;
+      --navy: #4263eb;
+      --sky: #38bdf8;
+      --mint: #22b8a7;
+      --sun: #ffb703;
+      --violet: #7c3aed;
+      --pink: #ff5d8f;
+      --line: #d9e6fb;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: #33425e;
+    }
+    .floaty {
+      position: fixed;
+      opacity: .09;
+      z-index: 0;
+      pointer-events: none;
+      animation: drift linear infinite;
+      font-size: 1.2rem;
+    }
+    @keyframes drift {
+      from { transform: translateX(-120px); }
+      to { transform: translateX(calc(100vw + 120px)); }
+    }
+    #app {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 12px;
+    }
+    .home-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: linear-gradient(135deg, #14b8a6, #0ea5e9);
+      color: #fff;
+      font-family: 'Fredoka One', cursive;
+      font-size: 0.83rem;
+      padding: 7px 16px;
+      border-radius: 999px;
+      text-decoration: none;
+      margin-bottom: 10px;
+      box-shadow: 0 8px 16px rgba(14, 165, 233, .2);
+    }
+    .tts-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .tts-btn,
+    .tts-stop {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: none;
+      color: #fff;
+      font-family: 'Fredoka One', cursive;
+      font-size: 0.8rem;
+      padding: 7px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .tts-btn { background: linear-gradient(135deg, var(--navy), var(--violet)); }
+    .tts-stop { background: linear-gradient(135deg, #8f9aad, #72809a); }
+    .progress-strip {
+      background: #fff;
+      border-radius: 13px;
+      border: 2px solid var(--line);
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      box-shadow: 0 2px 12px rgba(23, 39, 75, .07);
+    }
+    .progress-label {
+      font-family: 'Fredoka One', cursive;
+      font-size: .74rem;
+      color: #7283a2;
+      white-space: nowrap;
+    }
+    .progress-bar {
+      flex: 1;
+      height: 8px;
+      border-radius: 999px;
+      background: #e1e9fb;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--mint), var(--navy), var(--pink));
+      transition: width .4s ease;
+    }
+    .nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      background: #fff;
+      border-radius: 16px;
+      margin-bottom: 10px;
+      border: 2px solid var(--line);
+      box-shadow: 0 2px 12px rgba(23, 39, 75, .07);
+      gap: 10px;
+    }
+    .nav-btn {
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      font-family: 'Fredoka One', cursive;
+      font-size: .92rem;
+      min-height: 40px;
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+    .nav-btn:disabled {
+      background: #d1d9ec;
+      color: #7b87a0;
+      cursor: not-allowed;
+    }
+    .page-dots {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 300px;
+    }
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #d4ddf2;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+    .dot.active {
+      background: var(--navy);
+      transform: scale(1.15);
+      box-shadow: 0 0 0 2px rgba(66, 99, 235, .2);
+    }
+    .dot.visited {
+      background: #aebce8;
+    }
+    .page { display: none; animation: pageIn .45s ease; }
+    .page.active { display: block; }
+    @keyframes pageIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .cover {
+      background: linear-gradient(140deg,#e5f4ff 0%,#c9e0ff 45%,#ffedc6 100%);
+      border-radius: 24px;
+      border: 2px solid rgba(255, 255, 255, .42);
+      min-height: 560px;
+      padding: 36px 26px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 18px 36px rgba(45, 65, 112, .18);
+    }
+    .cover::before {
+      content: '';
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .2);
+      top: -120px;
+      left: -90px;
+      pointer-events: none;
+    }
+    .cover::after {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .16);
+      bottom: -120px;
+      right: -70px;
+      pointer-events: none;
+    }
+    .hero-emoji {
+      font-size: 64px;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 8px 15px rgba(0, 0, 0, .16));
+      z-index: 1;
+    }
+    .cover-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(255, 255, 255, .6);
+      background: rgba(255, 255, 255, .45);
+      color: #2b476c;
+      font-size: .8rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .35px;
+      padding: 7px 13px;
+      margin-bottom: 14px;
+      z-index: 1;
+    }
+    .cover-title {
+      font-family: 'Fredoka One', cursive;
+      color: #203a58;
+      font-size: clamp(1.85rem, 5.2vw, 2.7rem);
+      line-height: 1.16;
+      margin-bottom: 8px;
+      z-index: 1;
+    }
+    .cover-sub {
+      color: #2d5278;
+      font-size: 1rem;
+      font-weight: 800;
+      max-width: 690px;
+      line-height: 1.65;
+      z-index: 1;
+    }
+    .cover-icons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 18px;
+      z-index: 1;
+    }
+    .cover-icons span {
+      font-size: 1.7rem;
+      background: rgba(255, 255, 255, .44);
+      border: 1px solid rgba(255, 255, 255, .6);
+      border-radius: 13px;
+      padding: 6px 10px;
+    }
+    .story-page,
+    .quiz-page,
+    .result-page {
+      background: var(--card);
+      border-radius: 22px;
+      border: 2px solid var(--line);
+      min-height: 560px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(27, 38, 70, .08);
+      position: relative;
+      overflow: hidden;
+    }
+    .page-corner {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      font-family: 'Fredoka One', cursive;
+      color: #a0acc6;
+      font-size: .83rem;
+    }
+    .story-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .chapter-badge {
+      font-family: 'Fredoka One', cursive;
+      font-size: .72rem;
+      border-radius: 999px;
+      padding: 6px 12px;
+      background: #eaf2ff;
+      border: 1px solid #ccdcfa;
+      color: #385f95;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+    .story-title {
+      font-family: 'Fredoka One', cursive;
+      color: var(--dark);
+      font-size: 1.38rem;
+      line-height: 1.3;
+    }
+    .story-body {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 16px;
+      align-items: start;
+    }
+    .story-text {
+      color: #435676;
+      font-size: .98rem;
+      line-height: 1.72;
+    }
+    .story-text p + p { margin-top: 9px; }
+    .highlight { color: #234eb4; font-weight: 900; }
+    .story-art {
+      border-radius: 16px;
+      border: 1.5px dashed #c6d8f0;
+      background: linear-gradient(145deg, #f8fbff, #eff5ff);
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+    }
+    .art-emoji {
+      font-size: 2.45rem;
+      text-align: center;
+    }
+    .art-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: .9rem;
+      color: #48668f;
+      text-align: center;
+    }
+    .art-facts {
+      display: grid;
+      gap: 7px;
+    }
+    .fact-row {
+      border: 1px solid #d8e4f8;
+      border-radius: 10px;
+      background: #fff;
+      font-size: .86rem;
+      color: #4d6388;
+      font-weight: 700;
+      line-height: 1.45;
+      padding: 7px 10px;
+    }
+    .scene-strip {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .scene-icon {
+      font-size: 1.3rem;
+      border-radius: 10px;
+      border: 1px solid #d7e5fb;
+      background: #fff;
+      min-width: 37px;
+      min-height: 37px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+    }
+    .mission-card {
+      margin-top: 12px;
+      border-radius: 14px;
+      border: 1.5px solid #caece0;
+      background: linear-gradient(135deg, #edfff7, #f5fff8);
+      padding: 14px;
+    }
+    .global-warning {
+      margin-bottom: 10px;
+      border-radius: 13px;
+      border: 2px solid #f59e0b;
+      background: linear-gradient(145deg, #fff8e6, #fff2d8);
+      color: #7a4b0b;
+      font-size: .9rem;
+      line-height: 1.55;
+      font-weight: 900;
+      padding: 10px 12px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, .16);
+    }
+    .mission-title {
+      font-family: 'Fredoka One', cursive;
+      color: #0f766e;
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+    .mission-list {
+      padding-left: 18px;
+      color: #376966;
+      font-size: .93rem;
+      line-height: 1.66;
+      font-weight: 700;
+    }
+    .use-case-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .use-case-card {
+      border-radius: 14px;
+      border: 1.5px solid #d9e4f8;
+      background: linear-gradient(160deg, #fff, #f7fbff);
+      padding: 12px;
+      text-align: center;
+    }
+    .use-case-icon {
+      font-size: 1.65rem;
+      margin-bottom: 6px;
+    }
+    .use-case-card h4 {
+      font-family: 'Fredoka One', cursive;
+      color: #2e4769;
+      font-size: .92rem;
+      margin-bottom: 6px;
+    }
+    .use-case-card p {
+      color: #4d6387;
+      font-size: .86rem;
+      line-height: 1.52;
+      font-weight: 700;
+    }
+    .activity-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .activity-card {
+      border-radius: 14px;
+      border: 1.5px solid #d6e4fa;
+      background: #fff;
+      padding: 12px;
+    }
+    .activity-card h4 {
+      font-family: 'Fredoka One', cursive;
+      color: #324b73;
+      font-size: .92rem;
+      margin-bottom: 8px;
+    }
+    .activity-card ul,
+    .activity-card ol {
+      padding-left: 18px;
+      color: #4e6285;
+      font-size: .9rem;
+      line-height: 1.58;
+      font-weight: 700;
+    }
+    .safety-note {
+      margin-top: 10px;
+      border-radius: 12px;
+      border: 1.5px solid #ffdca8;
+      background: #fff8ea;
+      color: #7a5727;
+      font-size: .88rem;
+      line-height: 1.55;
+      font-weight: 800;
+      padding: 10px 12px;
+    }
+    .flow-title {
+      font-family: 'Fredoka One', cursive;
+      color: #2f4d78;
+      font-size: 1.12rem;
+      margin-bottom: 10px;
+    }
+    .flow-diagram {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 9px;
+      margin-top: 8px;
+    }
+    .flow-step {
+      border-radius: 14px;
+      border: 1.5px solid #d5e2fa;
+      background: linear-gradient(160deg, #fff, #f5f9ff);
+      padding: 12px 10px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step:not(:last-child)::after {
+      content: '➜';
+      position: absolute;
+      right: -11px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9eb3dd;
+      font-size: 1rem;
+      font-weight: 900;
+    }
+    .flow-index {
+      position: absolute;
+      left: 8px;
+      top: 7px;
+      font-family: 'Fredoka One', cursive;
+      font-size: .7rem;
+      color: #92a5cc;
+    }
+    .flow-icon {
+      font-size: 1.35rem;
+      margin-bottom: 5px;
+    }
+    .flow-label {
+      font-family: 'Fredoka One', cursive;
+      color: #34507c;
+      font-size: .86rem;
+      margin-bottom: 3px;
+    }
+    .flow-detail {
+      font-size: .8rem;
+      color: #617698;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .definition-callout,
+    .equation-callout {
+      border-radius: 13px;
+      border: 1.5px solid;
+      padding: 10px 12px;
+      margin-top: 10px;
+      font-size: .9rem;
+      line-height: 1.55;
+      font-weight: 800;
+    }
+    .definition-callout {
+      background: #ecfdf5;
+      border-color: #6ee7b7;
+      color: #065f46;
+    }
+    .equation-callout {
+      background: #fff1f2;
+      border-color: #fda4af;
+      color: #9f1239;
+    }
+    .definition-label,
+    .equation-label {
+      font-family: 'Fredoka One', cursive;
+      font-size: .82rem;
+      letter-spacing: .2px;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .equation-text {
+      font-family: 'Courier New', Consolas, monospace;
+      font-size: .9rem;
+      font-weight: 700;
+    }
+    .vocab-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1.5px solid #d6e3fa;
+    }
+    .vocab-table th,
+    .vocab-table td {
+      border-bottom: 1px solid #e3ecfb;
+      padding: 9px 10px;
+      text-align: left;
+      vertical-align: top;
+      font-size: .86rem;
+      line-height: 1.5;
+    }
+    .vocab-table th {
+      background: #eef4ff;
+      color: #345481;
+      font-family: 'Fredoka One', cursive;
+      font-size: .78rem;
+      letter-spacing: .2px;
+    }
+    .vocab-table td {
+      color: #4a6084;
+      font-weight: 700;
+      background: #fff;
+    }
+    .vocab-table td.word-term {
+      color: #2f4f79;
+      font-weight: 900;
+    }
+    .vocab-table td.word-definition {
+      color: #0f766e;
+      background: #f0fdf4;
+    }
+    .vocab-table td.word-example {
+      color: #9f1239;
+      background: #fff1f2;
+    }
+    .practice-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .practice-card {
+      border-radius: 13px;
+      border: 1.5px solid #d7e4fa;
+      background: #fff;
+      padding: 10px;
+    }
+    .practice-card h4 {
+      font-family: 'Fredoka One', cursive;
+      color: #2f507e;
+      font-size: .83rem;
+      margin-bottom: 6px;
+    }
+    .practice-q {
+      color: #455c82;
+      font-size: .84rem;
+      line-height: 1.48;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+    .practice-a {
+      color: #5c7092;
+      font-size: .8rem;
+      line-height: 1.5;
+      font-weight: 700;
+    }
+    .quiz-progress-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .q-counter,
+    .q-score-badge {
+      font-family: 'Fredoka One', cursive;
+      font-size: .8rem;
+      border-radius: 999px;
+      padding: 6px 12px;
+    }
+    .q-counter {
+      color: #5f7396;
+      background: #edf3ff;
+      border: 1.5px solid #cfdcf8;
+    }
+    .q-score-badge {
+      color: #354f78;
+      background: #f0f9ff;
+      border: 1.5px solid #bfe8ff;
+    }
+    .quiz-question-card {
+      border-radius: 16px;
+      border: 1.5px solid #d8e5fb;
+      background: #fff;
+      padding: 16px;
+      margin-bottom: 10px;
+    }
+    .quiz-q-emoji {
+      font-size: 2.4rem;
+      margin-bottom: 8px;
+    }
+    .quiz-q-text {
+      font-family: 'Fredoka One', cursive;
+      color: #2d4468;
+      font-size: 1.12rem;
+      line-height: 1.35;
+    }
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .quiz-option {
+      border: 1.5px solid #d7e3fa;
+      background: #fff;
+      border-radius: 12px;
+      color: #3e567d;
+      font: 800 .9rem 'Nunito', sans-serif;
+      text-align: left;
+      padding: 10px 12px;
+      cursor: pointer;
+      transition: background .2s ease;
+    }
+    .quiz-option:hover {
+      background: #edf4ff;
+    }
+    .quiz-option.correct {
+      background: #dff6e8;
+      border-color: #7dcea0;
+      color: #1d6b46;
+    }
+    .quiz-option.wrong {
+      background: #ffe9e8;
+      border-color: #f3a3a3;
+      color: #872f2f;
+    }
+    .quiz-option.locked {
+      cursor: not-allowed;
+      opacity: .78;
+    }
+    .quiz-feedback {
+      min-height: 24px;
+      margin-top: 10px;
+      color: #3f5f8a;
+      font-size: .92rem;
+      line-height: 1.5;
+      font-weight: 800;
+    }
+    .next-q-btn {
+      display: none;
+      margin: 10px auto 0;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--navy), var(--violet));
+      color: #fff;
+      font-family: 'Fredoka One', cursive;
+      font-size: .92rem;
+      padding: 9px 20px;
+      cursor: pointer;
+    }
+    .quiz-result {
+      display: none;
+      text-align: center;
+      border-radius: 16px;
+      border: 1.5px solid #d6e3fa;
+      background: #fff;
+      padding: 22px 14px;
+      margin-top: 8px;
+    }
+    .quiz-result .emoji {
+      font-size: 3rem;
+      margin-bottom: 8px;
+    }
+    .quiz-result h3 {
+      font-family: 'Fredoka One', cursive;
+      color: #304f79;
+      font-size: 1.3rem;
+      margin-bottom: 6px;
+    }
+    .quiz-result .score {
+      font-family: 'Fredoka One', cursive;
+      color: #f59e0b;
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+    .quiz-result p {
+      color: #51698c;
+      font-size: .95rem;
+      line-height: 1.6;
+      font-weight: 800;
+    }
+    .retry-btn {
+      margin-top: 12px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ef4444, #fb7185);
+      color: #fff;
+      font-family: 'Fredoka One', cursive;
+      font-size: .86rem;
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+    .recap-grid {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .recap-item {
+      border-radius: 14px;
+      border: 1.5px solid #d5e2fa;
+      background: #f7fbff;
+      padding: 11px;
+      text-align: center;
+      color: #496180;
+      font-size: .87rem;
+      line-height: 1.5;
+      font-weight: 700;
+    }
+    .recap-item strong {
+      display: block;
+      font-family: 'Fredoka One', cursive;
+      color: #29496f;
+      font-size: .92rem;
+      margin-bottom: 4px;
+    }
+    .next-link-box {
+      margin-top: 14px;
+      border-radius: 14px;
+      border: 1.5px solid #caede0;
+      background: linear-gradient(140deg, #ecfff8, #f8fffc);
+      padding: 13px;
+    }
+    .next-link-box p {
+      color: #3f6372;
+      line-height: 1.58;
+      font-weight: 800;
+      font-size: .93rem;
+    }
+    .next-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      text-decoration: none;
+      font-family: 'Fredoka One', cursive;
+      font-size: .87rem;
+      color: #0f766e;
+    }
+    @media (max-width: 760px) {
+      .story-body,
+      .activity-wrap {
+        grid-template-columns: 1fr;
+      }
+      .use-case-grid,
+      .practice-grid,
+      .recap-grid,
+      .flow-diagram {
+        grid-template-columns: 1fr;
+      }
+      .flow-step::after { display: none; }
+      .quiz-options { grid-template-columns: 1fr; }
+      .nav-bar { flex-wrap: wrap; justify-content: center; }
+    }
+  </style>
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="natural-read-aloud.js" defer></script>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+  <div class="floaty" style="top:9%;animation-duration:24s;animation-delay:0s;">🧪</div>
+  <div class="floaty" style="top:24%;animation-duration:30s;animation-delay:2s;">⚗️</div>
+  <div class="floaty" style="top:43%;animation-duration:27s;animation-delay:4s;">🔬</div>
+  <div class="floaty" style="top:63%;animation-duration:31s;animation-delay:1s;">🫧</div>
+  <div class="floaty" style="top:82%;animation-duration:26s;animation-delay:3s;">⚛️</div>
+
+  <main id="app">
+    <a class="home-link" href="index.html#chemistry-lab">🧪 Back to Chemistry Stories</a>
+
+    <div class="tts-bar">
+      <button class="tts-btn" id="ttsBtn" onclick="toggleReadAloud()">🔊 Read Aloud</button>
+      <button class="tts-stop" id="ttsStop" onclick="stopReadAloud()" style="display:none;">⏹ Stop</button>
+    </div>
+
+    <div class="progress-strip">
+      <span class="progress-label">Year 3 Chemistry</span>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="progress-label" id="progressText">Page 1 of 12</span>
+    </div>
+
+    <div class="nav-bar">
+      <button class="nav-btn" id="prevBtn" disabled>← Back</button>
+      <div class="page-dots" id="pageDots"></div>
+      <button class="nav-btn" id="nextBtn">Next →</button>
+    </div>
+    <div class="global-warning">⚠️ Dont try any expiremetns by your own , try it with only help of your teachers or parents superivsion</div>
+
+    <section class="page active">
+      <div class="cover">
+        <div class="hero-emoji">🌡️</div>
+        <div class="cover-badge">Chemistry · Year 3 · Ages 7-9</div>
+        <h1 class="cover-title">Solid, Liquid, Gas Express</h1>
+        <p class="cover-sub">How Heating and Cooling Change Materials<br>Properties of solids, liquids and gases</p>
+        <div class="cover-icons">
+          <span>🧪</span><span>📘</span><span>🎯</span><span>🧠</span><span>✨</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="page">
+      <div class="story-page">
+        <div class="page-corner">p.1</div>
+        <div class="story-header"><span class="chapter-badge">Welcome</span><h2 class="story-title">Mission Year 3 Chemistry</h2></div>
+        <div class="story-body">
+          <div class="story-text" data-tts>
+            <p>Ava boards the Matter Express and visits Solid City, Liquid Lake, and Gas Sky.</p><p>Each station shows how particles and shapes behave differently.</p><p>By the end, you will explain heating and cooling changes with confidence.</p>
+            <p>We will use <span class="highlight">science words</span>, <span class="highlight">simple diagrams</span>, and <span class="highlight">real-life examples</span>.</p>
+          </div>
+          <aside class="story-art">
+            <div class="art-emoji">🌡️</div>
+            <div class="art-title">Explorer briefing</div>
+            <div class="art-facts">
+              <div class="fact-row">Observe carefully and compare.</div>
+              <div class="fact-row">Use topic words in full sentences.</div>
+              <div class="fact-row">Connect each idea to daily life.</div>
+            </div>
+            <div class="scene-strip"><span class="scene-icon">🔍</span><span class="scene-icon">🧠</span><span class="scene-icon">✅</span></div>
+          </aside>
+        </div>
+        <div class="mission-card">
+          <div class="mission-title">Today's Mission Goals</div>
+          <ol class="mission-list">
+            <li>Understand the key chemistry concept for Year 3.</li>
+            <li>Interpret diagrams and visual clues.</li>
+            <li>Apply ideas to real situations.</li>
+            <li>Complete a 5-question quiz challenge.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    
+    <section class="page">
+      <div class="story-page">
+        <div class="page-corner">p.2</div>
+        <div class="story-header"><span class="chapter-badge">Chapter 1</span><h2 class="story-title">What Is a Solid?</h2></div>
+        <div class="story-body">
+          <div class="story-text" data-tts>
+            <p>Solids usually keep their own shape and volume.</p><p>A brick, pencil, and ice cube are solids.</p><p>Solids can be hard or soft, but they do not flow like liquids.</p>
+          </div>
+          <aside class="story-art">
+            <div class="art-emoji">🧊</div>
+            <div class="art-title">Solid station</div>
+            <div class="art-facts"><div class="fact-row">Fixed shape.</div><div class="fact-row">Usually easy to hold.</div><div class="fact-row">Particles are close together.</div></div>
+            <div class="scene-strip"><span class="scene-icon">🧱</span><span class="scene-icon">✏️</span><span class="scene-icon">🧊</span></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+    <section class="page">
+      <div class="story-page">
+        <div class="page-corner">p.3</div>
+        <div class="story-header"><span class="chapter-badge">Chapter 2</span><h2 class="story-title">How Liquids Behave</h2></div>
+        <div class="story-body">
+          <div class="story-text" data-tts>
+            <p>Liquids flow and take the shape of their container.</p><p>Water in a glass and soup in a bowl are liquids.</p><p>Liquids keep volume but not fixed shape.</p>
+          </div>
+          <aside class="story-art">
+            <div class="art-emoji">💧</div>
+            <div class="art-title">Liquid station</div>
+            <div class="art-facts"><div class="fact-row">Flows easily.</div><div class="fact-row">Takes container shape.</div><div class="fact-row">Can be poured.</div></div>
+            <div class="scene-strip"><span class="scene-icon">🥛</span><span class="scene-icon">🥣</span><span class="scene-icon">🚰</span></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+    <section class="page">
+      <div class="story-page">
+        <div class="page-corner">p.4</div>
+        <div class="story-header"><span class="chapter-badge">Chapter 3</span><h2 class="story-title">What About Gases?</h2></div>
+        <div class="story-body">
+          <div class="story-text" data-tts>
+            <p>Gases spread out and fill all available space.</p><p>Air in a room and steam above hot water are gases.</p><p>Gases are often invisible, but they still have mass and take space.</p>
+          </div>
+          <aside class="story-art">
+            <div class="art-emoji">☁️</div>
+            <div class="art-title">Gas station</div>
+            <div class="art-facts"><div class="fact-row">No fixed shape.</div><div class="fact-row">No fixed volume in open space.</div><div class="fact-row">Particles move freely.</div></div>
+            <div class="scene-strip"><span class="scene-icon">🎈</span><span class="scene-icon">🌬️</span><span class="scene-icon">♨️</span></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+    <section class="page">
+      <div class="story-page">
+        <div class="page-corner">p.5</div>
+        <div class="story-header"><span class="chapter-badge">Chapter 4</span><h2 class="story-title">Heating and Cooling</h2></div>
+        <div class="story-body">
+          <div class="story-text" data-tts>
+            <p>Heating can melt solids into liquids or turn liquids into gas.</p><p>Cooling can condense gas into liquid or freeze liquids into solids.</p><p>These changes are common in kitchens and weather.</p>
+          </div>
+          <aside class="story-art">
+            <div class="art-emoji">🔥</div>
+            <div class="art-title">Change with temperature</div>
+            <div class="art-facts"><div class="fact-row">Heat often speeds particles up.</div><div class="fact-row">Cooling slows particles down.</div><div class="fact-row">State can change with energy.</div></div>
+            <div class="scene-strip"><span class="scene-icon">🧊</span><span class="scene-icon">💧</span><span class="scene-icon">☁️</span></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="page">
+      <div class="story-page">
+        <div class="page-corner">p.6</div>
+        <div class="story-header"><span class="chapter-badge">Real Life</span><h2 class="story-title">Why This Topic Matters</h2></div>
+        <div class="story-text" data-tts>
+          <p>These chemistry ideas are not only for exams. They are used in design, cooking, transport, weather, safety, and technology.</p>
+          <p>When students ask “Why should I learn this?”, these examples give clear answers.</p>
+        </div>
+        <div class="use-case-grid">
+          <article class="use-case-card"><div class="use-case-icon">🍫</div><h4>Melting Chocolate</h4><p>Chocolate melts from solid to liquid when warmed gently.</p></article><article class="use-case-card"><div class="use-case-icon">🌧️</div><h4>Rain Formation</h4><p>Water vapor cools and condenses into droplets in clouds.</p></article><article class="use-case-card"><div class="use-case-icon">🥤</div><h4>Cold Drink Drops</h4><p>Water from air condenses on the outside of a cold glass.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="page">
+      <div class="story-page">
+        <div class="page-corner">p.7</div>
+        <div class="story-header"><span class="chapter-badge">Activity</span><h2 class="story-title">State Spotter Challenge</h2></div>
+        <div class="activity-wrap">
+          <div class="activity-card">
+            <h4>Materials Needed</h4>
+            <ul><li>Ice cube</li><li>Glass of water</li><li>Kettle steam (adult help)</li><li>Notebook</li></ul>
+          </div>
+          <div class="activity-card">
+            <h4>Steps</h4>
+            <ol><li>Identify one solid, one liquid, and one gas example.</li><li>Write how each behaves: shape, flow, and space.</li><li>Watch ice melt and describe the state change.</li><li>Discuss where you have seen these changes in daily life.</li></ol>
+          </div>
+        </div>
+        <div class="safety-note">🛡️ Safety note: Dont try any expiremetns by your own , try it with only help of your teachers or parents superivsion Steam and hot water must be handled by an adult.</div>
+      </div>
+    </section>
+
+    <section class="page">
+      <div class="story-page">
+        <div class="page-corner">p.8</div>
+        <div class="story-header"><span class="chapter-badge">Diagram</span><h2 class="story-title">State Change Journey</h2></div>
+        <p class="flow-title">Follow the flow and explain each step in your own words.</p>
+        <div class="flow-diagram">
+          <div class="flow-step"><div class="flow-index">1</div><div class="flow-icon">🧊</div><div class="flow-label">Solid</div><div class="flow-detail">Fixed shape</div></div><div class="flow-step"><div class="flow-index">2</div><div class="flow-icon">🔥</div><div class="flow-label">Heat</div><div class="flow-detail">Add energy</div></div><div class="flow-step"><div class="flow-index">3</div><div class="flow-icon">💧</div><div class="flow-label">Liquid</div><div class="flow-detail">Flows</div></div><div class="flow-step"><div class="flow-index">4</div><div class="flow-icon">☁️</div><div class="flow-label">Gas</div><div class="flow-detail">Spreads out</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page">
+      <div class="story-page">
+        <div class="page-corner">p.9</div>
+        <div class="story-header"><span class="chapter-badge">Vocabulary + Practice</span><h2 class="story-title">Build Strong Chemistry Answers</h2></div>
+        <div class="definition-callout">
+          <span class="definition-label">Definition Spotlight</span>
+          A state of matter describes how particles are arranged and how they move.
+        </div>
+        <div class="equation-callout">
+          <span class="equation-label">Equation / Rule Spotlight</span>
+          <span class="equation-text">Heating: Solid -&gt; Liquid -&gt; Gas | Cooling: Gas -&gt; Liquid -&gt; Solid</span>
+        </div>
+        <table class="vocab-table">
+          <thead>
+            <tr><th>Word</th><th>Meaning</th><th>Example</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="word-term">Solid</td><td class="word-definition">State with fixed shape.</td><td class="word-example">A book is a solid.</td></tr><tr><td class="word-term">Liquid</td><td class="word-definition">State that flows and takes container shape.</td><td class="word-example">Milk is a liquid.</td></tr><tr><td class="word-term">Gas</td><td class="word-definition">State that spreads to fill space.</td><td class="word-example">Air is a gas.</td></tr><tr><td class="word-term">Melt</td><td class="word-definition">Solid to liquid change.</td><td class="word-example">Ice melts into water.</td></tr><tr><td class="word-term">Condense</td><td class="word-definition">Gas to liquid change.</td><td class="word-example">Water vapor condenses into drops.</td></tr>
+          </tbody>
+        </table>
+        <div class="practice-grid">
+          <div class="practice-card"><h4>Try 1</h4><p class="practice-q">Why can water be poured but ice cannot?</p><p class="practice-a"><strong>Hint answer:</strong> Water is a liquid and flows; ice is a solid with fixed shape.</p></div><div class="practice-card"><h4>Try 2</h4><p class="practice-q">What state is steam?</p><p class="practice-a"><strong>Hint answer:</strong> Steam is water in gas form.</p></div><div class="practice-card"><h4>Try 3</h4><p class="practice-q">Give one example of cooling change at home.</p><p class="practice-a"><strong>Hint answer:</strong> Water freezing into ice in the freezer.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page">
+      <div class="quiz-page">
+        <div class="page-corner">p.10</div>
+        <div class="story-header"><span class="chapter-badge">Quiz</span><h2 class="story-title">5-Question Chemistry Challenge</h2></div>
+        <div id="quizPlayground">
+          <div class="quiz-progress-row">
+            <div class="q-counter" id="quizCounter">Question 1 of 5</div>
+            <div class="q-score-badge" id="quizScoreBadge">Score: 0 / 5</div>
+          </div>
+          <div class="quiz-question-card">
+            <div class="quiz-q-emoji" id="quizEmoji">🧪</div>
+            <div class="quiz-q-text" id="quizQuestion"></div>
+          </div>
+          <div class="quiz-options" id="quizOptions"></div>
+          <div class="quiz-feedback" id="quizFeedback"></div>
+          <button class="next-q-btn" id="nextQuizBtn">Next Question →</button>
+        </div>
+        <div class="quiz-result" id="quizResult"></div>
+      </div>
+    </section>
+
+    <section class="page">
+      <div class="result-page">
+        <div class="page-corner">p.11</div>
+        <div class="story-header"><span class="chapter-badge">Recap</span><h2 class="story-title">Mission Complete: Year 3 Chemistry</h2></div>
+        <div class="story-text" data-tts>
+          <p>You completed this chemistry adventure with concepts, diagrams, examples, and quiz practice.</p>
+          <p>Use your vocabulary words and evidence sentences when answering school questions.</p>
+        </div>
+        <div class="recap-grid">
+          <div class="recap-item"><strong>Understand</strong>Know the core idea and key terms clearly.</div>
+          <div class="recap-item"><strong>Apply</strong>Connect chemistry with homes, schools, weather, and design.</div>
+          <div class="recap-item"><strong>Explain</strong>Give reasoned answers with evidence, not guesses.</div>
+        </div>
+        <div class="next-link-box">
+          <p>Keep the momentum. Open the next chemistry story and continue your year-wise learning journey.</p>
+          <a class="next-link" href="chemistry-year-4-state-changes-kids.html">➡️ Open Next Chemistry Story</a>
+          <br />
+          <a class="next-link" href="index.html#chemistry-lab">🧪 Back to Chemistry Story Shelf</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var pages = Array.prototype.slice.call(document.querySelectorAll('.page'));
+      var dotsWrap = document.getElementById('pageDots');
+      var progressFill = document.getElementById('progressFill');
+      var progressText = document.getElementById('progressText');
+      var prevBtn = document.getElementById('prevBtn');
+      var nextBtn = document.getElementById('nextBtn');
+      var currentPage = 0;
+      var visited = {};
+      visited[0] = true;
+
+      function renderDots() {
+        dotsWrap.innerHTML = '';
+        pages.forEach(function (_, idx) {
+          var dot = document.createElement('button');
+          dot.className = 'dot' + (idx === currentPage ? ' active' : '') + (visited[idx] ? ' visited' : '');
+          dot.type = 'button';
+          dot.addEventListener('click', function () { goTo(idx); });
+          dotsWrap.appendChild(dot);
+        });
+      }
+
+      function updateProgress() {
+        var percent = Math.round(((currentPage + 1) / pages.length) * 100);
+        progressFill.style.width = percent + '%';
+        progressText.textContent = 'Page ' + (currentPage + 1) + ' of ' + pages.length;
+      }
+
+      function goTo(idx) {
+        if (idx < 0 || idx >= pages.length) return;
+        pages[currentPage].classList.remove('active');
+        currentPage = idx;
+        visited[idx] = true;
+        pages[currentPage].classList.add('active');
+        prevBtn.disabled = currentPage === 0;
+        nextBtn.disabled = currentPage === pages.length - 1;
+        renderDots();
+        updateProgress();
+      }
+
+      prevBtn.addEventListener('click', function () { goTo(currentPage - 1); });
+      nextBtn.addEventListener('click', function () { goTo(currentPage + 1); });
+
+      var quizData = [{"q":"Which state usually keeps its own shape?","emoji":"🧊","options":["Solid","Liquid","Gas","Steam"],"answer":0,"explain":"Solids usually keep their shape."},{"q":"Which state can be poured?","emoji":"💧","options":["Liquid","Solid","Stone","Plastic toy"],"answer":0,"explain":"Liquids flow and can be poured."},{"q":"What happens when ice is heated?","emoji":"🔥","options":["Turns to gas directly always","Melts into liquid","Becomes metal","No change ever"],"answer":1,"explain":"Ice usually melts into liquid water first."},{"q":"Steam is best described as...","emoji":"☁️","options":["A solid","A gas","A rock","A plastic"],"answer":1,"explain":"Steam is water vapor, which is a gas."},{"q":"Cooling water in a freezer causes...","emoji":"❄️","options":["Melting","Freezing","Evaporation","Rusting"],"answer":1,"explain":"Freezing changes liquid water to solid ice."}];
+      var quizIndex = 0;
+      var quizScore = 0;
+      var locked = false;
+
+      var quizCounter = document.getElementById('quizCounter');
+      var quizScoreBadge = document.getElementById('quizScoreBadge');
+      var quizEmoji = document.getElementById('quizEmoji');
+      var quizQuestion = document.getElementById('quizQuestion');
+      var quizOptions = document.getElementById('quizOptions');
+      var quizFeedback = document.getElementById('quizFeedback');
+      var nextQuizBtn = document.getElementById('nextQuizBtn');
+      var quizResult = document.getElementById('quizResult');
+      var quizPlayground = document.getElementById('quizPlayground');
+
+      function updateQuizHeader() {
+        quizCounter.textContent = 'Question ' + (quizIndex + 1) + ' of ' + quizData.length;
+        quizScoreBadge.textContent = 'Score: ' + quizScore + ' / ' + quizData.length;
+      }
+
+      function renderQuizQuestion() {
+        locked = false;
+        quizFeedback.textContent = '';
+        nextQuizBtn.style.display = 'none';
+
+        var q = quizData[quizIndex];
+        quizEmoji.textContent = q.emoji || '🧪';
+        quizQuestion.textContent = q.q;
+        quizOptions.innerHTML = '';
+
+        q.options.forEach(function (optionText, optionIndex) {
+          var btn = document.createElement('button');
+          btn.className = 'quiz-option';
+          btn.type = 'button';
+          btn.textContent = optionText;
+          btn.addEventListener('click', function () {
+            if (locked) return;
+            locked = true;
+
+            var buttons = Array.prototype.slice.call(quizOptions.querySelectorAll('.quiz-option'));
+            buttons.forEach(function (item) { item.classList.add('locked'); });
+
+            if (optionIndex === q.answer) {
+              btn.classList.add('correct');
+              quizScore += 1;
+              quizFeedback.textContent = '✅ Correct! ' + q.explain;
+            } else {
+              btn.classList.add('wrong');
+              buttons[q.answer].classList.add('correct');
+              quizFeedback.textContent = '🧠 Good try! ' + q.explain;
+            }
+
+            quizScoreBadge.textContent = 'Score: ' + quizScore + ' / ' + quizData.length;
+
+            if (quizIndex < quizData.length - 1) {
+              nextQuizBtn.style.display = 'inline-flex';
+            } else {
+              showQuizResult();
+            }
+          });
+          quizOptions.appendChild(btn);
+        });
+
+        updateQuizHeader();
+      }
+
+      function showQuizResult() {
+        quizPlayground.style.display = 'none';
+        quizResult.style.display = 'block';
+
+        var percent = Math.round((quizScore / quizData.length) * 100);
+        var emoji = '🌟';
+        var message = 'Great effort! Review the story once more to become a chemistry champion.';
+
+        if (percent >= 90) {
+          emoji = '🏆';
+          message = 'Outstanding! You answered with strong chemistry understanding.';
+        } else if (percent >= 70) {
+          emoji = '🎉';
+          message = 'Excellent work! You are building strong chemistry skills.';
+        } else if (percent >= 50) {
+          emoji = '👍';
+          message = 'Nice progress! Revisit key pages and try again for an even better score.';
+        }
+
+        quizResult.innerHTML =
+          '<div class="emoji">' + emoji + '</div>' +
+          '<h3>Quiz Complete</h3>' +
+          '<div class="score">' + quizScore + ' / ' + quizData.length + '</div>' +
+          '<p>' + message + '</p>' +
+          '<button class="retry-btn" type="button" id="retryQuizBtn">Retry Quiz</button>';
+
+        document.getElementById('retryQuizBtn').addEventListener('click', resetQuiz);
+      }
+
+      function resetQuiz() {
+        quizIndex = 0;
+        quizScore = 0;
+        quizResult.style.display = 'none';
+        quizPlayground.style.display = 'block';
+        renderQuizQuestion();
+      }
+
+      nextQuizBtn.addEventListener('click', function () {
+        if (quizIndex < quizData.length - 1) {
+          quizIndex += 1;
+          renderQuizQuestion();
+        }
+      });
+
+      renderDots();
+      updateProgress();
+      renderQuizQuestion();
+    })();
+  </script>
+</body>
+</html>

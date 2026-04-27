@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-label="Team rebuilds bridge through the night">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2f4a63"/>
+      <stop offset="100%" stop-color="#20374b"/>
+    </linearGradient>
+    <filter id="grain" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="23"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="table" tableValues="0 0.028"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="1400" height="900" fill="url(#bg)"/>
+  <circle cx="1180" cy="150" r="76" fill="#f7f2d0" opacity="0.85"/>
+  <rect x="0" y="660" width="1400" height="240" fill="#4f5e6f"/>
+
+  <rect x="190" y="420" width="1020" height="140" rx="18" fill="#f2ede2" stroke="#9ca8b3" stroke-width="5"/>
+  <path d="M304 420 Q700 198 1096 420" fill="none" stroke="#d7c8b1" stroke-width="20"/>
+  <line x1="700" y1="255" x2="700" y2="556" stroke="#baa891" stroke-width="12"/>
+  <line x1="560" y1="350" x2="840" y2="350" stroke="#7fa8cb" stroke-width="8"/>
+
+  <g transform="translate(340 646)">
+    <ellipse cx="0" cy="82" rx="30" ry="10" fill="#cfd7de" opacity="0.22"/>
+    <ellipse cx="0" cy="-2" rx="18" ry="22" fill="#d8b39e"/>
+    <path d="M-20 -8 Q0 -36 20 -8" fill="#2f2f35"/>
+    <path d="M-20 20 Q0 10 20 20 L18 56 Q0 64 -18 56 Z" fill="#5c7759"/>
+  </g>
+  <g transform="translate(470 648)">
+    <ellipse cx="0" cy="80" rx="30" ry="10" fill="#cfd7de" opacity="0.22"/>
+    <ellipse cx="0" cy="0" rx="18" ry="22" fill="#9a6648"/>
+    <circle cx="0" cy="-24" r="20" fill="#2f2524"/><circle cx="10" cy="-38" r="8" fill="#f1d85b"/>
+    <path d="M-20 22 Q0 12 20 22 L18 58 Q0 66 -18 58 Z" fill="#e38734"/>
+  </g>
+  <g transform="translate(620 650)">
+    <ellipse cx="0" cy="78" rx="30" ry="10" fill="#cfd7de" opacity="0.22"/>
+    <ellipse cx="0" cy="2" rx="18" ry="22" fill="#b77d5b"/>
+    <path d="M-20 -6 Q0 -34 20 -6" fill="#2e2b2b"/>
+    <circle cx="-7" cy="2" r="6" fill="none" stroke="#54616c" stroke-width="2"/><circle cx="7" cy="2" r="6" fill="none" stroke="#54616c" stroke-width="2"/>
+    <path d="M-20 22 Q0 12 20 22 L18 58 Q0 66 -18 58 Z" fill="#ccd7e2"/>
+  </g>
+  <g transform="translate(820 648)">
+    <ellipse cx="0" cy="80" rx="30" ry="10" fill="#cfd7de" opacity="0.22"/>
+    <ellipse cx="0" cy="0" rx="18" ry="22" fill="#deb49a"/>
+    <rect x="-20" y="-14" width="40" height="12" rx="4" fill="#2c2f38"/>
+    <path d="M-20 22 Q0 12 20 22 L18 58 Q0 66 -18 58 Z" fill="#bc8f9c"/>
+  </g>
+  <g transform="translate(980 644)">
+    <ellipse cx="0" cy="84" rx="32" ry="10" fill="#cfd7de" opacity="0.22"/>
+    <ellipse cx="0" cy="0" rx="20" ry="24" fill="#c99373"/>
+    <path d="M-24 -6 Q0 -42 24 -6" fill="#2e2a2a"/>
+    <path d="M-24 24 Q0 12 24 24 L20 62 Q0 74 -20 62 Z" fill="#656a73"/>
+  </g>
+
+  <text x="700" y="102" text-anchor="middle" font-family="Georgia, serif" font-size="52" fill="#f3e9cf">Rebuild Night</text>
+  <text x="700" y="154" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#d4e3f1">Calm plan. Clear roles. No panic.</text>
+  <rect width="1400" height="900" filter="url(#grain)"/>
+</svg>

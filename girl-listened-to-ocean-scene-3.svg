@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-label="Mia Felt Connected Again">
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#355b8c"/>
+      <stop offset="55%" stop-color="#4e83b7"/>
+      <stop offset="100%" stop-color="#8ec0de"/>
+    </linearGradient>
+  </defs>
+  <rect width="1400" height="900" fill="url(#bg)"/>
+  <path d="M0 620 C200 560 340 660 540 618 C730 578 950 668 1200 616 C1290 598 1350 608 1400 620 L1400 900 L0 900 Z" fill="rgba(36,62,52,0.26)"/>
+  <path d="M0 690 C210 640 380 724 600 682 C820 640 1030 730 1260 688 C1330 676 1380 684 1400 690 L1400 900 L0 900 Z" fill="rgba(24,45,38,0.34)"/>
+  <g fill="#ffffff" opacity="0.22">
+    <circle cx="120" cy="100" r="6"/><circle cx="280" cy="88" r="5"/><circle cx="510" cy="120" r="6"/>
+    <circle cx="760" cy="92" r="6"/><circle cx="980" cy="110" r="5"/><circle cx="1220" cy="96" r="6"/>
+  </g>
+
+  <circle cx="1140" cy="170" r="68" fill="#fff2b2"/>
+  <path d="M0 640 C190 600 360 690 560 648 C760 606 980 700 1220 650 C1300 632 1360 640 1400 646 L1400 900 L0 900 Z" fill="#467fb2"/>
+  <path d="M0 700 C200 666 380 744 560 708 C760 668 980 752 1180 712 C1280 692 1360 700 1400 706" stroke="#d2edff" stroke-width="12" fill="none" opacity="0.65"/>
+  <g transform="translate(540 600) scale(1.9)">
+    <circle cx="0" cy="-58" r="24" fill="#ffd8b1"/>
+    <path d="M-22 -65 Q0 -96 22 -65" fill="#7a4f32"/>
+    <circle cx="-8" cy="-58" r="3.5" fill="#2e3d57"/>
+    <circle cx="8" cy="-58" r="3.5" fill="#2e3d57"/>
+    <path d="M-8 -46 Q0 -40 8 -46" stroke="#2e3d57" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <rect x="-20" y="-32" width="40" height="58" rx="12" fill="#6bcb77"/>
+    <rect x="-30" y="-26" width="10" height="46" rx="5" fill="#6bcb77"/>
+    <rect x="20" y="-26" width="10" height="46" rx="5" fill="#6bcb77"/>
+    <rect x="-16" y="24" width="12" height="34" rx="6" fill="#2f649f"/>
+    <rect x="4" y="24" width="12" height="34" rx="6" fill="#2f649f"/>
+  </g>
+  <path d="M650 560 C780 520 910 560 1020 520" stroke="#fff7cc" stroke-width="8" fill="none" opacity="0.65"/>
+
+  <text x="700" y="110" text-anchor="middle" font-family="Nunito, sans-serif" font-size="52" font-weight="900" fill="#fff6e5">Mia Felt Connected Again</text>
+  <text x="700" y="844" text-anchor="middle" font-family="Nunito, sans-serif" font-size="32" font-weight="800" fill="#fff6e5">She carried the ocean&amp;apos;s rhythm back home.</text>
+</svg>

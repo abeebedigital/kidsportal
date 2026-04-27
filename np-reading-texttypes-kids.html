@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Text Type Tracker! 📰</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+    /* global-font-boost */
+    html{font-size:17px;}
+    @media (max-width:500px){html{font-size:16px;}}
+
+:root{
+  --coral:#ff6b6b;--mint:#6bcb77;--blue:#4d96ff;--purple:#c77dff;
+  --orange:#ff9f1c;--yellow:#ffd93d;--dark:#2c3e50;
+  --card-bg:#fffef5;--warm-bg:#fff8f0;
+  --reading:#1a237e;--reading-light:#e8eaf6;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--warm-bg);min-height:100vh;overflow-x:hidden;}
+.cloud{position:fixed;opacity:.06;font-size:60px;z-index:0;animation:drift linear infinite;pointer-events:none;}
+@keyframes drift{from{transform:translateX(-100px)}to{transform:translateX(calc(100vw + 100px))}}
+#app{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:12px;}
+.home-link{display:inline-flex;align-items:center;gap:6px;background:var(--mint);color:#fff;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;text-decoration:none;transition:all .2s;margin-bottom:10px;}
+.home-link:hover{transform:scale(1.05);background:#4db860;}
+.tts-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.tts-btn{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#f39c12,#e67e22);color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.tts-btn:hover{transform:scale(1.05);}
+.tts-btn.speaking{background:linear-gradient(135deg,#e74c3c,#c0392b);animation:pulse 1s ease infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(231,76,60,.4)}50%{box-shadow:0 0 0 8px rgba(231,76,60,0)}}
+.tts-stop{background:linear-gradient(135deg,#95a5a6,#7f8c8d);color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.progress-strip{background:#fff;border-radius:12px;padding:8px 16px;display:flex;align-items:center;gap:10px;margin-bottom:8px;border:2px solid var(--reading-light);box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.progress-bar{flex:1;height:7px;background:var(--reading-light);border-radius:4px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--reading),var(--blue),var(--purple));border-radius:4px;transition:width .5s ease;}
+.progress-label{font-family:'Fredoka One',cursive;font-size:12px;color:#999;white-space:nowrap;}
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#fff;border-radius:16px;margin-bottom:10px;border:2px solid var(--reading-light);box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.nav-btn{background:var(--coral);color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:8px 22px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.nav-btn:hover{transform:scale(1.06);box-shadow:0 4px 12px rgba(255,107,107,.3);}
+.nav-btn:disabled{background:#ddd;cursor:not-allowed;transform:none;box-shadow:none;color:#999;}
+.page-dots{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;max-width:300px;}
+.dot{width:9px;height:9px;border-radius:50%;background:#ddd;cursor:pointer;transition:all .2s;}
+.dot.active{background:var(--reading);transform:scale(1.3);box-shadow:0 0 6px rgba(26,35,126,.5);}
+.dot.visited{background:rgba(26,35,126,.3);}
+.page{display:none;animation:pageIn .5s ease;}
+.page.active{display:block;}
+@keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.cover{background:linear-gradient(160deg,#0f172a 0%,#14213d 45%,#1d4ed8 100%);border-radius:22px;border:2px solid rgba(77,150,255,.3);padding:50px 30px;text-align:center;position:relative;overflow:hidden;min-height:540px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.cover-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:420px;height:420px;background:radial-gradient(circle,rgba(77,150,255,.15) 0%,transparent 70%);pointer-events:none;}
+.cover-icons{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:20px 0;position:relative;z-index:2;}
+.cover-icon{font-size:36px;animation:iconBounce var(--wb,3s) ease-in-out infinite var(--wd,0s);}
+@keyframes iconBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.cover-title{font-family:'Fredoka One',cursive;font-size:38px;color:var(--yellow);position:relative;z-index:2;line-height:1.15;margin-bottom:8px;text-shadow:0 4px 20px rgba(0,0,0,.4);}
+.cover-sub{font-family:'Fredoka One',cursive;font-size:20px;color:#c4d7ff;position:relative;z-index:2;margin-bottom:6px;}
+.cover-tagline{font-size:13px;color:rgba(255,255,255,.7);position:relative;z-index:2;margin-top:16px;font-style:italic;}
+.hero-anim{font-size:52px;animation:heroFloat 3s ease-in-out infinite;position:relative;z-index:2;}
+@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-12px) rotate(5deg)}}
+.story-page,.quiz-page,.cert-page{background:var(--card-bg);border-radius:22px;padding:26px;min-height:540px;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.story-page{border:3px solid var(--reading-light);}
+.quiz-page{border:3px solid var(--blue);}
+.cert-page{border:3px solid var(--yellow);}
+.page-corner{position:absolute;top:14px;right:16px;font-family:'Fredoka One',cursive;font-size:16px;color:#b0bec5;}
+.story-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.chapter-badge{font-family:'Fredoka One',cursive;font-size:12px;padding:4px 13px;border-radius:16px;white-space:nowrap;color:#fff;}
+.story-title{font-family:'Fredoka One',cursive;font-size:22px;color:var(--dark);}
+.story-body{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+.story-text{font-size:15px;line-height:1.85;color:#444;}
+.story-text p{margin-bottom:10px;}
+.hw{font-weight:800;color:#c62828;}
+.hw2{font-weight:800;color:#1565c0;}
+.hw3{font-weight:800;color:#2e7d32;}
+.story-art{border-radius:16px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:8px;border:2px dashed #cfd8dc;background:linear-gradient(135deg,#f5f7ff,#eef9ff);}
+.wonder-label{font-family:'Fredoka One',cursive;font-size:13px;color:#999;margin-top:4px;}
+.wonder-facts{background:rgba(0,0,0,.03);border-radius:12px;padding:10px 14px;width:100%;border:1px solid rgba(0,0,0,.06);}
+.fact-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:13px;color:#555;}
+.fact-row:last-child{border-bottom:none;}
+.fact-icon{font-size:16px;min-width:22px;}
+.reading-card{background:#fff;border:2px solid var(--reading-light);border-radius:16px;padding:14px 16px;margin-top:14px;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.reading-card h3{font-family:'Fredoka One',cursive;font-size:15px;color:var(--reading);margin-bottom:8px;}
+.quiz-bubble{background:linear-gradient(135deg,#e8eaf6,#e3f2fd);border:2px solid var(--blue);border-radius:18px;padding:18px;margin-top:16px;}
+.quiz-title{font-family:'Fredoka One',cursive;font-size:17px;color:var(--reading);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.quiz-options,.fquiz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.q-opt,.fq-opt{background:#fff;border:2px solid #cfd8dc;border-radius:12px;padding:10px 14px;font-size:14px;color:var(--dark);cursor:pointer;transition:all .2s;text-align:left;font-family:'Nunito',sans-serif;font-weight:700;}
+.q-opt:hover,.fq-opt:hover:not(.locked){background:#e8eaf6;border-color:var(--blue);transform:translateY(-2px);}
+.q-opt.correct,.fq-opt.correct{background:#d4edda;border-color:#27ae60;color:#155724;}
+.q-opt.wrong,.fq-opt.wrong{background:#f8d7da;border-color:#c0392b;color:#721c24;}
+.fq-opt.locked{cursor:not-allowed;opacity:.75;}
+.quiz-feedback,.q-result-msg{font-family:'Fredoka One',cursive;font-size:16px;margin-top:10px;min-height:24px;text-align:center;}
+.fun-fact{background:#e3f2fd;border:2px solid var(--blue);border-radius:14px;padding:14px 16px;margin-top:14px;}
+.fun-fact-title,.tip-box-title{font-family:'Fredoka One',cursive;font-size:15px;margin-bottom:6px;}
+.fun-fact-title{color:#0d47a1;}
+.tip-box{background:#fff3e0;border:2px solid var(--orange);border-radius:14px;padding:14px 16px;margin-top:14px;}
+.tip-box-title{color:#e65100;}
+.fun-fact-text,.tip-box-text{font-size:13px;color:#444;line-height:1.6;}
+.memory-card{background:#e8eaf6;border:2px solid var(--blue);border-radius:14px;padding:14px;margin-top:14px;}
+.mem-row{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;transition:background .2s;}
+.mem-row:hover{background:rgba(26,35,126,.06);}
+.mem-letter{font-family:'Fredoka One',cursive;font-size:18px;color:var(--coral);min-width:24px;}
+.mem-word{color:var(--reading);min-width:110px;font-weight:700;}
+.mem-tip{color:#888;}
+.quiz-progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.q-counter{font-family:'Fredoka One',cursive;font-size:13px;color:#999;}
+.q-score-badge{font-family:'Fredoka One',cursive;font-size:14px;background:#e8eaf6;border:2px solid var(--blue);padding:4px 14px;border-radius:20px;color:var(--reading);}
+.quiz-question-card{background:#fff;border-radius:16px;padding:20px;margin-bottom:16px;border:2px solid #e8eaf6;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.quiz-q-text{font-family:'Fredoka One',cursive;font-size:19px;color:var(--dark);line-height:1.4;margin-bottom:4px;}
+.quiz-q-emoji{font-size:40px;margin-bottom:10px;}
+.quiz-q-passage{background:#f5f5f5;border-radius:10px;padding:12px;font-size:13px;line-height:1.7;margin-bottom:12px;color:#444;}
+.next-q-btn,.retry-btn,.proceed-btn,.cert-dl-btn,.cert-print-btn{color:#fff;border:none;font-family:'Fredoka One',cursive;cursor:pointer;transition:all .2s;}
+.next-q-btn{display:block;margin:12px auto 0;background:linear-gradient(135deg,var(--coral),#ff8787);font-size:16px;padding:10px 28px;border-radius:22px;}
+.retry-btn,.proceed-btn{font-size:18px;padding:12px 32px;border-radius:24px;margin:8px;}
+.retry-btn{background:linear-gradient(135deg,#e74c3c,#ff6b6b);}
+.proceed-btn{background:linear-gradient(135deg,#27ae60,#2ecc71);}
+.next-q-btn:hover,.retry-btn:hover,.proceed-btn:hover,.cert-dl-btn:hover,.cert-print-btn:hover{transform:scale(1.05);}
+.result-screen{text-align:center;padding:20px 10px;}
+.result-trophy{font-size:80px;margin-bottom:12px;animation:bounce 1s ease infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+.result-title{font-family:'Fredoka One',cursive;font-size:28px;margin-bottom:10px;}
+.result-score{font-family:'Fredoka One',cursive;font-size:48px;color:var(--yellow);}
+.result-msg{font-size:16px;color:#888;margin:12px 0 20px;line-height:1.7;}
+.cert-controls{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+.cert-name-input{font-family:'Nunito',sans-serif;font-size:16px;padding:10px 16px;border:2px solid var(--yellow);border-radius:12px;outline:none;flex:1;min-width:180px;color:#333;}
+.cert-name-input:focus{border-color:var(--purple);}
+.cert-dl-btn{background:var(--purple);font-size:15px;padding:10px 20px;border-radius:24px;white-space:nowrap;}
+.cert-print-btn{background:#1565c0;font-size:15px;padding:10px 20px;border-radius:24px;}
+.cert-wrap{background:#fff;border-radius:16px;padding:6px;border:3px solid var(--yellow);box-shadow:0 4px 20px rgba(0,0,0,.08);}
+canvas#cert{width:100%;border-radius:12px;display:block;}
+.cert-hint{font-size:12px;color:#aaa;margin-top:8px;text-align:center;}
+@media(max-width:580px){
+  .story-body{grid-template-columns:1fr;}
+  .cover-title{font-size:26px;}
+  .quiz-options,.fquiz-options{grid-template-columns:1fr;}
+  .cert-controls{flex-direction:column;}
+}
+</style>
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="natural-read-aloud.js" defer></script>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+<div id="clouds"></div>
+<div id="app"><div class="tts-bar">
+  <button class="tts-btn" id="ttsBtn" onclick="toggleTTS()">🔊 Read Aloud</button>
+  <button class="tts-stop" id="ttsStop" onclick="stopTTS()" style="display:none;">⏹ Stop</button>
+</div>
+
+<div class="progress-strip">
+  <span class="progress-label">📰 Reading...</span>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <span class="progress-label" id="progressText">Page 1 of 11</span>
+</div>
+
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Back</button>
+  <div class="page-dots" id="pageDots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+</div>
+
+<div class="page active" data-page="0">
+  <div class="cover">
+    <div class="cover-glow"></div>
+    <div class="hero-anim">🐧</div>
+    <div class="cover-title">The Text Type<br>Tracker!</div>
+    <div class="cover-sub">A Reading Adventure About Purpose & Structure</div>
+    <div class="cover-icons">
+      <span class="cover-icon" style="--wb:3s;--wd:0s">📰</span>
+      <span class="cover-icon" style="--wb:3.5s;--wd:.2s">📖</span>
+      <span class="cover-icon" style="--wb:4s;--wd:.4s">💬</span>
+      <span class="cover-icon" style="--wb:3.2s;--wd:.6s">🔎</span>
+      <span class="cover-icon" style="--wb:3.8s;--wd:.8s">✨</span>
+    </div>
+    <p class="cover-tagline">Learn to spot narrative, informative, and persuasive texts like a real reading detective! · Year 3–5</p>
+  </div>
+</div>
+
+<div class="page" data-page="1">
+  <div class="story-page">
+    <div class="page-corner">p.1</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--coral);">Welcome!</span><h2 class="story-title">Meet Piper the Purpose Penguin! 🐧</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Hello, reader explorer! I am <span class="hw">Piper</span>, the penguin who loves sorting every text into the right iceberg box! 🧊</p>
+        <p>Today we will track down <span class="hw2">three big text types</span> and the clues that reveal them.</p>
+        <p>We will investigate:</p>
+        <p>📖 <span class="hw3">Narrative texts</span> that entertain with characters and events.</p>
+        <p>🧠 <span class="hw2">Informative texts</span> that explain facts and ideas.</p>
+        <p>📣 <span class="hw">Persuasive texts</span> that try to convince us.</p>
+        <p>Then we will compare headings, diagrams, opinions, evidence, and author's purpose!</p>
+        <p>Ready to become a <span class="hw3">Text Type Tracker</span>? Slide into the first clue! ❄️</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:70px;">🐧</div>
+        <div class="wonder-label">Piper the Purpose Penguin</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🎯</span> Tracks author's purpose</div>
+          <div class="fact-row"><span class="fact-icon">📰</span> Reads all kinds of texts</div>
+          <div class="fact-row"><span class="fact-icon">🔎</span> Spots clue words fast</div>
+          <div class="fact-row"><span class="fact-icon">🏆</span> Loves reader certificates</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="2">
+  <div class="story-page">
+    <div class="page-corner">p.2</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#1a237e;">Clue 1</span><h2 class="story-title">📖 Narrative Texts Tell Stories</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>A <span class="hw">narrative</span> is written to <span class="hw2">entertain</span> us. It tells a story with a beginning, middle, and end.</p>
+        <p>Narratives usually have:</p>
+        <p>👧 <span class="hw3">Characters</span></p>
+        <p>🌳 <span class="hw2">A setting</span></p>
+        <p>⚡ <span class="hw">A problem</span></p>
+        <p>✅ <span class="hw3">A resolution</span></p>
+        <p>Clue words might include feelings, actions, dialogue, and time words like <span class="hw2">one day</span> or <span class="hw3">later</span>.</p>
+        <div class="reading-card">
+          <h3>Mini Text</h3>
+          <p>One windy morning, Zara found a silver key under the old tree. She followed the glowing trail, unlocked a tiny door in the hill, and discovered a room full of singing clocks.</p>
+        </div>
+      </div>
+      <div class="story-art">
+        <div style="font-size:52px;">📖</div>
+        <div class="wonder-label">Narrative Clues</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">👥</span> Characters do things</div>
+          <div class="fact-row"><span class="fact-icon">🕒</span> Events happen in order</div>
+          <div class="fact-row"><span class="fact-icon">💭</span> Feelings and dialogue appear</div>
+          <div class="fact-row"><span class="fact-icon">🎭</span> Purpose: entertain</div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">Which clue best shows the mini text is a narrative?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'fb1')">It has headings and labels</button>
+        <button class="q-opt" data-correct="true" onclick="miniQuiz(this,'fb1')">It tells events happening to a character</button>
+        <button class="q-opt" onclick="miniQuiz(this,'fb1')">It gives instructions step by step</button>
+        <button class="q-opt" onclick="miniQuiz(this,'fb1')">It lists facts only</button>
+      </div>
+      <div class="quiz-feedback" id="fb1"></div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="3">
+  <div class="story-page">
+    <div class="page-corner">p.3</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#1565c0;">Clue 2</span><h2 class="story-title">🧠 Informative Texts Explain</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>An <span class="hw2">informative</span> text is written to <span class="hw3">inform</span> or explain. It teaches us facts.</p>
+        <p>These texts often use:</p>
+        <p>🔹 headings and subheadings</p>
+        <p>🔹 diagrams or labels</p>
+        <p>🔹 topic words</p>
+        <p>🔹 facts instead of opinions</p>
+        <p>Piper says: if the writer is teaching how something works, that is a huge informative clue!</p>
+        <div class="reading-card">
+          <h3>Mini Text</h3>
+          <p>Penguins have waterproof feathers that trap warmth. They live mainly in the Southern Hemisphere. Emperor penguins keep eggs warm by balancing them on their feet.</p>
+        </div>
+      </div>
+      <div class="story-art">
+        <div style="font-size:52px;">🧠</div>
+        <div class="wonder-label">Informative Clues</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">📚</span> Facts and explanations</div>
+          <div class="fact-row"><span class="fact-icon">🏷️</span> Headings and labels</div>
+          <div class="fact-row"><span class="fact-icon">🖼️</span> Diagrams may appear</div>
+          <div class="fact-row"><span class="fact-icon">🎯</span> Purpose: inform</div>
+        </div>
+      </div>
+    </div>
+    <div class="fun-fact">
+      <div class="fun-fact-title">📘 Remember This</div>
+      <div class="fun-fact-text">A text can still be interesting and fun while being informative. The key clue is that it is mainly teaching facts, not telling a story or arguing an opinion.</div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="4">
+  <div class="story-page">
+    <div class="page-corner">p.4</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#6a1b9a;">Clue 3</span><h2 class="story-title">📣 Persuasive Texts Try to Convince</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>A <span class="hw">persuasive</span> text tries to make the reader <span class="hw2">agree</span> with the writer.</p>
+        <p>It often includes:</p>
+        <p>💬 an opinion</p>
+        <p>💪 reasons</p>
+        <p>📌 evidence or examples</p>
+        <p>🗣️ strong words like <span class="hw3">must</span>, <span class="hw2">best</span>, or <span class="hw">important</span></p>
+        <div class="reading-card">
+          <h3>Mini Text</h3>
+          <p>Every school should have a veggie garden. Gardens help children learn science, teamwork, and healthy eating. A school garden is not just fun. It is a smart idea for every class.</p>
+        </div>
+      </div>
+      <div class="story-art">
+        <div style="font-size:52px;">📣</div>
+        <div class="wonder-label">Persuasive Clues</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🗨️</span> Opinion is clear</div>
+          <div class="fact-row"><span class="fact-icon">🧱</span> Reasons support ideas</div>
+          <div class="fact-row"><span class="fact-icon">⭐</span> Strong language appears</div>
+          <div class="fact-row"><span class="fact-icon">🎯</span> Purpose: persuade</div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">Which sentence sounds most persuasive?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'fb2')">Penguins live in Antarctica.</button>
+        <button class="q-opt" onclick="miniQuiz(this,'fb2')">The girl walked to school.</button>
+        <button class="q-opt" data-correct="true" onclick="miniQuiz(this,'fb2')">Every playground should include shady trees.</button>
+        <button class="q-opt" onclick="miniQuiz(this,'fb2')">There are seven days in a week.</button>
+      </div>
+      <div class="quiz-feedback" id="fb2"></div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="5">
+  <div class="story-page">
+    <div class="page-corner">p.5</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#0d47a1;">Clue 4</span><h2 class="story-title">🔎 Text Features Are Helpful Clues</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Readers should look at the <span class="hw">features</span> around the words too.</p>
+        <p><span class="hw2">Narratives</span> might use paragraphs, dialogue, and pictures of characters.</p>
+        <p><span class="hw3">Informative texts</span> may include headings, captions, diagrams, charts, and bold words.</p>
+        <p><span class="hw">Persuasive texts</span> might use slogans, rhetorical questions, and reasons grouped into paragraphs.</p>
+        <p>When you are unsure, ask: <span class="hw2">What is the writer trying to do?</span></p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:52px;">🔎</div>
+        <div class="wonder-label">Feature Finder</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🏷️</span> Headings help informative texts</div>
+          <div class="fact-row"><span class="fact-icon">❓</span> Rhetorical questions fit persuasive texts</div>
+          <div class="fact-row"><span class="fact-icon">💬</span> Dialogue fits narratives</div>
+          <div class="fact-row"><span class="fact-icon">🧭</span> Features guide the reader</div>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <div class="tip-box-title">💡 Piper's Tip</div>
+      <div class="tip-box-text">Never guess from one word only. Use the whole text: title, layout, features, and the writer's purpose. Strong readers collect several clues before deciding.</div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="6">
+  <div class="story-page">
+    <div class="page-corner">p.6</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#283593;">Clue 5</span><h2 class="story-title">🎯 Author's Purpose</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>The author's purpose is the <span class="hw">reason</span> the text was written.</p>
+        <p>There are three big purpose questions:</p>
+        <p>1️⃣ Is the writer trying to <span class="hw3">entertain</span> me?</p>
+        <p>2️⃣ Is the writer trying to <span class="hw2">inform</span> me?</p>
+        <p>3️⃣ Is the writer trying to <span class="hw">persuade</span> me?</p>
+        <p>Some texts blend purposes, but one purpose is usually strongest.</p>
+        <p>For challenge questions, choose the <span class="hw2">main purpose</span>, not just a tiny detail.</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:52px;">🎯</div>
+        <div class="wonder-label">Purpose Target</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🎭</span> Entertain = make reading enjoyable</div>
+          <div class="fact-row"><span class="fact-icon">📘</span> Inform = teach facts</div>
+          <div class="fact-row"><span class="fact-icon">📣</span> Persuade = change minds</div>
+          <div class="fact-row"><span class="fact-icon">⭐</span> Pick the main purpose</div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">A text with the title How Bees Make Honey is most likely written to...</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'fb3')">make you laugh</button>
+        <button class="q-opt" data-correct="true" onclick="miniQuiz(this,'fb3')">teach you information</button>
+        <button class="q-opt" onclick="miniQuiz(this,'fb3')">tell a fantasy story</button>
+        <button class="q-opt" onclick="miniQuiz(this,'fb3')">convince you to buy honey</button>
+      </div>
+      <div class="quiz-feedback" id="fb3"></div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="7">
+  <div class="story-page">
+    <div class="page-corner">p.7</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#3949ab;">Clue 6</span><h2 class="story-title">🆚 Compare Two Texts</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Sometimes a question asks you to compare texts. Here is Piper's quick routine:</p>
+        <p>🔹 Find each text's <span class="hw">purpose</span>.</p>
+        <p>🔹 Notice the <span class="hw2">features</span>.</p>
+        <p>🔹 Look at the <span class="hw3">language</span>.</p>
+        <p>For example, a story about a lost puppy and a fact sheet about caring for puppies are both about dogs, but they are not the same text type.</p>
+        <p>Topic does not decide the text type. <span class="hw2">Purpose and structure</span> do.</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:52px;">🆚</div>
+        <div class="wonder-label">Same Topic, Different Type</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🐶</span> Story about a puppy = narrative</div>
+          <div class="fact-row"><span class="fact-icon">📄</span> Puppy care fact sheet = informative</div>
+          <div class="fact-row"><span class="fact-icon">📣</span> Adopt puppies poster = persuasive</div>
+          <div class="fact-row"><span class="fact-icon">🧠</span> Topic can stay the same</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="8">
+  <div class="story-page">
+    <div class="page-corner">p.8</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--blue);">Review</span><h2 class="story-title">🧠 Piper's Memory Trick</h2></div>
+    <div class="story-text" data-tts style="margin-bottom:12px;">
+      <p>Remember the three main text types with this sentence:</p>
+      <p style="text-align:center;font-family:'Fredoka One',cursive;font-size:18px;color:var(--reading);margin:12px 0;">"<span class="hw">N</span>imble <span class="hw2">I</span>cebergs <span class="hw3">P</span>oint the way!"</p>
+    </div>
+    <div class="memory-card">
+      <div class="mem-row" onclick="revealMem(this,'m1','Narrative = entertain with story events.')"><span class="mem-letter">N</span><span class="mem-word">Nimble</span><span class="mem-tip" id="m1">Tap to reveal</span></div>
+      <div class="mem-row" onclick="revealMem(this,'m2','Informative = explain facts and ideas.')"><span class="mem-letter">I</span><span class="mem-word">Icebergs</span><span class="mem-tip" id="m2">Tap to reveal</span></div>
+      <div class="mem-row" onclick="revealMem(this,'m3','Persuasive = convince the reader.')"><span class="mem-letter">P</span><span class="mem-word">Point</span><span class="mem-tip" id="m3">Tap to reveal</span></div>
+    </div>
+    <div class="wonder-facts" style="margin-top:14px;">
+      <div class="fact-row"><span class="fact-icon">📖</span> Narrative: characters, setting, events</div>
+      <div class="fact-row"><span class="fact-icon">🧠</span> Informative: facts, headings, diagrams</div>
+      <div class="fact-row"><span class="fact-icon">📣</span> Persuasive: opinion, reasons, strong words</div>
+      <div class="fact-row"><span class="fact-icon">🎯</span> Ask: entertain, inform, or persuade?</div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="9">
+  <div class="quiz-page">
+    <div id="quizActive">
+      <div class="story-header"><span class="chapter-badge" style="background:var(--coral);">🏆 Final Quiz!</span><h2 class="story-title">Text Type Tracker Challenge</h2></div>
+      <p style="font-size:14px;color:#666;margin-bottom:16px;">Answer 6 questions. You need at least <strong>5 correct</strong> to earn the Super Text Tracker Certificate.</p>
+      <div class="quiz-progress-row">
+        <span class="q-counter" id="qCounter">Question 1 of 6</span>
+        <span class="q-score-badge" id="qScoreBadge">Score: 0 / 6</span>
+      </div>
+      <div class="quiz-question-card">
+        <div class="quiz-q-emoji" id="qEmoji">📖</div>
+        <div class="quiz-q-passage" id="qPassage"></div>
+        <div class="quiz-q-text" id="qText"></div>
+      </div>
+      <div class="fquiz-options" id="fquizOptions"></div>
+      <div class="q-result-msg" id="qResultMsg"></div>
+      <button class="next-q-btn" id="nextQBtn" onclick="nextQuestion()" style="display:none;">Next Question →</button>
+    </div>
+    <div id="quizPass" style="display:none;">
+      <div class="result-screen">
+        <div class="result-trophy">🏆</div>
+        <div class="result-title" style="color:#2e7d32;">Brilliant Tracking!</div>
+        <div class="result-score" id="passScore">6 / 6</div>
+        <div class="result-msg" id="passMsg"></div>
+        <button class="proceed-btn" onclick="goToCert()">🎓 Get My Certificate! →</button>
+      </div>
+    </div>
+    <div id="quizFail" style="display:none;">
+      <div class="result-screen">
+        <div class="result-trophy">🌟</div>
+        <div class="result-title" style="color:var(--coral);">Almost There!</div>
+        <div class="result-score" id="failScore">3 / 6</div>
+        <div class="result-msg">Read the clues again and try once more. Strong readers look for several text clues, not just one.</div>
+        <button class="retry-btn" onclick="restartQuiz()">🔄 Try Again!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" data-page="10">
+  <div class="cert-page">
+    <div class="page-corner">🎓</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--yellow);color:#856404;">Certificate</span><h2 class="story-title">Your Super Text Tracker Certificate</h2></div>
+    <div class="cert-controls">
+      <input class="cert-name-input" id="certName" placeholder="Type the child's name here..." oninput="drawCert()"/>
+      <button class="cert-dl-btn" onclick="downloadCert()">⬇ Download PNG</button>
+      <button class="cert-print-btn" onclick="printCert()">🖨 Print</button>
+    </div>
+    <div class="cert-wrap"><canvas id="cert" width="900" height="630"></canvas></div>
+    <p class="cert-hint">Type a name, then download or print the certificate.</p>
+  </div>
+</div>
+
+</div>
+
+<script>
+(function(){const c=document.getElementById('clouds');const items=['☁️','❄️','📰'];for(let i=0;i<6;i++){const el=document.createElement('div');el.className='cloud';el.textContent=items[i%items.length];el.style.top=(Math.random()*80)+'%';el.style.animationDuration=(20+Math.random()*30)+'s';el.style.animationDelay=(Math.random()*20)+'s';el.style.fontSize=(40+Math.random()*30)+'px';c.appendChild(el);}})();
+
+const TOTAL=10;let currentPage=0;let quizPassed=false;
+const pages=document.querySelectorAll('.page');
+const dots=document.getElementById('pageDots');
+for(let i=0;i<=TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.onclick=()=>goToPage(i);dots.appendChild(d);}
+
+function goToPage(n){if(n<0||n>TOTAL)return;if(n===10&&!quizPassed){alert('Pass the quiz first to unlock your certificate! 🌟');return;}stopTTS();pages[currentPage].classList.remove('active');currentPage=n;pages[currentPage].classList.add('active');document.getElementById('prevBtn').disabled=currentPage===0;document.getElementById('nextBtn').disabled=currentPage===TOTAL;document.getElementById('progressFill').style.width=Math.round(currentPage/TOTAL*100)+'%';document.getElementById('progressText').textContent='Page '+(currentPage+1)+' of '+(TOTAL+1);document.querySelectorAll('.dot').forEach((d,i)=>{d.classList.toggle('active',i===currentPage);if(i<currentPage)d.classList.add('visited');});if(currentPage===9)initQuiz();if(currentPage===10)setTimeout(drawCert,120);window.scrollTo({top:0,behavior:'smooth'});}
+function changePage(delta){goToPage(currentPage+delta);}
+
+let isSpeaking=false,utterance=null;
+function toggleTTS(){if(isSpeaking){stopTTS();return;}const el=pages[currentPage].querySelector('[data-tts]')||pages[currentPage].querySelector('.story-text')||pages[currentPage];if(!el)return;speak(el.textContent);}
+function speak(text){if(!('speechSynthesis' in window))return;stopTTS();text=text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{200D}\u{20E3}\u{E0020}-\u{E007F}]/gu,'').replace(/\s+/g,' ').trim();utterance=new SpeechSynthesisUtterance(text);utterance.rate=.78;utterance.pitch=1.12;utterance.lang='en-AU';const voices=speechSynthesis.getVoices();const pref=voices.find(v=>v.name.includes('Karen'))||voices.find(v=>v.name.includes('Samantha'))||voices.find(v=>v.lang.startsWith('en'));if(pref)utterance.voice=pref;utterance.onstart=()=>{isSpeaking=true;document.getElementById('ttsBtn').classList.add('speaking');document.getElementById('ttsBtn').textContent='🔊 Reading...';document.getElementById('ttsStop').style.display='inline-flex';};utterance.onend=resetTTS;utterance.onerror=resetTTS;speechSynthesis.speak(utterance);}
+function stopTTS(){if('speechSynthesis' in window)speechSynthesis.cancel();resetTTS();}
+function resetTTS(){isSpeaking=false;document.getElementById('ttsBtn').classList.remove('speaking');document.getElementById('ttsBtn').textContent='🔊 Read Aloud';document.getElementById('ttsStop').style.display='none';}
+if('speechSynthesis' in window)speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
+
+function miniQuiz(btn,feedbackId){const wrap=btn.closest('.quiz-bubble');wrap.querySelectorAll('.q-opt').forEach(b=>b.style.pointerEvents='none');const correct=wrap.querySelector('[data-correct="true"]');const fb=document.getElementById(feedbackId);if(btn.dataset.correct==='true'){btn.classList.add('correct');fb.innerHTML='<span style="color:#27ae60;">🎉 Correct! You found the right clue.</span>';return;}btn.classList.add('wrong');if(correct)correct.classList.add('correct');fb.innerHTML='<span style="color:#c0392b;">Not quite. The correct answer is highlighted in green.</span>';}
+function revealMem(row,id,text){document.getElementById(id).textContent=text;row.style.background='rgba(26,35,126,.08)';}
+
+const QUESTIONS=[
+  {emoji:'📖',passage:'Luca tiptoed into the cave and heard a tiny dragon sneeze.',q:'This text is most likely...',opts:['narrative','informative','persuasive','a list'],ans:0},
+  {emoji:'🧠',passage:'Koalas sleep for many hours each day and eat eucalyptus leaves.',q:'The main purpose is to...',opts:['persuade','inform','entertain with fantasy','give commands'],ans:1},
+  {emoji:'📣',passage:'Every classroom should have more reading time because books build imagination and knowledge.',q:'Which text type is this?',opts:['narrative','poem','persuasive','procedure'],ans:2},
+  {emoji:'🏷️',passage:'Title: How Volcanoes Erupt. Headings: Magma, Pressure, Lava.',q:'Which feature best hints this is informative?',opts:['dialogue','headings','a villain','a magic ending'],ans:1},
+  {emoji:'🎯',passage:'',q:'Which question helps identify the author\'s purpose?',opts:['How long is the text?','What is the writer trying to do?','How many commas are there?','Is the font big?'],ans:1},
+  {emoji:'🆚',passage:'Text A tells a story about a puppy. Text B explains how to wash a puppy.',q:'These texts are different because they have different...',opts:['topics','authors','purposes','lengths only'],ans:2}
+];
+let qIndex=0,score=0,answered=false;
+function initQuiz(){qIndex=0;score=0;answered=false;document.getElementById('quizActive').style.display='block';document.getElementById('quizPass').style.display='none';document.getElementById('quizFail').style.display='none';renderQuestion();}
+function renderQuestion(){const q=QUESTIONS[qIndex];document.getElementById('qEmoji').textContent=q.emoji;document.getElementById('qPassage').textContent=q.passage;document.getElementById('qPassage').style.display=q.passage?'block':'none';document.getElementById('qText').textContent=q.q;document.getElementById('qCounter').textContent='Question '+(qIndex+1)+' of 6';document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';document.getElementById('qResultMsg').textContent='';document.getElementById('nextQBtn').style.display='none';answered=false;const box=document.getElementById('fquizOptions');box.innerHTML='';q.opts.forEach((opt,i)=>{const b=document.createElement('button');b.className='fq-opt';b.textContent=opt;b.onclick=()=>answerQuestion(i,b);box.appendChild(b);});}
+function answerQuestion(i,btn){if(answered)return;answered=true;const q=QUESTIONS[qIndex];document.querySelectorAll('.fq-opt').forEach(b=>b.classList.add('locked'));if(i===q.ans){btn.classList.add('correct');score++;document.getElementById('qResultMsg').innerHTML='<span style="color:#27ae60;">🎉 Correct!</span>';}else{btn.classList.add('wrong');document.querySelectorAll('.fq-opt')[q.ans].classList.add('correct');document.getElementById('qResultMsg').innerHTML='<span style="color:#c0392b;">Not quite. The correct answer is highlighted.</span>';}document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';document.getElementById('nextQBtn').style.display='block';document.getElementById('nextQBtn').textContent=qIndex===5?'See My Result! 🏁':'Next Question →';}
+function nextQuestion(){qIndex++;if(qIndex>=QUESTIONS.length){showResult();return;}renderQuestion();}
+function showResult(){document.getElementById('quizActive').style.display='none';if(score>=5){quizPassed=true;document.getElementById('quizPass').style.display='block';document.getElementById('passScore').textContent=score+' / 6';document.getElementById('passMsg').textContent=score===6?'Perfect tracking. You spotted every purpose and feature!' : 'Excellent work. You can track text types with confidence!';}else{document.getElementById('quizFail').style.display='block';document.getElementById('failScore').textContent=score+' / 6';}}
+function restartQuiz(){initQuiz();}
+function goToCert(){goToPage(10);}
+
+const canvas=document.getElementById('cert');const ctx=canvas.getContext('2d');
+function drawStar(cx,cy,r,pts,col){ctx.save();ctx.fillStyle=col;ctx.beginPath();for(let i=0;i<pts*2;i++){const a=(i*Math.PI/pts)-Math.PI/2,rd=i%2===0?r:r*.45;i===0?ctx.moveTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a)):ctx.lineTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a));}ctx.closePath();ctx.fill();ctx.restore();}
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();}
+const qrImage=new Image();let qrReady=false;qrImage.crossOrigin='anonymous';qrImage.onload=()=>{qrReady=true;drawCert();};qrImage.src='https://quickchart.io/qr?text='+encodeURIComponent('https://fivetofifteen.com/')+'&size=180';
+function drawCert(){const name=document.getElementById('certName').value.trim()||'Super Reader';const CW=900,CH=630;ctx.clearRect(0,0,CW,CH);const bg=ctx.createLinearGradient(0,0,CW,CH);bg.addColorStop(0,'#fff8f0');bg.addColorStop(.55,'#eef4ff');bg.addColorStop(1,'#f6f0ff');ctx.fillStyle=bg;rr(0,0,CW,CH,20);ctx.fill();ctx.strokeStyle='#1a237e';ctx.lineWidth=6;rr(8,8,CW-16,CH-16,16);ctx.stroke();ctx.strokeStyle='#4d96ff';ctx.lineWidth=2;ctx.setLineDash([8,5]);rr(20,20,CW-40,CH-40,10);ctx.stroke();ctx.setLineDash([]);[[52,52],[CW-52,52],[52,CH-52],[CW-52,CH-52]].forEach(([x,y])=>drawStar(x,y,18,5,'#4d96ff'));ctx.fillStyle='#1a237e';ctx.font='bold 18px "Fredoka One",cursive';ctx.textAlign='center';ctx.fillText('THE TEXT TYPE TRACKER ACADEMY',CW/2,56);ctx.font='64px serif';ctx.fillText('📰',CW/2,140);ctx.fillStyle='#1a237e';ctx.font='bold 40px "Fredoka One",cursive';ctx.fillText('Super Text Tracker Certificate',CW/2,195);ctx.fillStyle='#666';ctx.font='17px "Nunito",sans-serif';ctx.fillText('This certificate is proudly awarded to',CW/2,232);ctx.strokeStyle='#4d96ff';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(CW/2-240,276);ctx.lineTo(CW/2+240,276);ctx.stroke();ctx.fillStyle='#c62828';ctx.font='bold 38px "Fredoka One",cursive';ctx.fillText(name,CW/2,270);ctx.fillStyle='#444';ctx.font='17px "Nunito",sans-serif';ctx.fillText('for expertly identifying narrative, informative, and persuasive texts',CW/2,312);ctx.fillStyle='#1a237e';ctx.font='bold 24px "Fredoka One",cursive';ctx.fillText('Entertain • Inform • Persuade',CW/2,348);ctx.fillStyle='#888';ctx.font='14px "Nunito",sans-serif';ctx.fillText('Mastered: text features, author\'s purpose, and text comparisons',CW/2,376);ctx.font='30px serif';ctx.fillText('📖  🧠  📣  🔎  🎯',CW/2,450);ctx.fillStyle='#ffffff';ctx.strokeStyle='#d7e2f4';ctx.lineWidth=2;rr(CW-154,68,102,102,14);ctx.fill();ctx.stroke();if(qrReady){ctx.drawImage(qrImage,CW-144,78,82,82);}else{ctx.fillStyle='#eef7ff';ctx.fillRect(CW-144,78,82,82);ctx.fillStyle='#1a237e';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('QR loading...',CW-103,122);}ctx.fillStyle='#1a237e';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('Scan to visit',CW-103,185);ctx.fillStyle='#9e9e9e';ctx.font='bold 12px "Nunito",sans-serif';ctx.fillText('Presented by fivetofifteen.com',CW/2,538);const d=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});ctx.fillStyle='#999';ctx.font='12px "Nunito",sans-serif';ctx.fillText('Awarded on '+d,CW/2,560);} 
+function downloadCert(){drawCert();const a=document.createElement('a');a.download='text-type-tracker-certificate.png';a.href=canvas.toDataURL('image/png');a.click();}
+function printCert(){drawCert();const url=canvas.toDataURL('image/png');const w=window.open('','_blank');const html=`<!DOCTYPE html><html><head><title>Certificate</title><style>body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f5f5f5;}img{max-width:100%;}@media print{body{background:#fff;}}</style></head><body><img src="${url}" alt="Certificate"/><\/body><\/html>`;w.document.open();w.document.write(html);w.document.close();w.onload=()=>{w.focus();w.print();};}
+drawCert();
+</script>
+</body>
+</html>

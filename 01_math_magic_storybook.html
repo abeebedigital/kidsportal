@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Magic Number Forest 🌟</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+      /* story-font-boost */
+    html{font-size:17px;}
+    @media (max-width:500px){html{font-size:16px;}}
+:root {
+    --coral: #FF6B6B;
+    --mint: #6BCB77;
+    --blue: #4D96FF;
+    --purple: #7C3AED;
+    --orange: #FF9F1C;
+    --yellow: #FFD93D;
+    --dark: #2D3436;
+    --card-bg: #FFFEF5;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Nunito',sans-serif;background:#FFF8F0;min-height:100vh;padding:16px;}
+  #book{max-width:820px;margin:0 auto;}
+
+  /* NAV */
+  .nav-bar{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:white;border-radius:20px;margin-bottom:10px;border:2px solid #F0E6C8;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+  .home-btn{display:inline-flex;align-items:center;gap:5px;background:var(--mint);color:white;font-family:'Fredoka One',cursive;font-size:15px;padding:8px 18px;border-radius:24px;text-decoration:none;transition:all .2s;}
+  .home-btn:hover{transform:scale(1.05);background:#4db860;}
+  .nav-btn{background:var(--coral);color:white;border:none;font-family:'Fredoka One',cursive;font-size:16px;padding:8px 22px;border-radius:24px;cursor:pointer;transition:all .2s;}
+  .nav-btn:hover{transform:scale(1.05);background:#ff5252;}
+  .nav-btn:disabled{background:#ddd;cursor:not-allowed;transform:none;}
+  .page-dots{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;max-width:300px;}
+  .dot{width:10px;height:10px;border-radius:50%;background:#ddd;cursor:pointer;transition:all .2s;}
+  .dot.active{background:var(--coral);transform:scale(1.3);}
+  .progress-strip{background:white;border-radius:12px;padding:8px 18px;display:flex;align-items:center;gap:12px;margin-bottom:10px;border:2px solid #F0E6C8;}
+  .progress-bar{flex:1;height:8px;background:#F0E6C8;border-radius:4px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--mint),var(--blue));border-radius:4px;transition:width .4s ease;}
+  .progress-label{font-family:'Fredoka One',cursive;font-size:13px;color:#888;white-space:nowrap;}
+
+  /* PAGES */
+  .page{display:none;animation:fadeIn .5s ease;}
+  .page.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+  /* COVER */
+  .cover{background:linear-gradient(160deg,#1a1a2e 0%,#16213e 40%,#0f3460 100%);border-radius:20px;padding:40px 30px;text-align:center;position:relative;overflow:hidden;min-height:520px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .cover-title{font-family:'Fredoka One',cursive;font-size:42px;color:#FFD93D;line-height:1.1;position:relative;z-index:2;margin-bottom:8px;}
+  .cover-sub{font-family:'Fredoka One',cursive;font-size:22px;color:#C77DFF;position:relative;z-index:2;margin-bottom:28px;}
+  .cover-art{width:190px;height:190px;position:relative;z-index:2;margin:0 auto 22px;}
+  .cover-tagline{color:rgba(255,255,255,.7);font-size:14px;position:relative;z-index:2;font-style:italic;}
+
+  /* STORY PAGE */
+  .story-page{background:var(--card-bg);border-radius:20px;padding:28px;min-height:520px;border:3px solid #F0E6C8;position:relative;overflow:hidden;}
+  .page-corner{position:absolute;top:14px;right:18px;font-family:'Fredoka One',cursive;font-size:18px;color:#D4B896;}
+  .story-header{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+  .chapter-badge{background:var(--coral);color:white;font-family:'Fredoka One',cursive;font-size:13px;padding:4px 14px;border-radius:20px;white-space:nowrap;}
+  .story-title{font-family:'Fredoka One',cursive;font-size:24px;color:var(--dark);}
+  .story-body{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+  .story-text{font-size:15px;line-height:1.8;color:#444;}
+  .story-text p{margin-bottom:10px;}
+  .hw{font-weight:800;color:var(--coral);}
+  .story-art-panel{background:linear-gradient(135deg,#E8F5FF,#F0FFF0);border-radius:16px;padding:18px;border:2px dashed #B8D8FF;display:flex;flex-direction:column;align-items:center;gap:8px;}
+
+  /* ACTIVITY */
+  .activity-box{background:#FFF3CD;border:2px solid #FFD93D;border-radius:16px;padding:16px;margin-top:14px;}
+  .activity-title{font-family:'Fredoka One',cursive;font-size:16px;color:#856404;margin-bottom:8px;}
+  .activity-items{display:flex;flex-direction:column;gap:7px;}
+  .activity-item{background:white;border-radius:10px;padding:9px 13px;font-size:14px;color:#333;cursor:pointer;transition:all .2s;border:2px solid transparent;}
+  .activity-item:hover{border-color:var(--blue);transform:translateX(4px);}
+  .activity-item.revealed{background:#E8F5E9;border-color:var(--mint);}
+  .answer-hidden{color:#ccc;}
+  .answer-show{color:var(--mint);font-weight:800;}
+
+  /* MAGIC BOX */
+  .magic-box{background:linear-gradient(135deg,#2D1B69,#11998e);border-radius:16px;padding:18px;color:white;margin-top:16px;position:relative;overflow:hidden;}
+  .magic-title{font-family:'Fredoka One',cursive;font-size:17px;color:#FFD93D;margin-bottom:6px;}
+  .magic-content{font-size:13px;color:rgba(255,255,255,.9);line-height:1.6;}
+
+  /* TRICK */
+  .magic-trick-interactive{background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);border-radius:16px;padding:22px;color:white;text-align:center;margin-top:18px;}
+  .magic-trick-interactive h3{font-family:'Fredoka One',cursive;font-size:19px;color:#FFD93D;margin-bottom:10px;}
+  .trick-step{display:none;animation:fadeIn .4s ease;}
+  .trick-step.active{display:block;}
+  .trick-number-input{width:80px;font-size:26px;font-family:'Fredoka One',cursive;text-align:center;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.4);border-radius:12px;color:white;padding:6px;margin:8px auto;display:block;}
+  .trick-btn{background:#FFD93D;color:#1a1a2e;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:9px 22px;border-radius:24px;cursor:pointer;margin-top:10px;transition:transform .2s;}
+  .trick-btn:hover{transform:scale(1.05);}
+  .trick-reveal{font-family:'Fredoka One',cursive;font-size:28px;color:#C77DFF;margin:10px 0;}
+  .trick-instruction{font-size:13px;color:rgba(255,255,255,.85);line-height:1.6;margin-bottom:8px;}
+
+  /* VISUAL COUNTER */
+  .visual-counter{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin:8px 0;}
+  .counter-item{font-size:24px;cursor:pointer;transition:transform .2s;user-select:none;}
+  .counter-item:hover{transform:scale(1.3);}
+  .counter-item.counted{opacity:.35;transform:scale(.9);}
+  .count-display{font-family:'Fredoka One',cursive;font-size:26px;color:var(--coral);text-align:center;}
+
+  /* CERTIFICATE PAGE */
+  .cert-page{background:var(--card-bg);border-radius:20px;padding:24px;min-height:520px;border:3px solid #F0E6C8;}
+  .cert-controls{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+  .cert-name-input{font-family:'Nunito',sans-serif;font-size:16px;padding:10px 16px;border:2px solid #FFD93D;border-radius:12px;outline:none;flex:1;min-width:180px;color:#333;}
+  .cert-name-input:focus{border-color:var(--purple);}
+  .cert-dl-btn{background:var(--purple);color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:24px;cursor:pointer;transition:transform .15s;white-space:nowrap;}
+  .cert-dl-btn:hover{transform:scale(1.05);}
+  .cert-print-btn{background:#1565C0;color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:24px;cursor:pointer;transition:transform .15s;}
+  .cert-print-btn:hover{transform:scale(1.05);}
+  .cert-wrap{background:white;border-radius:16px;padding:6px;border:3px solid #FFD93D;box-shadow:0 4px 20px rgba(0,0,0,.08);}
+  canvas#cert{width:100%;border-radius:12px;display:block;}
+  .cert-hint{font-size:12px;color:#aaa;margin-top:8px;text-align:center;}
+
+  /* END PAGE */
+  .end-cover{background:linear-gradient(160deg,#1B5E20,#2E7D32,#388E3C);border-radius:20px;padding:40px 30px;text-align:center;position:relative;overflow:hidden;min-height:520px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .end-quote{background:rgba(255,255,255,.15);border-radius:20px;padding:22px;max-width:480px;margin:0 auto 18px;}
+
+  /* GAME GRID */
+  .game-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+  @media(max-width:580px){
+    .story-body{grid-template-columns:1fr;}
+    .cover-title{font-size:30px;}
+    .game-grid{grid-template-columns:1fr;}
+    .cert-controls{flex-direction:column;}
+  }
+</style>
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+<div id="book">
+
+  <div class="progress-strip">
+    <span class="progress-label">📖 Reading...</span>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:5%"></div></div>
+    <span class="progress-label" id="progressText">Page 1 of 20</span>
+  </div>
+
+  <div class="nav-bar">
+    <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Back</button>
+    <div class="page-dots" id="pageDots"></div>
+    <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+  </div>
+  <div style="text-align:center;margin-bottom:10px;"></div>
+
+  <!-- PAGE 0: COVER -->
+  <div class="page active" data-page="0">
+    <div class="cover">
+      <svg style="position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;pointer-events:none;" viewBox="0 0 820 540" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="40" r="2" fill="white" opacity=".8"/><circle cx="120" cy="80" r="1.5" fill="white" opacity=".6"/>
+        <circle cx="200" cy="25" r="2.5" fill="white" opacity=".9"/><circle cx="300" cy="60" r="1.5" fill="white" opacity=".7"/>
+        <circle cx="400" cy="30" r="2" fill="white" opacity=".8"/><circle cx="500" cy="70" r="1.5" fill="white" opacity=".5"/>
+        <circle cx="600" cy="45" r="2" fill="white" opacity=".9"/><circle cx="700" cy="20" r="2.5" fill="white" opacity=".7"/>
+        <circle cx="750" cy="90" r="1.5" fill="white" opacity=".6"/><circle cx="80" cy="150" r="1.5" fill="#FFD93D" opacity=".8"/>
+        <circle cx="740" cy="130" r="1.5" fill="#C77DFF" opacity=".8"/><circle cx="380" cy="110" r="2" fill="#FFD93D" opacity=".6"/>
+        <circle cx="30" cy="300" r="1.5" fill="white" opacity=".6"/><circle cx="790" cy="280" r="2" fill="#C77DFF" opacity=".7"/>
+        <circle cx="100" cy="420" r="1.5" fill="white" opacity=".5"/><circle cx="720" cy="400" r="2" fill="#FFD93D" opacity=".6"/>
+      </svg>
+      <div class="cover-title">🌟 The Magic<br>Number Forest 🌟</div>
+      <div class="cover-sub">Where numbers come alive!</div>
+      <svg class="cover-art" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="100" r="90" fill="none" stroke="#FFD93D" stroke-width="2" stroke-dasharray="8,4" opacity=".4"/>
+        <text x="100" y="72" text-anchor="middle" font-size="55">🦊</text>
+        <text x="50" y="132" text-anchor="middle" font-size="34">🐰</text>
+        <text x="152" y="132" text-anchor="middle" font-size="34">🐻</text>
+        <text x="100" y="176" text-anchor="middle" font-size="27">🍎🍎🍎</text>
+        <text x="22" y="92" text-anchor="middle" font-size="22" fill="#FFD93D" font-family="'Fredoka One',cursive">+</text>
+        <text x="178" y="92" text-anchor="middle" font-size="22" fill="#C77DFF" font-family="'Fredoka One',cursive">-</text>
+      </svg>
+      <p class="cover-tagline">Adventures in adding & taking away · For ages 6–8</p>
+    </div>
+  </div>
+
+  <!-- PAGE 1: Welcome -->
+  <div class="page" data-page="1">
+    <div class="story-page">
+      <div class="page-corner">p.1</div>
+      <div class="story-header"><span class="chapter-badge">Welcome!</span><h2 class="story-title">A Letter to You 📬</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p>Dear Young Explorer,</p>
+          <p>Deep in the <span class="hw">Magic Number Forest</span>, amazing things happen every day! Animals share berries, stars fall from the sky, and a wise old owl knows number secrets that will BLOW YOUR MIND! 🤯</p>
+          <p>In this book, you'll go on <span class="hw">5 adventures</span> with Finn the Fox, Benny the Bear, and Lily the Bunny.</p>
+          <p>Along the way, you'll discover magical tricks that seem impossible — but aren't! Are you ready?</p>
+          <p style="font-style:italic;color:#888;">Tap on things in each page to discover secrets!</p>
+        </div>
+        <div class="story-art-panel">
+          <div style="font-size:50px;text-align:center;">🦊🐻🐰</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#888;">Your friends in the forest</div>
+          <div style="background:white;border-radius:12px;padding:12px;width:100%;margin-top:6px;">
+            <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#888;text-align:center;margin-bottom:8px;">Meet the characters</div>
+            <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+              <div style="text-align:center;padding:8px;background:#FFF3CD;border-radius:10px;"><div style="font-size:28px;">🦊</div><div style="font-size:11px;font-weight:800;color:#856404;">Finn Fox</div><div style="font-size:10px;color:#999;">The clever one</div></div>
+              <div style="text-align:center;padding:8px;background:#E8F5E9;border-radius:10px;"><div style="font-size:28px;">🐻</div><div style="font-size:11px;font-weight:800;color:#2E7D32;">Benny Bear</div><div style="font-size:10px;color:#999;">The friendly one</div></div>
+              <div style="text-align:center;padding:8px;background:#F3E5F5;border-radius:10px;"><div style="font-size:28px;">🐰</div><div style="font-size:11px;font-weight:800;color:#6A1B9A;">Lily Bunny</div><div style="font-size:10px;color:#999;">The fast one</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 2: Benny's Berries -->
+  <div class="page" data-page="2">
+    <div class="story-page">
+      <div class="page-corner">p.2</div>
+      <div class="story-header"><span class="chapter-badge">Story 1</span><h2 class="story-title">🍓 Benny's Berry Basket</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p>One sunny morning, Benny the Bear woke up with a growling tummy. "I'll collect berries for breakfast!" he said.</p>
+          <p>He found a bush with <span class="hw">5 red berries</span> 🍓🍓🍓🍓🍓 and put them all in his basket.</p>
+          <p>Then he found another bush with <span class="hw">3 more berries</span> 🍓🍓🍓 — plump and shiny!</p>
+          <p>He carefully placed them in his basket too. "How many berries do I have now?" Benny wondered.</p>
+          <p><em>Tap each berry below to count them!</em></p>
+        </div>
+        <div class="story-art-panel">
+          <div style="font-size:40px;text-align:center;">🐻</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#888;">Benny and his berries</div>
+          <div style="background:white;border-radius:12px;padding:12px;width:100%;text-align:center;">
+            <div style="font-family:'Fredoka One',cursive;font-size:12px;color:#888;margin-bottom:6px;">🧺 Benny's Basket — tap to count!</div>
+            <div class="visual-counter" id="berryCounter">
+              <span class="counter-item" onclick="countItem(this,'berryCount')">🍓</span><span class="counter-item" onclick="countItem(this,'berryCount')">🍓</span><span class="counter-item" onclick="countItem(this,'berryCount')">🍓</span><span class="counter-item" onclick="countItem(this,'berryCount')">🍓</span><span class="counter-item" onclick="countItem(this,'berryCount')">🍓</span><span class="counter-item" onclick="countItem(this,'berryCount')">🍓</span><span class="counter-item" onclick="countItem(this,'berryCount')">🍓</span><span class="counter-item" onclick="countItem(this,'berryCount')">🍓</span>
+            </div>
+            <div class="count-display" id="berryCount">0 🍓</div>
+            <button onclick="resetCount('berryCounter','berryCount')" style="margin-top:6px;background:none;border:1.5px solid #ddd;border-radius:20px;padding:4px 12px;font-size:12px;cursor:pointer;color:#888;">Reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 3: Sharing Berries -->
+  <div class="page" data-page="3">
+    <div class="story-page">
+      <div class="page-corner">p.3</div>
+      <div class="story-header"><span class="chapter-badge">Story 1</span><h2 class="story-title">🍓 Sharing with Friends</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p>Benny had <span class="hw">8 berries</span> — what a wonderful breakfast!</p>
+          <p>But just then, Finn the Fox came by. "Oh Benny, I'm so hungry," he said sadly.</p>
+          <p>Kind Benny said, "Here Finn, take <span class="hw">3 berries</span>!" Finn's eyes lit up.</p>
+          <p>Lily Bunny hopped by next. "Me too, me too!" Benny smiled and gave her <span class="hw">2 more berries</span>.</p>
+          <p>Now how many berries does Benny have left? <em>Tap to check!</em></p>
+        </div>
+        <div class="story-art-panel">
+          <div style="font-size:32px;text-align:center;">🐻➡️🦊➡️🐰</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:12px;color:#888;">Sharing is caring!</div>
+          <div style="background:white;border-radius:12px;padding:10px;width:100%;">
+            <div style="display:flex;gap:6px;">
+              <div style="flex:1;text-align:center;background:#FFF3CD;border-radius:10px;padding:8px;"><div style="font-size:20px;">🐻</div><div style="font-family:'Fredoka One',cursive;font-size:20px;color:#FF6B6B;">8</div><div style="font-size:10px;color:#999;">Benny</div></div>
+              <div style="flex:1;text-align:center;background:#E8F5E9;border-radius:10px;padding:8px;"><div style="font-size:20px;">🦊</div><div style="font-family:'Fredoka One',cursive;font-size:20px;color:#4CAF50;">3</div><div style="font-size:10px;color:#999;">Finn</div></div>
+              <div style="flex:1;text-align:center;background:#F3E5F5;border-radius:10px;padding:8px;"><div style="font-size:20px;">🐰</div><div style="font-family:'Fredoka One',cursive;font-size:20px;color:#9C27B0;">2</div><div style="font-size:10px;color:#999;">Lily</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="activity-box">
+        <div class="activity-title">🎯 Tap to reveal!</div>
+        <div class="activity-items">
+          <div class="activity-item" onclick="revealAnswer(this)">8 berries − 3 for Finn = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">5 berries left</span></div>
+          <div class="activity-item" onclick="revealAnswer(this)">5 berries − 2 for Lily = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">3 berries left 🐻🍓🍓🍓</span></div>
+          <div class="activity-item" onclick="revealAnswer(this)">8 − 3 − 2 = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">3 🥳 Benny is so kind!</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 4: Magic Trick 1 -->
+  <div class="page" data-page="4">
+    <div class="story-page">
+      <div class="page-corner">p.4</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#7C3AED;">🪄 Magic!</span><h2 class="story-title">Finn's Number Spell</h2></div>
+      <p class="story-text" style="margin-bottom:14px;">Finn the Fox grinned a sly grin. "I know a magic spell," he whispered. "Pick any number — and I'll tell you what you'll get at the end. Every. Single. Time."</p>
+      <div class="magic-trick-interactive">
+        <h3>🦊 Finn's Magic Trick</h3>
+        <div class="trick-step active" id="t1s0"><p class="trick-instruction">Think of any number between 1 and 10. Type it below!</p><input type="number" class="trick-number-input" id="magicNum" min="1" max="10" value="7"/><br><button class="trick-btn" onclick="startTrick()">Start the magic! ✨</button></div>
+        <div class="trick-step" id="t1s1"><p class="trick-instruction">Now... add <strong>5</strong> to your number!</p><div class="trick-reveal" id="t1r1"></div><button class="trick-btn" onclick="trickNext(2)">Done! Next →</button></div>
+        <div class="trick-step" id="t1s2"><p class="trick-instruction">Now... take away <strong>3</strong> from that!</p><div class="trick-reveal" id="t1r2"></div><button class="trick-btn" onclick="trickNext(3)">Done! Next →</button></div>
+        <div class="trick-step" id="t1s3"><p class="trick-instruction">Now... take away your <strong>original</strong> number!</p><div class="trick-reveal" id="t1r3"></div><button class="trick-btn" onclick="trickReveal()">Reveal! 🪄</button></div>
+        <div class="trick-step" id="t1s4"><p class="trick-instruction">Finn smiles and says...</p><div class="trick-reveal">🎩 The answer is always 2! 🎩</div><p class="trick-instruction">No matter what number you started with, it's always 2!</p><button class="trick-btn" onclick="resetTrick()">Try again!</button></div>
+      </div>
+      <div class="magic-box" style="margin-top:14px;"><div class="magic-title">🔍 Finn's Secret</div><div class="magic-content">Adding 5 then taking away 3 is like adding 2. Then taking away your original number leaves just 2! You did real maths without even knowing it!</div></div>
+    </div>
+  </div>
+
+  <!-- PAGE 5: Stars -->
+  <div class="page" data-page="5">
+    <div class="story-page">
+      <div class="page-corner">p.5</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#2196F3;">Story 2</span><h2 class="story-title">⭐ Lily's Falling Stars</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p>One night, Lily Bunny couldn't sleep. She hopped outside and saw <span class="hw">4 shooting stars</span> streak across the sky!</p>
+          <p>"One, two, three, four!" she counted, her ears wiggling with excitement.</p>
+          <p>Then — whoosh! <span class="hw">6 more stars</span> came zooming past, leaving sparkly trails.</p>
+          <p>"Oh my! Oh my!" Lily gasped. She counted on from 4: "Five, six, seven, eight, nine, TEN!"</p>
+        </div>
+        <div class="story-art-panel">
+          <div style="background:linear-gradient(180deg,#0f0c29,#302b63);border-radius:14px;padding:16px;text-align:center;width:100%;">
+            <div style="font-size:30px;margin-bottom:6px;">🌙</div>
+            <div id="starField" style="display:flex;flex-wrap:wrap;gap:3px;justify-content:center;min-height:50px;align-items:center;"></div>
+            <div style="font-family:'Fredoka One',cursive;font-size:20px;color:#FFD93D;margin-top:6px;" id="starCount">0 stars</div>
+            <button onclick="addStars(4,'🌟')" style="background:#FFD93D;border:none;border-radius:20px;padding:5px 12px;font-family:'Fredoka One',cursive;font-size:12px;cursor:pointer;margin:3px;">+4 first stars</button>
+            <button onclick="addStars(6,'⭐')" style="background:#C77DFF;color:white;border:none;border-radius:20px;padding:5px 12px;font-family:'Fredoka One',cursive;font-size:12px;cursor:pointer;margin:3px;">+6 more!</button>
+            <button onclick="clearStars()" style="background:rgba(255,255,255,.1);color:white;border:none;border-radius:20px;padding:4px 10px;font-size:11px;cursor:pointer;margin:3px;">Clear</button>
+            <div style="font-size:28px;margin-top:6px;">🐰</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 6: Stars Morning -->
+  <div class="page" data-page="6">
+    <div class="story-page">
+      <div class="page-corner">p.6</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#2196F3;">Story 2</span><h2 class="story-title">⭐ Stars in the Morning</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p>Lily had counted <span class="hw">10 beautiful stars</span> in the night sky.</p>
+          <p>When the sun started to rise, the bright sunlight made stars disappear!</p>
+          <p>First, <span class="hw">4 stars</span> faded away as pink dawn crept in.</p>
+          <p>Then <span class="hw">3 more stars</span> twinkled out as golden sunlight filled the sky.</p>
+          <p>How many stars remained for Lily to wish upon?</p>
+        </div>
+        <div class="story-art-panel">
+          <div style="background:linear-gradient(180deg,#FF6B35,#FFD93D);border-radius:14px;padding:14px;text-align:center;width:100%;">
+            <div style="font-size:12px;font-family:'Fredoka One',cursive;color:white;margin-bottom:6px;">🌅 Dawn is coming...</div>
+            <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:3px;margin-bottom:6px;" id="morningStars">
+              <span style="font-size:20px;">⭐</span><span style="font-size:20px;">⭐</span><span style="font-size:20px;">⭐</span><span style="font-size:20px;">⭐</span><span style="font-size:20px;">⭐</span><span style="font-size:20px;">⭐</span><span style="font-size:20px;">⭐</span><span style="font-size:20px;">⭐</span><span style="font-size:20px;">⭐</span><span style="font-size:20px;">⭐</span>
+            </div>
+            <button onclick="fadeStars(4)" style="background:rgba(255,255,255,.3);border:none;border-radius:20px;padding:5px 11px;font-family:'Fredoka One',cursive;font-size:11px;cursor:pointer;color:white;margin:3px;">Sunrise! −4 ☀️</button>
+            <button onclick="fadeStars(3)" style="background:rgba(255,255,255,.3);border:none;border-radius:20px;padding:5px 11px;font-family:'Fredoka One',cursive;font-size:11px;cursor:pointer;color:white;margin:3px;">More light! −3 ☀️</button>
+            <div style="font-family:'Fredoka One',cursive;font-size:22px;color:white;margin-top:6px;" id="morningStarCount">10 ⭐ left</div>
+          </div>
+        </div>
+      </div>
+      <div class="activity-box">
+        <div class="activity-title">🌟 Star Sums — tap to check!</div>
+        <div class="activity-items">
+          <div class="activity-item" onclick="revealAnswer(this)">4 + 6 = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">10 ⭐ (all the stars!)</span></div>
+          <div class="activity-item" onclick="revealAnswer(this)">10 − 4 = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">6 ⭐ (after first sunrise)</span></div>
+          <div class="activity-item" onclick="revealAnswer(this)">6 − 3 = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">3 ⭐ (Lily's wishing stars! 🐰)</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 7: Cookie Shop Intro -->
+  <div class="page" data-page="7">
+    <div class="story-page">
+      <div class="page-corner">p.7</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#FF9800;">Story 3</span><h2 class="story-title">🍪 Grandma Owl's Cookie Shop</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p>Deep in the forest was a tiny shop that smelled of cinnamon and honey — <span class="hw">Grandma Owl's Cookie Bakery</span>!</p>
+          <p>Every morning, Grandma Owl 🦉 baked a fresh batch. Today she baked <span class="hw">9 cookies</span> — 5 oat and 4 chocolate chip.</p>
+          <p>Finn, Benny and Lily all rushed over. The smell was simply too good to resist!</p>
+          <p>"One at a time, dears!" said Grandma Owl with a warm smile.</p>
+        </div>
+        <div class="story-art-panel">
+          <div style="background:#FFF8E1;border-radius:14px;padding:14px;text-align:center;border:2px solid #FFD93D;width:100%;">
+            <div style="font-size:36px;">🦉</div>
+            <div style="font-family:'Fredoka One',cursive;font-size:12px;color:#856404;margin:5px 0;">Grandma Owl's Bakery</div>
+            <div style="display:flex;flex-wrap:wrap;gap:3px;justify-content:center;">
+              <span style="font-size:24px;">🍪</span><span style="font-size:24px;">🍪</span><span style="font-size:24px;">🍪</span><span style="font-size:24px;">🍪</span><span style="font-size:24px;">🍪</span><span style="font-size:24px;">🍫</span><span style="font-size:24px;">🍫</span><span style="font-size:24px;">🍫</span><span style="font-size:24px;">🍫</span>
+            </div>
+            <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#856404;margin-top:6px;">9 cookies total!</div>
+            <div style="display:flex;gap:6px;justify-content:center;margin-top:8px;">
+              <div style="background:#FFF3CD;border-radius:8px;padding:5px 10px;font-size:12px;font-weight:800;color:#856404;">5 🍪 oat</div>
+              <div style="background:#FFCCBC;border-radius:8px;padding:5px 10px;font-size:12px;font-weight:800;color:#BF360C;">4 🍫 choc</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="magic-box"><div class="magic-title">🦉 Grandma Owl's Wisdom</div><div class="magic-content">"Did you know," whispered Grandma Owl, "that 5 + 4 is the same as 4 + 5? Numbers don't care which order you add them! That's the Swapping Secret!"</div></div>
+    </div>
+  </div>
+
+  <!-- PAGE 8: Cookie Activity -->
+  <div class="page" data-page="8">
+    <div class="story-page">
+      <div class="page-corner">p.8</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#FF9800;">Story 3</span><h2 class="story-title">🍪 Serving the Customers</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p>Finn came first and chose <span class="hw">2 cookies</span>. "Thank you, Grandma!"</p>
+          <p>Benny waddled in next — very hungry — and took <span class="hw">3 cookies</span>. "These smell divine!"</p>
+          <p>Little Lily hopped up. "Just <span class="hw">1 cookie</span> for me please, Grandma!"</p>
+          <p>Grandma Owl watched her tray get lighter. How many cookies remain?</p>
+          <p><em>Help Grandma by pressing the buttons!</em></p>
+        </div>
+        <div class="story-art-panel">
+          <div style="background:#FFF8E1;border-radius:14px;padding:14px;text-align:center;border:2px dashed #FFD93D;width:100%;">
+            <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#888;margin-bottom:6px;">🧺 Cookie Tray</div>
+            <div style="display:flex;flex-wrap:wrap;gap:3px;justify-content:center;" id="cookieTray">
+              <span style="font-size:22px;">🍪</span><span style="font-size:22px;">🍪</span><span style="font-size:22px;">🍪</span><span style="font-size:22px;">🍪</span><span style="font-size:22px;">🍪</span><span style="font-size:22px;">🍫</span><span style="font-size:22px;">🍫</span><span style="font-size:22px;">🍫</span><span style="font-size:22px;">🍫</span>
+            </div>
+            <div style="font-family:'Fredoka One',cursive;font-size:20px;color:#FF9800;margin-top:6px;" id="cookieCount">9 cookies</div>
+            <div style="display:flex;gap:5px;margin-top:8px;justify-content:center;flex-wrap:wrap;">
+              <button onclick="removeCookies(2)" style="background:#FFF3CD;border:none;border-radius:20px;padding:5px 10px;font-family:'Fredoka One',cursive;font-size:11px;cursor:pointer;color:#856404;">Finn takes 2 🦊</button>
+              <button onclick="removeCookies(3)" style="background:#E8F5E9;border:none;border-radius:20px;padding:5px 10px;font-family:'Fredoka One',cursive;font-size:11px;cursor:pointer;color:#2E7D32;">Benny takes 3 🐻</button>
+              <button onclick="removeCookies(1)" style="background:#F3E5F5;border:none;border-radius:20px;padding:5px 10px;font-family:'Fredoka One',cursive;font-size:11px;cursor:pointer;color:#6A1B9A;">Lily takes 1 🐰</button>
+            </div>
+            <button onclick="resetCookies()" style="background:none;border:1px solid #ddd;border-radius:20px;padding:3px 10px;font-size:11px;cursor:pointer;color:#999;margin-top:5px;">Bake fresh batch!</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 9: Magic Trick 2 -->
+  <div class="page" data-page="9">
+    <div class="story-page">
+      <div class="page-corner">p.9</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#7C3AED;">🪄 Magic!</span><h2 class="story-title">Grandma's Cookie Prediction</h2></div>
+      <p class="story-text" style="margin-bottom:12px;">Grandma Owl said, "Tell me how old you are — and I will tell you a secret number about yourself. Ready?"</p>
+      <div class="magic-trick-interactive">
+        <h3>🦉 Grandma's Age Magic</h3>
+        <div class="trick-step active" id="at0"><p class="trick-instruction">How old are you? (1–20)</p><input type="number" class="trick-number-input" id="ageNum" min="1" max="20" value="7"/><br><button class="trick-btn" onclick="startAgeTrick()">Show me! 🔮</button></div>
+        <div class="trick-step" id="at1"><p class="trick-instruction">Double your age! (add it to itself)</p><div class="trick-reveal" id="as1"></div><button class="trick-btn" onclick="ageTrickNext(2)">Got it! ✓</button></div>
+        <div class="trick-step" id="at2"><p class="trick-instruction">Now add 10 to that number!</p><div class="trick-reveal" id="as2"></div><button class="trick-btn" onclick="ageTrickNext(3)">Done! →</button></div>
+        <div class="trick-step" id="at3"><p class="trick-instruction">Now divide by 2. (cut it in half!)</p><div class="trick-reveal" id="as3"></div><button class="trick-btn" onclick="ageTrickReveal()">What's the secret? 🦉</button></div>
+        <div class="trick-step" id="at4"><div class="trick-reveal" id="ageFinal"></div><p class="trick-instruction">Subtract your age — and you always get 5! Every single time! 🎉</p><button class="trick-btn" onclick="resetAgeTrick()">Try a friend's age!</button></div>
+      </div>
+      <div class="magic-box" style="margin-top:12px;"><div class="magic-title">🔍 The Secret</div><div class="magic-content">Adding 10, then halving, then removing your age? That always leaves exactly 5. Grandma Owl knew maths was the real magic all along! ✨</div></div>
+    </div>
+  </div>
+
+  <!-- PAGE 10: Parade -->
+  <div class="page" data-page="10">
+    <div class="story-page">
+      <div class="page-corner">p.10</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#E91E63;">Story 4</span><h2 class="story-title">🎪 The Big Forest Parade!</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p>Every year, the animals held a grand parade! This year, <span class="hw">7 animals</span> were ready to march!</p>
+          <p>But oh no! It started to rain 🌧️ and <span class="hw">2 animals</span> ran home to get umbrellas.</p>
+          <p>Then the sun came back ☀️ and <span class="hw">4 more friends</span> came running to join!</p>
+          <p>The parade was loud and colourful and full of joy. How many marchers were there at the end?</p>
+        </div>
+        <div class="story-art-panel">
+          <div style="background:linear-gradient(135deg,#FCE4EC,#F3E5F5);border-radius:14px;padding:14px;text-align:center;border:2px solid #F48FB1;width:100%;">
+            <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#880E4F;margin-bottom:6px;">🎺 The Parade!</div>
+            <div style="font-size:22px;margin-bottom:4px;" id="paradeAnimals">🦊🐻🐰🦔🦦🦝🐿️</div>
+            <div style="font-family:'Fredoka One',cursive;font-size:20px;color:#E91E63;" id="paradeCount">7 marchers</div>
+            <div style="display:flex;gap:5px;justify-content:center;margin-top:8px;flex-wrap:wrap;">
+              <button onclick="paradeChange(-2,'Rain! 2 left 🌧️')" style="background:#E3F2FD;border:none;border-radius:20px;padding:5px 10px;font-family:'Fredoka One',cursive;font-size:11px;cursor:pointer;color:#1565C0;">Rain! −2 🌧️</button>
+              <button onclick="paradeChange(4,'Sun! 4 joined ☀️')" style="background:#FFF9C4;border:none;border-radius:20px;padding:5px 10px;font-family:'Fredoka One',cursive;font-size:11px;cursor:pointer;color:#F57F17;">Sun! +4 ☀️</button>
+              <button onclick="resetParade()" style="background:none;border:1px solid #ddd;border-radius:20px;padding:4px 10px;font-size:11px;cursor:pointer;color:#999;">Reset</button>
+            </div>
+            <div style="font-size:11px;color:#999;margin-top:5px;" id="paradeNote"></div>
+          </div>
+        </div>
+      </div>
+      <div class="activity-box">
+        <div class="activity-title">🎺 Parade Maths — tap to reveal!</div>
+        <div class="activity-items">
+          <div class="activity-item" onclick="revealAnswer(this)">7 − 2 = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">5 marchers 😢 (it's raining!)</span></div>
+          <div class="activity-item" onclick="revealAnswer(this)">5 + 4 = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">9 marchers 🎉 (sun is back!)</span></div>
+          <div class="activity-item" onclick="revealAnswer(this)">7 − 2 + 4 = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">9 — best parade EVER! 🎪</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 11: Fish Pond -->
+  <div class="page" data-page="11">
+    <div class="story-page">
+      <div class="page-corner">p.11</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#009688;">Story 5</span><h2 class="story-title">🐟 The Pond Surprise</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p>Behind the old oak tree was a glimmering pond full of colourful fish! 🐟</p>
+          <p>Finn peered in. "I see <span class="hw">3 orange fish</span> and <span class="hw">4 blue fish</span>!" he said excitedly.</p>
+          <p>Benny spotted <span class="hw">2 more purple fish</span> hiding near the rocks.</p>
+          <p>"Let's count all the fish!" said Lily. She counted by colour first, then added them all up. Can you help?</p>
+        </div>
+        <div class="story-art-panel">
+          <div style="background:linear-gradient(180deg,#B3E5FC,#E0F7FA,#80DEEA);border-radius:14px;padding:14px;text-align:center;border:2px solid #4FC3F7;width:100%;">
+            <div style="font-family:'Fredoka One',cursive;font-size:12px;color:#01579B;margin-bottom:6px;">🌊 The Shimmering Pond</div>
+            <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">
+              <div style="background:rgba(255,255,255,.6);border-radius:10px;padding:8px;"><div style="font-size:20px;">🟠🟠🟠</div><div style="font-family:'Fredoka One',cursive;font-size:11px;color:#E65100;margin-top:3px;">Orange: 3</div></div>
+              <div style="background:rgba(255,255,255,.6);border-radius:10px;padding:8px;"><div style="font-size:20px;">🔵🔵🔵🔵</div><div style="font-family:'Fredoka One',cursive;font-size:11px;color:#1565C0;margin-top:3px;">Blue: 4</div></div>
+              <div style="background:rgba(255,255,255,.6);border-radius:10px;padding:8px;"><div style="font-size:20px;">🟣🟣</div><div style="font-family:'Fredoka One',cursive;font-size:11px;color:#6A1B9A;margin-top:3px;">Purple: 2</div></div>
+            </div>
+            <div style="font-family:'Fredoka One',cursive;font-size:16px;color:#01579B;margin-top:8px;">3 + 4 + 2 = ?</div>
+          </div>
+        </div>
+      </div>
+      <div class="activity-box">
+        <div class="activity-title">🐟 Count the fish — tap to reveal!</div>
+        <div class="activity-items">
+          <div class="activity-item" onclick="revealAnswer(this)">Orange + Blue = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">3 + 4 = 7 fish!</span></div>
+          <div class="activity-item" onclick="revealAnswer(this)">7 + Purple fish = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">7 + 2 = 9 fish total! 🐟</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 12: Magic Trick 3 -->
+  <div class="page" data-page="12">
+    <div class="story-page">
+      <div class="page-corner">p.12</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#7C3AED;">🪄 Magic!</span><h2 class="story-title">Lily's Mind-Reading Trick</h2></div>
+      <p class="story-text" style="margin-bottom:12px;">Lily hopped up with big sparkly eyes. "I can read minds!" she said. "Think of two numbers — and I'll know your secret total without you telling me!" The others gasped.</p>
+      <div class="magic-trick-interactive">
+        <h3>🐰 Lily's Mind-Reading Magic</h3>
+        <div class="trick-step active" id="mt0">
+          <p class="trick-instruction">Think of any two numbers (1–10 each):</p>
+          <div style="display:flex;gap:12px;justify-content:center;align-items:center;margin:8px 0;">
+            <input type="number" class="trick-number-input" id="mNum1" min="1" max="10" value="4" style="width:65px;"/>
+            <span style="font-size:22px;color:#FFD93D;">+</span>
+            <input type="number" class="trick-number-input" id="mNum2" min="1" max="10" value="6" style="width:65px;"/>
+          </div>
+          <p class="trick-instruction">Add them in your head. Don't show me!</p>
+          <button class="trick-btn" onclick="startMindTrick()">Lily is thinking... 🔮</button>
+        </div>
+        <div class="trick-step" id="mt1"><p class="trick-instruction">Now double your total! (×2)</p><div class="trick-reveal" id="mr1"></div><button class="trick-btn" onclick="mindTrickNext()">Done! →</button></div>
+        <div class="trick-step" id="mt2"><p class="trick-instruction">Now take away 6 from that!</p><div class="trick-reveal" id="mr2"></div><button class="trick-btn" onclick="mindTrickReveal()">Lily says... 🐰</button></div>
+        <div class="trick-step" id="mt3"><div class="trick-reveal" id="mFinal"></div><p class="trick-instruction">Lily knew! Double the total then minus 6 always lets Lily work backwards to find your original sum! 🎉</p><button class="trick-btn" onclick="resetMindTrick()">Wow! Try again!</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 13: Game Time -->
+  <div class="page" data-page="13">
+    <div class="story-page">
+      <div class="page-corner">p.13</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#FF5722;">🎮 Game Time!</span><h2 class="story-title">Number Jungle Challenge!</h2></div>
+      <p class="story-text" style="margin-bottom:14px;">The animals have set up a challenge course! Answer each question to help them reach the treasure! Tap to reveal answers.</p>
+      <div class="game-grid">
+        <div class="activity-box" style="margin-top:0;">
+          <div class="activity-title" style="font-size:13px;">🦊 Finn's Path</div>
+          <div class="activity-items">
+            <div class="activity-item" onclick="revealAnswer(this)" style="font-size:13px;">3 + 4 = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">7 🎉</span></div>
+            <div class="activity-item" onclick="revealAnswer(this)" style="font-size:13px;">9 − 5 = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">4 🎉</span></div>
+            <div class="activity-item" onclick="revealAnswer(this)" style="font-size:13px;">2 + 8 = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">10 🎉</span></div>
+          </div>
+        </div>
+        <div class="activity-box" style="margin-top:0;border-color:#4CAF50;">
+          <div class="activity-title" style="font-size:13px;color:#2E7D32;">🐻 Benny's Path</div>
+          <div class="activity-items">
+            <div class="activity-item" onclick="revealAnswer(this)" style="font-size:13px;">6 + 3 = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">9 🎉</span></div>
+            <div class="activity-item" onclick="revealAnswer(this)" style="font-size:13px;">10 − 4 = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">6 🎉</span></div>
+            <div class="activity-item" onclick="revealAnswer(this)" style="font-size:13px;">5 + 5 = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">10 🎉</span></div>
+          </div>
+        </div>
+        <div class="activity-box" style="margin-top:0;border-color:#9C27B0;">
+          <div class="activity-title" style="font-size:13px;color:#6A1B9A;">🐰 Lily's Path</div>
+          <div class="activity-items">
+            <div class="activity-item" onclick="revealAnswer(this)" style="font-size:13px;">7 − 3 = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">4 🎉</span></div>
+            <div class="activity-item" onclick="revealAnswer(this)" style="font-size:13px;">4 + 6 = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">10 🎉</span></div>
+            <div class="activity-item" onclick="revealAnswer(this)" style="font-size:13px;">8 − 5 = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">3 🎉</span></div>
+          </div>
+        </div>
+        <div class="activity-box" style="margin-top:0;border-color:#2196F3;">
+          <div class="activity-title" style="font-size:13px;color:#1565C0;">🦉 Grandma's Quiz</div>
+          <div class="activity-items">
+            <div class="activity-item" onclick="revealAnswer(this)" style="font-size:13px;">1 + 9 = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">10 🎉</span></div>
+            <div class="activity-item" onclick="revealAnswer(this)" style="font-size:13px;">7 − 0 = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">7 🎉</span></div>
+            <div class="activity-item" onclick="revealAnswer(this)" style="font-size:13px;">3+3+3 = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">9 🎉</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 14: Campfire -->
+  <div class="page" data-page="14">
+    <div class="story-page">
+      <div class="page-corner">p.14</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#795548;">Story 5</span><h2 class="story-title">🏕️ Camp Fire Counting</h2></div>
+      <div class="story-body">
+        <div class="story-text">
+          <p>As evening fell, all friends gathered around a cosy campfire 🔥 to share stories and roast marshmallows!</p>
+          <p>Benny had <span class="hw">6 marshmallows</span>. He roasted 2 and ate them — yum!</p>
+          <p>Finn found <span class="hw">3 more marshmallows</span> in his backpack and shared them.</p>
+          <p>Lily counted all the marshmallows left. "We have enough for everyone!" she cheered.</p>
+        </div>
+        <div class="story-art-panel">
+          <div style="background:linear-gradient(180deg,#1A1A2E,#16213E,#8B4513);border-radius:14px;padding:14px;text-align:center;width:100%;">
+            <div style="font-size:32px;margin-bottom:4px;">🌲🔥🌲</div>
+            <div style="display:flex;flex-wrap:wrap;gap:3px;justify-content:center;" id="marshmallows">
+              <span style="font-size:18px;">🍡</span><span style="font-size:18px;">🍡</span><span style="font-size:18px;">🍡</span><span style="font-size:18px;">🍡</span><span style="font-size:18px;">🍡</span><span style="font-size:18px;">🍡</span>
+            </div>
+            <div style="font-family:'Fredoka One',cursive;font-size:20px;color:#FFD93D;margin-top:6px;" id="mmCount">6 🍡</div>
+            <div style="display:flex;gap:5px;justify-content:center;margin-top:7px;flex-wrap:wrap;">
+              <button onclick="mmChange(-2,'Benny ate 2!')" style="background:rgba(255,107,107,.3);color:white;border:none;border-radius:20px;padding:5px 10px;font-family:'Fredoka One',cursive;font-size:11px;cursor:pointer;">Eat 2 🐻</button>
+              <button onclick="mmChange(3,'Finn shared 3!')" style="background:rgba(255,217,61,.3);color:white;border:none;border-radius:20px;padding:5px 10px;font-family:'Fredoka One',cursive;font-size:11px;cursor:pointer;">Add 3 🦊</button>
+              <button onclick="resetMM()" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);border:none;border-radius:20px;padding:4px 9px;font-size:10px;cursor:pointer;">Reset</button>
+            </div>
+            <div style="font-size:10px;color:rgba(255,255,255,.6);margin-top:5px;" id="mmNote"></div>
+          </div>
+        </div>
+      </div>
+      <div class="activity-box">
+        <div class="activity-title">🔥 Campfire Sums — tap to check!</div>
+        <div class="activity-items">
+          <div class="activity-item" onclick="revealAnswer(this)">6 − 2 = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">4 (after eating!)</span></div>
+          <div class="activity-item" onclick="revealAnswer(this)">4 + 3 = <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">7 marshmallows 🎉</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 15: Magic Trick 4 -->
+  <div class="page" data-page="15">
+    <div class="story-page">
+      <div class="page-corner">p.15</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#7C3AED;">🪄 Magic!</span><h2 class="story-title">Benny's Campfire Trick</h2></div>
+      <p class="story-text" style="margin-bottom:12px;">By the firelight, Benny stood up tall. "I can guess if a doubled number is even or odd — just from thinking!" Everyone leaned in...</p>
+      <div class="magic-trick-interactive">
+        <h3>🐻 The Even or Odd Detector!</h3>
+        <div class="trick-step active" id="eo0"><p class="trick-instruction">Pick any number from 1 to 20:</p><input type="number" class="trick-number-input" id="eoNum" min="1" max="20" value="5"/><br><button class="trick-btn" onclick="startEO()">Benny will detect it! 🐾</button></div>
+        <div class="trick-step" id="eo1"><p class="trick-instruction">Multiply your number by 2 (double it!):</p><div class="trick-reveal" id="eoR1"></div><button class="trick-btn" onclick="revealEO()">Got it! →</button></div>
+        <div class="trick-step" id="eo2"><div class="trick-reveal" id="eoFinal"></div><p class="trick-instruction" id="eoExp"></p><button class="trick-btn" onclick="resetEO()">Try another!</button></div>
+      </div>
+      <div class="magic-box" style="margin-top:12px;"><div class="magic-title">🐾 Benny's Secret</div><div class="magic-content">When you double any number, the result is ALWAYS even! Adding a number to itself always makes an even number. Benny used maths to seem magical!</div></div>
+    </div>
+  </div>
+
+  <!-- PAGE 16: Grand Quiz -->
+  <div class="page" data-page="16">
+    <div class="story-page">
+      <div class="page-corner">p.16</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#3F51B5;">🏆 Challenge!</span><h2 class="story-title">The Grand Forest Quiz!</h2></div>
+      <p class="story-text" style="margin-bottom:13px;">Grandma Owl says you're nearly a Master Number Explorer! Can you answer all of her hardest questions?</p>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div class="activity-item" onclick="revealAnswer(this)" style="border-radius:12px;padding:12px;background:#EDE7F6;border:2px solid #7E57C2;">🦉 Benny had 10 berries. Ate 4, found 2 more. How many now? <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">10 − 4 + 2 = 8 berries! 🍓</span></div>
+        <div class="activity-item" onclick="revealAnswer(this)" style="border-radius:12px;padding:12px;background:#E8F5E9;border:2px solid #66BB6A;">🌲 5 birds in a tree, 3 flew away, then 6 came. How many? <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">5 − 3 + 6 = 8 birds! 🐦</span></div>
+        <div class="activity-item" onclick="revealAnswer(this)" style="border-radius:12px;padding:12px;background:#FFF3E0;border:2px solid #FFA726;">🍪 Bakery made 7 cookies, sold 3, baked 5 more. Total? <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">7 − 3 + 5 = 9 cookies! 🍪</span></div>
+        <div class="activity-item" onclick="revealAnswer(this)" style="border-radius:12px;padding:12px;background:#FCE4EC;border:2px solid #EC407A;">🐟 Pond had 4 fish, 2 swam away, 5 came back. How many? <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">4 − 2 + 5 = 7 fish! 🐟</span></div>
+        <div class="activity-item" onclick="revealAnswer(this)" style="border-radius:12px;padding:12px;background:#E3F2FD;border:2px solid #42A5F5;">⭐ SUPER: 3 + 4 + 2 − 1 + 5 − 3 = ? <span class="answer-hidden">❓</span><span class="answer-show" style="display:none;">= 10 ⭐ AMAZING!</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 17: What You Learned -->
+  <div class="page" data-page="17">
+    <div class="story-page">
+      <div class="page-corner">p.17</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#009688;">📚 Learning</span><h2 class="story-title">What You Discovered!</h2></div>
+      <p class="story-text" style="margin-bottom:14px;">Throughout your adventures in the Magic Number Forest, you learned amazing things without even realising it! 😄</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="background:#E8F5E9;border-radius:14px;padding:14px;border:2px solid #A5D6A7;"><div style="font-size:28px;margin-bottom:5px;">➕</div><div style="font-family:'Fredoka One',cursive;font-size:15px;color:#2E7D32;margin-bottom:5px;">Adding</div><div style="font-size:13px;color:#555;line-height:1.5;">When more things join — like stars appearing, friends joining the parade, or finding marshmallows!</div></div>
+        <div style="background:#FFEBEE;border-radius:14px;padding:14px;border:2px solid #EF9A9A;"><div style="font-size:28px;margin-bottom:5px;">➖</div><div style="font-family:'Fredoka One',cursive;font-size:15px;color:#C62828;margin-bottom:5px;">Subtracting</div><div style="font-size:13px;color:#555;line-height:1.5;">When things are shared, eaten, or go away — like berries shared with friends or cookies sold at the bakery!</div></div>
+        <div style="background:#FFF3E0;border-radius:14px;padding:14px;border:2px solid #FFCC80;"><div style="font-size:28px;margin-bottom:5px;">🔄</div><div style="font-family:'Fredoka One',cursive;font-size:15px;color:#E65100;margin-bottom:5px;">Swapping Secret</div><div style="font-size:13px;color:#555;line-height:1.5;">5 + 4 = 4 + 5! Numbers don't mind which order you add them! Grandma Owl's favourite fact!</div></div>
+        <div style="background:#EDE7F6;border-radius:14px;padding:14px;border:2px solid #CE93D8;"><div style="font-size:28px;margin-bottom:5px;">🪄</div><div style="font-family:'Fredoka One',cursive;font-size:15px;color:#6A1B9A;margin-bottom:5px;">Number Magic</div><div style="font-size:13px;color:#555;line-height:1.5;">Tricks that always work! Adding then taking away in special ways always gives the same surprise answer!</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 18: Write Your Own -->
+  <div class="page" data-page="18">
+    <div class="story-page">
+      <div class="page-corner">p.18</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#FF5722;">✏️ Create!</span><h2 class="story-title">Write Your Own Story!</h2></div>
+      <p class="story-text" style="margin-bottom:14px;">Now it's YOUR turn! Fill in the blanks to create your own maths adventure!</p>
+      <div style="background:#FFFDE7;border-radius:16px;padding:18px;border:2px dashed #FFD93D;margin-bottom:14px;font-size:15px;line-height:2.5;color:#333;">
+        One day,
+        <input type="text" placeholder="a character" style="border:none;border-bottom:2px solid #FFD93D;background:none;font-size:15px;font-family:'Nunito',sans-serif;width:120px;color:#333;outline:none;"/>
+        found
+        <input type="number" min="1" max="20" placeholder="?" id="sn1" oninput="calcStory()" style="border:none;border-bottom:2px solid #FF6B6B;background:none;font-size:18px;font-family:'Fredoka One',cursive;width:45px;color:#FF6B6B;text-align:center;outline:none;"/>
+        <input type="text" placeholder="objects" style="border:none;border-bottom:2px solid #FFD93D;background:none;font-size:15px;font-family:'Nunito',sans-serif;width:100px;color:#333;outline:none;"/>
+        in the forest. Then
+        <input type="number" min="1" max="20" placeholder="?" id="sn2" oninput="calcStory()" style="border:none;border-bottom:2px solid #4CAF50;background:none;font-size:18px;font-family:'Fredoka One',cursive;width:45px;color:#4CAF50;text-align:center;outline:none;"/>
+        more appeared! In total there were <span id="storyTotal" style="font-family:'Fredoka One',cursive;font-size:24px;color:#7C3AED;">?</span>!
+      </div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-bottom:12px;">
+        <span style="font-size:12px;color:#888;">Tap a number tile:</span>
+        <span onclick="setStoryNum(1)" style="cursor:pointer;background:#FF6B6B;color:white;font-family:'Fredoka One',cursive;font-size:15px;padding:3px 11px;border-radius:8px;">1</span>
+        <span onclick="setStoryNum(2)" style="cursor:pointer;background:#FF9F1C;color:white;font-family:'Fredoka One',cursive;font-size:15px;padding:3px 11px;border-radius:8px;">2</span>
+        <span onclick="setStoryNum(3)" style="cursor:pointer;background:#FFD93D;color:#333;font-family:'Fredoka One',cursive;font-size:15px;padding:3px 11px;border-radius:8px;">3</span>
+        <span onclick="setStoryNum(4)" style="cursor:pointer;background:#6BCB77;color:white;font-family:'Fredoka One',cursive;font-size:15px;padding:3px 11px;border-radius:8px;">4</span>
+        <span onclick="setStoryNum(5)" style="cursor:pointer;background:#4D96FF;color:white;font-family:'Fredoka One',cursive;font-size:15px;padding:3px 11px;border-radius:8px;">5</span>
+        <span onclick="setStoryNum(6)" style="cursor:pointer;background:#C77DFF;color:white;font-family:'Fredoka One',cursive;font-size:15px;padding:3px 11px;border-radius:8px;">6</span>
+        <span onclick="setStoryNum(7)" style="cursor:pointer;background:#FF6B6B;color:white;font-family:'Fredoka One',cursive;font-size:15px;padding:3px 11px;border-radius:8px;">7</span>
+        <span onclick="setStoryNum(8)" style="cursor:pointer;background:#FF9F1C;color:white;font-family:'Fredoka One',cursive;font-size:15px;padding:3px 11px;border-radius:8px;">8</span>
+        <span onclick="setStoryNum(9)" style="cursor:pointer;background:#6BCB77;color:white;font-family:'Fredoka One',cursive;font-size:15px;padding:3px 11px;border-radius:8px;">9</span>
+        <span onclick="setStoryNum(10)" style="cursor:pointer;background:#4D96FF;color:white;font-family:'Fredoka One',cursive;font-size:15px;padding:3px 11px;border-radius:8px;">10</span>
+      </div>
+      <button onclick="calcStory()" style="background:var(--coral);color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:9px 22px;border-radius:24px;cursor:pointer;">✨ Calculate my total!</button>
+    </div>
+  </div>
+
+  <!-- PAGE 19: CERTIFICATE (with download) -->
+  <div class="page" data-page="19">
+    <div class="cert-page">
+      <div class="page-corner">p.19</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#FFD93D;color:#856404;">🏆 Certificate</span><h2 class="story-title">Certificate of Achievement!</h2></div>
+      <div class="cert-controls">
+        <input class="cert-name-input" id="certName" placeholder="Type the child's name here..." oninput="drawCert()"/>
+        <button class="cert-dl-btn" onclick="downloadCert()">⬇ Download PNG</button>
+        <button class="cert-print-btn" onclick="printCert()">🖨 Print</button>
+      </div>
+      <div class="cert-wrap">
+        <canvas id="cert" width="900" height="630"></canvas>
+      </div>
+      <p class="cert-hint">Type the name above, then click Download or Print!</p>
+    </div>
+  </div>
+
+  <!-- PAGE 20: THE END -->
+  <div class="page" data-page="20">
+    <div class="end-cover">
+      <svg style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;" viewBox="0 0 820 540"><circle cx="100" cy="60" r="2" fill="white" opacity=".7"/><circle cx="300" cy="40" r="1.5" fill="white" opacity=".5"/><circle cx="500" cy="80" r="2.5" fill="#FFD93D" opacity=".6"/><circle cx="700" cy="50" r="2" fill="white" opacity=".8"/><circle cx="200" cy="420" r="1.5" fill="white" opacity=".5"/><circle cx="620" cy="400" r="2" fill="#FFD93D" opacity=".5"/></svg>
+      <div style="font-size:56px;position:relative;z-index:2;margin-bottom:14px;">🌳</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:36px;color:#FFD93D;position:relative;z-index:2;margin-bottom:12px;">The End!</div>
+      <div class="end-quote" style="position:relative;z-index:2;">
+        <div style="font-size:26px;margin-bottom:10px;">🦊  🐻  🐰  🦉</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:17px;color:white;margin-bottom:8px;">"Numbers are everywhere — in berries, stars, cookies and friends!"</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.8);line-height:1.7;">Finn, Benny, Lily and Grandma Owl hope you'll look for numbers in your world too. Every day is a maths adventure! 🌟</div>
+      </div>
+      <button onclick="goToPage(0)" style="background:#FFD93D;color:#1B5E20;border:none;font-family:'Fredoka One',cursive;font-size:16px;padding:12px 28px;border-radius:24px;cursor:pointer;position:relative;z-index:2;transition:transform .2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">📖 Read Again!</button>
+    </div>
+  </div>
+
+</div><!-- end book -->
+
+<script>
+const totalPages=20;
+let currentPage=0;
+const pages=document.querySelectorAll('.page');
+const prevBtn=document.getElementById('prevBtn');
+const nextBtn=document.getElementById('nextBtn');
+const dotsContainer=document.getElementById('pageDots');
+for(let i=0;i<=totalPages;i+=2){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.onclick=()=>goToPage(i);dotsContainer.appendChild(d);}
+function goToPage(n){pages[currentPage].classList.remove('active');currentPage=Math.max(0,Math.min(totalPages,n));pages[currentPage].classList.add('active');prevBtn.disabled=currentPage===0;nextBtn.disabled=currentPage===totalPages;document.getElementById('progressFill').style.width=Math.round(currentPage/totalPages*100)+'%';document.getElementById('progressText').textContent='Page '+currentPage+' of '+totalPages;document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i*2===currentPage));if(currentPage===19)setTimeout(drawCert,100);}
+function changePage(d){goToPage(currentPage+d);}
+
+/* Berry counter */
+let berryN=0;
+function countItem(el,id){if(!el.classList.contains('counted')){el.classList.add('counted');berryN++;document.getElementById(id).textContent=berryN+' 🍓';}}
+function resetCount(cid,id){berryN=0;document.querySelectorAll('#'+cid+' .counter-item').forEach(e=>e.classList.remove('counted'));document.getElementById(id).textContent='0 🍓';}
+
+/* Reveal answers */
+function revealAnswer(el){if(el.classList.contains('revealed'))return;el.classList.add('revealed');el.querySelector('.answer-hidden').style.display='none';el.querySelector('.answer-show').style.display='inline';}
+
+/* Stars */
+let starN=0;
+function addStars(n,e){const sf=document.getElementById('starField');for(let i=0;i<n;i++){const s=document.createElement('span');s.textContent=e;s.style.fontSize='20px';sf.appendChild(s);}starN+=n;document.getElementById('starCount').textContent=starN+' stars';}
+function clearStars(){document.getElementById('starField').innerHTML='';starN=0;document.getElementById('starCount').textContent='0 stars';}
+
+/* Morning stars */
+let mStarN=10;
+function fadeStars(n){mStarN=Math.max(0,mStarN-n);const c=document.getElementById('morningStars');c.innerHTML='';for(let i=0;i<mStarN;i++)c.innerHTML+='<span style="font-size:20px;">⭐</span>';document.getElementById('morningStarCount').textContent=mStarN+' ⭐ left';}
+
+/* Cookies */
+let cookN=9;const ckE=['🍪','🍪','🍪','🍪','🍪','🍫','🍫','🍫','🍫'];
+function removeCookies(n){cookN=Math.max(0,cookN-n);const t=document.getElementById('cookieTray');t.innerHTML='';for(let i=0;i<cookN;i++)t.innerHTML+='<span style="font-size:22px;">'+(ckE[i]||'🍪')+'</span>';document.getElementById('cookieCount').textContent=cookN+' cookies';}
+function resetCookies(){cookN=9;document.getElementById('cookieTray').innerHTML=ckE.map(e=>'<span style="font-size:22px;">'+e+'</span>').join('');document.getElementById('cookieCount').textContent='9 cookies';}
+
+/* Parade */
+const pAnims=['🦊','🐻','🐰','🦔','🦦','🦝','🐿️','🦁','🐨','🦫'];let pN=7;
+function paradeChange(n,note){pN=Math.max(0,pN+n);document.getElementById('paradeAnimals').textContent=pAnims.slice(0,pN).join('');document.getElementById('paradeCount').textContent=pN+' marchers';document.getElementById('paradeNote').textContent=note;}
+function resetParade(){pN=7;document.getElementById('paradeAnimals').textContent='🦊🐻🐰🦔🦦🦝🐿️';document.getElementById('paradeCount').textContent='7 marchers';document.getElementById('paradeNote').textContent='';}
+
+/* Marshmallows */
+let mmN=6;
+function mmChange(n,note){mmN=Math.max(0,mmN+n);document.getElementById('marshmallows').innerHTML=Array(mmN).fill('<span style="font-size:18px;">🍡</span>').join('');document.getElementById('mmCount').textContent=mmN+' 🍡';document.getElementById('mmNote').textContent=note;}
+function resetMM(){mmN=6;mmChange(0,'Fresh batch! 🔥');}
+
+/* Trick 1 - Finn */
+let tv=7;
+function startTrick(){tv=parseInt(document.getElementById('magicNum').value)||7;['t1s1','t1s2','t1s3','t1s4'].forEach(id=>document.getElementById(id).classList.remove('active'));document.getElementById('t1s0').classList.remove('active');document.getElementById('t1s1').classList.add('active');document.getElementById('t1r1').textContent=tv+' + 5 = '+(tv+5);}
+function trickNext(s){document.getElementById('t1s'+(s-1)).classList.remove('active');document.getElementById('t1s'+s).classList.add('active');if(s===2)document.getElementById('t1r2').textContent=(tv+5)+' − 3 = '+(tv+2);if(s===3)document.getElementById('t1r3').textContent=(tv+2)+' − '+tv+' = 2';}
+function trickReveal(){document.getElementById('t1s3').classList.remove('active');document.getElementById('t1s4').classList.add('active');}
+function resetTrick(){['t1s1','t1s2','t1s3','t1s4'].forEach(id=>document.getElementById(id).classList.remove('active'));document.getElementById('t1s0').classList.add('active');}
+
+/* Trick 2 - Age */
+let av=7;
+function startAgeTrick(){av=parseInt(document.getElementById('ageNum').value)||7;['at1','at2','at3','at4'].forEach(id=>document.getElementById(id).classList.remove('active'));document.getElementById('at0').classList.remove('active');document.getElementById('at1').classList.add('active');document.getElementById('as1').textContent=av+' × 2 = '+(av*2);}
+function ageTrickNext(s){document.getElementById('at'+(s-1)).classList.remove('active');document.getElementById('at'+s).classList.add('active');if(s===2)document.getElementById('as2').textContent=(av*2)+' + 10 = '+(av*2+10);if(s===3)document.getElementById('as3').textContent=(av*2+10)+' ÷ 2 = '+(av+5);}
+function ageTrickReveal(){document.getElementById('at3').classList.remove('active');document.getElementById('at4').classList.add('active');document.getElementById('ageFinal').textContent=(av+5)+' − '+av+' = 5 🎉';}
+function resetAgeTrick(){['at1','at2','at3','at4'].forEach(id=>document.getElementById(id).classList.remove('active'));document.getElementById('at0').classList.add('active');}
+
+/* Trick 3 - Mind */
+let m1=4,m2=6;
+function startMindTrick(){m1=parseInt(document.getElementById('mNum1').value)||4;m2=parseInt(document.getElementById('mNum2').value)||6;const t=m1+m2;['mt1','mt2','mt3'].forEach(id=>document.getElementById(id).classList.remove('active'));document.getElementById('mt0').classList.remove('active');document.getElementById('mt1').classList.add('active');document.getElementById('mr1').textContent='('+m1+'+'+m2+'='+t+') × 2 = '+(t*2);}
+function mindTrickNext(){const t=m1+m2;document.getElementById('mt1').classList.remove('active');document.getElementById('mt2').classList.add('active');document.getElementById('mr2').textContent=(t*2)+' − 6 = '+(t*2-6);}
+function mindTrickReveal(){const t=m1+m2;document.getElementById('mt2').classList.remove('active');document.getElementById('mt3').classList.add('active');document.getElementById('mFinal').textContent='🐰 "Your total was... '+t+'!" ('+m1+'+'+m2+')';}
+function resetMindTrick(){['mt1','mt2','mt3'].forEach(id=>document.getElementById(id).classList.remove('active'));document.getElementById('mt0').classList.add('active');}
+
+/* Trick 4 - Even/Odd */
+let eoV=5;
+function startEO(){eoV=parseInt(document.getElementById('eoNum').value)||5;document.getElementById('eo0').classList.remove('active');document.getElementById('eo1').classList.add('active');document.getElementById('eoR1').textContent=eoV+' × 2 = '+(eoV*2);}
+function revealEO(){const d=eoV*2;document.getElementById('eo1').classList.remove('active');document.getElementById('eo2').classList.add('active');document.getElementById('eoFinal').textContent='🎉 '+d+' is EVEN!';document.getElementById('eoExp').textContent='Every doubled number is always even! '+eoV+' × 2 = '+d+' — ends in '+(d%10)+'!';}
+function resetEO(){['eo1','eo2'].forEach(id=>document.getElementById(id).classList.remove('active'));document.getElementById('eo0').classList.add('active');}
+
+/* Story creator */
+let storyFocus=1;
+document.getElementById('sn1').addEventListener('focus',()=>storyFocus=1);
+document.getElementById('sn2').addEventListener('focus',()=>storyFocus=2);
+function setStoryNum(n){if(storyFocus===1)document.getElementById('sn1').value=n;else document.getElementById('sn2').value=n;calcStory();}
+function calcStory(){const a=parseInt(document.getElementById('sn1').value)||0,b=parseInt(document.getElementById('sn2').value)||0;document.getElementById('storyTotal').textContent=(a&&b)?a+b+'':'?';}
+
+/* ===== CERTIFICATE CANVAS ===== */
+const certCanvas=document.getElementById('cert');
+const ctx=certCanvas.getContext('2d');
+const CW=900,CH=630;
+
+function drawStar(cx,cy,r,pts,color){ctx.save();ctx.fillStyle=color;ctx.beginPath();for(let i=0;i<pts*2;i++){const a=(i*Math.PI/pts)-Math.PI/2,rd=i%2===0?r:r*.45;i===0?ctx.moveTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a)):ctx.lineTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a));}ctx.closePath();ctx.fill();ctx.restore();}
+
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();}
+const qrImage=new Image();let qrReady=false;qrImage.crossOrigin='anonymous';qrImage.onload=()=>{qrReady=true;drawCert();};qrImage.src='https://quickchart.io/qr?text='+encodeURIComponent('https://fivetofifteen.com/')+'&size=180';
+
+function drawCert(){
+  const name=document.getElementById('certName').value.trim()||'Explorer Name Here';
+  ctx.clearRect(0,0,CW,CH);
+
+  /* background */
+  const bg=ctx.createLinearGradient(0,0,CW,CH);
+  bg.addColorStop(0,'#FFF8F0');bg.addColorStop(.5,'#FFF0F8');bg.addColorStop(1,'#F0F4FF');
+  ctx.fillStyle=bg;rr(0,0,CW,CH,20);ctx.fill();
+
+  /* outer border */
+  ctx.strokeStyle='#FFD93D';ctx.lineWidth=6;rr(8,8,CW-16,CH-16,16);ctx.stroke();
+
+  /* inner dashed border */
+  ctx.strokeStyle='#C77DFF';ctx.lineWidth=2;ctx.setLineDash([8,5]);
+  rr(20,20,CW-40,CH-40,10);ctx.stroke();ctx.setLineDash([]);
+
+  /* corner stars */
+  [[52,52],[CW-52,52],[52,CH-52],[CW-52,CH-52]].forEach(([x,y])=>drawStar(x,y,18,5,'#FFD93D'));
+
+  /* top ribbon */
+  ctx.fillStyle='#7C3AED';rr(CW/2-210,28,420,42,21);ctx.fill();
+  ctx.fillStyle='#FFD93D';ctx.font='bold 17px "Fredoka One",cursive';ctx.textAlign='center';
+  ctx.fillText('⭐  THE MAGIC NUMBER FOREST  ⭐',CW/2,56);
+
+  /* trophy */
+  ctx.font='68px serif';ctx.fillText('🏆',CW/2,148);
+
+  /* title */
+  ctx.fillStyle='#FF6B6B';ctx.font='bold 42px "Fredoka One",cursive';
+  ctx.fillText('Certificate of Achievement!',CW/2,200);
+
+  /* subtitle */
+  ctx.fillStyle='#888';ctx.font='17px "Nunito",sans-serif';
+  ctx.fillText('This is to proudly certify that',CW/2,236);
+
+  /* name underline */
+  ctx.strokeStyle='#FFD93D';ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(CW/2-240,280);ctx.lineTo(CW/2+240,280);ctx.stroke();
+
+  /* name */
+  ctx.fillStyle='#7C3AED';ctx.font='bold 40px "Fredoka One",cursive';
+  ctx.fillText(name,CW/2,274);
+
+  /* description */
+  ctx.fillStyle='#444';ctx.font='17px "Nunito",sans-serif';
+  ctx.fillText('is now an official',CW/2,312);
+
+  ctx.fillStyle='#FF6B6B';ctx.font='bold 25px "Fredoka One",cursive';
+  ctx.fillText('⭐ Magic Number Explorer ⭐',CW/2,344);
+
+  ctx.fillStyle='#444';ctx.font='15px "Nunito",sans-serif';
+  ctx.fillText('of the Magic Number Forest!',CW/2,372);
+
+  /* skill badges */
+  const badges=[
+    {t:'✓ Can add numbers',bg:'#E8F5E9',c:'#2E7D32'},
+    {t:'✓ Can subtract',bg:'#FFEBEE',c:'#C62828'},
+    {t:'✓ Knows magic tricks',bg:'#EDE7F6',c:'#6A1B9A'},
+    {t:'✓ Number Explorer!',bg:'#FFF3E0',c:'#E65100'},
+  ];
+  const bw=168,bh=30,bg2=10,tot=badges.length*(bw+bg2)-bg2;
+  let bx=CW/2-tot/2;
+  badges.forEach(b=>{ctx.fillStyle=b.bg;rr(bx,392,bw,bh,15);ctx.fill();ctx.fillStyle=b.c;ctx.font='bold 12px "Nunito",sans-serif';ctx.textAlign='center';ctx.fillText(b.t,bx+bw/2,411);bx+=bw+bg2;});
+
+  /* characters */
+  ctx.font='36px serif';ctx.textAlign='center';
+  ctx.fillText('🦊  🐻  🐰  🦉',CW/2,474);
+
+  ctx.fillStyle='#ffffff';ctx.strokeStyle='#ece2f4';ctx.lineWidth=2;rr(CW-154,68,102,102,14);ctx.fill();ctx.stroke();
+  if(qrReady){ctx.drawImage(qrImage,CW-144,78,82,82);}else{ctx.fillStyle='#faf1ff';ctx.fillRect(CW-144,78,82,82);ctx.fillStyle='#7C3AED';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('QR loading...',CW-103,122);}
+  ctx.fillStyle='#7C3AED';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('Scan to visit',CW-103,185);
+
+  /* date */
+  const d=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
+  ctx.fillStyle='#9e9e9e';ctx.font='bold 12px "Nunito",sans-serif';ctx.textAlign='center';
+  ctx.fillText('Presented by fivetofifteen.com',CW/2,546);
+  ctx.fillStyle='#bbb';ctx.font='12px "Nunito",sans-serif';
+  ctx.fillText('Awarded on '+d,CW/2,574);
+
+  /* decorative stars */
+  [[80,200],[CW-80,200],[80,420],[CW-80,420],[150,340],[CW-150,340]].forEach(([x,y])=>drawStar(x,y,10,5,'rgba(255,217,61,.4)'));
+}
+
+function downloadCert(){
+  drawCert();
+  const link=document.createElement('a');
+  link.download='magic-number-certificate.png';
+  link.href=certCanvas.toDataURL('image/png');
+  link.click();
+}
+
+function printCert(){
+  drawCert();
+  const dataUrl=certCanvas.toDataURL('image/png');
+  const win=window.open('','_blank');
+  win.document.write('<!DOCTYPE html><html><head><title>Certificate</title><style>body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f5f5f5;}img{max-width:100%;box-shadow:0 4px 20px rgba(0,0,0,.15);border-radius:12px;}@media print{body{background:white;}img{box-shadow:none;width:100%;}}</style></head><body><img src="'+dataUrl+'"/><\\/body><\\/html>');
+  win.document.close();
+  win.onload=()=>{win.focus();win.print();};
+}
+
+/* init */
+drawCert();
+</script>
+</body>
+</html>

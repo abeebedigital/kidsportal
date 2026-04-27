@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>How Rain Happens! 🌧️</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet"/>
+<style>
+    /* story-font-boost */
+    html{font-size:17px;}
+    @media (max-width:500px){html{font-size:16px;}}
+:root{
+  --sand:#f5e6c8;
+  --terracotta:#0f5d96;
+  --jungle:#27ae60;
+  --ocean:#2980b9;
+  --gold:#ffd93d;
+  --purple:#5dade2;
+  --dark:#2c3e50;
+  --card-bg:#fffefb;
+  --warm-bg:#f4fbff;
+  --coral:#4d96ff;
+  --mint:#6bcb77;
+  --blue:#4d96ff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--warm-bg);min-height:100vh;overflow-x:hidden;}
+.cloud{position:fixed;opacity:.08;font-size:60px;z-index:0;animation:drift linear infinite;pointer-events:none;}
+@keyframes drift{from{transform:translateX(-100px)}to{transform:translateX(calc(100vw + 100px))}}
+#app{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:12px;}
+.home-link{display:inline-flex;align-items:center;gap:6px;background:var(--mint);color:white;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;text-decoration:none;transition:all .2s;margin-bottom:10px;}
+.home-link:hover{transform:scale(1.05);background:#4db860;}
+.tts-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.tts-btn{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#4d96ff,#2980b9);color:white;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.tts-btn:hover{transform:scale(1.05);}
+.tts-btn.speaking{background:linear-gradient(135deg,#1d6fd6,#0f5d96);animation:pulse 1s ease infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(77,150,255,.4)}50%{box-shadow:0 0 0 8px rgba(77,150,255,0)}}
+.tts-stop{background:linear-gradient(135deg,#95a5a6,#7f8c8d);color:white;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.progress-strip{background:white;border-radius:12px;padding:8px 16px;display:flex;align-items:center;gap:10px;margin-bottom:8px;border:2px solid #d6ebff;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.progress-bar{flex:1;height:7px;background:#d6ebff;border-radius:4px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--jungle),var(--ocean),var(--purple));border-radius:4px;transition:width .5s ease;}
+.progress-label{font-family:'Fredoka One',cursive;font-size:12px;color:#999;white-space:nowrap;}
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:white;border-radius:16px;margin-bottom:10px;border:2px solid #d6ebff;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.nav-btn{background:var(--coral);color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:8px 22px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.nav-btn:hover{transform:scale(1.06);box-shadow:0 4px 12px rgba(77,150,255,.3);}
+.nav-btn:disabled{background:#ddd;cursor:not-allowed;transform:none;box-shadow:none;color:#999;}
+.page-dots{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;max-width:300px;}
+.dot{width:9px;height:9px;border-radius:50%;background:#ddd;cursor:pointer;transition:all .2s;border:none;padding:0;appearance:none;}
+.dot.active{background:var(--coral);transform:scale(1.3);box-shadow:0 0 6px var(--coral);}
+.dot.visited{background:rgba(77,150,255,.4);}
+.page{display:none;animation:pageIn .5s ease;}
+.page.active{display:block;}
+@keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.cover{
+  background:linear-gradient(160deg,#0f3460 0%,#1d6fd6 50%,#86d7ff 100%);
+  border-radius:22px;border:2px solid rgba(255,255,255,.35);
+  padding:50px 30px;text-align:center;
+  position:relative;overflow:hidden;min-height:540px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.cover-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:420px;height:420px;background:radial-gradient(circle,rgba(255,255,255,.18) 0%,transparent 70%);pointer-events:none;}
+.cover-wonders{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:20px 0;position:relative;z-index:2;}
+.cover-wonder{font-size:38px;animation:wonderBounce var(--wb,3s) ease-in-out infinite var(--wd,0s);}
+@keyframes wonderBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.cover-title{font-family:'Fredoka One',cursive;font-size:38px;color:white;position:relative;z-index:2;line-height:1.15;margin-bottom:8px;text-shadow:0 4px 20px rgba(0,0,0,.25);}
+.cover-sub{font-family:'Fredoka One',cursive;font-size:20px;color:#dff7ff;position:relative;z-index:2;margin-bottom:6px;}
+.cover-tagline{font-size:13px;color:rgba(255,255,255,.78);position:relative;z-index:2;margin-top:16px;font-style:italic;}
+.explorer-anim{font-size:56px;animation:explorerFloat 3s ease-in-out infinite;position:relative;z-index:2;}
+@keyframes explorerFloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-12px) rotate(5deg)}}
+.cover svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
+.story-page{
+  background:var(--card-bg);
+  border-radius:22px;padding:26px;min-height:540px;
+  border:3px solid #d6ebff;
+  position:relative;overflow:hidden;
+  box-shadow:0 4px 20px rgba(0,0,0,.06);
+}
+.page-corner{position:absolute;top:14px;right:16px;font-family:'Fredoka One',cursive;font-size:16px;color:#a7c6de;}
+.story-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.chapter-badge{font-family:'Fredoka One',cursive;font-size:12px;padding:4px 13px;border-radius:16px;white-space:nowrap;color:white;}
+.story-title{font-family:'Fredoka One',cursive;font-size:22px;color:var(--dark);}
+.story-body{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+.story-text{font-size:15px;line-height:1.85;color:#444;}
+.story-text p{margin-bottom:10px;}
+.hw{font-weight:800;color:#0f5d96;}
+.hw2{font-weight:800;color:#2980b9;}
+.hw3{font-weight:800;color:#27ae60;}
+.story-art{border-radius:16px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:8px;border:2px dashed #cfe5f8;background:linear-gradient(135deg,#f7fcff,#eef8ff);}
+.wonder-display{text-align:center;padding:12px;}
+.wonder-emoji{font-size:80px;display:block;margin:8px auto;animation:gentleSpin 30s linear infinite;}
+@keyframes gentleSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.wonder-no-spin{animation:none!important;}
+.wonder-label{font-family:'Fredoka One',cursive;font-size:13px;color:#999;margin-top:4px;}
+.wonder-facts{background:rgba(0,0,0,.03);border-radius:12px;padding:10px 14px;width:100%;border:1px solid rgba(0,0,0,.06);}
+.fact-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:13px;color:#555;}
+.fact-row:last-child{border-bottom:none;}
+.fact-icon{font-size:16px;min-width:22px;}
+.quiz-bubble{
+  background:linear-gradient(135deg,#eef8ff,#e8fbff);
+  border:2px solid #8ec9ff;
+  border-radius:18px;padding:18px;margin-top:16px;
+}
+.quiz-title{font-family:'Fredoka One',cursive;font-size:17px;color:#2980b9;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.q-opt{background:white;border:2px solid #d6ebff;border-radius:12px;padding:10px 14px;font-size:14px;color:var(--dark);cursor:pointer;transition:all .2s;text-align:left;font-family:'Nunito',sans-serif;font-weight:600;}
+.q-opt:hover{background:#eef8ff;border-color:#8ec9ff;transform:translateY(-2px);}
+.q-opt.correct{background:#d4edda;border-color:#27ae60;color:#155724;}
+.q-opt.wrong{background:#f8d7da;border-color:#c0392b;color:#721c24;}
+.quiz-feedback{font-family:'Fredoka One',cursive;font-size:16px;margin-top:10px;min-height:24px;text-align:center;}
+.fun-fact{background:#fff8dc;border:2px solid #ffd93d;border-radius:14px;padding:14px 16px;margin-top:14px;}
+.fun-fact-title{font-family:'Fredoka One',cursive;font-size:15px;color:#8a6b00;margin-bottom:6px;}
+.fun-fact-text{font-size:13px;color:#444;line-height:1.6;}
+.memory-card{background:#eef8ff;border:2px solid #8ec9ff;border-radius:14px;padding:14px;margin-top:14px;}
+.mem-row{display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;transition:background .2s;border-radius:8px;padding:8px;}
+.mem-row:hover{background:rgba(77,150,255,.08);}
+.mem-letter{font-family:'Fredoka One',cursive;font-size:18px;color:#0f5d96;min-width:24px;}
+.mem-word{color:#2980b9;min-width:120px;font-weight:700;}
+.mem-wonder{color:#888;}
+.quiz-page{background:var(--card-bg);border-radius:22px;padding:26px;min-height:540px;border:3px solid #8ec9ff;box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.quiz-progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.q-counter{font-family:'Fredoka One',cursive;font-size:13px;color:#999;}
+.q-score-badge{font-family:'Fredoka One',cursive;font-size:14px;background:#eef8ff;border:2px solid #8ec9ff;padding:4px 14px;border-radius:20px;color:#2980b9;}
+.quiz-question-card{background:white;border-radius:16px;padding:20px;margin-bottom:16px;border:2px solid #d6ebff;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.quiz-q-text{font-family:'Fredoka One',cursive;font-size:19px;color:var(--dark);line-height:1.4;margin-bottom:4px;}
+.quiz-q-emoji{font-size:40px;margin-bottom:10px;}
+.fquiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.fq-opt{background:white;border:2px solid #d6ebff;border-radius:14px;padding:12px 16px;font-size:15px;color:var(--dark);cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif;font-weight:700;}
+.fq-opt:hover:not(.locked){background:#eef8ff;border-color:#8ec9ff;transform:translateY(-2px);}
+.fq-opt.correct{background:#d4edda;border-color:#27ae60;color:#155724;}
+.fq-opt.wrong{background:#f8d7da;border-color:#c0392b;color:#721c24;}
+.fq-opt.locked{cursor:not-allowed;opacity:.7;}
+.q-result-msg{font-family:'Fredoka One',cursive;font-size:16px;text-align:center;min-height:28px;margin-top:8px;}
+.next-q-btn{display:block;margin:12px auto 0;background:linear-gradient(135deg,var(--coral),#73b2ff);color:white;border:none;font-family:'Fredoka One',cursive;font-size:16px;padding:10px 28px;border-radius:22px;cursor:pointer;transition:all .2s;}
+.next-q-btn:hover{transform:scale(1.05);}
+.result-screen{text-align:center;padding:20px 10px;}
+.result-trophy{font-size:80px;margin-bottom:12px;animation:bounce 1s ease infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+.result-title{font-family:'Fredoka One',cursive;font-size:28px;margin-bottom:10px;}
+.result-score{font-family:'Fredoka One',cursive;font-size:48px;color:var(--gold);}
+.result-msg{font-size:16px;color:#888;margin:12px 0 20px;line-height:1.7;}
+.retry-btn{background:linear-gradient(135deg,#e74c3c,#ff6b6b);color:white;border:none;font-family:'Fredoka One',cursive;font-size:18px;padding:12px 32px;border-radius:24px;cursor:pointer;transition:all .2s;margin:8px;}
+.retry-btn:hover{transform:scale(1.06);}
+.proceed-btn{background:linear-gradient(135deg,#27ae60,#2ecc71);color:white;border:none;font-family:'Fredoka One',cursive;font-size:18px;padding:12px 32px;border-radius:24px;cursor:pointer;transition:all .2s;margin:8px;}
+.proceed-btn:hover{transform:scale(1.06);}
+.cert-page{background:var(--card-bg);border-radius:22px;padding:24px;min-height:540px;border:3px solid #ffd93d;box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.cert-controls{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+.cert-name-input{font-family:'Nunito',sans-serif;font-size:16px;padding:10px 16px;border:2px solid #ffd93d;border-radius:12px;outline:none;flex:1;min-width:180px;color:#333;}
+.cert-name-input:focus{border-color:var(--purple);}
+.cert-dl-btn{background:var(--ocean);color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:24px;cursor:pointer;transition:transform .15s;white-space:nowrap;}
+.cert-dl-btn:hover{transform:scale(1.05);}
+.cert-print-btn{background:#1565c0;color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:24px;cursor:pointer;transition:transform .15s;}
+.cert-print-btn:hover{transform:scale(1.05);}
+.cert-wrap{background:white;border-radius:16px;padding:6px;border:3px solid #ffd93d;box-shadow:0 4px 20px rgba(0,0,0,.08);}
+canvas#cert{width:100%;border-radius:12px;display:block;}
+.cert-hint{font-size:12px;color:#aaa;margin-top:8px;text-align:center;}
+.size-row{display:flex;align-items:flex-end;gap:8px;justify-content:center;flex-wrap:wrap;padding:12px 0;}
+.size-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:transform .2s;}
+.size-item:hover{transform:scale(1.1);}
+.size-bar{border-radius:6px 6px 0 0;min-width:34px;display:flex;align-items:flex-end;justify-content:center;font-size:11px;color:white;font-family:'Fredoka One',cursive;padding:4px 2px;}
+.size-label{font-size:10px;color:#888;text-align:center;max-width:54px;font-weight:700;}
+@media(max-width:580px){
+  .story-body{grid-template-columns:1fr;}
+  .cover-title{font-size:26px;}
+  .fquiz-options{grid-template-columns:1fr;}
+  .quiz-options{grid-template-columns:1fr;}
+  .cert-controls{flex-direction:column;}
+}
+</style>
+<script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="natural-read-aloud.js" defer></script>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+
+<div id="clouds"></div>
+
+<div id="app"><div class="tts-bar">
+    <button class="tts-btn" id="ttsBtn" onclick="toggleReadAloud()">🔊 Read Aloud</button>
+    <button class="tts-stop" id="ttsStop" onclick="stopReadAloud()" style="display:none;">⏹ Stop</button>
+  </div>
+
+  <div class="progress-strip">
+    <span class="progress-label">🌧️ Exploring...</span>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <span class="progress-label" id="progressText">Page 1 of 16</span>
+  </div>
+
+  <div class="nav-bar">
+    <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Back</button>
+    <div class="page-dots" id="pageDots"></div>
+    <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+  </div>
+
+  <div class="page active" data-page="0">
+    <div class="cover">
+      <svg viewBox="0 0 820 540" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="40" r="2" fill="white" opacity=".7"/><circle cx="110" cy="84" r="1.5" fill="white" opacity=".6"/>
+        <circle cx="198" cy="28" r="2.2" fill="white" opacity=".7"/><circle cx="300" cy="66" r="1.6" fill="white" opacity=".6"/>
+        <circle cx="406" cy="30" r="2" fill="white" opacity=".5"/><circle cx="520" cy="74" r="1.5" fill="white" opacity=".4"/>
+        <circle cx="632" cy="36" r="2" fill="white" opacity=".6"/><circle cx="734" cy="22" r="2.5" fill="white" opacity=".5"/>
+      </svg>
+      <div class="cover-glow"></div>
+      <div class="explorer-anim">☁️</div>
+      <div class="cover-title">How Rain Happens!</div>
+      <div class="cover-sub">A Water Cycle Adventure for Kids</div>
+      <div class="cover-wonders">
+        <span class="cover-wonder" style="--wb:3s;--wd:0s">🌞</span>
+        <span class="cover-wonder" style="--wb:3.4s;--wd:.2s">💧</span>
+        <span class="cover-wonder" style="--wb:3.8s;--wd:.4s">☁️</span>
+        <span class="cover-wonder" style="--wb:3.2s;--wd:.6s">🌧️</span>
+        <span class="cover-wonder" style="--wb:4s;--wd:.8s">🌈</span>
+      </div>
+      <p class="cover-tagline">Discover how water rises, cools, forms clouds, and falls back down as rain! · For ages 5–9</p>
+    </div>
+  </div>
+
+  <div class="page" data-page="1">
+    <div class="story-page">
+      <div class="page-corner">p.1</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--coral);">Welcome!</span><h2 class="story-title">Meet Raina the Rain Cloud! ☁️</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Hello, little weather explorer! 👋</p>
+          <p>My name is <span class="hw">Raina</span>, and I float high in the sky carrying tiny drops of water.</p>
+          <p>Sometimes I look fluffy and white. Sometimes I grow dark and heavy. And when I cannot hold all my drops anymore... <span class="hw2">it rains!</span></p>
+          <p>Today I will show you the secret path of water — from the sea, to the sky, to the cloud, and back to Earth again.</p>
+          <p>Ready? Let's follow one tiny drop and see where it goes! 💧</p>
+        </div>
+        <div class="story-art">
+          <div style="font-size:70px;">☁️</div>
+          <div class="wonder-label">Raina the Rain Cloud</div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">💧</span> Carries tiny water drops</div>
+            <div class="fact-row"><span class="fact-icon">🌬️</span> Travels through the sky</div>
+            <div class="fact-row"><span class="fact-icon">🌧️</span> Makes rain when heavy</div>
+            <div class="fact-row"><span class="fact-icon">🌈</span> Loves weather stories</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="2">
+    <div class="story-page">
+      <div class="page-corner">p.2</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--ocean);">Chapter 1</span><h2 class="story-title">What Is Rain? 🤔</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Rain is <span class="hw">water</span> that falls from clouds in the sky.</p>
+          <p>But rain does not begin in the cloud. It begins with water on Earth — in <span class="hw2">seas, lakes, rivers, puddles, and wet ground</span>.</p>
+          <p>The Sun warms that water. Then the water starts a big journey called the <span class="hw3">water cycle</span>.</p>
+          <p>A cycle is something that goes around and around. Water keeps moving in a giant loop!</p>
+        </div>
+        <div class="story-art">
+          <div style="font-size:54px;text-align:center;">🌞 ➜ 💧 ➜ ☁️ ➜ 🌧️</div>
+          <div class="wonder-label">The Water Cycle</div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">🌊</span> Water starts on Earth</div>
+            <div class="fact-row"><span class="fact-icon">⬆️</span> Water rises into the air</div>
+            <div class="fact-row"><span class="fact-icon">☁️</span> Clouds form in the sky</div>
+            <div class="fact-row"><span class="fact-icon">🔁</span> The journey repeats again</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="3">
+    <div class="story-page">
+      <div class="page-corner">p.3</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#f39c12;">Step 1</span><h2 class="story-title">🌞 The Sun Starts Everything</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Imagine a small puddle after a rainy day. When the <span class="hw">Sun shines</span> on it, the puddle starts to warm up.</p>
+          <p>Some of the water changes into an invisible gas called <span class="hw2">water vapour</span>.</p>
+          <p>This change is called <span class="hw">evaporation</span>. That is a big word, but it simply means: <span class="hw3">liquid water turns into water vapour and rises</span>.</p>
+          <p>You cannot always see water vapour, but it is there, floating up into the air.</p>
+        </div>
+        <div class="story-art">
+          <div class="wonder-display">
+            <span class="wonder-emoji wonder-no-spin">🌞</span>
+            <div class="wonder-label">Sun warms water</div>
+          </div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">💧</span> Water starts as liquid</div>
+            <div class="fact-row"><span class="fact-icon">🔥</span> Heat gives it energy</div>
+            <div class="fact-row"><span class="fact-icon">⬆️</span> Vapour rises upward</div>
+            <div class="fact-row"><span class="fact-icon">👀</span> Vapour is hard to see</div>
+          </div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🌟 Fun Fact!</div>
+        <div class="fun-fact-text">Clothes drying on a line are using evaporation too. The water in the clothes rises into the air! 👕☀️</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="4">
+    <div class="story-page">
+      <div class="page-corner">p.4</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#4d96ff;">Step 2</span><h2 class="story-title">⬆️ Water Rises Into the Sky</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Once water becomes <span class="hw">water vapour</span>, it floats up into the air.</p>
+          <p>Higher in the sky, the air is <span class="hw2">cooler</span>. That cooler air helps the water change again.</p>
+          <p>So the tiny drop from the puddle keeps rising and rising, almost like it is going on a sky ride!</p>
+          <p>This is why we say the Sun helps water begin its journey.</p>
+        </div>
+        <div class="story-art">
+          <div style="font-size:74px;">💧⬆️☁️</div>
+          <div class="wonder-label">Up, up, up!</div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">🌤️</span> Warm air helps it rise</div>
+            <div class="fact-row"><span class="fact-icon">🧭</span> The journey goes upward</div>
+            <div class="fact-row"><span class="fact-icon">🥶</span> Air gets cooler higher up</div>
+            <div class="fact-row"><span class="fact-icon">☁️</span> That helps clouds begin</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">🧠 Quick Quiz Time!</div>
+        <p style="font-size:14px;color:#555;margin-bottom:10px;">What is evaporation?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅰️ Water freezing into ice</button>
+          <button class="q-opt" onclick="miniQuiz(this,'correct','fb1')">🅱️ Liquid water turning into water vapour</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅲 Rain falling from a cloud</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅳 A cloud changing into snow</button>
+        </div>
+        <div class="quiz-feedback" id="fb1"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="5">
+    <div class="story-page">
+      <div class="page-corner">p.5</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#5dade2;">Step 3</span><h2 class="story-title">☁️ Clouds Begin to Form</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>When water vapour reaches cooler air, it changes again into <span class="hw">tiny water drops</span>.</p>
+          <p>This is called <span class="hw2">condensation</span>.</p>
+          <p>Condensation means water vapour cools down and turns back into tiny liquid drops.</p>
+          <p>Lots of these tiny drops gather together, and that makes a <span class="hw3">cloud</span>!</p>
+        </div>
+        <div class="story-art">
+          <div class="wonder-display">
+            <span class="wonder-emoji wonder-no-spin">☁️</span>
+            <div class="wonder-label">Condensation</div>
+          </div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">🥶</span> Cool air helps</div>
+            <div class="fact-row"><span class="fact-icon">💧</span> Tiny drops form</div>
+            <div class="fact-row"><span class="fact-icon">☁️</span> Drops gather into clouds</div>
+            <div class="fact-row"><span class="fact-icon">🔬</span> Each drop is very small</div>
+          </div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🌟 Fun Fact!</div>
+        <div class="fun-fact-text">A cloud looks soft and fluffy, but it is really made of millions and millions of tiny water drops! ☁️💧</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="6">
+    <div class="story-page">
+      <div class="page-corner">p.6</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#2980b9;">Step 4</span><h2 class="story-title">💧 Tiny Drops Join Together</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Inside the cloud, tiny drops keep bumping into one another.</p>
+          <p>When they join, they grow <span class="hw">bigger and heavier</span>.</p>
+          <p>At first, the cloud can still hold them. But as the drops keep growing, the cloud gets too heavy.</p>
+          <p>That is when the next big weather moment happens!</p>
+        </div>
+        <div class="story-art">
+          <div style="font-size:76px;">☁️💧💧</div>
+          <div class="wonder-label">Growing Drops</div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">➕</span> Small drops join</div>
+            <div class="fact-row"><span class="fact-icon">⚖️</span> Weight increases</div>
+            <div class="fact-row"><span class="fact-icon">🌫️</span> Cloud becomes heavier</div>
+            <div class="fact-row"><span class="fact-icon">⏳</span> Rain is getting close</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">🧠 Quick Quiz Time!</div>
+        <p style="font-size:14px;color:#555;margin-bottom:10px;">What is condensation?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'correct','fb2')">🅰️ Water vapour cooling into tiny drops</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅱️ The Sun warming the sea</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅲 Rain soaking into the ground</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅳 Snow turning into hail</button>
+        </div>
+        <div class="quiz-feedback" id="fb2"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="7">
+    <div class="story-page">
+      <div class="page-corner">p.7</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#1f78d1;">Step 5</span><h2 class="story-title">🌧️ Rain Falls Down</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>When the water drops become too heavy, they fall from the cloud to Earth.</p>
+          <p>This falling water is called <span class="hw">precipitation</span>.</p>
+          <p>When the air is warm, precipitation falls as <span class="hw2">rain</span>.</p>
+          <p>So rain is really just water finishing one part of its giant sky journey! 🌧️</p>
+        </div>
+        <div class="story-art">
+          <div class="wonder-display">
+            <span class="wonder-emoji wonder-no-spin">🌧️</span>
+            <div class="wonder-label">Precipitation</div>
+          </div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">⬇️</span> Heavy drops fall down</div>
+            <div class="fact-row"><span class="fact-icon">🌧️</span> Warm air gives rain</div>
+            <div class="fact-row"><span class="fact-icon">🌍</span> Water returns to Earth</div>
+            <div class="fact-row"><span class="fact-icon">🔁</span> The cycle keeps going</div>
+          </div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🌟 Fun Fact!</div>
+        <div class="fun-fact-text">The same water on Earth has been moving around for a very, very long time. Some rain you see today may have been part of the sea, a river, or even a dinosaur’s puddle long ago! 🦕💧</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="8">
+    <div class="story-page">
+      <div class="page-corner">p.8</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#8e44ad;">Chapter 2</span><h2 class="story-title">❄️ Rain, Snow, or Hail?</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Not all precipitation looks the same.</p>
+          <p>If the air is <span class="hw">warm</span>, water falls as rain.</p>
+          <p>If the air is <span class="hw2">very cold</span>, water can fall as snow, sleet, or hail.</p>
+          <p>So precipitation is the big idea, and <span class="hw3">rain is one kind of precipitation</span>.</p>
+        </div>
+        <div class="story-art">
+          <div style="font-size:58px;text-align:center;">🌧️ ❄️ 🧊</div>
+          <div class="wonder-label">Different kinds of precipitation</div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">🌧️</span> Warm air = rain</div>
+            <div class="fact-row"><span class="fact-icon">❄️</span> Cold air = snow</div>
+            <div class="fact-row"><span class="fact-icon">🧊</span> Stormy cold air = hail</div>
+            <div class="fact-row"><span class="fact-icon">☁️</span> All come from clouds</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">🧠 Quick Quiz Time!</div>
+        <p style="font-size:14px;color:#555;margin-bottom:10px;">What is precipitation?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'correct','fb3')">🅰️ Water falling from clouds to Earth</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅱️ The Sun heating a puddle</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅲 A cloud floating in the wind</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅳 Water hiding underground</button>
+        </div>
+        <div class="quiz-feedback" id="fb3"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="9">
+    <div class="story-page">
+      <div class="page-corner">p.9</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#27ae60;">Chapter 3</span><h2 class="story-title">🌱 Why Rain Is Important</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Rain helps the whole world.</p>
+          <p>It gives water to <span class="hw">plants</span>, <span class="hw2">animals</span>, rivers, lakes, and people.</p>
+          <p>Without rain, many plants would dry up. Rivers would get smaller. Animals would struggle to find water to drink.</p>
+          <p>So when you hear rain tapping on the roof, remember — it is doing an important job! 🌧️💚</p>
+        </div>
+        <div class="story-art">
+          <div class="wonder-display">
+            <span class="wonder-emoji wonder-no-spin">🌱</span>
+            <div class="wonder-label">Rain helps life grow</div>
+          </div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">🌻</span> Helps plants grow</div>
+            <div class="fact-row"><span class="fact-icon">🐸</span> Gives animals water</div>
+            <div class="fact-row"><span class="fact-icon">🏞️</span> Fills rivers and lakes</div>
+            <div class="fact-row"><span class="fact-icon">🚰</span> Helps people too</div>
+          </div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🌟 Fun Fact!</div>
+        <div class="fun-fact-text">Some forests make their own rain! Trees release water into the air, which helps clouds form above them. 🌳☁️</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="10">
+    <div class="story-page">
+      <div class="page-corner">p.10</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#16a085;">Fun Page</span><h2 class="story-title">🌍 Where Does Water Gather?</h2></div>
+      <div class="story-text" data-tts style="margin-bottom:14px;">
+        <p>After rain falls, water can gather in many different places. Tap each card to remember where the journey can begin again!</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="background:#e3f2fd;border-radius:14px;padding:14px;text-align:center;border:2px solid #64b5f6;">
+          <div style="font-size:32px;">🌊</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#1565c0;">Sea</div>
+          <div style="font-size:12px;color:#999;">Huge place for water to gather</div>
+        </div>
+        <div style="background:#e0f7fa;border-radius:14px;padding:14px;text-align:center;border:2px solid #4dd0e1;">
+          <div style="font-size:32px;">🏞️</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#00838f;">River</div>
+          <div style="font-size:12px;color:#999;">Moving water flows along</div>
+        </div>
+        <div style="background:#e8f5e9;border-radius:14px;padding:14px;text-align:center;border:2px solid #81c784;">
+          <div style="font-size:32px;">🪴</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#2e7d32;">Soil</div>
+          <div style="font-size:12px;color:#999;">Rain can soak into the ground</div>
+        </div>
+        <div style="background:#fff3e0;border-radius:14px;padding:14px;text-align:center;border:2px solid #ffb74d;">
+          <div style="font-size:32px;">💧</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#ef6c00;">Puddle</div>
+          <div style="font-size:12px;color:#999;">Small water that can dry up fast</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="11">
+    <div class="story-page">
+      <div class="page-corner">p.11</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--ocean);">Fun Page</span><h2 class="story-title">📏 What Falls From Clouds?</h2></div>
+      <div class="story-text" data-tts style="margin-bottom:16px;">
+        <p>Different weather can fall from clouds. The taller the bar, the more common it is for young learners to hear about it. Tap a bar to learn more!</p>
+      </div>
+      <div class="size-row">
+        <div class="size-item" onclick="showInfo('Rain is the most common kind of precipitation in many places.')">
+          <div class="size-bar" style="height:132px;background:linear-gradient(180deg,#2980b9,#4d96ff);width:40px;">Rain</div>
+          <div class="size-label">🌧️ Rain</div>
+        </div>
+        <div class="size-item" onclick="showInfo('Snow forms when the air is cold enough for flakes to stay frozen.')">
+          <div class="size-bar" style="height:92px;background:linear-gradient(180deg,#74b9ff,#b2ebf2);width:40px;">Snow</div>
+          <div class="size-label">❄️ Snow</div>
+        </div>
+        <div class="size-item" onclick="showInfo('Hail forms when ice bounces around inside storm clouds.')">
+          <div class="size-bar" style="height:58px;background:linear-gradient(180deg,#95a5a6,#dfe6e9);width:40px;">Hail</div>
+          <div class="size-label">🧊 Hail</div>
+        </div>
+        <div class="size-item" onclick="showInfo('Sleet is icy rain that falls in very cold weather.')">
+          <div class="size-bar" style="height:46px;background:linear-gradient(180deg,#7f8c8d,#bdc3c7);width:40px;">Sleet</div>
+          <div class="size-label">🌨️ Sleet</div>
+        </div>
+      </div>
+      <div style="text-align:center;font-family:'Fredoka One',cursive;font-size:14px;color:#999;margin:8px 0;">⬆️ Tap a bar!</div>
+      <div style="text-align:center;font-family:'Fredoka One',cursive;font-size:15px;color:var(--ocean);min-height:40px;padding:8px;" id="rainInfo">👆 Tap a bar to learn more!</div>
+    </div>
+  </div>
+
+  <div class="page" data-page="12">
+    <div class="story-page">
+      <div class="page-corner">p.12</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--purple);">Memory Trick</span><h2 class="story-title">🧠 Remember the Rain Steps!</h2></div>
+      <div class="story-text" data-tts style="margin-bottom:14px;">
+        <p>Use this easy sentence:</p>
+        <p style="text-align:center;font-family:'Fredoka One',cursive;font-size:18px;color:var(--terracotta);margin:12px 0;">🌟 "<span class="hw">S</span>unny <span class="hw">V</span>apour <span class="hw">C</span>ools, <span class="hw">C</span>louds <span class="hw">R</span>ain!" 🌟</p>
+        <p>Tap each row to reveal what it means! 👇</p>
+      </div>
+      <div class="memory-card">
+        <div class="mem-row" onclick="revealMem(this)">
+          <span class="mem-letter">S</span>
+          <span class="mem-word">Sunny</span>
+          <span class="mem-wonder" id="mw1" style="color:#ccc;">🌞 ???</span>
+        </div>
+        <div class="mem-row" onclick="revealMem(this)">
+          <span class="mem-letter">V</span>
+          <span class="mem-word">Vapour</span>
+          <span class="mem-wonder" id="mw2" style="color:#ccc;">💧 ???</span>
+        </div>
+        <div class="mem-row" onclick="revealMem(this)">
+          <span class="mem-letter">C</span>
+          <span class="mem-word">Cools</span>
+          <span class="mem-wonder" id="mw3" style="color:#ccc;">🥶 ???</span>
+        </div>
+        <div class="mem-row" onclick="revealMem(this)">
+          <span class="mem-letter">C</span>
+          <span class="mem-word">Clouds</span>
+          <span class="mem-wonder" id="mw4" style="color:#ccc;">☁️ ???</span>
+        </div>
+        <div class="mem-row" onclick="revealMem(this)">
+          <span class="mem-letter">R</span>
+          <span class="mem-word">Rain</span>
+          <span class="mem-wonder" id="mw5" style="color:#ccc;">🌧️ ???</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="13">
+    <div class="story-page">
+      <div class="page-corner">p.13</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#4d96ff;">Review</span><h2 class="story-title">✅ What We Learned</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Let's check the whole journey one more time:</p>
+          <p><span class="hw">1.</span> The Sun warms water.</p>
+          <p><span class="hw">2.</span> Water changes into water vapour and rises.</p>
+          <p><span class="hw">3.</span> Cooler air causes condensation.</p>
+          <p><span class="hw">4.</span> Tiny drops gather into clouds.</p>
+          <p><span class="hw">5.</span> Big heavy drops fall as precipitation.</p>
+          <p><span class="hw">6.</span> Water gathers again on Earth and the cycle repeats!</p>
+        </div>
+        <div class="story-art">
+          <div style="font-size:64px;">🌞💧☁️🌧️🌊</div>
+          <div class="wonder-label">The water cycle goes round and round!</div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🎯 Ready?</div>
+        <div class="fun-fact-text">You are ready for the final rain challenge. See if you can score 5 out of 6 or better! 🌟</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="14">
+    <div class="quiz-page" id="quizPage">
+      <div id="quizActive">
+        <div class="story-header"><span class="chapter-badge" style="background:var(--purple);">🏆 Final Quiz!</span><h2 class="story-title">The Rain Challenge!</h2></div>
+        <p style="font-size:14px;color:#666;margin-bottom:16px;">Raina wants to test what you've learned! Answer 6 questions. You need <strong>at least 5 correct</strong> to earn your certificate! 🌟</p>
+        <div class="quiz-progress-row">
+          <span class="q-counter" id="qCounter">Question 1 of 6</span>
+          <span class="q-score-badge" id="qScoreBadge">Score: 0 / 6</span>
+        </div>
+        <div class="quiz-question-card">
+          <div class="quiz-q-emoji" id="qEmoji">🌞</div>
+          <div class="quiz-q-text" id="qText"></div>
+        </div>
+        <div class="fquiz-options" id="fquizOptions"></div>
+        <div class="q-result-msg" id="qResultMsg"></div>
+        <button class="next-q-btn" id="nextQBtn" onclick="nextQuestion()" style="display:none;">Next Question →</button>
+      </div>
+      <div id="quizPass" style="display:none;">
+        <div class="result-screen">
+          <div class="result-trophy">🏆</div>
+          <div class="result-title" style="color:var(--jungle);">AMAZING! You Did It!</div>
+          <div class="result-score" id="passScore">6 / 6</div>
+          <div class="result-msg" id="passMsg"></div>
+          <button class="proceed-btn" onclick="goToCertificate()">🎓 Get My Certificate! →</button>
+        </div>
+      </div>
+      <div id="quizFail" style="display:none;">
+        <div class="result-screen">
+          <div class="result-trophy">🌟</div>
+          <div class="result-title" style="color:var(--coral);">Almost There!</div>
+          <div class="result-score" id="failScore">3 / 6</div>
+          <div class="result-msg">You need at least 5 correct answers to earn your certificate.<br>Don't worry — you can try again! Read the rain story once more and come back stronger! 💪</div>
+          <button class="retry-btn" onclick="restartQuiz()">🔄 Try Again!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="15">
+    <div class="cert-page">
+      <div class="page-corner">🎓</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#ffd93d;color:#856404;">🏆 Certificate</span><h2 class="story-title">Your Rain Explorer Certificate!</h2></div>
+      <div class="cert-controls">
+        <input class="cert-name-input" id="certName" placeholder="Type the child's name here..." oninput="drawCert()"/>
+        <button class="cert-dl-btn" onclick="downloadCert()">⬇ Download PNG</button>
+        <button class="cert-print-btn" onclick="printCert()">🖨 Print</button>
+      </div>
+      <div class="cert-wrap">
+        <canvas id="cert" width="900" height="630"></canvas>
+      </div>
+      <p class="cert-hint">Type the name above, then click Download or Print!</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const c=document.getElementById('clouds');
+  const emojis=['☁️','🌦️','💧'];
+  for(let i=0;i<6;i++){
+    const el=document.createElement('div');
+    el.className='cloud';
+    el.textContent=emojis[i%emojis.length];
+    el.style.top=(Math.random()*80)+'%';
+    el.style.animationDuration=(20+Math.random()*30)+'s';
+    el.style.animationDelay=(Math.random()*20)+'s';
+    el.style.fontSize=(40+Math.random()*30)+'px';
+    c.appendChild(el);
+  }
+})();
+
+const TOTAL=15;
+let currentPage=0;
+const pages=document.querySelectorAll('.page');
+const prevBtn=document.getElementById('prevBtn');
+const nextBtn=document.getElementById('nextBtn');
+const dotsContainer=document.getElementById('pageDots');
+
+for(let i=0;i<=TOTAL;i++){
+  const d=document.createElement('button');
+  d.className='dot'+(i===0?' active':'');
+  d.onclick=()=>goToPage(i);
+  dotsContainer.appendChild(d);
+}
+
+function goToPage(n){
+  if(n<0||n>TOTAL)return;
+  if(n===15&&!quizPassed){alert('You need to pass the quiz with at least 5/6 to get your certificate! 🌟');return;}
+  stopReadAloud();
+  pages[currentPage].classList.remove('active');
+  currentPage=n;
+  pages[currentPage].classList.add('active');
+  prevBtn.disabled=currentPage===0;
+  nextBtn.disabled=currentPage===TOTAL;
+  document.getElementById('progressFill').style.width=Math.round(currentPage/TOTAL*100)+'%';
+  document.getElementById('progressText').textContent='Page '+(currentPage+1)+' of '+(TOTAL+1);
+  document.querySelectorAll('.dot').forEach((d,i)=>{
+    d.classList.toggle('active',i===currentPage);
+    if(i<currentPage)d.classList.add('visited');
+  });
+  if(currentPage===14)initQuiz();
+  if(currentPage===15)setTimeout(drawCert,120);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function changePage(d){goToPage(currentPage+d);}
+
+let isSpeaking=false;
+let speechUtterance=null;
+
+function toggleReadAloud(){
+  if(isSpeaking){stopReadAloud();return;}
+  const activePage=pages[currentPage];
+  const ttsEl=activePage.querySelector('[data-tts]');
+  if(!ttsEl){
+    const fallback=activePage.querySelector('.story-text')||activePage.querySelector('.story-page');
+    if(!fallback)return;
+    speakText(fallback.textContent);
+    return;
+  }
+  speakText(ttsEl.textContent);
+}
+
+function cleanForSpeech(text){
+  text=text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{200D}\u{20E3}\u{E0020}-\u{E007F}]/gu,'');
+  text=text.replace(/[☀☿♀♂♃♆⛢⭐✨✈️⚡🅰🅱🅲🅳←→⬆️⬇️▶️◀️★●►]/g,'');
+  text=text.replace(/\s+/g,' ').trim();
+  text=text.replace(/\s*[—–]\s*/g,', ');
+  text=text.replace(/\s*\.\.\.\s*/g,'. ');
+  text=text.replace(/([.!?])\s+/g,'$1 ... ');
+  return text;
+}
+
+function speakText(text){
+  if(!('speechSynthesis' in window))return;
+  stopReadAloud();
+  text=cleanForSpeech(text);
+  speechUtterance=new SpeechSynthesisUtterance(text);
+  speechUtterance.rate=0.78;
+  speechUtterance.pitch=1.15;
+  speechUtterance.volume=1;
+  speechUtterance.lang='en-US';
+  const voices=speechSynthesis.getVoices();
+  const preferred=voices.find(v=>v.name.includes('Samantha'))
+    ||voices.find(v=>v.name.includes('Karen'))
+    ||voices.find(v=>v.name.includes('Google UK English Female'))
+    ||voices.find(v=>v.name.includes('Google')&&v.lang.startsWith('en'))
+    ||voices.find(v=>v.lang.startsWith('en')&&v.name.toLowerCase().includes('female'))
+    ||voices.find(v=>v.lang.startsWith('en'));
+  if(preferred)speechUtterance.voice=preferred;
+  speechUtterance.onstart=()=>{
+    isSpeaking=true;
+    document.getElementById('ttsBtn').classList.add('speaking');
+    document.getElementById('ttsBtn').textContent='🔊 Reading...';
+    document.getElementById('ttsStop').style.display='inline-flex';
+  };
+  speechUtterance.onend=()=>{resetTTSUI();};
+  speechUtterance.onerror=()=>{resetTTSUI();};
+  speechSynthesis.speak(speechUtterance);
+}
+
+function stopReadAloud(){
+  if('speechSynthesis' in window)speechSynthesis.cancel();
+  resetTTSUI();
+}
+
+function resetTTSUI(){
+  isSpeaking=false;
+  document.getElementById('ttsBtn').classList.remove('speaking');
+  document.getElementById('ttsBtn').textContent='🔊 Read Aloud';
+  document.getElementById('ttsStop').style.display='none';
+}
+
+if('speechSynthesis' in window){
+  speechSynthesis.onvoiceschanged=()=>{speechSynthesis.getVoices();};
+}
+
+function miniQuiz(btn,type,fbId){
+  const container=btn.closest('.quiz-bubble');
+  const btns=container.querySelectorAll('.q-opt');
+  btns.forEach(b=>b.style.pointerEvents='none');
+  const fb=document.getElementById(fbId);
+  if(type==='correct'){
+    btn.classList.add('correct');
+    fb.innerHTML='<span style="color:#27ae60;">🎉 Correct! Great weather thinking!</span>';
+  } else {
+    btn.classList.add('wrong');
+    btns.forEach(b=>{if(b.onclick&&b.onclick.toString().includes("'correct'"))b.classList.add('correct');});
+    fb.innerHTML='<span style="color:#c0392b;">Not quite! The green one is correct. Keep going! 💪</span>';
+  }
+}
+
+function showInfo(msg){document.getElementById('rainInfo').textContent='✨ '+msg;}
+
+const memAnswers=[
+  '🌞 Sun warms water!',
+  '💧 Vapour rises up!',
+  '🥶 Cooler air helps!',
+  '☁️ Clouds form!',
+  '🌧️ Rain falls down!'
+];
+
+function revealMem(row){
+  const spans=row.querySelectorAll('.mem-wonder');
+  if(!spans.length)return;
+  const span=spans[0];
+  const idx=parseInt(span.id.replace('mw',''))-1;
+  if(idx>=0&&idx<memAnswers.length){
+    span.textContent=memAnswers[idx];
+    span.style.color='var(--ocean)';
+    row.style.background='rgba(77,150,255,.1)';
+  }
+}
+
+const QUESTIONS=[
+  {emoji:'🌞',q:'What helps water begin its journey into the air?',opts:['The Moon','The Sun','A mountain','A bird'],ans:1},
+  {emoji:'💧',q:'What is evaporation?',opts:['Rain falling down','Water turning into vapour','Clouds freezing','Snow melting'],ans:1},
+  {emoji:'☁️',q:'What is condensation?',opts:['Water vapour cooling into tiny drops','Rain soaking into soil','Sun shining on the sea','Hail bouncing'],ans:0},
+  {emoji:'🌧️',q:'What do we call water falling from clouds?',opts:['Decoration','Precipitation','Rotation','Reflection'],ans:1},
+  {emoji:'❄️',q:'What might precipitation become if the air is very cold?',opts:['Sand','Fire','Snow or hail','Smoke'],ans:2},
+  {emoji:'🌱',q:'Why is rain important?',opts:['It helps plants, animals, rivers, and people','It makes clouds disappear','It stops rivers','It turns the sky green'],ans:0},
+];
+
+let qIdx=0,score=0,answered=false,quizPassed=false;
+
+function initQuiz(){
+  qIdx=0;score=0;answered=false;
+  document.getElementById('quizActive').style.display='block';
+  document.getElementById('quizPass').style.display='none';
+  document.getElementById('quizFail').style.display='none';
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q=QUESTIONS[qIdx];
+  document.getElementById('qEmoji').textContent=q.emoji;
+  document.getElementById('qText').textContent=q.q;
+  document.getElementById('qCounter').textContent='Question '+(qIdx+1)+' of 6';
+  document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';
+  document.getElementById('qResultMsg').textContent='';
+  document.getElementById('nextQBtn').style.display='none';
+  answered=false;
+  const opts=document.getElementById('fquizOptions');
+  opts.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const btn=document.createElement('button');
+    btn.className='fq-opt';
+    btn.textContent=o;
+    btn.onclick=()=>answerQ(i,btn);
+    opts.appendChild(btn);
+  });
+}
+
+function answerQ(i,btn){
+  if(answered)return;
+  answered=true;
+  const q=QUESTIONS[qIdx];
+  const allBtns=document.querySelectorAll('.fq-opt');
+  allBtns.forEach(b=>b.classList.add('locked'));
+  const msg=document.getElementById('qResultMsg');
+  if(i===q.ans){
+    btn.classList.add('correct');
+    score++;
+    const praise=['🎉 Fantastic!','🌟 Brilliant!','✨ Super Smart!','☁️ Weather Hero!','🎊 You Rock!'];
+    msg.innerHTML='<span style="color:#27ae60;">'+praise[Math.floor(Math.random()*praise.length)]+'</span>';
+  } else {
+    btn.classList.add('wrong');
+    allBtns[q.ans].classList.add('correct');
+    msg.innerHTML='<span style="color:#c0392b;">Oops! The correct answer is highlighted in green. 💪</span>';
+  }
+  document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';
+  document.getElementById('nextQBtn').style.display='block';
+  document.getElementById('nextQBtn').textContent=qIdx===5?'See My Result! 🏁':'Next Question →';
+}
+
+function nextQuestion(){
+  qIdx++;
+  if(qIdx>=6){showResult();return;}
+  renderQuestion();
+}
+
+function showResult(){
+  document.getElementById('quizActive').style.display='none';
+  if(score>=5){
+    quizPassed=true;
+    document.getElementById('quizPass').style.display='block';
+    document.getElementById('passScore').textContent=score+' / 6';
+    const msgs={5:'Wonderful work! You understand the water cycle really well! 🌧️✨',6:'PERFECT SCORE! You are a true Rain Explorer! ☁️🏆🌈'};
+    document.getElementById('passMsg').innerHTML=msgs[score]||'Amazing work, Explorer!';
+  } else {
+    document.getElementById('quizFail').style.display='block';
+    document.getElementById('failScore').textContent=score+' / 6';
+  }
+}
+
+function restartQuiz(){initQuiz();}
+function goToCertificate(){goToPage(15);}
+
+const certCanvas=document.getElementById('cert');
+const ctx=certCanvas.getContext('2d');
+const CW=900,CH=630;
+
+function drawStarShape(cx,cy,r,pts,color){
+  ctx.save();ctx.fillStyle=color;ctx.beginPath();
+  for(let i=0;i<pts*2;i++){const a=(i*Math.PI/pts)-Math.PI/2,rd=i%2===0?r:r*.45;i===0?ctx.moveTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a)):ctx.lineTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a));}
+  ctx.closePath();ctx.fill();ctx.restore();
+}
+function rr(x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();
+}
+const qrImage=new Image();let qrReady=false;qrImage.crossOrigin='anonymous';qrImage.onload=()=>{qrReady=true;drawCert();};qrImage.src='https://quickchart.io/qr?text='+encodeURIComponent('https://fivetofifteen.com/')+'&size=180';
+
+function drawCert(){
+  const name=document.getElementById('certName').value.trim()||'Explorer Name Here';
+  ctx.clearRect(0,0,CW,CH);
+  const bg=ctx.createLinearGradient(0,0,CW,CH);
+  bg.addColorStop(0,'#f4fbff');bg.addColorStop(.5,'#ffffff');bg.addColorStop(1,'#eef8ff');
+  ctx.fillStyle=bg;rr(0,0,CW,CH,20);ctx.fill();
+  ctx.strokeStyle='#4d96ff';ctx.lineWidth=6;rr(8,8,CW-16,CH-16,16);ctx.stroke();
+  ctx.strokeStyle='#1d6fd6';ctx.lineWidth=2;ctx.setLineDash([8,5]);
+  rr(20,20,CW-40,CH-40,10);ctx.stroke();ctx.setLineDash([]);
+  [[52,52],[CW-52,52],[52,CH-52],[CW-52,CH-52]].forEach(([x,y])=>drawStarShape(x,y,18,5,'#4d96ff'));
+  const rg=ctx.createLinearGradient(CW/2-220,0,CW/2+220,0);
+  rg.addColorStop(0,'#1d6fd6');rg.addColorStop(.5,'#4d96ff');rg.addColorStop(1,'#1d6fd6');
+  ctx.fillStyle=rg;rr(CW/2-220,28,440,44,22);ctx.fill();
+  ctx.fillStyle='#eefaff';ctx.font='bold 17px "Fredoka One",cursive';ctx.textAlign='center';
+  ctx.fillText('☁️  HOW RAIN HAPPENS  ☁️',CW/2,57);
+  ctx.font='64px serif';ctx.textAlign='center';ctx.fillText('🌧️',CW/2,142);
+  ctx.fillStyle='#0f5d96';ctx.font='bold 40px "Fredoka One",cursive';
+  ctx.fillText('Rain Explorer Certificate!',CW/2,196);
+  ctx.fillStyle='#888';ctx.font='17px "Nunito",sans-serif';
+  ctx.fillText('This is to proudly certify that the amazing weather explorer',CW/2,232);
+  ctx.strokeStyle='#4d96ff';ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(CW/2-240,276);ctx.lineTo(CW/2+240,276);ctx.stroke();
+  ctx.fillStyle='#0f5d96';ctx.font='bold 38px "Fredoka One",cursive';
+  ctx.fillText(name,CW/2,270);
+  ctx.fillStyle='#444';ctx.font='17px "Nunito",sans-serif';
+  ctx.fillText('has completed the Rain Adventure and is now an official',CW/2,310);
+  ctx.fillStyle='#0f5d96';ctx.font='bold 24px "Fredoka One",cursive';
+  ctx.fillText('🌟 Certified Rain Explorer 🌟',CW/2,344);
+  ctx.fillStyle='#888';ctx.font='14px "Nunito",sans-serif';
+  ctx.fillText('Scored 5 or more on the final Rain Challenge quiz!',CW/2,372);
+  const badges=[
+    {t:'✓ Water Cycle Pro',bg:'#e3f2fd',c:'#1565c0'},
+    {t:'✓ Cloud Expert',bg:'#eef8ff',c:'#2980b9'},
+    {t:'✓ Rain Detective',bg:'#e8f5e9',c:'#2e7d32'},
+    {t:'✓ Weather Explorer!',bg:'#fff3e0',c:'#e67e22'},
+  ];
+  const bw=168,bh=30,bg2=10,tot=badges.length*(bw+bg2)-bg2;
+  let bx=CW/2-tot/2;
+  badges.forEach(b=>{
+    ctx.fillStyle=b.bg;rr(bx,390,bw,bh,15);ctx.fill();
+    ctx.fillStyle=b.c;ctx.font='bold 12px "Nunito",sans-serif';ctx.textAlign='center';
+    ctx.fillText(b.t,bx+bw/2,409);bx+=bw+bg2;
+  });
+  ctx.font='32px serif';ctx.textAlign='center';
+  ctx.fillText('🌞  💧  ☁️  🌧️  🌈',CW/2,468);
+  ctx.fillStyle='#ffffff';ctx.strokeStyle='#d7e2f4';ctx.lineWidth=2;rr(CW-154,68,102,102,14);ctx.fill();ctx.stroke();
+  if(qrReady){ctx.drawImage(qrImage,CW-144,78,82,82);}else{ctx.fillStyle='#eef7ff';ctx.fillRect(CW-144,78,82,82);ctx.fillStyle='#1d6fd6';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('QR loading...',CW-103,122);}
+  ctx.fillStyle='#1d6fd6';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('Scan to visit',CW-103,185);
+  const d=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
+  ctx.fillStyle='#9e9e9e';ctx.font='bold 12px "Nunito",sans-serif';ctx.textAlign='center';
+  ctx.fillText('Presented by fivetofifteen.com',CW/2,538);
+  ctx.fillStyle='#bbb';ctx.font='12px "Nunito",sans-serif';
+  ctx.fillText('Awarded on '+d,CW/2,562);
+  [[80,200],[CW-80,200],[80,420],[CW-80,420],[150,340],[CW-150,340]].forEach(([x,y])=>drawStarShape(x,y,10,5,'rgba(77,150,255,.35)'));
+}
+
+function downloadCert(){
+  drawCert();
+  const link=document.createElement('a');
+  link.download='rain-explorer-certificate.png';
+  link.href=certCanvas.toDataURL('image/png');
+  link.click();
+}
+
+function printCert(){
+  drawCert();
+  const dataUrl=certCanvas.toDataURL('image/png');
+  const win=window.open('','_blank');
+  win.document.write('<!DOCTYPE html><html><head><title>Rain Explorer Certificate<\/title><style>body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f5f5f5;}img{max-width:100%;box-shadow:0 4px 20px rgba(0,0,0,.15);border-radius:12px;}@media print{body{background:white;}img{box-shadow:none;width:100%;}}<\/style><\/head><body><img src="'+dataUrl+'"/><\/body><\/html>');
+  win.document.close();
+  win.onload=()=>{win.focus();win.print();};
+}
+
+drawCert();
+</script>
+</body>
+</html>

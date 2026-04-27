@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-label="Shelly Trained Every Day">
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5d7f67"/>
+      <stop offset="55%" stop-color="#7aa07f"/>
+      <stop offset="100%" stop-color="#a7c39f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1400" height="900" fill="url(#bg)"/>
+  <path d="M0 620 C200 560 340 660 540 618 C730 578 950 668 1200 616 C1290 598 1350 608 1400 620 L1400 900 L0 900 Z" fill="rgba(36,62,52,0.26)"/>
+  <path d="M0 690 C210 640 380 724 600 682 C820 640 1030 730 1260 688 C1330 676 1380 684 1400 690 L1400 900 L0 900 Z" fill="rgba(24,45,38,0.34)"/>
+  <g fill="#ffffff" opacity="0.22">
+    <circle cx="120" cy="100" r="6"/><circle cx="280" cy="88" r="5"/><circle cx="510" cy="120" r="6"/>
+    <circle cx="760" cy="92" r="6"/><circle cx="980" cy="110" r="5"/><circle cx="1220" cy="96" r="6"/>
+  </g>
+
+  <ellipse cx="700" cy="690" rx="420" ry="120" fill="#d9c39a"/>
+  <ellipse cx="700" cy="690" rx="360" ry="92" fill="#cba977"/>
+  <g transform="translate(620 672) scale(2.2)">
+    <ellipse cx="0" cy="0" rx="42" ry="28" fill="#4f8e58"/>
+    <ellipse cx="0" cy="0" rx="28" ry="18" fill="#7ac076"/>
+    <circle cx="48" cy="-6" r="12" fill="#6aad70"/>
+    <circle cx="52" cy="-8" r="2.8" fill="#243b2a"/>
+    <rect x="-26" y="20" width="10" height="14" rx="4" fill="#4f8e58"/>
+    <rect x="-8" y="20" width="10" height="14" rx="4" fill="#4f8e58"/>
+    <rect x="10" y="20" width="10" height="14" rx="4" fill="#4f8e58"/>
+    <rect x="28" y="20" width="10" height="14" rx="4" fill="#4f8e58"/>
+  </g>
+  <g>
+    <ellipse cx="860" cy="650" rx="26" ry="16" fill="#e7e7e7"/>
+    <circle cx="878" cy="640" r="11" fill="#e7e7e7"/>
+    <circle cx="884" cy="638" r="2" fill="#2f2f2f"/>
+  </g>
+  <g>
+    <ellipse cx="920" cy="640" rx="22" ry="14" fill="#d0d0d0"/>
+    <circle cx="936" cy="632" r="10" fill="#d0d0d0"/>
+    <circle cx="941" cy="630" r="2" fill="#2f2f2f"/>
+  </g>
+
+  <text x="700" y="110" text-anchor="middle" font-family="Nunito, sans-serif" font-size="52" font-weight="900" fill="#fff6e5">Shelly Trained Every Day</text>
+  <text x="700" y="844" text-anchor="middle" font-family="Nunito, sans-serif" font-size="32" font-weight="800" fill="#fff6e5">While others mocked her, she kept practicing.</text>
+</svg>

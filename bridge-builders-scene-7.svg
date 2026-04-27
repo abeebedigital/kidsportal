@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-label="Kai speaking on stage with team">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d9d8e5"/>
+      <stop offset="100%" stop-color="#c8c7d8"/>
+    </linearGradient>
+    <filter id="grain" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.78" numOctaves="2" seed="31"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="table" tableValues="0 0.03"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="1400" height="900" fill="url(#bg)"/>
+  <rect x="0" y="664" width="1400" height="236" fill="#796f7f"/>
+
+  <rect x="220" y="194" width="960" height="300" rx="24" fill="#f5f5fb" stroke="#b2b4ca" stroke-width="6"/>
+  <text x="700" y="260" text-anchor="middle" font-family="Georgia, serif" font-size="42" fill="#4c5477">Regional Science Expo Awards</text>
+
+  <rect x="640" y="510" width="120" height="154" rx="12" fill="#4f6a7e"/>
+  <ellipse cx="700" cy="486" rx="18" ry="22" fill="#d8b39e"/>
+  <path d="M680 478 Q700 450 720 478" fill="#2f2f35"/>
+  <rect x="754" y="532" width="16" height="100" rx="6" fill="#434343"/>
+  <circle cx="762" cy="518" r="14" fill="#69788a"/>
+
+  <g transform="translate(486 672)"><ellipse cx="0" cy="70" rx="26" ry="9" fill="#6d7f8d" opacity="0.24"/><ellipse cx="0" cy="-2" rx="17" ry="20" fill="#9a6648"/><circle cx="0" cy="-24" r="18" fill="#2f2524"/><circle cx="8" cy="-36" r="7" fill="#f1d85b"/><path d="M-20 18 Q0 10 20 18 L16 50 Q0 58 -16 50 Z" fill="#e38734"/></g>
+  <g transform="translate(584 674)"><ellipse cx="0" cy="68" rx="26" ry="9" fill="#6d7f8d" opacity="0.24"/><ellipse cx="0" cy="-2" rx="17" ry="20" fill="#b77d5b"/><path d="M-18 -8 Q0 -32 18 -8" fill="#2e2b2b"/><circle cx="-6" cy="-2" r="5" fill="none" stroke="#54616c" stroke-width="2"/><circle cx="6" cy="-2" r="5" fill="none" stroke="#54616c" stroke-width="2"/><path d="M-20 18 Q0 10 20 18 L16 50 Q0 58 -16 50 Z" fill="#ccd7e2"/></g>
+  <g transform="translate(816 674)"><ellipse cx="0" cy="68" rx="26" ry="9" fill="#6d7f8d" opacity="0.24"/><ellipse cx="0" cy="-2" rx="17" ry="20" fill="#deb49a"/><rect x="-18" y="-14" width="36" height="10" rx="4" fill="#2c2f38"/><path d="M-20 18 Q0 10 20 18 L16 50 Q0 58 -16 50 Z" fill="#bc8f9c"/></g>
+  <g transform="translate(912 672)"><ellipse cx="0" cy="70" rx="26" ry="9" fill="#6d7f8d" opacity="0.24"/><ellipse cx="0" cy="-2" rx="19" ry="22" fill="#c99373"/><path d="M-22 -8 Q0 -36 22 -8" fill="#2e2a2a"/><path d="M-22 18 Q0 10 22 18 L18 54 Q0 64 -18 54 Z" fill="#656a73"/></g>
+
+  <g transform="translate(1038 562)">
+    <path d="M0 0 L24 0 L34 32 L12 54 L-10 32 Z" fill="#f3cb62" stroke="#ad8a30" stroke-width="4"/>
+    <rect x="6" y="54" width="12" height="42" fill="#c3a05d"/>
+    <rect x="-12" y="96" width="48" height="14" rx="6" fill="#9c8148"/>
+  </g>
+
+  <text x="700" y="98" text-anchor="middle" font-family="Georgia, serif" font-size="52" fill="#3f3f5d">What Kai Said On Stage</text>
+  <text x="700" y="148" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#63637f">"I didn't build this bridge. We did."</text>
+  <rect width="1400" height="900" filter="url(#grain)"/>
+</svg>

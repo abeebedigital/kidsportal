@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-label="Bridge holds 10kg at expo">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#eadfce"/>
+      <stop offset="100%" stop-color="#dfcfb7"/>
+    </linearGradient>
+    <filter id="grain" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.73" numOctaves="2" seed="27"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="table" tableValues="0 0.03"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="1400" height="900" fill="url(#bg)"/>
+  <rect x="0" y="658" width="1400" height="242" fill="#b68760"/>
+
+  <path d="M220 540 Q700 240 1180 540" fill="none" stroke="#d8c8ae" stroke-width="24"/>
+  <rect x="180" y="540" width="1040" height="58" rx="18" fill="#6f594e"/>
+  <rect x="650" y="430" width="100" height="90" rx="12" fill="#f4efe4" stroke="#bfae95" stroke-width="4"/>
+  <text x="700" y="486" text-anchor="middle" font-family="Georgia, serif" font-size="44" fill="#3f5c73">10kg</text>
+
+  <rect x="136" y="210" width="220" height="150" rx="12" fill="#f9f6ed" stroke="#c8b99f" stroke-width="4"/>
+  <text x="246" y="264" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="#4b5f71">Regional Expo</text>
+  <text x="246" y="314" text-anchor="middle" font-family="Georgia, serif" font-size="28" fill="#6f6b66">Weight Test</text>
+
+  <circle cx="1050" cy="250" r="14" fill="#7d8c98"/>
+  <circle cx="1098" cy="240" r="14" fill="#7d8c98"/>
+  <circle cx="1146" cy="252" r="14" fill="#7d8c98"/>
+  <circle cx="1194" cy="244" r="14" fill="#7d8c98"/>
+  <rect x="1038" y="266" width="170" height="8" rx="4" fill="#7d8c98"/>
+
+  <g transform="translate(460 676)"><ellipse cx="0" cy="70" rx="26" ry="9" fill="#6d7f8d" opacity="0.24"/><ellipse cx="0" cy="-2" rx="17" ry="20" fill="#d8b39e"/><path d="M-18 -8 Q0 -34 18 -8" fill="#2f2f35"/><path d="M-20 18 Q0 10 20 18 L16 50 Q0 58 -16 50 Z" fill="#5c7759"/></g>
+  <g transform="translate(550 676)"><ellipse cx="0" cy="70" rx="26" ry="9" fill="#6d7f8d" opacity="0.24"/><ellipse cx="0" cy="-2" rx="17" ry="20" fill="#9a6648"/><circle cx="0" cy="-24" r="18" fill="#2f2524"/><circle cx="8" cy="-36" r="7" fill="#f1d85b"/><path d="M-20 18 Q0 10 20 18 L16 50 Q0 58 -16 50 Z" fill="#e38734"/></g>
+  <g transform="translate(650 676)"><ellipse cx="0" cy="70" rx="26" ry="9" fill="#6d7f8d" opacity="0.24"/><ellipse cx="0" cy="-2" rx="17" ry="20" fill="#b77d5b"/><path d="M-18 -8 Q0 -32 18 -8" fill="#2e2b2b"/><circle cx="-6" cy="-2" r="5" fill="none" stroke="#54616c" stroke-width="2"/><circle cx="6" cy="-2" r="5" fill="none" stroke="#54616c" stroke-width="2"/><path d="M-20 18 Q0 10 20 18 L16 50 Q0 58 -16 50 Z" fill="#ccd7e2"/></g>
+  <g transform="translate(750 676)"><ellipse cx="0" cy="70" rx="26" ry="9" fill="#6d7f8d" opacity="0.24"/><ellipse cx="0" cy="-2" rx="17" ry="20" fill="#deb49a"/><rect x="-18" y="-14" width="36" height="10" rx="4" fill="#2c2f38"/><path d="M-20 18 Q0 10 20 18 L16 50 Q0 58 -16 50 Z" fill="#bc8f9c"/></g>
+  <g transform="translate(850 676)"><ellipse cx="0" cy="70" rx="26" ry="9" fill="#6d7f8d" opacity="0.24"/><ellipse cx="0" cy="-2" rx="19" ry="22" fill="#c99373"/><path d="M-22 -8 Q0 -36 22 -8" fill="#2e2a2a"/><path d="M-22 18 Q0 10 22 18 L18 54 Q0 64 -18 54 Z" fill="#656a73"/></g>
+
+  <text x="700" y="96" text-anchor="middle" font-family="Georgia, serif" font-size="52" fill="#4f392f">The Day Of The Expo</text>
+  <text x="700" y="146" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#6f5c52">10kg held. Then 11kg. The room erupted.</text>
+  <rect width="1400" height="900" filter="url(#grain)"/>
+</svg>

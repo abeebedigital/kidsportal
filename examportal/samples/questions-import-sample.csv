@@ -1,0 +1,6 @@
+category_slug,exam_year,subject,question_set_title,question_type,difficulty_level,question_text,option_a,option_b,option_c,option_d,correct_option_keys,correct_numeric,numeric_tolerance,correct_text,hint_text,explanation_text,tags,default_marks,negative_marks,is_active
+selective-school,Year 6,Reasoning,Selective Reasoning Set 01,mcq_single,medium,Which shape has exactly four equal sides?,Square,Rectangle,Triangle,Pentagon,A,,,,Look for equal side lengths,A square has four equal sides and four right angles,geometry;shapes,1,0,1
+naplan,Year 5,Language Conventions,NAPLAN Language Conventions Set A,mcq_multi,hard,Select all words that are adverbs,quickly,blue,often,inside,A C,,,,Adverbs usually describe actions,Quickly and often are adverbs,grammar;adverbs,2,0.5,1
+entrance,Foundation,Mixed,Entrance Mixed Practice 01,true_false,easy,The Earth revolves around the Sun,True,False,,,A,,,,Recall basic astronomy facts,The Earth revolves around the Sun once every year,science;basics,1,0,1
+upsc,2026,General Studies,UPSC GS Prelims Mini Test 01,numeric,medium,How many states are there in Australia?,,,,,,6,0,,Count the states only,Australia has six states,geography;australia,1,0,1
+psc,General,Aptitude,PSC Aptitude Set 01,short_text,medium,What is the opposite of increase?,,,,,,,,decrease,Think of antonyms,The antonym of increase is decrease,vocabulary;antonyms,1,0,1

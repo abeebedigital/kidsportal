@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Selective School Exam Hub</title>
+  <meta name="description" content="Selective school exam prep hub with organised topic pages for mathematical reasoning, thinking skills, reading, and writing." />
+  <meta name="theme-color" content="#0f766e" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <style>
+    /* global-font-boost */
+    html{font-size:18px;}
+    @media (max-width:500px){html{font-size:17px;}}
+
+    :root{
+      --teal:#0f766e;
+      --mint:#14b8a6;
+      --ink:#22303a;
+      --soft:#5a6a75;
+      --line:#e3edf4;
+      --math:#b45309;
+      --math-glow:rgba(180,83,9,0.18);
+      --thinking:#0f766e;
+      --thinking-glow:rgba(15,118,110,0.18);
+      --reading:#7c3aed;
+      --reading-glow:rgba(124,58,237,0.18);
+      --writing:#be123c;
+      --writing-glow:rgba(190,18,60,0.18);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Nunito',sans-serif;color:var(--ink);background:#f0f9ff;min-height:100vh;overflow-x:hidden}
+
+    body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle at 15% 20%,rgba(20,184,166,0.07) 0%,transparent 50%),radial-gradient(circle at 85% 70%,rgba(124,58,237,0.06) 0%,transparent 50%);pointer-events:none;z-index:0}
+
+    header{background:linear-gradient(135deg,#0c4a6e 0%,#0f766e 40%,#14b8a6 75%,#0ea5e9 100%);color:#fff;padding:58px 20px 112px;text-align:center;position:relative;overflow:hidden}
+    header::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 20% 18%,rgba(255,255,255,.14),transparent 45%),radial-gradient(circle at 80% 4%,rgba(255,255,255,.16),transparent 44%);pointer-events:none}
+    header::after{content:'';position:absolute;left:-8%;right:-8%;bottom:-62px;height:140px;background:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(240,249,255,.88) 66%,#f0f9ff 100%);border-radius:55% 55% 0 0 / 100% 100% 0 0}
+    .header-stars{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+    .header-star{position:absolute;font-size:1.4rem;animation:floatStar 6s ease-in-out infinite;opacity:.35}
+    @keyframes floatStar{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-12px) rotate(15deg)}}
+    .hero-icon{font-size:88px;margin-bottom:10px;display:block;filter:drop-shadow(0 8px 24px rgba(0,0,0,0.25));animation:bounce 3s ease-in-out infinite}
+    @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    h1{font-family:'Fredoka One',cursive;font-size:clamp(2rem,5vw,3.8rem);color:#f4fff9;text-shadow:0 4px 20px rgba(0,0,0,0.2)}
+    .hero-copy{max-width:780px;margin:14px auto 0;line-height:1.75;font-size:1.05rem;color:rgba(255,255,255,0.92);position:relative}
+    .hero-chip-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:16px;position:relative}
+    .hero-chip{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:999px;border:1.5px solid rgba(255,255,255,.36);background:rgba(255,255,255,.14);font-size:.78rem;font-weight:800;color:#f8fffd;backdrop-filter:blur(4px)}
+    .hero-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:26px;position:relative}
+    .btn{text-decoration:none;font-weight:800;border-radius:999px;padding:13px 22px;min-height:46px;display:inline-flex;align-items:center;justify-content:center;transition:transform .2s ease,box-shadow .2s ease;gap:6px}
+    .btn-primary{background:#fff9dd;color:#0f766e;box-shadow:0 14px 26px rgba(0,0,0,0.18)}
+    .btn-secondary{background:rgba(255,255,255,0.14);border:1.5px solid rgba(255,255,255,0.32);color:#fff}
+    .btn:hover{transform:translateY(-3px);box-shadow:0 18px 34px rgba(0,0,0,0.22)}
+
+    /* JOURNEY BAR */
+    .journey-bar-wrap{position:relative;background:linear-gradient(90deg,#fff9dd,#f0fdf4);border-bottom:2px solid rgba(15,118,110,0.12);padding:14px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;z-index:10;box-shadow:0 4px 14px rgba(0,0,0,0.06)}
+    .journey-bar-label{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--teal);white-space:nowrap;display:flex;align-items:center;gap:8px}
+    .journey-bar-track{flex:1;min-width:160px;height:18px;background:rgba(15,118,110,0.1);border-radius:999px;overflow:visible;position:relative}
+    .journey-bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#14b8a6,#0ea5e9,#7c3aed);width:0%;transition:width 1s cubic-bezier(.34,1.56,.64,1);position:relative}
+    .journey-bar-fill::after{content:'🚀';position:absolute;right:-14px;top:50%;transform:translateY(-50%);font-size:1.1rem;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2))}
+    .journey-count{font-weight:800;color:var(--teal);font-size:.92rem;white-space:nowrap}
+    .journey-stars-count{display:flex;align-items:center;gap:4px;font-weight:800;color:#b45309;font-size:.92rem}
+
+    /* LAYOUT */
+    main{max-width:1180px;margin:0 auto;padding:34px 20px 80px;position:relative;z-index:1}
+    .hub-layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:22px;align-items:start}
+    .hub-content{min-width:0}
+
+    /* SIDE NAV */
+    .hub-nav{position:sticky;top:18px;align-self:start;background:rgba(255,255,255,0.96);border:1.5px solid rgba(15,118,110,0.1);border-radius:26px;padding:18px;box-shadow:0 14px 36px rgba(0,0,0,0.08)}
+    .hub-nav h2{font-family:'Fredoka One',cursive;font-size:1.08rem;margin-bottom:10px;color:var(--teal);display:flex;align-items:center;gap:6px}
+    .hub-nav p{color:var(--soft);font-size:.88rem;line-height:1.6;margin-bottom:14px}
+    .hub-nav-links{display:grid;gap:8px}
+    .hub-nav-link{text-decoration:none;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:11px 13px;display:block;transition:all .2s ease;position:relative;overflow:hidden}
+    .hub-nav-link::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:4px 0 0 4px;background:var(--mint);opacity:0;transition:opacity .2s}
+    .hub-nav-link:hover,.hub-nav-link.active{border-color:rgba(15,118,110,.3);box-shadow:0 8px 20px rgba(0,0,0,0.07);background:#f8fffd;transform:translateX(3px)}
+    .hub-nav-link:hover::before,.hub-nav-link.active::before{opacity:1}
+    .hub-nav-link strong{display:block;font-family:'Fredoka One',cursive;font-size:.95rem;margin-bottom:2px}
+    .hub-nav-link span{display:block;color:var(--soft);font-size:.82rem;line-height:1.4}
+    .nav-progress-dots{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap}
+    .nav-dot{width:8px;height:8px;border-radius:50%;background:var(--line);transition:background .4s}
+    .nav-dot.done{background:var(--mint)}
+
+    /* CARDS */
+    .intro-card,.section-card,.roadmap-card{background:rgba(255,255,255,0.97);border:1.5px solid rgba(0,0,0,0.05);border-radius:28px;padding:28px;box-shadow:0 14px 36px rgba(0,0,0,0.06);margin-bottom:24px;transition:box-shadow .3s}
+    .section-card{position:relative;overflow:hidden}
+    .section-card::before{content:'';position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,#dce9f8,#dce9f8)}
+    #selective-maths.section-card::before{background:linear-gradient(90deg,#f59e0b,#f97316)}
+    #selective-thinking.section-card::before{background:linear-gradient(90deg,#14b8a6,#0f766e)}
+    #selective-reading.section-card::before{background:linear-gradient(90deg,#8b5cf6,#7c3aed)}
+    #selective-writing.section-card::before{background:linear-gradient(90deg,#ec4899,#be123c)}
+    #selective-model-papers.section-card::before{background:linear-gradient(90deg,#f59e0b,#ea580c)}
+    #selective-feedback.section-card::before{background:linear-gradient(90deg,#0ea5e9,#14b8a6)}
+    .section-card:hover{box-shadow:0 20px 48px rgba(0,0,0,0.09)}
+    .section-title{font-family:'Fredoka One',cursive;font-size:1.8rem;margin-bottom:10px}
+    .section-copy{color:var(--soft);line-height:1.75;margin-bottom:18px}
+    .section-header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap;margin-bottom:18px}
+    .section-header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+    .timing{font-weight:800;color:#60717d;background:#f8fbff;border:1px solid var(--line);padding:8px 12px;border-radius:999px}
+
+    /* SECTION DONE BADGE */
+    .section-done-badge{display:none;align-items:center;gap:6px;background:linear-gradient(135deg,#14b8a6,#0ea5e9);color:#fff;font-family:'Fredoka One',cursive;font-size:.88rem;padding:5px 14px;border-radius:999px;box-shadow:0 6px 14px rgba(20,184,166,0.3);animation:badgePop .4s cubic-bezier(.34,1.56,.64,1)}
+    .section-done-badge.visible{display:inline-flex}
+    @keyframes badgePop{0%{transform:scale(0)}100%{transform:scale(1)}}
+
+    /* INTRO */
+    .pill-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+    .pill{border-radius:999px;padding:8px 12px;background:#f6fbff;border:1px solid #dbeaf5;font-size:.8rem;font-weight:800;color:#48606d;text-transform:uppercase;letter-spacing:.4px}
+    .intro-cta-wrap{display:flex;justify-content:flex-start;margin:4px 0 18px}
+    .intro-guide-cta{position:relative;padding:18px 28px;min-height:62px;border-radius:24px;background:linear-gradient(135deg,#0f766e 0%,#14b8a6 46%,#0ea5e9 100%);color:#fff;box-shadow:0 18px 34px rgba(15,118,110,0.2);border:1px solid rgba(255,255,255,0.3);overflow:hidden;align-items:center;gap:14px;text-decoration:none;display:inline-flex;font-weight:800;transition:all .2s}
+    .intro-guide-cta:hover{transform:translateY(-3px) scale(1.01);box-shadow:0 22px 40px rgba(14,165,233,0.24)}
+    .intro-guide-cta-badge{position:relative;width:42px;height:42px;border-radius:14px;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.22);font-size:1.35rem;flex-shrink:0}
+    .intro-guide-cta-copy{position:relative;display:flex;flex-direction:column;align-items:flex-start;text-align:left;line-height:1.2}
+    .intro-guide-cta-copy small{font-size:.72rem;letter-spacing:.55px;text-transform:uppercase;opacity:.88;margin-bottom:4px}
+    .intro-guide-cta-copy strong{font-family:'Fredoka One',cursive;font-size:1.08rem;font-weight:400;color:#fff}
+    .intro-guide-cta-arrow{position:relative;font-size:1.25rem;margin-left:4px}
+
+    /* STATS */
+    .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:18px}
+    .stat{border-radius:20px;padding:16px;background:linear-gradient(180deg,#0f766e 0%,#14b8a6 100%);text-align:center;color:#fff;position:relative;overflow:hidden}
+    .stat::after{content:'';position:absolute;top:-20px;right:-20px;width:60px;height:60px;background:rgba(255,255,255,0.08);border-radius:50%}
+    .stat strong{display:block;font-family:'Fredoka One',cursive;font-size:1.4rem;margin-bottom:4px}
+
+    .overview-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+    .overview-card{position:relative;background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border:1.5px solid #dbe8f6;border-radius:22px;padding:16px 14px 14px;box-shadow:0 10px 20px rgba(24,44,84,.06);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+    .overview-card:hover{transform:translateY(-3px);box-shadow:0 16px 30px rgba(24,44,84,.1);border-color:#bdd5ee}
+    .overview-card .icon{width:44px;height:44px;border-radius:14px;display:inline-flex;align-items:center;justify-content:center;font-size:1.3rem;background:linear-gradient(135deg,#e7f6ff,#f3fbff);border:1px solid #d2e8fb;margin-bottom:10px}
+    .overview-card h3{font-family:'Fredoka One',cursive;font-size:1.02rem;margin-bottom:6px}
+    .overview-card p{color:var(--soft);font-size:.9rem;line-height:1.55}
+
+    .prep-alert{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;border:1.5px solid #cce8df;background:linear-gradient(135deg,#eefdf7 0%,#f6fffb 100%);border-radius:20px;padding:14px 16px}
+    .prep-alert-icon{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#14b8a6,#0f766e);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.05rem;box-shadow:0 8px 16px rgba(15,118,110,.25)}
+    .prep-alert strong{display:block;font-family:'Fredoka One',cursive;font-size:1rem;margin-bottom:4px}
+    .prep-alert p{color:var(--soft);line-height:1.55}
+
+    /* JOURNEY PATH (replaces route-map) */
+    .journey-path{display:flex;gap:0;margin:0 0 22px;position:relative}
+    .journey-step{flex:1;position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 8px}
+    .journey-step:not(:last-child)::after{content:'';position:absolute;top:27px;right:-50%;width:100%;height:4px;background:rgba(15,118,110,0.15);z-index:0;transition:background .5s}
+    .journey-step.done:not(:last-child)::after{background:linear-gradient(90deg,var(--mint),rgba(20,184,166,0.3))}
+    .step-orb{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:1.05rem;color:#065f46;background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:3px solid #fff;box-shadow:0 8px 20px rgba(0,0,0,0.1);position:relative;z-index:1;transition:all .4s cubic-bezier(.34,1.56,.64,1)}
+    .journey-step.done .step-orb{background:linear-gradient(135deg,#14b8a6,#0f766e);color:#fff;box-shadow:0 8px 24px rgba(15,118,110,0.4);transform:scale(1.08)}
+    .step-checkmark{position:absolute;top:-4px;right:-4px;width:20px;height:20px;background:#fff;border-radius:50%;display:none;align-items:center;justify-content:center;font-size:.72rem;color:var(--teal);box-shadow:0 2px 8px rgba(0,0,0,0.15)}
+    .journey-step.done .step-checkmark{display:flex}
+    .step-label{margin-top:10px;font-family:'Fredoka One',cursive;font-size:.88rem;color:var(--ink);line-height:1.3}
+    .step-desc{margin-top:4px;font-size:.78rem;color:var(--soft);line-height:1.4}
+
+    /* SUBGROUPS */
+    .subgroup-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .subgroup{background:linear-gradient(165deg,#ffffff 0%,#f9fcff 55%,#f3fbff 100%);border:1.5px solid #e0ebf8;border-radius:24px;padding:18px;box-shadow:0 10px 24px rgba(24,44,84,.06)}
+    #selective-maths .subgroup{background:linear-gradient(165deg,#fffef9 0%,#fff8ee 100%);border-color:#f4e0bf}
+    #selective-thinking .subgroup{background:linear-gradient(165deg,#f7fefa 0%,#effcf6 100%);border-color:#caeee2}
+    #selective-reading .subgroup{background:linear-gradient(165deg,#fcf9ff 0%,#f7f3ff 100%);border-color:#e3d8ff}
+    #selective-writing .subgroup{background:linear-gradient(165deg,#fff9fb 0%,#fff2f6 100%);border-color:#f6d4e0}
+    .subgroup h3{font-family:'Fredoka One',cursive;font-size:1.08rem;margin-bottom:12px;color:var(--ink)}
+
+    /* TOPIC LINKS */
+    .topic-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+    .topic-link{display:block;text-decoration:none;background:linear-gradient(165deg,#ffffff 0%,#f9fcff 100%);border:1.5px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 6px 16px rgba(0,0,0,0.04);transition:all .22s ease;position:relative;overflow:hidden}
+    .topic-link::before{content:'';position:absolute;right:-18px;bottom:-18px;width:86px;height:86px;border-radius:50%;background:rgba(14,165,233,.08);pointer-events:none}
+    .topic-link:hover{transform:translateY(-3px) scale(1.01)}
+    .topic-link .topic-label,
+    .topic-link > span:not(.topic-star):first-of-type{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.45px;margin-bottom:6px}
+    .topic-link strong{display:block;font-family:'Fredoka One',cursive;font-size:.98rem;color:var(--ink);margin-bottom:5px;line-height:1.35}
+    .topic-link em{display:block;font-style:normal;color:var(--soft);font-size:.88rem;line-height:1.5}
+    .topic-inline-icon{width:22px;height:22px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:.9rem;line-height:1;border:1.5px solid #d9e8fb;background:linear-gradient(145deg,#eaf5ff,#f4fbff);box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
+    .topic-star{position:absolute;top:10px;right:10px;font-size:1.05rem;opacity:0;transform:scale(0);transition:all .35s cubic-bezier(.34,1.56,.64,1)}
+    .topic-link.visited .topic-star{opacity:1;transform:scale(1)}
+    .topic-link.visited{border-width:2px}
+    .math .topic-label,
+    .math > span:not(.topic-star):first-of-type{color:var(--math)}
+    .math .topic-inline-icon{background:linear-gradient(145deg,#fff5e8,#fffaf2);border-color:#f4d4a9}
+    .math::before{background:rgba(245,158,11,.12)}
+    .math:hover{border-color:rgba(180,83,9,.3);box-shadow:0 10px 28px var(--math-glow)}
+    .math.visited{background:linear-gradient(135deg,#fffbf5,#fff7ed);border-color:rgba(180,83,9,.28)}
+    .thinking .topic-label,
+    .thinking > span:not(.topic-star):first-of-type{color:var(--thinking)}
+    .thinking .topic-inline-icon{background:linear-gradient(145deg,#ebfdf8,#f4fffc);border-color:#bde8dc}
+    .thinking::before{background:rgba(20,184,166,.12)}
+    .thinking:hover{border-color:rgba(15,118,110,.3);box-shadow:0 10px 28px var(--thinking-glow)}
+    .thinking.visited{background:linear-gradient(135deg,#f0fdf8,#ecfdf5);border-color:rgba(15,118,110,.28)}
+    .reading .topic-label,
+    .reading > span:not(.topic-star):first-of-type{color:var(--reading)}
+    .reading .topic-inline-icon{background:linear-gradient(145deg,#f5eeff,#fcf8ff);border-color:#d9c8ff}
+    .reading::before{background:rgba(124,58,237,.12)}
+    .reading:hover{border-color:rgba(124,58,237,.3);box-shadow:0 10px 28px var(--reading-glow)}
+    .reading.visited{background:linear-gradient(135deg,#fdfaff,#faf5ff);border-color:rgba(124,58,237,.28)}
+    .writing .topic-label,
+    .writing > span:not(.topic-star):first-of-type{color:var(--writing)}
+    .writing .topic-inline-icon{background:linear-gradient(145deg,#ffeef3,#fff7f9);border-color:#f7c7d7}
+    .writing::before{background:rgba(190,18,60,.12)}
+    .writing:hover{border-color:rgba(190,18,60,.3);box-shadow:0 10px 28px var(--writing-glow)}
+    .writing.visited{background:linear-gradient(135deg,#fff5f7,#fff1f2);border-color:rgba(190,18,60,.28)}
+
+    /* READING GUIDE */
+    .reading-guide{background:linear-gradient(135deg,#faf5ff 0%,#f8fbff 100%);border:1.5px solid rgba(124,58,237,.15);border-radius:24px;padding:20px;margin:0 0 20px;box-shadow:0 10px 24px rgba(124,58,237,.08)}
+    .reading-guide-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+    .reading-guide-title{font-family:'Fredoka One',cursive;font-size:1.25rem;color:var(--ink);margin-bottom:8px}
+    .reading-guide-copy{color:var(--soft);line-height:1.65;max-width:760px}
+    .reading-proof{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1.5px solid rgba(124,58,237,.18);border-radius:999px;padding:10px 14px;font-weight:800;color:#5b21b6;box-shadow:0 8px 18px rgba(124,58,237,.08)}
+    .reading-guide-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+    .reading-guide-card{background:#fff;border:1.5px solid rgba(124,58,237,.12);border-radius:18px;padding:14px;box-shadow:0 8px 18px rgba(0,0,0,.04)}
+    .reading-guide-card h4{font-family:'Fredoka One',cursive;font-size:.98rem;color:var(--ink);margin-bottom:6px}
+    .reading-guide-card p{color:var(--soft);line-height:1.55;font-size:.88rem}
+    .reading-guide-badge{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.45px;color:#6d28d9;background:#f3e8ff;border-radius:999px;padding:6px 10px;margin-bottom:10px}
+
+    /* WRITING GUIDE */
+    .writing-guide{background:linear-gradient(135deg,#fff4f7 0%,#fffaf3 100%);border:1.5px solid rgba(190,18,60,.15);border-radius:24px;padding:20px;margin:0 0 20px;box-shadow:0 10px 24px rgba(190,18,60,.08)}
+    .writing-guide-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+    .writing-guide-title{font-family:'Fredoka One',cursive;font-size:1.25rem;color:var(--ink);margin-bottom:8px}
+    .writing-guide-copy{color:var(--soft);line-height:1.65;max-width:760px}
+    .writing-proof{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1.5px solid rgba(190,18,60,.18);border-radius:999px;padding:10px 14px;font-weight:800;color:#9f1239;box-shadow:0 8px 18px rgba(190,18,60,.08)}
+    .writing-guide-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+    .writing-guide-card{background:#fff;border:1.5px solid rgba(190,18,60,.12);border-radius:18px;padding:14px;box-shadow:0 8px 18px rgba(0,0,0,.04)}
+    .writing-guide-card h4{font-family:'Fredoka One',cursive;font-size:.98rem;color:var(--ink);margin-bottom:6px}
+    .writing-guide-card p{color:var(--soft);line-height:1.55;font-size:.88rem}
+    .writing-guide-badge{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.45px;color:#9f1239;background:#ffe4ec;border-radius:999px;padding:6px 10px;margin-bottom:10px}
+
+    /* ROADMAP */
+    .roadmap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;position:relative}
+    .roadmap::before{content:'';position:absolute;top:28px;left:12%;right:12%;height:4px;background:linear-gradient(90deg,#14b8a6,#0ea5e9,#7c3aed,#fb7185);border-radius:999px;z-index:0}
+    .roadmap-item{background:linear-gradient(180deg,#fff 0%,#fbfcff 100%);border:1.5px solid var(--line);border-radius:22px;padding:20px 18px 18px;text-align:center;position:relative;z-index:1;transition:all .22s ease}
+    .roadmap-item:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(0,0,0,0.08)}
+    .step-num{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:1.2rem;color:#fff;margin:0 auto 12px;box-shadow:0 6px 16px rgba(0,0,0,0.15)}
+    .roadmap-item:nth-child(1) .step-num{background:linear-gradient(135deg,#14b8a6,#0f766e)}
+    .roadmap-item:nth-child(2) .step-num{background:linear-gradient(135deg,#0ea5e9,#0284c7)}
+    .roadmap-item:nth-child(3) .step-num{background:linear-gradient(135deg,#7c3aed,#a855f7)}
+    .roadmap-item:nth-child(4) .step-num{background:linear-gradient(135deg,#be123c,#fb7185)}
+    .roadmap-item h3{font-family:'Fredoka One',cursive;font-size:1rem;margin-bottom:8px}
+    .roadmap-item p{color:var(--soft);line-height:1.6;font-size:.92rem}
+
+    /* MODEL PAPERS (SUBSCRIPTION) */
+    .model-papers-shell{border:1.5px solid #f5d7a8;background:linear-gradient(135deg,#fff8e8 0%,#fffdf6 100%);border-radius:24px;padding:18px;box-shadow:0 12px 26px rgba(245,158,11,.12)}
+    .model-papers-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+    .sub-lock-pill{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:999px;background:linear-gradient(135deg,#f59e0b,#ea580c);color:#fff;font-size:.76rem;font-weight:900;letter-spacing:.35px;text-transform:uppercase}
+    .model-papers-note{color:#7c4a14;font-size:.92rem;line-height:1.6}
+    .model-paper-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .model-paper-card{position:relative;border:1.5px solid #f3dfbd;border-radius:18px;background:#fffefb;padding:14px 14px 12px;box-shadow:0 8px 18px rgba(122,74,20,.08)}
+    .model-paper-card h3{font-family:'Fredoka One',cursive;font-size:1rem;color:#7a4a14;margin:0 0 8px}
+    .model-paper-card p{color:#7c4a14;line-height:1.55;font-size:.88rem}
+    .model-paper-meta{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
+    .model-paper-meta span{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:5px 9px;background:#fff7ea;border:1px solid #f2d8aa;color:#8b5412;font-size:.72rem;font-weight:800}
+    .model-paper-cta{margin-top:12px;display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 12px;border-radius:12px;background:#fff6e5;border:1px solid #efc987;color:#8f5919;font-weight:900;font-size:.82rem}
+
+    /* FEEDBACK FORM */
+    .comment-shell{background:#fff;border-radius:24px;padding:24px;box-shadow:0 10px 28px rgba(0,0,0,.08);border:1px solid rgba(0,0,0,.04)}
+    .comment-grid{display:grid;grid-template-columns:360px minmax(0,1fr);gap:22px;align-items:start}
+    .comment-panel{background:rgba(255,255,255,.8);border:1px solid #e4eef5;border-radius:20px;padding:18px}
+    .comment-panel h3{font-family:'Fredoka One',cursive;font-size:1.15rem;color:var(--ink);margin-bottom:10px}
+    .comment-help{color:#667071;font-size:.9rem;line-height:1.6;margin-bottom:14px}
+    .comment-form{display:flex;flex-direction:column;gap:12px}
+    .comment-form label{font-size:.8rem;font-weight:800;color:#176f73;text-transform:uppercase;letter-spacing:.6px}
+    .comment-input,.comment-textarea{width:100%;border:2px solid #d8e9ee;border-radius:14px;padding:12px 14px;font-family:'Nunito',sans-serif;font-size:.95rem;color:var(--ink);background:#fff;outline:none;transition:border-color .2s ease,box-shadow .2s ease}
+    .comment-input:focus,.comment-textarea:focus{border-color:#0f766e;box-shadow:0 0 0 4px rgba(15,118,110,.12)}
+    .comment-textarea{min-height:120px;resize:vertical}
+    .comment-type{border:0;margin:0;padding:0}
+    .comment-type legend{font-size:.8rem;font-weight:800;color:#176f73;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+    .comment-type-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .comment-type-option{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:16px;border:2px solid #e4eef5;background:linear-gradient(180deg,#fff 0%,#fbfcff 100%);cursor:pointer;transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease}
+    .comment-type-option:hover{transform:translateY(-1px);border-color:#8bd7d0;box-shadow:0 10px 18px rgba(15,118,110,.08)}
+    .comment-type-option input{margin-top:2px;accent-color:#0f766e;flex-shrink:0}
+    .comment-type-copy strong{display:block;font-size:.95rem;color:var(--ink);margin-bottom:3px}
+    .comment-type-copy span{display:block;font-size:.85rem;color:#667071;line-height:1.45}
+    .comment-note{font-size:.82rem;color:#6b7280;line-height:1.5;margin-top:-4px}
+    .captcha-box{background:#fff;border:2px dashed #c6e5e0;border-radius:16px;padding:14px}
+    .captcha-question{font-family:'Fredoka One',cursive;color:#0f766e;font-size:1rem;margin-bottom:8px}
+    .captcha-row{display:flex;gap:10px;align-items:center}
+    .comment-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .comment-submit,.comment-refresh{border:none;border-radius:18px;padding:10px 18px;font-family:'Nunito',sans-serif;font-weight:800;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease}
+    .comment-submit{background:linear-gradient(135deg,#0f766e 0%,#14b8a6 100%);color:#fff;min-height:48px;padding-inline:22px}
+    .comment-refresh{background:#fff;color:var(--ink);border:2px solid #e6ecef}
+    .comment-submit:hover,.comment-refresh:hover{transform:translateY(-1px);box-shadow:0 8px 16px rgba(0,0,0,.08)}
+    .comment-status{min-height:22px;font-size:.88rem;font-weight:800}
+    .comment-status.error{color:#c62828}
+    .comment-status.success{color:#2e7d32}
+    .list{display:grid;gap:10px}
+    .list-item{display:grid;grid-template-columns:auto minmax(0,1fr);gap:9px;align-items:start;padding:10px 12px;border-radius:14px;border:1px solid #e2ecf4;background:linear-gradient(180deg,#fff 0%,#f8fbff 100%);color:#506072;font-size:.9rem;line-height:1.5}
+    .list-item strong{color:#0f766e}
+
+    /* CONFETTI + TOAST */
+    #confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:9999;display:none}
+    .toast{position:fixed;bottom:-80px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;font-family:'Fredoka One',cursive;font-size:1.05rem;padding:14px 28px;border-radius:999px;box-shadow:0 14px 36px rgba(15,118,110,0.35);z-index:9998;transition:bottom .5s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;display:flex;align-items:center;gap:8px}
+    .toast.show{bottom:30px}
+
+    footer{text-align:center;padding:24px 20px 40px;color:#60717d;position:relative;z-index:1}
+
+    @media(max-width:980px){
+      .stats,.roadmap,.subgroup-grid,.topic-grid,.hub-layout,.overview-grid,.model-paper-grid{grid-template-columns:1fr}
+      .hub-nav{position:relative;top:auto}
+      .journey-path{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+      .journey-step::after{display:none}
+      .roadmap::before{display:none}
+      .comment-grid{grid-template-columns:1fr}
+      .comment-type-grid{grid-template-columns:1fr}
+      .reading-guide-grid{grid-template-columns:1fr}
+      .writing-guide-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:700px){
+      .hero-actions .btn{width:100%}
+      .hero-chip-row{justify-content:flex-start}
+      .journey-bar-wrap{padding:12px 14px}
+    }
+  </style>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+  <canvas id="confetti-canvas"></canvas>
+  <div class="toast" id="toast"></div>
+
+  <header>
+    <div class="header-stars" aria-hidden="true">
+      <span class="header-star" style="top:12%;left:8%;animation-delay:0s">⭐</span>
+      <span class="header-star" style="top:25%;left:92%;animation-delay:1.2s">✨</span>
+      <span class="header-star" style="top:65%;left:5%;animation-delay:2.1s">🌟</span>
+      <span class="header-star" style="top:75%;left:88%;animation-delay:0.5s">⭐</span>
+      <span class="header-star" style="top:45%;left:96%;animation-delay:1.8s">✨</span>
+      <span class="header-star" style="top:8%;left:55%;animation-delay:0.9s">🌟</span>
+    </div>
+    <span class="hero-icon">🎓</span>
+    <h1>Selective School Exam Hub</h1>
+    <p class="hero-copy">This hub organises selective-school preparation into clear topic pages. Each page keeps the same structure, uses file names that identify the category immediately, and sits under this main hub so families can move from broad exam areas into focused practice one skill at a time.</p>
+    <div class="hero-chip-row" aria-label="Selective hub highlights">
+      <span class="hero-chip">📘 4 Main Exam Areas</span>
+      <span class="hero-chip">🧩 35 Topic Pages</span>
+      <span class="hero-chip">⭐ Progress Tracking</span>
+    </div>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#selective-overview">Start with Overview</a>
+      <a class="btn btn-secondary" href="#selective-path">Open Practice Path</a>
+      <a class="btn btn-secondary" href="selective-maths-geometry-shapes.html">Explore Geometry Shapes</a>
+    </div>
+  </header>
+
+  <!-- JOURNEY PROGRESS BAR -->
+  <div class="journey-bar-wrap">
+    <div class="journey-bar-label">🗺️ Your Journey</div>
+    <div class="journey-bar-track">
+      <div class="journey-bar-fill" id="journeyFill"></div>
+    </div>
+    <div class="journey-count" id="journeyCount">0 / 35 topics visited</div>
+    <div class="journey-stars-count">⭐ <span id="starCount">0</span> stars earned</div>
+  </div>
+
+  <main>
+    <div class="hub-layout">
+      <aside class="hub-nav" aria-label="Selective hub navigation">
+        <h2>🗺️ Quick Jump</h2>
+        <p>Move between main exam sections without scrolling through everything.</p>
+        <div class="hub-nav-links">
+          <a class="hub-nav-link active" href="#selective-overview" data-hub-link="selective-overview"><strong>📋 Overview</strong><span>Start here first.</span></a>
+          <a class="hub-nav-link" href="#selective-introduction" data-hub-link="selective-introduction"><strong>🎯 Introduction</strong><span>Open the merged syllabus page.</span></a>
+          <a class="hub-nav-link" href="#selective-maths" data-hub-link="selective-maths"><strong>➗ Mathematical Reasoning</strong><span>Number, measurement, data, and chance.</span><div class="nav-progress-dots" data-navdots="maths"></div></a>
+          <a class="hub-nav-link" href="#selective-thinking" data-hub-link="selective-thinking"><strong>🧠 Thinking Skills</strong><span>Verbal, numerical, and spatial reasoning.</span><div class="nav-progress-dots" data-navdots="thinking"></div></a>
+          <a class="hub-nav-link" href="#selective-reading" data-hub-link="selective-reading"><strong>📘 Reading</strong><span>Inference, vocabulary, and synthesis.</span><div class="nav-progress-dots" data-navdots="reading"></div></a>
+          <a class="hub-nav-link" href="#selective-writing" data-hub-link="selective-writing"><strong>✍️ Writing</strong><span>Text types and marking areas.</span><div class="nav-progress-dots" data-navdots="writing"></div></a>
+          <a class="hub-nav-link" href="#selective-path" data-hub-link="selective-path"><strong>🏆 Practice Path</strong><span>Suggested order for revision.</span></a>
+          <a class="hub-nav-link" href="#selective-model-papers" data-hub-link="selective-model-papers"><strong>🧪 Model Papers</strong><span>Subscription-only full papers.</span></a>
+          <a class="hub-nav-link" href="#selective-feedback" data-hub-link="selective-feedback"><strong>💬 Feedback</strong><span>Report an issue or idea.</span></a>
+        </div>
+      </aside>
+
+      <div class="hub-content">
+
+        <!-- INTRODUCTION -->
+        <section class="intro-card" id="selective-introduction">
+          <h2 class="section-title">🎯 Selective Exam Syllabus</h2>
+          <p class="section-copy">
+            This is the starting point for selective-school preparation. The exam is built to check accuracy, speed, reasoning, and confidence,
+            not just memory. Children need to read carefully, notice patterns, solve problems, and write clearly under timed conditions.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Reading · 45 mins · 17 questions</span>
+            <span class="pill">Maths · 40 mins · 35 questions</span>
+            <span class="pill">Thinking · 40 mins · 40 questions</span>
+            <span class="pill">Writing · 30 mins · 1 prompt</span>
+          </div>
+          <div class="overview-grid">
+            <article class="overview-card">
+              <span class="icon">🧠</span>
+              <h3>Think</h3>
+              <p>Reason with logic, patterns, and evidence-based decisions.</p>
+            </article>
+            <article class="overview-card">
+              <span class="icon">📘</span>
+              <h3>Read</h3>
+              <p>Understand meaning, vocabulary, and clues hidden in texts.</p>
+            </article>
+            <article class="overview-card">
+              <span class="icon">➗</span>
+              <h3>Solve</h3>
+              <p>Use maths strategies across number, space, data, and chance.</p>
+            </article>
+            <article class="overview-card">
+              <span class="icon">✍️</span>
+              <h3>Write</h3>
+              <p>Plan, organise, and express ideas clearly under time pressure.</p>
+            </article>
+          </div>
+          <div class="prep-alert" style="margin-top:18px">
+            <div class="prep-alert-icon">⏳</div>
+            <div>
+              <strong>How should families use this hub?</strong>
+              <p>Start with the introduction, then move into the topic pages one by one. That way the student learns the idea first, practises it next, and only then works through mixed revision.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- OVERVIEW -->
+        <section class="intro-card" id="selective-overview">
+          <h2 class="section-title">How This Selective Area Is Organised</h2>
+          <p class="section-copy">The pages below are grouped by the major exam categories: mathematical reasoning, thinking skills, reading, and writing. Inside each category, the syllabus is broken into smaller topic pages so revision can stay focused and easy to navigate.</p>
+          <div class="pill-row">
+            <span class="pill">Official Syllabus Included Here</span>
+            <span class="pill">31 Topic Pages</span>
+            <span class="pill">4 Main Exam Areas</span>
+            <span class="pill">Category-Based File Names</span>
+            <span class="pill">Common Page Template</span>
+          </div>
+          <div class="overview-grid">
+            <article class="overview-card">
+              <span class="icon">📘</span>
+              <h3>Reading</h3>
+              <p>Fiction, poetry, non-fiction, inference, vocabulary in context, and synthesis across texts.</p>
+            </article>
+            <article class="overview-card">
+              <span class="icon">➗</span>
+              <h3>Mathematical Reasoning</h3>
+              <p>Whole numbers, fractions, percentages, ratios, measurement, geometry, and data.</p>
+            </article>
+            <article class="overview-card">
+              <span class="icon">🧠</span>
+              <h3>Thinking Skills</h3>
+              <p>Evaluating arguments, drawing conclusions, spotting flaws, numerical reasoning, and spatial reasoning.</p>
+            </article>
+            <article class="overview-card">
+              <span class="icon">✍️</span>
+              <h3>Writing</h3>
+              <p>Narrative, persuasive, discursive, and the four main marking areas used in selective writing.</p>
+            </article>
+          </div>
+          <div class="stats">
+            <div class="stat"><strong>15</strong><span>Maths Topics</span></div>
+            <div class="stat"><strong>7</strong><span>Thinking Topics</span></div>
+            <div class="stat"><strong>6</strong><span>Reading Topics</span></div>
+            <div class="stat"><strong>7</strong><span>Writing Topics</span></div>
+          </div>
+        </section>
+
+        <!-- MATHS -->
+        <section class="section-card" id="selective-maths">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">➗ Mathematical Reasoning</h2>
+              <p class="section-copy">Upper-primary mathematics content with strong emphasis on multi-step problem solving, interpretation, and strategy choice.</p>
+            </div>
+            <div class="section-header-right">
+              <div class="timing">40 mins · 35 questions</div>
+              <span class="section-done-badge" id="maths-badge">🏆 Section Complete!</span>
+            </div>
+          </div>
+          <div class="journey-path" aria-label="Maths learning journey">
+            <div class="journey-step" data-step="maths-1"><div class="step-orb">01<span class="step-checkmark">✓</span></div><div class="step-label">Number &amp; Algebra</div><div class="step-desc">Numbers, patterns, and the rules that build answers.</div></div>
+            <div class="journey-step" data-step="maths-2"><div class="step-orb">02<span class="step-checkmark">✓</span></div><div class="step-label">Measurement</div><div class="step-desc">Length, area, perimeter, and real-world measures.</div></div>
+            <div class="journey-step" data-step="maths-3"><div class="step-orb">03<span class="step-checkmark">✓</span></div><div class="step-label">Geometry &amp; Position</div><div class="step-desc">Shapes, grids, angles, and coordinates.</div></div>
+            <div class="journey-step" data-step="maths-4"><div class="step-orb">04<span class="step-checkmark">✓</span></div><div class="step-label">Data &amp; Chance</div><div class="step-desc">Tables, graphs, averages, and probability.</div></div>
+          </div>
+          <div class="subgroup-grid">
+            <article class="subgroup">
+              <h3>Number &amp; Algebra</h3>
+              <div class="topic-grid">
+                <a class="topic-link math" href="selective-maths-whole-numbers.html" data-topic="selective-maths-whole-numbers.html" data-section="maths"><span>Maths · Number</span><strong>Whole Numbers &amp; Multi-Step Operations</strong><em>Place value, operations, and large-number estimation.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link math" href="selective-maths-divisibility-remainders.html" data-topic="selective-maths-divisibility-remainders.html" data-section="maths"><span>Maths · Number</span><strong>Divisibility &amp; Remainders</strong><em>Remainder patterns, divisibility rules, and modular-style logic.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link math" href="selective-maths-fractions-decimals.html" data-topic="selective-maths-fractions-decimals.html" data-section="maths"><span>Maths · Number</span><strong>Fractions &amp; Decimals</strong><em>Conversions, ordering, and operations across forms.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link math" href="selective-maths-percentages.html" data-topic="selective-maths-percentages.html" data-section="maths"><span>Maths · Number</span><strong>Percentages</strong><em>Percentage of an amount and percentage change.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link math" href="selective-maths-ratios-rates.html" data-topic="selective-maths-ratios-rates.html" data-section="maths"><span>Maths · Number</span><strong>Ratios &amp; Rates</strong><em>Simplification, scaling, and unitary method thinking.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link math" href="selective-maths-patterns-algebra.html" data-topic="selective-maths-patterns-algebra.html" data-section="maths"><span>Maths · Algebra</span><strong>Patterns &amp; Algebra</strong><em>Number rules, pattern logic, and simple expressions.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link math" href="selective-maths-counting-combinatorics.html" data-topic="selective-maths-counting-combinatorics.html" data-section="maths"><span>Maths · Number</span><strong>Counting &amp; Combinatorics</strong><em>Arrangements, combinations, and systematic counting.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link math" href="selective-maths-optimisation-constraints.html" data-topic="selective-maths-optimisation-constraints.html" data-section="maths"><span>Maths · Reasoning</span><strong>Optimisation &amp; Constraint Logic</strong><em>Best-value and minimum/maximum solutions under rules.</em><span class="topic-star">⭐</span></a>
+              </div>
+            </article>
+            <article class="subgroup">
+              <h3>Measurement &amp; Space</h3>
+              <div class="topic-grid">
+                <a class="topic-link math" href="selective-maths-measurement.html" data-topic="selective-maths-measurement.html" data-section="maths"><span>Maths · Measure</span><strong>Measurement</strong><em>Area, perimeter, volume, capacity, and metric units.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link math" href="selective-maths-time-systems.html" data-topic="selective-maths-time-systems.html" data-section="maths"><span>Maths · Measure</span><strong>Time Systems &amp; Timetables</strong><em>24-hour time, elapsed journeys, and time-zone shifts.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link math" href="selective-maths-geometry-shapes.html" data-topic="selective-maths-geometry-shapes.html" data-section="maths"><span>Maths · Space</span><strong>Geometry</strong><em>2D and 3D shape properties with separate pages for each shape type.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link math" href="selective-maths-position-coordinates.html" data-topic="selective-maths-position-coordinates.html" data-section="maths"><span>Maths · Position</span><strong>Position &amp; Coordinates</strong><em>Grids, maps, ordered pairs, and movement logic.</em><span class="topic-star">⭐</span></a>
+              </div>
+            </article>
+            <article class="subgroup">
+              <h3>Statistics &amp; Probability</h3>
+              <div class="topic-grid">
+                <a class="topic-link math" href="selective-maths-data-interpretation.html" data-topic="selective-maths-data-interpretation.html" data-section="maths"><span>Maths · Data</span><strong>Data Interpretation</strong><em>Complex tables, dot plots, and column graphs.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link math" href="selective-maths-averages.html" data-topic="selective-maths-averages.html" data-section="maths"><span>Maths · Data</span><strong>Mean, Median &amp; Mode</strong><em>Calculating and choosing the right average.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link math" href="selective-maths-probability.html" data-topic="selective-maths-probability.html" data-section="maths"><span>Maths · Chance</span><strong>Probability</strong><em>Simple chance, outcomes, and likelihood.</em><span class="topic-star">⭐</span></a>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- THINKING -->
+        <section class="section-card" id="selective-thinking">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">🧠 Thinking Skills</h2>
+              <p class="section-copy">Reasoning-first questions that test how children process information, judge logic, and solve unfamiliar problems.</p>
+            </div>
+            <div class="section-header-right">
+              <div class="timing">40 mins · 40 questions</div>
+              <span class="section-done-badge" id="thinking-badge">🏆 Section Complete!</span>
+            </div>
+          </div>
+          <div class="journey-path" aria-label="Thinking learning journey">
+            <div class="journey-step" data-step="thinking-1"><div class="step-orb">01<span class="step-checkmark">✓</span></div><div class="step-label">Verbal Reasoning</div><div class="step-desc">Start with clues, claims, and evidence.</div></div>
+            <div class="journey-step" data-step="thinking-2"><div class="step-orb">02<span class="step-checkmark">✓</span></div><div class="step-label">Number Reasoning</div><div class="step-desc">Use number puzzles to find efficient answers.</div></div>
+            <div class="journey-step" data-step="thinking-3"><div class="step-orb">03<span class="step-checkmark">✓</span></div><div class="step-label">Spatial Reasoning</div><div class="step-desc">Turn, flip, and fit shapes in your head.</div></div>
+            <div class="journey-step" data-step="thinking-4"><div class="step-orb">04<span class="step-checkmark">✓</span></div><div class="step-label">Data Rules</div><div class="step-desc">Work through schedules and tables.</div></div>
+          </div>
+          <div class="subgroup-grid">
+            <article class="subgroup">
+              <h3>Verbal Reasoning</h3>
+              <div class="topic-grid">
+                <a class="topic-link thinking" href="selective-thinking-verbal-reasoning.html" data-topic="selective-thinking-verbal-reasoning.html" data-section="thinking"><span>Thinking · Verbal</span><strong>Verbal Reasoning Basics</strong><em>Read the clues, support the claim, and spot the weak link.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link thinking" href="selective-thinking-evaluating-arguments.html" data-topic="selective-thinking-evaluating-arguments.html" data-section="thinking"><span>Thinking · Verbal</span><strong>Evaluating Arguments</strong><em>Choose what best supports or weakens a claim.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link thinking" href="selective-thinking-drawing-conclusions.html" data-topic="selective-thinking-drawing-conclusions.html" data-section="thinking"><span>Thinking · Verbal</span><strong>Drawing Conclusions</strong><em>Find what must be true from stated facts.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link thinking" href="selective-thinking-identifying-flaws.html" data-topic="selective-thinking-identifying-flaws.html" data-section="thinking"><span>Thinking · Verbal</span><strong>Identifying Flaws in Logic</strong><em>Spot weak reasoning and hidden assumptions.</em><span class="topic-star">⭐</span></a>
+              </div>
+            </article>
+            <article class="subgroup">
+              <h3>Numerical &amp; Spatial</h3>
+              <div class="topic-grid">
+                <a class="topic-link thinking" href="selective-thinking-problem-solving.html" data-topic="selective-thinking-problem-solving.html" data-section="thinking"><span>Thinking · Numerical</span><strong>Problem Solving with Numbers</strong><em>Use efficient strategies for puzzle-style questions.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link thinking" href="selective-thinking-data-analysis.html" data-topic="selective-thinking-data-analysis.html" data-section="thinking"><span>Thinking · Numerical</span><strong>Data Analysis under Rules</strong><em>Extract useful information from messy conditions.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link thinking" href="selective-thinking-spatial-reasoning.html" data-topic="selective-thinking-spatial-reasoning.html" data-section="thinking"><span>Thinking · Spatial</span><strong>Spatial Reasoning</strong><em>Rotate, reflect, and fit shapes mentally.</em><span class="topic-star">⭐</span></a>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- READING -->
+        <section class="section-card" id="selective-reading">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">📘 Reading</h2>
+              <p class="section-copy">Reading questions with strong emphasis on subtext, evidence, inference, and careful interpretation of genre-specific clues.</p>
+            </div>
+            <div class="section-header-right">
+              <div class="timing">45 mins · 17 questions</div>
+              <span class="section-done-badge" id="reading-badge">🏆 Section Complete!</span>
+            </div>
+          </div>
+          <div class="reading-guide">
+            <div class="reading-guide-top">
+              <div>
+                <div class="reading-guide-title">How to crack Reading questions</div>
+                <p class="reading-guide-copy">Tell your student this: the answer is always in the text. They are not guessing from memory or general knowledge. They are proving the answer by finding evidence, then checking that the option fits the clue.</p>
+              </div>
+              <div class="reading-proof">🔎 Proof first, answer second</div>
+            </div>
+            <div class="reading-guide-grid">
+              <article class="reading-guide-card">
+                <div class="reading-guide-badge">Step 1</div>
+                <h4>Overview</h4>
+                <p>Skim the question stems first, then scan the title, headings, and opening lines. Build a quick map of what you need to hunt for.</p>
+              </article>
+              <article class="reading-guide-card">
+                <div class="reading-guide-badge">Step 2</div>
+                <h4>Inference</h4>
+                <p>Use the <strong>because test</strong>: say your answer aloud and finish with “because the text says...”</p>
+              </article>
+              <article class="reading-guide-card">
+                <div class="reading-guide-badge">Step 3</div>
+                <h4>Vocabulary</h4>
+                <p>Cover the word and replace it with a meaning that fits the sentence. Check nearby clues first.</p>
+              </article>
+              <article class="reading-guide-card">
+                <div class="reading-guide-badge">Step 4</div>
+                <h4>Genres</h4>
+                <p>For fiction, poetry, and non-fiction, ask what clues the text gives and what kind of answer the question wants.</p>
+              </article>
+              <article class="reading-guide-card">
+                <div class="reading-guide-badge">Step 5</div>
+                <h4>Exam Plan</h4>
+                <p>Form your own answer before reading the options. If a question names a paragraph, go straight there instead of rereading the whole text.</p>
+              </article>
+            </div>
+            <div class="reading-guide-grid" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-top:12px">
+              <article class="reading-guide-card">
+                <div class="reading-guide-badge">Trap spotter</div>
+                <h4>Skip Absolutes</h4>
+                <p>Be careful with options using <strong>always</strong>, <strong>never</strong>, <strong>completely</strong>, or <strong>entirely</strong>. The text rarely proves answers that strong.</p>
+              </article>
+              <article class="reading-guide-card">
+                <div class="reading-guide-badge">Trap spotter</div>
+                <h4>Skip Real-Life Logic</h4>
+                <p>Do not choose an answer just because it sounds true in real life. Choose it only if the passage states or strongly implies it.</p>
+              </article>
+              <article class="reading-guide-card">
+                <div class="reading-guide-badge">Trap spotter</div>
+                <h4>Skip Twisted Words</h4>
+                <p>Some wrong answers copy words from the passage but twist the meaning. Matching words is not enough; the meaning must match too.</p>
+              </article>
+              <article class="reading-guide-card">
+                <div class="reading-guide-badge">Trap spotter</div>
+                <h4>Keep “Just Right”</h4>
+                <p>The best answer is usually balanced: not too strong, not too weak, and backed by one exact line in the text.</p>
+              </article>
+            </div>
+          </div>
+          <div class="journey-path" aria-label="Reading learning journey">
+            <div class="journey-step" data-step="reading-1"><div class="step-orb">01<span class="step-checkmark">✓</span></div><div class="step-label">Fiction</div><div class="step-desc">Story clues, feelings, and motives.</div></div>
+            <div class="journey-step" data-step="reading-2"><div class="step-orb">02<span class="step-checkmark">✓</span></div><div class="step-label">Poetry</div><div class="step-desc">Images, comparisons, and deeper feeling.</div></div>
+            <div class="journey-step" data-step="reading-3"><div class="step-orb">03<span class="step-checkmark">✓</span></div><div class="step-label">Non-Fiction</div><div class="step-desc">Reports, articles, information-rich texts.</div></div>
+            <div class="journey-step" data-step="reading-4"><div class="step-orb">04<span class="step-checkmark">✓</span></div><div class="step-label">Reading Skills</div><div class="step-desc">Inference, vocabulary, and synthesis.</div></div>
+          </div>
+          <div class="subgroup-grid">
+            <article class="subgroup">
+              <h3>Genres Covered</h3>
+              <div class="topic-grid">
+                <a class="topic-link reading" href="selective-reading-fiction.html" data-topic="selective-reading-fiction.html" data-section="reading"><span>Reading · Genre</span><strong>Fiction Reading</strong><em>Character emotion, motive, and story clues.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link reading" href="selective-reading-poetry.html" data-topic="selective-reading-poetry.html" data-section="reading"><span>Reading · Genre</span><strong>Poetry Reading</strong><em>Imagery, metaphor, and theme tracking.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link reading" href="selective-reading-non-fiction.html" data-topic="selective-reading-non-fiction.html" data-section="reading"><span>Reading · Genre</span><strong>Non-Fiction Reading</strong><em>Reports, articles, and information-rich texts.</em><span class="topic-star">⭐</span></a>
+              </div>
+            </article>
+            <article class="subgroup">
+              <h3>Key Skills</h3>
+              <div class="topic-grid">
+                <a class="topic-link reading" href="selective-reading-inference.html" data-topic="selective-reading-inference.html" data-section="reading"><span>Reading · Skill</span><strong>Inference</strong><em>Make evidence-based guesses about implied meaning.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link reading" href="selective-reading-vocabulary-context.html" data-topic="selective-reading-vocabulary-context.html" data-section="reading"><span>Reading · Skill</span><strong>Vocabulary in Context</strong><em>Work out meaning from surrounding clues.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link reading" href="selective-reading-synthesis.html" data-topic="selective-reading-synthesis.html" data-section="reading"><span>Reading · Skill</span><strong>Synthesis Across Texts</strong><em>Match statements and ideas across several texts.</em><span class="topic-star">⭐</span></a>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- WRITING -->
+        <section class="section-card" id="selective-writing">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">✍️ Writing</h2>
+              <p class="section-copy">Timed writing preparation across major text types and the exact marking areas children need to strengthen.</p>
+            </div>
+            <div class="section-header-right">
+              <div class="timing">30 mins · 1 prompt</div>
+              <span class="section-done-badge" id="writing-badge">🏆 Section Complete!</span>
+            </div>
+          </div>
+          <div class="writing-guide">
+            <div class="writing-guide-top">
+              <div>
+                <div class="writing-guide-title">How to crack Writing tasks</div>
+                <p class="writing-guide-copy">Tell your student this first: Writing is not about filling the page with lots of words. It is about answering the prompt clearly, staying in control, and making every sentence help the reader. The marker is looking for clear ideas, smart organisation, and careful language choices.</p>
+              </div>
+              <div class="writing-proof">✍️ Think first. Plan fast. Write clearly.</div>
+            </div>
+            <div class="writing-guide-grid">
+              <article class="writing-guide-card">
+                <div class="writing-guide-badge">Step 1</div>
+                <h4>Read the prompt carefully</h4>
+                <p>Circle the key words. Ask: What am I really being asked to write? A story, an argument, or a balanced discussion? Stay close to that task all the way through.</p>
+              </article>
+              <article class="writing-guide-card">
+                <div class="writing-guide-badge">Step 2</div>
+                <h4>Plan before writing</h4>
+                <p>Spend a few minutes making a quick plan. Choose your main idea, put events or reasons in order, and decide how you will open and finish. A short plan saves many mistakes later.</p>
+              </article>
+              <article class="writing-guide-card">
+                <div class="writing-guide-badge">Step 3</div>
+                <h4>Keep one clear job per paragraph</h4>
+                <p>Each paragraph should do one job only. In a story, one paragraph might introduce the problem. In persuasive writing, one paragraph should carry one strong reason.</p>
+              </article>
+              <article class="writing-guide-card">
+                <div class="writing-guide-badge">Step 4</div>
+                <h4>Choose strong but controlled words</h4>
+                <p>Use words that help the reader see, feel, or understand the idea. Do not use difficult words just to sound clever. Choose words you can control correctly.</p>
+              </article>
+              <article class="writing-guide-card">
+                <div class="writing-guide-badge">Step 5</div>
+                <h4>Leave time to check</h4>
+                <p>Save a few minutes at the end to reread your work. Check capitals, full stops, tense, spelling, and whether every sentence actually matches your plan and the prompt.</p>
+              </article>
+            </div>
+            <div class="writing-guide-grid" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-top:12px">
+              <article class="writing-guide-card">
+                <div class="writing-guide-badge">What markers want</div>
+                <h4>Clear ideas</h4>
+                <p>Markers reward writing that stays focused and develops one strong idea properly instead of jumping between many weak ideas.</p>
+              </article>
+              <article class="writing-guide-card">
+                <div class="writing-guide-badge">What markers want</div>
+                <h4>Strong structure</h4>
+                <p>Good writing feels easy to follow. The reader should always know where the piece is going and why each paragraph is there.</p>
+              </article>
+              <article class="writing-guide-card">
+                <div class="writing-guide-badge">Trap spotter</div>
+                <h4>Do not rush into sentence one</h4>
+                <p>Many students lose marks because they start too quickly with no plan. Fast planning usually creates better writing than fast drafting.</p>
+              </article>
+              <article class="writing-guide-card">
+                <div class="writing-guide-badge">Trap spotter</div>
+                <h4>Do not mistake length for quality</h4>
+                <p>A longer piece is not automatically better. A shorter, well-shaped response usually scores higher than a messy piece that keeps repeating itself.</p>
+              </article>
+            </div>
+          </div>
+          <div class="journey-path" aria-label="Writing learning journey">
+            <div class="journey-step" data-step="writing-1"><div class="step-orb">01<span class="step-checkmark">✓</span></div><div class="step-label">Text Types</div><div class="step-desc">Narrative, persuasive, and discursive writing.</div></div>
+            <div class="journey-step" data-step="writing-2"><div class="step-orb">02<span class="step-checkmark">✓</span></div><div class="step-label">Ideas &amp; Content</div><div class="step-desc">Clear idea and stay close to the prompt.</div></div>
+            <div class="journey-step" data-step="writing-3"><div class="step-orb">03<span class="step-checkmark">✓</span></div><div class="step-label">Structure &amp; Language</div><div class="step-desc">Paragraphs and precise word choices.</div></div>
+            <div class="journey-step" data-step="writing-4"><div class="step-orb">04<span class="step-checkmark">✓</span></div><div class="step-label">Grammar &amp; Punctuation</div><div class="step-desc">Checking boundaries, tense, and accuracy.</div></div>
+          </div>
+          <div class="subgroup-grid">
+            <article class="subgroup">
+              <h3>Text Types</h3>
+              <div class="topic-grid">
+                <a class="topic-link writing" href="selective-writing-narrative.html" data-topic="selective-writing-narrative.html" data-section="writing"><span>Writing · Type</span><strong>Narrative Writing</strong><em>Character, setting, conflict, and story control.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link writing" href="selective-writing-persuasive.html" data-topic="selective-writing-persuasive.html" data-section="writing"><span>Writing · Type</span><strong>Persuasive Writing</strong><em>Clear viewpoint, reasons, and argument structure.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link writing" href="selective-writing-discursive.html" data-topic="selective-writing-discursive.html" data-section="writing"><span>Writing · Type</span><strong>Discursive Writing</strong><em>Balanced exploration of multiple sides.</em><span class="topic-star">⭐</span></a>
+              </div>
+            </article>
+            <article class="subgroup">
+              <h3>Marking Criteria</h3>
+              <div class="topic-grid">
+                <a class="topic-link writing" href="selective-writing-ideas-content.html" data-topic="selective-writing-ideas-content.html" data-section="writing"><span>Writing · Criteria</span><strong>Ideas &amp; Content</strong><em>Originality, relevance, and depth of ideas.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link writing" href="selective-writing-structure-organisation.html" data-topic="selective-writing-structure-organisation.html" data-section="writing"><span>Writing · Criteria</span><strong>Structure &amp; Organisation</strong><em>Logical paragraphs and clear flow.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link writing" href="selective-writing-language-vocabulary.html" data-topic="selective-writing-language-vocabulary.html" data-section="writing"><span>Writing · Criteria</span><strong>Language &amp; Vocabulary</strong><em>Precise words and controlled expression.</em><span class="topic-star">⭐</span></a>
+                <a class="topic-link writing" href="selective-writing-grammar-punctuation.html" data-topic="selective-writing-grammar-punctuation.html" data-section="writing"><span>Writing · Criteria</span><strong>Grammar &amp; Punctuation</strong><em>Sentence control, accuracy, and proofreading.</em><span class="topic-star">⭐</span></a>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- PRACTICE PATH -->
+        <section class="roadmap-card" id="selective-path">
+          <h2 class="section-title">🏆 Suggested Practice Path</h2>
+          <p class="section-copy">A simple way to build the section without jumping straight into full selective mocks.</p>
+          <div class="roadmap">
+            <article class="roadmap-item"><div class="step-num">1</div><h3>Topic Pages</h3><p>Start with one page at a time so the question style and vocabulary become familiar.</p></article>
+            <article class="roadmap-item"><div class="step-num">2</div><h3>Mixed Sets</h3><p>Blend a few related pages once confidence grows inside one exam area.</p></article>
+            <article class="roadmap-item"><div class="step-num">3</div><h3>Timed Bursts</h3><p>Introduce short timed practice before moving to full-paper pressure.</p></article>
+            <article class="roadmap-item"><div class="step-num">4</div><h3>Full Mocks Later</h3><p>Build complete selective mock exams after the topic pages are well established.</p></article>
+          </div>
+        </section>
+
+        <section class="section-card" id="selective-model-papers">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">🧪 Model Question Papers</h2>
+              <p class="section-copy">Full mixed model papers that simulate exam pressure with complete section timing and marking flow.</p>
+            </div>
+            <div class="section-header-right">
+              <span class="sub-lock-pill">🔒 Subscription Only</span>
+            </div>
+          </div>
+          <div class="model-papers-shell">
+            <div class="model-papers-head">
+              <p class="model-papers-note">These papers are premium because they combine all domains in full-paper format, include timed flow, and provide structured answer-review guidance.</p>
+            </div>
+            <div class="model-paper-grid">
+              <article class="model-paper-card">
+                <h3>Model Paper A</h3>
+                <p>Balanced starter paper with reading, mathematical reasoning, thinking skills, and one writing prompt.</p>
+                <div class="model-paper-meta">
+                  <span>📘 Reading</span><span>➗ Maths</span><span>🧠 Thinking</span><span>✍️ Writing</span>
+                </div>
+                <span class="model-paper-cta">Unlock with Subscription</span>
+              </article>
+              <article class="model-paper-card">
+                <h3>Model Paper B</h3>
+                <p>Higher-complexity pattern with harder logic transitions and tighter time pressure in reasoning sections.</p>
+                <div class="model-paper-meta">
+                  <span>⏱ Timed</span><span>🎯 Advanced</span><span>📊 Performance Ready</span>
+                </div>
+                <span class="model-paper-cta">Unlock with Subscription</span>
+              </article>
+              <article class="model-paper-card">
+                <h3>Model Paper C</h3>
+                <p>Exam-style final rehearsal designed for confidence before full mock papers and school-entry testing.</p>
+                <div class="model-paper-meta">
+                  <span>🏆 Final Prep</span><span>📝 Full Mix</span><span>🔍 Review Focus</span>
+                </div>
+                <span class="model-paper-cta">Unlock with Subscription</span>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-card" id="selective-feedback">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">💬 Selective Feedback &amp; Corrections</h2>
+              <p class="section-copy">Use this form if you notice something that should be improved, corrected, or explained more clearly on any Selective page.</p>
+            </div>
+            <div class="section-header-right">
+              <div class="timing">Stored privately in Google Sheets</div>
+            </div>
+          </div>
+
+          <div class="comment-shell" style="margin-top:6px">
+            <div class="comment-grid">
+              <div class="comment-panel">
+                <h3>Tell Us the Exact Page</h3>
+                <p class="comment-help">
+                  Please pick the area first, then paste the exact page name or URL if you know it.
+                  That helps us find the issue quickly and fix the right topic.
+                </p>
+
+                <form class="comment-form" id="selectiveFeedbackForm">
+                  <div>
+                    <label for="selectiveFeedbackName">Name</label>
+                    <input class="comment-input" id="selectiveFeedbackName" maxlength="40" placeholder="Your name or nickname" />
+                  </div>
+
+                  <fieldset class="comment-type">
+                    <legend>Feedback Type</legend>
+                    <div class="comment-type-grid">
+                      <label class="comment-type-option">
+                        <input type="radio" name="selectiveFeedbackType" value="Suggestion" checked />
+                        <span class="comment-type-copy">
+                          <strong>Suggestion</strong>
+                          <span>Share an idea to improve the page or explanation.</span>
+                        </span>
+                      </label>
+                      <label class="comment-type-option">
+                        <input type="radio" name="selectiveFeedbackType" value="Correction" />
+                        <span class="comment-type-copy">
+                          <strong>Correction</strong>
+                          <span>Point out something incorrect or unclear.</span>
+                        </span>
+                      </label>
+                    </div>
+                  </fieldset>
+
+                  <div>
+                    <label for="selectiveFeedbackSection">Issue Area</label>
+                    <select class="comment-input" id="selectiveFeedbackSection">
+                      <option value="Selective Hub">Selective Hub</option>
+                      <option value="Selective Syllabus">Selective Syllabus</option>
+                      <option value="Mathematical Reasoning">Mathematical Reasoning</option>
+                      <option value="Thinking Skills">Thinking Skills</option>
+                      <option value="Reading">Reading</option>
+                      <option value="Writing">Writing</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label for="selectiveFeedbackPage">Current Page / Topic</label>
+                    <input class="comment-input" id="selectiveFeedbackPage" maxlength="120" placeholder="Auto-filled from the page you are on" />
+                  </div>
+
+                  <div>
+                    <label for="selectiveFeedbackMessage">What needs changing?</label>
+                    <textarea class="comment-textarea" id="selectiveFeedbackMessage" maxlength="500" placeholder="Tell us what is wrong, missing, or needs a clearer explanation."></textarea>
+                    <div class="comment-note">Please keep it kind, specific, and helpful.</div>
+                  </div>
+
+                  <div class="captcha-box">
+                    <div class="captcha-question" id="selectiveCaptchaQuestion">Loading captcha...</div>
+                    <div class="captcha-row">
+                      <input class="comment-input" id="selectiveCaptchaAnswer" inputmode="numeric" placeholder="Type your answer" />
+                      <button class="comment-refresh" type="button" id="selectiveRefreshCaptcha">New Captcha</button>
+                    </div>
+                  </div>
+
+                  <div class="comment-actions">
+                    <button class="comment-submit" type="submit">Send Feedback ✉️</button>
+                  </div>
+
+                  <div class="comment-status" id="selectiveFeedbackStatus"></div>
+                </form>
+              </div>
+
+              <div class="comment-panel">
+                <h3>What to Include</h3>
+                <p class="comment-help">
+                  The best reports tell us exactly where the issue is, what the problem is, and what you think should be changed.
+                </p>
+                <div class="list">
+                  <div class="list-item"><strong>1.</strong> Pick the section and the exact page/topic.</div>
+                  <div class="list-item"><strong>2.</strong> Tell us if it is a suggestion or a correction.</div>
+                  <div class="list-item"><strong>3.</strong> Explain the problem in a short, clear way.</div>
+                  <div class="list-item"><strong>4.</strong> Add the page URL if you can, so we can find it quickly.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>Built as part of Little Star's Learning World. ⭐</footer>
+
+  <script>
+  (function () {
+    // NAV INTERSECTION OBSERVER
+    var navLinks = Array.from(document.querySelectorAll('[data-hub-link]'));
+    var navSections = navLinks.map(function(l){return document.getElementById(l.getAttribute('data-hub-link'));}).filter(Boolean);
+    if(navSections.length && 'IntersectionObserver' in window){
+      var setActive = function(id){navLinks.forEach(function(l){l.classList.toggle('active',l.getAttribute('data-hub-link')===id);});};
+      var obs = new IntersectionObserver(function(entries){
+        var vis = entries.filter(function(e){return e.isIntersecting;}).sort(function(a,b){return b.intersectionRatio-a.intersectionRatio;});
+        if(vis[0]) setActive(vis[0].target.id);
+      },{rootMargin:'-20% 0px -60% 0px',threshold:[0.1,0.25,0.5]});
+      navSections.forEach(function(s){obs.observe(s);});
+    }
+
+    // STORAGE
+    var STORAGE_KEY = 'sseh_visited_v2';
+    var TOTAL = 35;
+    function getVisited(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch(e){return[];}}
+    function saveVisited(a){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(a));}catch(e){}}
+
+    // Which file hrefs belong to each section
+    var SECTION_FILES = {
+      maths:['selective-maths-whole-numbers.html','selective-maths-divisibility-remainders.html','selective-maths-fractions-decimals.html','selective-maths-percentages.html','selective-maths-ratios-rates.html','selective-maths-patterns-algebra.html','selective-maths-counting-combinatorics.html','selective-maths-optimisation-constraints.html','selective-maths-measurement.html','selective-maths-time-systems.html','selective-maths-geometry-shapes.html','selective-maths-position-coordinates.html','selective-maths-data-interpretation.html','selective-maths-averages.html','selective-maths-probability.html'],
+      thinking:['selective-thinking-verbal-reasoning.html','selective-thinking-evaluating-arguments.html','selective-thinking-drawing-conclusions.html','selective-thinking-identifying-flaws.html','selective-thinking-problem-solving.html','selective-thinking-data-analysis.html','selective-thinking-spatial-reasoning.html'],
+      reading:['selective-reading-fiction.html','selective-reading-poetry.html','selective-reading-non-fiction.html','selective-reading-inference.html','selective-reading-vocabulary-context.html','selective-reading-synthesis.html'],
+      writing:['selective-writing-narrative.html','selective-writing-persuasive.html','selective-writing-discursive.html','selective-writing-ideas-content.html','selective-writing-structure-organisation.html','selective-writing-language-vocabulary.html','selective-writing-grammar-punctuation.html']
+    };
+
+    // Journey steps: which files complete each step
+    var STEP_FILES = {
+      'maths-1':['selective-maths-whole-numbers.html','selective-maths-divisibility-remainders.html','selective-maths-fractions-decimals.html','selective-maths-percentages.html','selective-maths-ratios-rates.html','selective-maths-patterns-algebra.html','selective-maths-counting-combinatorics.html','selective-maths-optimisation-constraints.html'],
+      'maths-2':['selective-maths-measurement.html','selective-maths-time-systems.html'],
+      'maths-3':['selective-maths-geometry-shapes.html','selective-maths-position-coordinates.html'],
+      'maths-4':['selective-maths-data-interpretation.html','selective-maths-averages.html','selective-maths-probability.html'],
+      'thinking-1':['selective-thinking-verbal-reasoning.html','selective-thinking-evaluating-arguments.html','selective-thinking-drawing-conclusions.html','selective-thinking-identifying-flaws.html'],
+      'thinking-2':['selective-thinking-problem-solving.html','selective-thinking-data-analysis.html'],
+      'thinking-3':['selective-thinking-spatial-reasoning.html'],
+      'thinking-4':['selective-thinking-data-analysis.html'],
+      'reading-1':['selective-reading-fiction.html'],
+      'reading-2':['selective-reading-poetry.html'],
+      'reading-3':['selective-reading-non-fiction.html'],
+      'reading-4':['selective-reading-inference.html','selective-reading-vocabulary-context.html','selective-reading-synthesis.html'],
+      'writing-1':['selective-writing-narrative.html','selective-writing-persuasive.html','selective-writing-discursive.html'],
+      'writing-2':['selective-writing-ideas-content.html'],
+      'writing-3':['selective-writing-structure-organisation.html','selective-writing-language-vocabulary.html'],
+      'writing-4':['selective-writing-grammar-punctuation.html']
+    };
+
+    // Add colorful icons to every topic card without editing each link manually
+    function enhanceTopicCards(){
+      var ICON_SETS = {
+        maths:['🔢','🧮','➗','📉','⚖️','🧠','🧩','🎯','📏','⏰','📐','🗺️','📊','📈','🎲'],
+        thinking:['💡','🧠','🔍','🧪','🧮','📊','🧊'],
+        reading:['📖','📝','🗞️','🕵️','🔤','🧠'],
+        writing:['✍️','📣','⚖️','💭','🧱','🗂️','💬']
+      };
+      var counters = { maths:0, thinking:0, reading:0, writing:0 };
+
+      document.querySelectorAll('[data-topic]').forEach(function(card){
+        if (card.dataset.topicEnhanced === '1') return;
+        card.dataset.topicEnhanced = '1';
+
+        var section = card.getAttribute('data-section') || 'maths';
+        if (!ICON_SETS[section]) section = 'maths';
+        var icons = ICON_SETS[section];
+        var icon = icons[counters[section] % icons.length];
+        counters[section] += 1;
+
+        var label = card.querySelector('span:not(.topic-star)');
+        if (label) label.classList.add('topic-label');
+        if (label && !label.querySelector('.topic-inline-icon')) {
+          var chip = document.createElement('span');
+          chip.className = 'topic-inline-icon';
+          chip.setAttribute('aria-hidden', 'true');
+          chip.textContent = icon;
+          label.insertBefore(chip, label.firstChild);
+        }
+      });
+    }
+
+    // CONFETTI
+    function launchConfetti(){
+      var canvas = document.getElementById('confetti-canvas');
+      canvas.style.display='block';
+      var ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      var colours = ['#14b8a6','#0ea5e9','#f59e0b','#7c3aed','#fb7185','#fff','#fde68a'];
+      var pieces = Array.from({length:90},function(){
+        return{x:Math.random()*canvas.width,y:-20,r:Math.random()*9+4,c:colours[Math.floor(Math.random()*colours.length)],vx:(Math.random()-.5)*4,vy:Math.random()*5+2,angle:Math.random()*360,va:(Math.random()-.5)*7};
+      });
+      var frame=0;
+      function draw(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        pieces.forEach(function(p){
+          ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.angle*Math.PI/180);
+          ctx.fillStyle=p.c;ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*.6);
+          ctx.restore();
+          p.x+=p.vx;p.y+=p.vy;p.angle+=p.va;p.vy+=.07;
+        });
+        frame++;
+        if(frame<130) requestAnimationFrame(draw);
+        else{ctx.clearRect(0,0,canvas.width,canvas.height);canvas.style.display='none';}
+      }
+      draw();
+    }
+
+    // TOAST
+    function showToast(msg){
+      var t=document.getElementById('toast');
+      t.innerHTML=msg;t.classList.add('show');
+      setTimeout(function(){t.classList.remove('show');},3000);
+    }
+
+    // UPDATE ALL UI
+    function updateUI(){
+      var visited = getVisited();
+      var visitedSet = new Set(visited);
+
+      // cards
+      document.querySelectorAll('[data-topic]').forEach(function(card){
+        var topic = card.getAttribute('data-topic');
+        if(visitedSet.has(topic)) card.classList.add('visited');
+        else card.classList.remove('visited');
+      });
+
+      // dots in sidebar
+      Object.keys(SECTION_FILES).forEach(function(section){
+        var host = document.querySelector('[data-navdots="'+section+'"]');
+        if(!host) return;
+        host.innerHTML = '';
+        SECTION_FILES[section].forEach(function(file){
+          var d = document.createElement('span');
+          d.className = 'nav-dot'+(visitedSet.has(file)?' done':'');
+          host.appendChild(d);
+        });
+      });
+
+      // section complete badges
+      Object.keys(STEP_FILES).forEach(function(step){
+        var done = STEP_FILES[step].every(function(file){ return visitedSet.has(file); });
+        var node = document.querySelector('[data-step="'+step+'"]');
+        if(node) node.classList.toggle('done', done);
+      });
+      document.getElementById('maths-badge').classList.toggle('visible', STEP_FILES['maths-1'].every(function(file){ return visitedSet.has(file); }) && STEP_FILES['maths-2'].every(function(file){ return visitedSet.has(file); }) && STEP_FILES['maths-3'].every(function(file){ return visitedSet.has(file); }) && STEP_FILES['maths-4'].every(function(file){ return visitedSet.has(file); }));
+      document.getElementById('thinking-badge').classList.toggle('visible', STEP_FILES['thinking-1'].every(function(file){ return visitedSet.has(file); }) && STEP_FILES['thinking-2'].every(function(file){ return visitedSet.has(file); }) && STEP_FILES['thinking-3'].every(function(file){ return visitedSet.has(file); }) && STEP_FILES['thinking-4'].every(function(file){ return visitedSet.has(file); }));
+      document.getElementById('reading-badge').classList.toggle('visible', STEP_FILES['reading-1'].every(function(file){ return visitedSet.has(file); }) && STEP_FILES['reading-2'].every(function(file){ return visitedSet.has(file); }) && STEP_FILES['reading-3'].every(function(file){ return visitedSet.has(file); }) && STEP_FILES['reading-4'].every(function(file){ return visitedSet.has(file); }));
+      document.getElementById('writing-badge').classList.toggle('visible', STEP_FILES['writing-1'].every(function(file){ return visitedSet.has(file); }) && STEP_FILES['writing-2'].every(function(file){ return visitedSet.has(file); }) && STEP_FILES['writing-3'].every(function(file){ return visitedSet.has(file); }) && STEP_FILES['writing-4'].every(function(file){ return visitedSet.has(file); }));
+
+      // progress bar
+      var count = visited.length;
+      var pct = Math.min(100, Math.round(count / TOTAL * 100));
+      document.getElementById('journeyFill').style.width = pct + '%';
+      document.getElementById('journeyCount').textContent = count + ' / ' + TOTAL + ' topics visited';
+      document.getElementById('starCount').textContent = Math.max(0, Math.floor(count / 2));
+
+      // bind click visit tracking
+      document.querySelectorAll('[data-topic]').forEach(function(card){
+        if (card.dataset.boundVisited) return;
+        card.dataset.boundVisited = '1';
+        card.addEventListener('click', function(){
+          var topic = card.getAttribute('data-topic');
+          var current = getVisited();
+          if(current.indexOf(topic) === -1){
+            current.push(topic);
+            saveVisited(current);
+            updateUI();
+            if(current.length % 5 === 0){
+              launchConfetti();
+              showToast('🌟 Great exploring! You unlocked new progress!');
+            }
+          }
+        });
+      });
+    }
+
+    enhanceTopicCards();
+    updateUI();
+  })();
+
+  (function () {
+    var FEEDBACK_API_URL = 'https://script.google.com/macros/s/AKfycbyuChQRsqHqP7eYaj4kSiikKvmIzQSKdvU2k7Ln265CyolJ6NDJ4HBFla6YiyqC9jCv/exec';
+    var form = document.getElementById('selectiveFeedbackForm');
+    if (!form) return;
+
+    var nameInput = document.getElementById('selectiveFeedbackName');
+    var typeInputs = Array.from(document.querySelectorAll('input[name="selectiveFeedbackType"]'));
+    var sectionInput = document.getElementById('selectiveFeedbackSection');
+    var pageInput = document.getElementById('selectiveFeedbackPage');
+    var messageInput = document.getElementById('selectiveFeedbackMessage');
+    var captchaQuestion = document.getElementById('selectiveCaptchaQuestion');
+    var captchaAnswer = document.getElementById('selectiveCaptchaAnswer');
+    var refreshCaptcha = document.getElementById('selectiveRefreshCaptcha');
+    var status = document.getElementById('selectiveFeedbackStatus');
+
+    var currentCaptchaAnswer = null;
+
+    function buildCaptcha() {
+      var left = Math.floor(Math.random() * 9) + 1;
+      var right = Math.floor(Math.random() * 9) + 1;
+      currentCaptchaAnswer = left + right;
+      captchaQuestion.textContent = 'Captcha: What is ' + left + ' + ' + right + '?';
+      captchaAnswer.value = '';
+    }
+
+    function getCurrentPageLabel() {
+      var path = window.location.pathname.split('/').pop() || 'selective-school-exam.html';
+      var hash = window.location.hash ? window.location.hash.replace('#', '') : '';
+      return hash ? path + ' #' + hash : path;
+    }
+
+    function setStatus(message, type) {
+      status.textContent = message;
+      status.className = ('comment-status ' + (type || '')).trim();
+    }
+
+    function getSelectedType() {
+      var selected = typeInputs.find(function (input) {
+        return input.checked;
+      });
+      return selected ? selected.value : '';
+    }
+
+    refreshCaptcha.addEventListener('click', buildCaptcha);
+    pageInput.value = getCurrentPageLabel();
+
+    form.addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      var name = nameInput.value.trim();
+      var feedbackType = getSelectedType();
+      var sourceSection = sectionInput.value.trim();
+      var sourcePage = pageInput.value.trim() || getCurrentPageLabel();
+      var message = messageInput.value.trim();
+      var captcha = Number(captchaAnswer.value.trim());
+
+      if (!name) {
+        setStatus('Please enter your name before submitting.', 'error');
+        return;
+      }
+
+      if (!feedbackType) {
+        setStatus('Please choose Suggestion or Correction.', 'error');
+        return;
+      }
+
+      if (!sourcePage) {
+        setStatus('Please tell us which page or topic needs attention.', 'error');
+        return;
+      }
+
+      if (!message || message.length < 8) {
+        setStatus('Please write a little more detail about the issue.', 'error');
+        return;
+      }
+
+      if (captcha !== currentCaptchaAnswer) {
+        setStatus('Captcha answer is not correct. Please try again.', 'error');
+        buildCaptcha();
+        return;
+      }
+
+      if (!FEEDBACK_API_URL) {
+        setStatus('The Selective feedback web app URL needs to be confirmed in selective-school-exam.html.', 'error');
+        return;
+      }
+
+      setStatus('Sending feedback...', '');
+
+      try {
+        var payload = new URLSearchParams();
+        payload.append('action', 'selective_feedback');
+        payload.append('name', name.slice(0, 40));
+        payload.append('feedbackType', feedbackType);
+        payload.append('sourceSection', sourceSection);
+        payload.append('sourcePage', sourcePage.slice(0, 120));
+        payload.append('message', message.slice(0, 500));
+        payload.append('captchaQuestion', captchaQuestion.textContent);
+        payload.append('captchaAnswer', String(captcha));
+        payload.append('page', 'selective-school-exam.html');
+
+        var response = await fetch(FEEDBACK_API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          credentials: 'omit',
+          body: payload
+        });
+
+        nameInput.value = '';
+        pageInput.value = getCurrentPageLabel();
+        messageInput.value = '';
+        sectionInput.value = 'Selective Hub';
+        setStatus('Thank you! Your feedback was sent! 🎉', 'success');
+        buildCaptcha();
+      } catch (error) {
+        setStatus('Could not send feedback right now. Please try again.', 'error');
+      }
+    });
+
+    buildCaptcha();
+    pageInput.value = getCurrentPageLabel();
+  })();
+  </script>
+</body>
+</html>

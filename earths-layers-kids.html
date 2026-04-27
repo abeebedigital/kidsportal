@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Journey to the Centre of the Earth! 🌎</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet"/>
+<style>
+    /* story-font-boost */
+    html{font-size:17px;}
+    @media (max-width:500px){html{font-size:16px;}}
+:root{
+  --crust:#8B7355;
+  --mantle:#e67e22;
+  --outer-core:#f39c12;
+  --inner-core:#e74c3c;
+  --deep-red:#c0392b;
+  --earth-blue:#2980b9;
+  --green:#27ae60;
+  --purple:#8e44ad;
+  --dark:#2c3e50;
+  --gold:#f1c40f;
+  --card-bg:#fffef5;
+  --warm-bg:#fff8f0;
+  --coral:#ff6b6b;
+  --mint:#6bcb77;
+  --blue:#4d96ff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--warm-bg);min-height:100vh;overflow-x:hidden;}
+
+/* FLOATING PARTICLES */
+.particle{position:fixed;opacity:.06;font-size:50px;z-index:0;animation:floatUp linear infinite;pointer-events:none;}
+@keyframes floatUp{from{transform:translateY(110vh) rotate(0deg)}to{transform:translateY(-100px) rotate(360deg)}}
+
+#app{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:12px;}
+
+/* HOME LINK */
+.home-link{display:inline-flex;align-items:center;gap:6px;background:var(--mint);color:white;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;text-decoration:none;transition:all .2s;margin-bottom:10px;}
+.home-link:hover{transform:scale(1.05);background:#4db860;}
+
+/* READ ALOUD */
+.tts-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.tts-btn{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#f39c12,#e67e22);color:white;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.tts-btn:hover{transform:scale(1.05);}
+.tts-btn.speaking{background:linear-gradient(135deg,#e74c3c,#c0392b);animation:pulse 1s ease infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(231,76,60,.4)}50%{box-shadow:0 0 0 8px rgba(231,76,60,0)}}
+.tts-stop{background:linear-gradient(135deg,#95a5a6,#7f8c8d);color:white;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s;}
+
+/* PROGRESS */
+.progress-strip{background:white;border-radius:12px;padding:8px 16px;display:flex;align-items:center;gap:10px;margin-bottom:8px;border:2px solid #f0e6c8;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.progress-bar{flex:1;height:7px;background:#f0e6c8;border-radius:4px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--crust),var(--mantle),var(--inner-core));border-radius:4px;transition:width .5s ease;}
+.progress-label{font-family:'Fredoka One',cursive;font-size:12px;color:#999;white-space:nowrap;}
+
+/* NAV */
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:white;border-radius:16px;margin-bottom:10px;border:2px solid #f0e6c8;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.nav-btn{background:var(--coral);color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:8px 22px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.nav-btn:hover{transform:scale(1.06);box-shadow:0 4px 12px rgba(255,107,107,.3);}
+.nav-btn:disabled{background:#ddd;cursor:not-allowed;transform:none;box-shadow:none;color:#999;}
+.page-dots{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;max-width:300px;}
+.dot{width:9px;height:9px;border-radius:50%;background:#ddd;cursor:pointer;transition:all .2s;}
+.dot.active{background:var(--coral);transform:scale(1.3);box-shadow:0 0 6px var(--coral);}
+.dot.visited{background:rgba(255,107,107,.4);}
+
+/* PAGES */
+.page{display:none;animation:pageIn .5s ease;}
+.page.active{display:block;}
+@keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* COVER */
+.cover{
+  background:linear-gradient(160deg,#1a1a2e 0%,#16213e 30%,#2c1810 70%,#4a1a0a 100%);
+  border-radius:22px;border:2px solid rgba(231,76,60,.3);
+  padding:50px 30px;text-align:center;
+  position:relative;overflow:hidden;min-height:540px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.cover-glow{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:400px;height:300px;background:radial-gradient(circle,rgba(231,76,60,.2) 0%,rgba(243,156,18,.1) 40%,transparent 70%);pointer-events:none;}
+.cover-layers{display:flex;flex-direction:column;gap:0;margin:20px 0;position:relative;z-index:2;width:200px;}
+.cover-layer{height:20px;text-align:center;font-size:11px;font-family:'Fredoka One',cursive;color:white;display:flex;align-items:center;justify-content:center;animation:layerPulse var(--lp,3s) ease-in-out infinite var(--ld,0s);}
+@keyframes layerPulse{0%,100%{opacity:.8}50%{opacity:1;transform:scaleX(1.03)}}
+.cover-title{font-family:'Fredoka One',cursive;font-size:36px;color:#f39c12;position:relative;z-index:2;line-height:1.15;margin-bottom:8px;text-shadow:0 4px 20px rgba(0,0,0,.4);}
+.cover-sub{font-family:'Fredoka One',cursive;font-size:20px;color:#e0aaff;position:relative;z-index:2;margin-bottom:6px;}
+.cover-tagline{font-size:13px;color:rgba(255,255,255,.6);position:relative;z-index:2;margin-top:16px;font-style:italic;}
+.drill-anim{font-size:50px;animation:drillBounce 2s ease-in-out infinite;position:relative;z-index:2;}
+@keyframes drillBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+
+/* STORY PAGES */
+.story-page{
+  background:var(--card-bg);
+  border-radius:22px;padding:26px;min-height:540px;
+  border:3px solid #f0e6c8;
+  position:relative;overflow:hidden;
+  box-shadow:0 4px 20px rgba(0,0,0,.06);
+}
+.page-corner{position:absolute;top:14px;right:16px;font-family:'Fredoka One',cursive;font-size:16px;color:#d4b896;}
+.story-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.chapter-badge{font-family:'Fredoka One',cursive;font-size:12px;padding:4px 13px;border-radius:16px;white-space:nowrap;color:white;}
+.story-title{font-family:'Fredoka One',cursive;font-size:22px;color:var(--dark);}
+.story-body{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+.story-text{font-size:15px;line-height:1.85;color:#444;}
+.story-text p{margin-bottom:10px;}
+.hw{font-weight:800;color:var(--deep-red);}
+.hw2{font-weight:800;color:var(--earth-blue);}
+.hw3{font-weight:800;color:var(--green);}
+.story-art{border-radius:16px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:8px;border:2px dashed #e0d5c0;background:linear-gradient(135deg,#fdf6ec,#f0faf0);}
+
+/* LAYER DISPLAY */
+.layer-display{text-align:center;padding:12px;}
+.layer-emoji{font-size:70px;display:block;margin:8px auto;}
+.layer-label{font-family:'Fredoka One',cursive;font-size:13px;color:#999;margin-top:4px;}
+.layer-facts{background:rgba(0,0,0,.03);border-radius:12px;padding:10px 14px;width:100%;border:1px solid rgba(0,0,0,.06);}
+.fact-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:13px;color:#555;}
+.fact-row:last-child{border-bottom:none;}
+.fact-icon{font-size:16px;min-width:22px;}
+
+/* EARTH CROSS SECTION */
+.earth-cross{position:relative;width:220px;height:220px;margin:0 auto;border-radius:50%;overflow:hidden;border:3px solid #555;}
+.earth-ring{position:absolute;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .3s;}
+.earth-ring:hover{transform:scale(1.03);z-index:5;box-shadow:0 0 20px rgba(255,255,255,.3);}
+.earth-ring-label{font-size:9px;font-family:'Fredoka One',cursive;color:white;text-shadow:0 1px 3px rgba(0,0,0,.5);}
+
+/* QUIZ BUBBLE */
+.quiz-bubble{
+  background:linear-gradient(135deg,#f3e8ff,#e0f7fa);
+  border:2px solid #c084fc;
+  border-radius:18px;padding:18px;margin-top:16px;
+}
+.quiz-title{font-family:'Fredoka One',cursive;font-size:17px;color:var(--purple);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.q-opt{background:white;border:2px solid #e0d5c0;border-radius:12px;padding:10px 14px;font-size:14px;color:var(--dark);cursor:pointer;transition:all .2s;text-align:left;font-family:'Nunito',sans-serif;font-weight:600;}
+.q-opt:hover{background:#f3e8ff;border-color:#c084fc;transform:translateY(-2px);}
+.q-opt.correct{background:#d4edda;border-color:#27ae60;color:#155724;}
+.q-opt.wrong{background:#f8d7da;border-color:#c0392b;color:#721c24;}
+.quiz-feedback{font-family:'Fredoka One',cursive;font-size:16px;margin-top:10px;min-height:24px;text-align:center;}
+
+/* FUN FACT BOX */
+.fun-fact{background:#fff3cd;border:2px solid #f1c40f;border-radius:14px;padding:14px 16px;margin-top:14px;}
+.fun-fact-title{font-family:'Fredoka One',cursive;font-size:15px;color:#856404;margin-bottom:6px;}
+.fun-fact-text{font-size:13px;color:#444;line-height:1.6;}
+
+/* MEMORY CARD */
+.memory-card{background:#f3e8ff;border:2px solid #c084fc;border-radius:14px;padding:14px;margin-top:14px;}
+.mem-row{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:14px;cursor:pointer;transition:background .2s;border-radius:8px;padding-left:8px;}
+.mem-row:hover{background:rgba(192,132,252,.1);}
+.mem-letter{font-family:'Fredoka One',cursive;font-size:18px;color:var(--deep-red);min-width:24px;}
+.mem-word{color:var(--purple);min-width:110px;font-weight:700;}
+.mem-layer{color:#888;}
+
+/* INTERACTIVE LAYER DIAGRAM */
+.layer-diagram{display:flex;flex-direction:column;gap:0;width:100%;border-radius:16px;overflow:hidden;border:2px solid #ddd;cursor:pointer;}
+.layer-strip{padding:14px 16px;display:flex;align-items:center;gap:10px;transition:all .3s;position:relative;}
+.layer-strip:hover{padding-left:24px;filter:brightness(1.1);}
+.layer-strip-emoji{font-size:22px;}
+.layer-strip-name{font-family:'Fredoka One',cursive;font-size:14px;color:white;text-shadow:0 1px 3px rgba(0,0,0,.4);}
+.layer-strip-info{font-size:12px;color:rgba(255,255,255,.85);margin-left:auto;}
+
+/* SIZE COMPARISON */
+.size-row{display:flex;align-items:flex-end;gap:12px;justify-content:center;flex-wrap:wrap;padding:12px 0;}
+.size-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:transform .2s;}
+.size-item:hover{transform:scale(1.1);}
+.size-bar{border-radius:6px 6px 0 0;min-width:50px;display:flex;align-items:flex-end;justify-content:center;font-size:11px;color:white;font-family:'Fredoka One',cursive;padding:4px 4px;}
+.size-label{font-size:11px;color:#888;text-align:center;max-width:65px;font-weight:700;}
+
+/* FINAL QUIZ */
+.quiz-page{background:var(--card-bg);border-radius:22px;padding:26px;min-height:540px;border:3px solid #c084fc;box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.quiz-progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.q-counter{font-family:'Fredoka One',cursive;font-size:13px;color:#999;}
+.q-score-badge{font-family:'Fredoka One',cursive;font-size:14px;background:#f3e8ff;border:2px solid #c084fc;padding:4px 14px;border-radius:20px;color:var(--purple);}
+.quiz-question-card{background:white;border-radius:16px;padding:20px;margin-bottom:16px;border:2px solid #f0e6c8;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.quiz-q-text{font-family:'Fredoka One',cursive;font-size:19px;color:var(--dark);line-height:1.4;margin-bottom:4px;}
+.quiz-q-emoji{font-size:40px;margin-bottom:10px;}
+.fquiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.fq-opt{background:white;border:2px solid #e0d5c0;border-radius:14px;padding:12px 16px;font-size:15px;color:var(--dark);cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif;font-weight:700;}
+.fq-opt:hover:not(.locked){background:#f3e8ff;border-color:#c084fc;transform:translateY(-2px);}
+.fq-opt.correct{background:#d4edda;border-color:#27ae60;color:#155724;}
+.fq-opt.wrong{background:#f8d7da;border-color:#c0392b;color:#721c24;}
+.fq-opt.locked{cursor:not-allowed;opacity:.7;}
+.q-result-msg{font-family:'Fredoka One',cursive;font-size:16px;text-align:center;min-height:28px;margin-top:8px;}
+.next-q-btn{display:block;margin:12px auto 0;background:linear-gradient(135deg,var(--coral),#ff8787);color:white;border:none;font-family:'Fredoka One',cursive;font-size:16px;padding:10px 28px;border-radius:22px;cursor:pointer;transition:all .2s;}
+.next-q-btn:hover{transform:scale(1.05);}
+
+/* RESULT SCREENS */
+.result-screen{text-align:center;padding:20px 10px;}
+.result-trophy{font-size:80px;margin-bottom:12px;animation:bounce 1s ease infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+.result-title{font-family:'Fredoka One',cursive;font-size:28px;margin-bottom:10px;}
+.result-score{font-family:'Fredoka One',cursive;font-size:48px;color:var(--gold);}
+.result-msg{font-size:16px;color:#888;margin:12px 0 20px;line-height:1.7;}
+.retry-btn{background:linear-gradient(135deg,#e74c3c,#ff6b6b);color:white;border:none;font-family:'Fredoka One',cursive;font-size:18px;padding:12px 32px;border-radius:24px;cursor:pointer;transition:all .2s;margin:8px;}
+.retry-btn:hover{transform:scale(1.06);}
+.proceed-btn{background:linear-gradient(135deg,#27ae60,#2ecc71);color:white;border:none;font-family:'Fredoka One',cursive;font-size:18px;padding:12px 32px;border-radius:24px;cursor:pointer;transition:all .2s;margin:8px;}
+.proceed-btn:hover{transform:scale(1.06);}
+
+/* CERTIFICATE */
+.cert-page{background:var(--card-bg);border-radius:22px;padding:24px;min-height:540px;border:3px solid #f1c40f;box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.cert-controls{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+.cert-name-input{font-family:'Nunito',sans-serif;font-size:16px;padding:10px 16px;border:2px solid #f1c40f;border-radius:12px;outline:none;flex:1;min-width:180px;color:#333;}
+.cert-name-input:focus{border-color:var(--purple);}
+.cert-dl-btn{background:var(--purple);color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:24px;cursor:pointer;transition:transform .15s;white-space:nowrap;}
+.cert-dl-btn:hover{transform:scale(1.05);}
+.cert-print-btn{background:#1565c0;color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:24px;cursor:pointer;transition:transform .15s;}
+.cert-print-btn:hover{transform:scale(1.05);}
+.cert-wrap{background:white;border-radius:16px;padding:6px;border:3px solid #f1c40f;box-shadow:0 4px 20px rgba(0,0,0,.08);}
+canvas#cert{width:100%;border-radius:12px;display:block;}
+.cert-hint{font-size:12px;color:#aaa;margin-top:8px;text-align:center;}
+
+/* TEMPERATURE METER */
+.temp-meter{display:flex;flex-direction:column;gap:0;width:100%;border-radius:12px;overflow:hidden;border:2px solid #ddd;}
+.temp-row{display:flex;align-items:center;padding:10px 14px;gap:10px;border-bottom:1px solid rgba(255,255,255,.15);}
+.temp-row:last-child{border-bottom:none;}
+.temp-name{font-family:'Fredoka One',cursive;font-size:13px;color:white;min-width:90px;text-shadow:0 1px 3px rgba(0,0,0,.3);}
+.temp-val{font-family:'Fredoka One',cursive;font-size:15px;color:white;margin-left:auto;}
+
+@media(max-width:580px){
+  .story-body{grid-template-columns:1fr;}
+  .cover-title{font-size:26px;}
+  .fquiz-options{grid-template-columns:1fr;}
+  .quiz-options{grid-template-columns:1fr;}
+  .cert-controls{flex-direction:column;}
+}
+</style>
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="natural-read-aloud.js" defer></script>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+
+<div id="particles"></div>
+
+<div id="app"><div class="tts-bar">
+    <button class="tts-btn" id="ttsBtn" onclick="toggleReadAloud()">🔊 Read Aloud</button>
+    <button class="tts-stop" id="ttsStop" onclick="stopReadAloud()" style="display:none;">⏹ Stop</button>
+  </div>
+
+  <div class="progress-strip">
+    <span class="progress-label">🌍 Digging...</span>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <span class="progress-label" id="progressText">Page 1 of 16</span>
+  </div>
+
+  <div class="nav-bar">
+    <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Back</button>
+    <div class="page-dots" id="pageDots"></div>
+    <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+  </div>
+
+  <!-- ===== PAGE 0: COVER ===== -->
+  <div class="page active" data-page="0">
+    <div class="cover">
+      <svg style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none" viewBox="0 0 820 540" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="40" r="2" fill="white" opacity=".5"/><circle cx="200" cy="25" r="2" fill="white" opacity=".4"/>
+        <circle cx="400" cy="30" r="2.5" fill="white" opacity=".6"/><circle cx="600" cy="45" r="2" fill="white" opacity=".5"/>
+        <circle cx="750" cy="20" r="1.5" fill="white" opacity=".4"/><circle cx="120" cy="70" r="1.5" fill="#f39c12" opacity=".4"/>
+      </svg>
+      <div class="cover-glow"></div>
+      <div class="drill-anim">⛏️</div>
+      <div class="cover-title">Journey to the<br>Centre of the Earth!</div>
+      <div class="cover-sub">Discover What's Inside Our Planet!</div>
+      <div class="cover-layers">
+        <div class="cover-layer" style="background:#8B7355;border-radius:12px 12px 0 0;--lp:3s;--ld:0s;">Crust</div>
+        <div class="cover-layer" style="background:#e67e22;--lp:3.5s;--ld:0.3s;">Mantle</div>
+        <div class="cover-layer" style="background:#f39c12;--lp:4s;--ld:0.6s;">Outer Core</div>
+        <div class="cover-layer" style="background:#e74c3c;border-radius:0 0 12px 12px;--lp:3.2s;--ld:0.9s;">Inner Core</div>
+      </div>
+      <p class="cover-tagline">An underground adventure through Earth's amazing layers! · For ages 5–8</p>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 1: MEET ROCKY ===== -->
+  <div class="page" data-page="1">
+    <div class="story-page">
+      <div class="page-corner">p.1</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--coral);">Welcome!</span><h2 class="story-title">Meet Rocky the Mole! ⛏️</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Hello there, young scientist! 👋</p>
+          <p>My name is <span class="hw">Rocky</span>, and I'm a very special mole. While other moles just dig tiny holes, I dig really, really deep — all the way to the centre of the Earth!</p>
+          <p>Today, I'm going to take YOU on an incredible journey <span class="hw2">straight down</span> through our amazing planet!</p>
+          <p>Did you know that the Earth isn't just one solid ball? It's made of <span class="hw3">different layers</span>, like an onion — or a boiled egg! Each layer is different and has its own secrets!</p>
+          <p>Put on your hard hat and grab your torch — let's start digging! ⛏️</p>
+        </div>
+        <div class="story-art">
+          <div style="font-size:70px;">🐹</div>
+          <div class="layer-label">Rocky the Mole</div>
+          <div class="layer-facts">
+            <div class="fact-row"><span class="fact-icon">⛏️</span> Best digger in the world!</div>
+            <div class="fact-row"><span class="fact-icon">🔦</span> Always carries a torch</div>
+            <div class="fact-row"><span class="fact-icon">🌡️</span> Loves hot places</div>
+            <div class="fact-row"><span class="fact-icon">🧪</span> Favourite thing: discovering rocks</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 2: WHAT'S INSIDE? ===== -->
+  <div class="page" data-page="2">
+    <div class="story-page">
+      <div class="page-corner">p.2</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--earth-blue);">Chapter 1</span><h2 class="story-title">What's Inside the Earth? 🤔</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Imagine you could slice the Earth in half, just like cutting an apple! 🍎</p>
+          <p>You would see that the Earth has <span class="hw">4 main layers</span>:</p>
+          <p>1. The <span class="hw">Crust</span> — the thin, hard outside (where we live!)</p>
+          <p>2. The <span class="hw2">Mantle</span> — thick, hot, and gooey</p>
+          <p>3. The <span class="hw">Outer Core</span> — super hot liquid metal!</p>
+          <p>4. The <span class="hw2">Inner Core</span> — the hottest, most amazing ball of solid metal at the very centre!</p>
+          <p>Each layer gets <span class="hw3">hotter and hotter</span> as you go deeper. Let's explore them all!</p>
+        </div>
+        <div class="story-art">
+          <div style="font-size:40px;text-align:center;">🌍✨</div>
+          <div class="layer-label">Earth's 4 Layers</div>
+          <div class="layer-diagram" id="layerDiagram">
+            <div class="layer-strip" style="background:var(--crust);" onclick="showLayerInfo('Crust — only 5 to 70 kilometres thick! That is where we live, with all the mountains, oceans, and forests!')">
+              <span class="layer-strip-emoji">🏔️</span>
+              <span class="layer-strip-name">Crust</span>
+              <span class="layer-strip-info">5–70 km</span>
+            </div>
+            <div class="layer-strip" style="background:var(--mantle);" onclick="showLayerInfo('Mantle — almost 2,900 kilometres thick! It is so hot that rocks move very slowly like thick honey!')">
+              <span class="layer-strip-emoji">🔥</span>
+              <span class="layer-strip-name">Mantle</span>
+              <span class="layer-strip-info">2,900 km</span>
+            </div>
+            <div class="layer-strip" style="background:var(--outer-core);" onclick="showLayerInfo('Outer Core — about 2,200 kilometres of super hot liquid iron and nickel! It creates Earth s magnetic field!')">
+              <span class="layer-strip-emoji">🌊</span>
+              <span class="layer-strip-name">Outer Core</span>
+              <span class="layer-strip-info">2,200 km</span>
+            </div>
+            <div class="layer-strip" style="background:var(--inner-core);" onclick="showLayerInfo('Inner Core — a solid ball of iron about 1,200 kilometres across. It is as hot as the surface of the Sun!')">
+              <span class="layer-strip-emoji">💎</span>
+              <span class="layer-strip-name">Inner Core</span>
+              <span class="layer-strip-info">1,200 km</span>
+            </div>
+          </div>
+          <div style="text-align:center;font-size:12px;color:#999;margin-top:4px;">Tap a layer to learn more!</div>
+          <div style="text-align:center;font-family:'Fredoka One',cursive;font-size:13px;color:var(--purple);min-height:40px;padding:6px;" id="layerInfo">👆 Tap a layer above!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 3: THE CRUST ===== -->
+  <div class="page" data-page="3">
+    <div class="story-page">
+      <div class="page-corner">p.3</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--crust);">Layer 1</span><h2 class="story-title">🏔️ The Crust — Our Home!</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>"We start right here!" says Rocky. "The <span class="hw">Crust</span> is the layer you're standing on right now!"</p>
+          <p>The crust is the <span class="hw2">thinnest layer</span> of the Earth. Under the oceans, it's only about <span class="hw">5 kilometres</span> thick. Under the mountains, it can be up to <span class="hw">70 kilometres</span> thick!</p>
+          <p>If the Earth were an apple, the crust would be just the <span class="hw3">thin skin</span> on the outside! 🍎</p>
+          <p>The crust is made of <span class="hw">rocks and soil</span>. All our mountains, valleys, oceans, and everything we see is part of the crust!</p>
+          <p>And guess what? The crust isn't one piece — it's made of huge puzzle pieces called <span class="hw2">tectonic plates</span> that fit together and slowly move around!</p>
+        </div>
+        <div class="story-art">
+          <div class="layer-display">
+            <span class="layer-emoji">🏔️</span>
+            <div class="layer-label">The Crust</div>
+          </div>
+          <div class="layer-facts">
+            <div class="fact-row"><span class="fact-icon">📏</span> 5–70 km thick</div>
+            <div class="fact-row"><span class="fact-icon">🧩</span> Made of tectonic plates</div>
+            <div class="fact-row"><span class="fact-icon">🪨</span> Made of rocks and soil</div>
+            <div class="fact-row"><span class="fact-icon">🌡️</span> Cool on top, warm below</div>
+          </div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🧩 Fun Fact!</div>
+        <div class="fun-fact-text">The tectonic plates move about 2 to 5 centimetres every year — that's about as fast as your fingernails grow! Slowly, slowly, they're always on the move! 💅🏔️</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 4: CRUST CONTINUED + MINI QUIZ ===== -->
+  <div class="page" data-page="4">
+    <div class="story-page">
+      <div class="page-corner">p.4</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--crust);">Layer 1</span><h2 class="story-title">🏔️ Two Types of Crust!</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Rocky says, "Did you know there are actually <span class="hw">two types</span> of crust?"</p>
+          <p><span class="hw2">Oceanic crust</span> is under the oceans. It's thinner (about 5 to 10 kilometres) but heavier, made of a dark rock called basalt.</p>
+          <p><span class="hw3">Continental crust</span> is under the land where we live. It's thicker (up to 70 kilometres!) but lighter, made of a rock called granite.</p>
+          <p>When tectonic plates bump into each other, amazing things happen — <span class="hw">mountains push up</span>, <span class="hw2">earthquakes shake</span>, and sometimes <span class="hw">volcanoes erupt</span>! 🌋</p>
+          <p>That's the crust showing us it's alive and moving!</p>
+        </div>
+        <div class="story-art">
+          <div style="display:flex;gap:10px;width:100%;">
+            <div style="flex:1;background:#e3f2fd;border-radius:12px;padding:12px;text-align:center;border:2px solid #2196f3;">
+              <div style="font-size:30px;">🌊</div>
+              <div style="font-family:'Fredoka One',cursive;font-size:12px;color:#1565c0;">Oceanic</div>
+              <div style="font-size:11px;color:#666;margin-top:4px;">Thinner & heavier<br/>5–10 km</div>
+            </div>
+            <div style="flex:1;background:#e8f5e9;border-radius:12px;padding:12px;text-align:center;border:2px solid #4caf50;">
+              <div style="font-size:30px;">⛰️</div>
+              <div style="font-family:'Fredoka One',cursive;font-size:12px;color:#2e7d32;">Continental</div>
+              <div style="font-size:11px;color:#666;margin-top:4px;">Thicker & lighter<br/>Up to 70 km</div>
+            </div>
+          </div>
+          <div class="layer-facts" style="margin-top:8px;">
+            <div class="fact-row"><span class="fact-icon">🌋</span> Plates bumping = volcanoes!</div>
+            <div class="fact-row"><span class="fact-icon">🏔️</span> Plates pushing = mountains!</div>
+            <div class="fact-row"><span class="fact-icon">💥</span> Plates sliding = earthquakes!</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">🧠 Quick Quiz Time!</div>
+        <p style="font-size:14px;color:#555;margin-bottom:10px;">If the Earth were an apple, what would the crust be?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅰️ The whole apple</button>
+          <button class="q-opt" onclick="miniQuiz(this,'correct','fb1')">🅱️ Just the thin skin</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅲 The seeds inside</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅳 Half the apple</button>
+        </div>
+        <div class="quiz-feedback" id="fb1"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 5: THE MANTLE ===== -->
+  <div class="page" data-page="5">
+    <div class="story-page">
+      <div class="page-corner">p.5</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--mantle);">Layer 2</span><h2 class="story-title">🔥 The Mantle — Thick and Hot!</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>"Deeper we go!" Rocky shouts excitedly. "Welcome to the <span class="hw">Mantle</span>!"</p>
+          <p>The mantle is the <span class="hw2">thickest layer</span> of the Earth — it's almost <span class="hw">2,900 kilometres</span> deep! That's like driving in a car for a whole day without stopping!</p>
+          <p>The mantle is made of very hot rock. It's so hot that the rock becomes <span class="hw3">soft and gooey</span>, like very thick honey or warm toffee! 🍯</p>
+          <p>This gooey rock moves very, very slowly in big circles called <span class="hw">convection currents</span>. Hot rock rises up, cools down, then sinks again — round and round!</p>
+          <p>These movements are what push the tectonic plates around on top! 🔄</p>
+        </div>
+        <div class="story-art">
+          <div class="layer-display">
+            <span class="layer-emoji">🔥</span>
+            <div class="layer-label">The Mantle</div>
+          </div>
+          <div class="layer-facts">
+            <div class="fact-row"><span class="fact-icon">📏</span> 2,900 km thick (the biggest layer!)</div>
+            <div class="fact-row"><span class="fact-icon">🌡️</span> 1,000°C to 3,700°C hot!</div>
+            <div class="fact-row"><span class="fact-icon">🍯</span> Rock moves like thick honey</div>
+            <div class="fact-row"><span class="fact-icon">🔄</span> Moves in slow circles</div>
+          </div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🌋 Fun Fact!</div>
+        <div class="fun-fact-text">When hot rock from the mantle pushes up through cracks in the crust, it comes out as LAVA from a volcano! So volcanoes are like windows into the mantle! 🌋🔥</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 6: MANTLE CONTINUED + MINI QUIZ ===== -->
+  <div class="page" data-page="6">
+    <div class="story-page">
+      <div class="page-corner">p.6</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--mantle);">Layer 2</span><h2 class="story-title">🔥 Mantle Secrets!</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Rocky wipes his brow. "It's getting warm down here! Let me tell you more cool things about the mantle!"</p>
+          <p>The mantle has <span class="hw">two parts</span>:</p>
+          <p>The <span class="hw2">upper mantle</span> is closer to the crust. The very top part is so stiff that it sticks to the crust — together they're called the lithosphere!</p>
+          <p>The <span class="hw3">lower mantle</span> is deeper and even hotter. The rock here is squeezed so tightly by all the weight above it!</p>
+          <p>Even though the mantle rock moves, it moves really slowly — only a few centimetres each year. You wouldn't even notice!</p>
+          <p>The mantle makes up about <span class="hw">84 percent</span> of the Earth's total volume! It's by far the biggest layer! 🏆</p>
+        </div>
+        <div class="story-art">
+          <div style="font-size:50px;text-align:center;">🔥🍯🔥</div>
+          <div class="layer-label">Gooey, hot rock!</div>
+          <div class="layer-facts">
+            <div class="fact-row"><span class="fact-icon">🔝</span> Upper mantle: stiffer</div>
+            <div class="fact-row"><span class="fact-icon">🔽</span> Lower mantle: softer, hotter</div>
+            <div class="fact-row"><span class="fact-icon">📊</span> 84% of Earth's volume!</div>
+            <div class="fact-row"><span class="fact-icon">💎</span> Contains diamonds deep down!</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">🧠 Quick Quiz Time!</div>
+        <p style="font-size:14px;color:#555;margin-bottom:10px;">How thick is the mantle?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅰️ 100 kilometres</button>
+          <button class="q-opt" onclick="miniQuiz(this,'correct','fb2')">🅱️ About 2,900 kilometres</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅲 50 kilometres</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅳 10,000 kilometres</button>
+        </div>
+        <div class="quiz-feedback" id="fb2"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 7: OUTER CORE ===== -->
+  <div class="page" data-page="7">
+    <div class="story-page">
+      <div class="page-corner">p.7</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--outer-core);">Layer 3</span><h2 class="story-title">🌊 The Outer Core — Liquid Metal!</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>"Hold on tight!" says Rocky. "We're entering the <span class="hw">Outer Core</span> — and it's made of liquid metal!"</p>
+          <p>The outer core is about <span class="hw2">2,200 kilometres</span> thick. It's made of super-hot melted <span class="hw">iron and nickel</span> — just like the metals in coins!</p>
+          <p>The temperature here is between <span class="hw3">4,400 and 5,000 degrees</span>! That's hotter than any oven you can imagine! 🌡️</p>
+          <p>But here's the most amazing part — this swirling liquid metal creates Earth's <span class="hw">magnetic field</span>! 🧲</p>
+          <p>The magnetic field is like an invisible shield around our planet. It protects us from harmful rays from the Sun! Without it, life on Earth would be impossible!</p>
+        </div>
+        <div class="story-art">
+          <div class="layer-display">
+            <span class="layer-emoji">🌊</span>
+            <div class="layer-label">The Outer Core</div>
+          </div>
+          <div class="layer-facts">
+            <div class="fact-row"><span class="fact-icon">📏</span> 2,200 km thick</div>
+            <div class="fact-row"><span class="fact-icon">🌡️</span> 4,400–5,000°C!</div>
+            <div class="fact-row"><span class="fact-icon">🪙</span> Made of iron & nickel</div>
+            <div class="fact-row"><span class="fact-icon">🧲</span> Creates magnetic field!</div>
+          </div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🧭 Fun Fact!</div>
+        <div class="fun-fact-text">A compass needle points north because of the magnetic field created by the outer core! So every time you use a compass, you're using the power of liquid metal deep inside the Earth! 🧭🌊</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 8: OUTER CORE + MINI QUIZ ===== -->
+  <div class="page" data-page="8">
+    <div class="story-page">
+      <div class="page-corner">p.8</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--outer-core);">Layer 3</span><h2 class="story-title">🌊 The Magnetic Shield!</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Rocky explains, "The spinning liquid iron in the outer core works like a giant magnet!"</p>
+          <p>This creates an invisible force field around the Earth called the <span class="hw">magnetosphere</span>. It stretches far out into space!</p>
+          <p>The magnetosphere stops dangerous particles from the Sun from reaching us. It's like Earth's very own <span class="hw2">superhero cape</span>! 🦸</p>
+          <p>Sometimes these particles hit the magnetosphere and create beautiful coloured lights in the sky called the <span class="hw3">Northern Lights</span> (Aurora Borealis)! 🌌</p>
+          <p>So the outer core doesn't just sit there — it's actually <span class="hw">protecting all living things</span> on our planet every single day!</p>
+        </div>
+        <div class="story-art">
+          <div style="font-size:50px;text-align:center;">🧲🌍🛡️</div>
+          <div class="layer-label">Earth's invisible shield!</div>
+          <div class="layer-facts">
+            <div class="fact-row"><span class="fact-icon">🛡️</span> Magnetosphere protects us</div>
+            <div class="fact-row"><span class="fact-icon">🌌</span> Creates Northern Lights!</div>
+            <div class="fact-row"><span class="fact-icon">🧭</span> Makes compasses work</div>
+            <div class="fact-row"><span class="fact-icon">🔄</span> Liquid metal spins and swirls</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">🧠 Quick Quiz Time!</div>
+        <p style="font-size:14px;color:#555;margin-bottom:10px;">What does the outer core create that protects Earth?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅰️ Gravity</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅱️ Rain and clouds</button>
+          <button class="q-opt" onclick="miniQuiz(this,'correct','fb3')">🅲 The magnetic field</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅳 Earthquakes</button>
+        </div>
+        <div class="quiz-feedback" id="fb3"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 9: INNER CORE ===== -->
+  <div class="page" data-page="9">
+    <div class="story-page">
+      <div class="page-corner">p.9</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--inner-core);">Layer 4</span><h2 class="story-title">💎 The Inner Core — Earth's Heart!</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>"We've made it to the very centre!" Rocky cheers. "Welcome to the <span class="hw">Inner Core</span>!"</p>
+          <p>The inner core is a solid ball of mostly <span class="hw2">iron and nickel</span>, about <span class="hw">1,200 kilometres</span> across. It's about the same size as the Moon! 🌙</p>
+          <p>Even though it's incredibly hot — about <span class="hw3">5,400 degrees</span> (as hot as the surface of the Sun!) — it stays SOLID because the pressure from everything above it is so enormous!</p>
+          <p>Imagine the weight of all the rock, metal, and everything on top squeezing it together. That pressure keeps it solid even though it's super hot!</p>
+          <p>The inner core spins a tiny bit faster than the rest of the Earth. Scientists think it's like a <span class="hw">planet within a planet</span>!</p>
+        </div>
+        <div class="story-art">
+          <div class="layer-display">
+            <span class="layer-emoji">💎</span>
+            <div class="layer-label">The Inner Core</div>
+          </div>
+          <div class="layer-facts">
+            <div class="fact-row"><span class="fact-icon">📏</span> 1,200 km across</div>
+            <div class="fact-row"><span class="fact-icon">🌡️</span> 5,400°C — hot as the Sun!</div>
+            <div class="fact-row"><span class="fact-icon">💎</span> Solid iron & nickel</div>
+            <div class="fact-row"><span class="fact-icon">🌙</span> About the size of the Moon!</div>
+          </div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">💎 Fun Fact!</div>
+        <div class="fun-fact-text">Scientists believe there might be a giant crystal of iron at the very centre of the inner core! Some think it might even be a single enormous crystal — the biggest crystal in the world! 💎✨</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 10: INNER CORE + MINI QUIZ ===== -->
+  <div class="page" data-page="10">
+    <div class="story-page">
+      <div class="page-corner">p.10</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--inner-core);">Layer 4</span><h2 class="story-title">💎 Inner Core Mysteries!</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Rocky whispers, "The inner core is full of mysteries that scientists are still trying to solve!"</p>
+          <p>No one has ever been to the inner core — it's <span class="hw">6,371 kilometres</span> below your feet right now! The deepest hole anyone has ever dug is only about 12 kilometres. We have a looong way to go!</p>
+          <p>So how do we know about it? Scientists use <span class="hw2">earthquake waves</span>! When an earthquake happens, the waves travel through the Earth. By studying how these waves travel, scientists figured out what's inside! 🔬</p>
+          <p>It's like tapping on a watermelon to check if it's ripe — you listen to the sound to learn what is inside! 🍉</p>
+          <p>The inner core was only discovered in <span class="hw3">1936</span> by a clever scientist named Inge Lehmann from Denmark!</p>
+        </div>
+        <div class="story-art">
+          <div style="font-size:50px;text-align:center;">🔬🌍🔊</div>
+          <div class="layer-label">Listening to earthquake waves!</div>
+          <div class="layer-facts">
+            <div class="fact-row"><span class="fact-icon">📏</span> 6,371 km to the centre</div>
+            <div class="fact-row"><span class="fact-icon">🕳️</span> Deepest hole: only 12 km</div>
+            <div class="fact-row"><span class="fact-icon">🔊</span> Earthquake waves tell the story</div>
+            <div class="fact-row"><span class="fact-icon">👩‍🔬</span> Discovered by Inge Lehmann, 1936</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">🧠 Quick Quiz Time!</div>
+        <p style="font-size:14px;color:#555;margin-bottom:10px;">How hot is the inner core?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅰️ 100 degrees</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅱️ 500 degrees</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅲 1,000 degrees</button>
+          <button class="q-opt" onclick="miniQuiz(this,'correct','fb4')">🅳 About 5,400 degrees — as hot as the Sun!</button>
+        </div>
+        <div class="quiz-feedback" id="fb4"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 11: LAYER THICKNESS COMPARISON ===== -->
+  <div class="page" data-page="11">
+    <div class="story-page">
+      <div class="page-corner">p.11</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--purple);">Fun Page</span><h2 class="story-title">📏 How Thick Is Each Layer?</h2></div>
+      <div class="story-text" data-tts style="margin-bottom:16px;">
+        <p>Let's compare how thick each layer is! Tap on each bar to see more details. The taller the bar, the thicker the layer!</p>
+      </div>
+      <div class="size-row">
+        <div class="size-item" onclick="showThicknessInfo('The Crust is only 5 to 70 kilometres thick. Under the ocean it is even thinner! It is like the thin shell of an egg.')">
+          <div class="size-bar" style="height:20px;background:linear-gradient(180deg,#7a6340,#8B7355);width:55px;">5–70</div>
+          <div class="size-label">🏔️ Crust</div>
+        </div>
+        <div class="size-item" onclick="showThicknessInfo('The Mantle is about 2,900 kilometres thick. It is by far the thickest layer and makes up 84 percent of Earth!')">
+          <div class="size-bar" style="height:170px;background:linear-gradient(180deg,#d35400,#e67e22);width:55px;">2,900</div>
+          <div class="size-label">🔥 Mantle</div>
+        </div>
+        <div class="size-item" onclick="showThicknessInfo('The Outer Core is about 2,200 kilometres thick, made of liquid iron and nickel. It creates our magnetic field!')">
+          <div class="size-bar" style="height:130px;background:linear-gradient(180deg,#e67e22,#f39c12);width:55px;">2,200</div>
+          <div class="size-label">🌊 Outer Core</div>
+        </div>
+        <div class="size-item" onclick="showThicknessInfo('The Inner Core is about 1,200 kilometres across. It is a solid ball of iron as hot as the Sun!')">
+          <div class="size-bar" style="height:72px;background:linear-gradient(180deg,#c0392b,#e74c3c);width:55px;">1,200</div>
+          <div class="size-label">💎 Inner Core</div>
+        </div>
+      </div>
+      <div style="text-align:center;font-family:'Fredoka One',cursive;font-size:14px;color:#999;margin:6px 0;">⬆️ Thickness in km (tap a bar!)</div>
+      <div style="text-align:center;font-family:'Fredoka One',cursive;font-size:15px;color:var(--purple);min-height:50px;padding:8px;" id="thicknessInfo">👆 Tap a bar to learn more!</div>
+
+      <!-- Temperature meter -->
+      <div style="margin-top:12px;">
+        <div style="font-family:'Fredoka One',cursive;font-size:15px;color:var(--dark);margin-bottom:8px;text-align:center;">🌡️ Temperature Comparison</div>
+        <div class="temp-meter">
+          <div class="temp-row" style="background:var(--crust);"><span class="temp-name">🏔️ Crust</span><span class="temp-val">Up to 500°C</span></div>
+          <div class="temp-row" style="background:var(--mantle);"><span class="temp-name">🔥 Mantle</span><span class="temp-val">1,000 – 3,700°C</span></div>
+          <div class="temp-row" style="background:var(--outer-core);"><span class="temp-name">🌊 Outer Core</span><span class="temp-val">4,400 – 5,000°C</span></div>
+          <div class="temp-row" style="background:var(--inner-core);"><span class="temp-name">💎 Inner Core</span><span class="temp-val">~5,400°C ☀️</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 12: EGG ANALOGY ===== -->
+  <div class="page" data-page="12">
+    <div class="story-page">
+      <div class="page-corner">p.12</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--earth-blue);">Fun Page</span><h2 class="story-title">🥚 Earth Is Like an Egg!</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Rocky has a fun way to remember the layers! "Think of a <span class="hw">boiled egg</span>!" he says.</p>
+          <p>The <span class="hw2">eggshell</span> is like the Crust — thin and hard on the outside!</p>
+          <p>The <span class="hw3">egg white</span> is like the Mantle — thick and in the middle!</p>
+          <p>The <span class="hw">egg yolk</span> is like the Core — round and in the very centre!</p>
+          <p>Next time you eat a boiled egg, you can think about the Earth's layers! 🥚🌍</p>
+        </div>
+        <div class="story-art">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;">
+            <div style="background:#fff3e0;border-radius:14px;padding:14px;text-align:center;border:2px solid #ff9800;">
+              <div style="font-size:36px;">🥚</div>
+              <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#e65100;margin-top:6px;">Boiled Egg</div>
+              <div style="font-size:11px;color:#666;margin-top:4px;line-height:1.5;">Shell = Crust<br/>White = Mantle<br/>Yolk = Core</div>
+            </div>
+            <div style="background:#e8f5e9;border-radius:14px;padding:14px;text-align:center;border:2px solid #4caf50;">
+              <div style="font-size:36px;">🌍</div>
+              <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#2e7d32;margin-top:6px;">Planet Earth</div>
+              <div style="font-size:11px;color:#666;margin-top:4px;line-height:1.5;">Crust = Shell<br/>Mantle = White<br/>Core = Yolk</div>
+            </div>
+          </div>
+          <div style="background:#fce4ec;border-radius:12px;padding:12px;text-align:center;width:100%;margin-top:8px;border:2px solid #e91e63;">
+            <div style="font-size:24px;">🍎</div>
+            <div style="font-family:'Fredoka One',cursive;font-size:12px;color:#880e4f;">Apple works too!</div>
+            <div style="font-size:11px;color:#666;margin-top:2px;">Skin = Crust · Flesh = Mantle · Seeds = Core</div>
+          </div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🤯 Mind-Blowing Fact!</div>
+        <div class="fun-fact-text">If you could dig a tunnel straight through the Earth and jump in, it would take about 42 minutes to fall all the way through to the other side! (Don't try this at home!) 😂🕳️</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 13: MEMORY TRICK ===== -->
+  <div class="page" data-page="13">
+    <div class="story-page">
+      <div class="page-corner">p.13</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--purple);">Memory Trick</span><h2 class="story-title">🧠 Remember All 4 Layers!</h2></div>
+      <div class="story-text" data-tts style="margin-bottom:14px;">
+        <p>Here's a fun trick to remember all the layers from outside to inside! Remember this sentence:</p>
+        <p style="text-align:center;font-family:'Fredoka One',cursive;font-size:20px;color:var(--deep-red);margin:14px 0;">🌟 "<span class="hw">C</span>ats <span class="hw">M</span>ake <span class="hw">O</span>utstanding <span class="hw">I</span>ce cream!" 🌟</p>
+        <p>Each first letter stands for a layer! Tap each row to reveal which one! 👇</p>
+      </div>
+      <div class="memory-card">
+        <div class="mem-row" onclick="revealMem(this)">
+          <span class="mem-letter">C</span>
+          <span class="mem-word">Cats</span>
+          <span class="mem-layer" id="ml1" style="color:#ccc;">🏔️ ??? (tap to reveal!)</span>
+        </div>
+        <div class="mem-row" onclick="revealMem(this)">
+          <span class="mem-letter">M</span>
+          <span class="mem-word">Make</span>
+          <span class="mem-layer" id="ml2" style="color:#ccc;">🔥 ??? (tap to reveal!)</span>
+        </div>
+        <div class="mem-row" onclick="revealMem(this)">
+          <span class="mem-letter">O</span>
+          <span class="mem-word">Outstanding</span>
+          <span class="mem-layer" id="ml3" style="color:#ccc;">🌊 ??? (tap to reveal!)</span>
+        </div>
+        <div class="mem-row" onclick="revealMem(this)">
+          <span class="mem-letter">I</span>
+          <span class="mem-word">Ice cream</span>
+          <span class="mem-layer" id="ml4" style="color:#ccc;">💎 ??? (tap to reveal!)</span>
+        </div>
+      </div>
+      <div class="fun-fact" style="margin-top:16px;">
+        <div class="fun-fact-title">🧠 Another Way to Remember!</div>
+        <div class="fun-fact-text">Think of peeling layers off: first the Crust (outside), then the Mantle (middle), Outer Core (deep), Inner Core (centre). Outside to inside: C-M-O-I! 🧅</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 14: FINAL QUIZ ===== -->
+  <div class="page" data-page="14">
+    <div class="quiz-page" id="quizPage">
+      <div id="quizActive">
+        <div class="story-header"><span class="chapter-badge" style="background:var(--purple);">🏆 Final Quiz!</span><h2 class="story-title">The Earth Layer Challenge!</h2></div>
+        <p style="font-size:14px;color:#666;margin-bottom:16px;">Rocky wants to test what you've learned! Answer 6 questions. You need <strong>at least 5 correct</strong> to earn your certificate! 🌟</p>
+        <div class="quiz-progress-row">
+          <span class="q-counter" id="qCounter">Question 1 of 6</span>
+          <span class="q-score-badge" id="qScoreBadge">Score: 0 / 6</span>
+        </div>
+        <div class="quiz-question-card">
+          <div class="quiz-q-emoji" id="qEmoji">🌍</div>
+          <div class="quiz-q-text" id="qText"></div>
+        </div>
+        <div class="fquiz-options" id="fquizOptions"></div>
+        <div class="q-result-msg" id="qResultMsg"></div>
+        <button class="next-q-btn" id="nextQBtn" onclick="nextQuestion()" style="display:none;">Next Question →</button>
+      </div>
+      <div id="quizPass" style="display:none;">
+        <div class="result-screen">
+          <div class="result-trophy">🏆</div>
+          <div class="result-title" style="color:var(--green);">AMAZING! You Did It!</div>
+          <div class="result-score" id="passScore">6 / 6</div>
+          <div class="result-msg" id="passMsg"></div>
+          <button class="proceed-btn" onclick="goToCertificate()">🎓 Get My Certificate! →</button>
+        </div>
+      </div>
+      <div id="quizFail" style="display:none;">
+        <div class="result-screen">
+          <div class="result-trophy">🌟</div>
+          <div class="result-title" style="color:var(--coral);">Almost There!</div>
+          <div class="result-score" id="failScore">3 / 6</div>
+          <div class="result-msg">You need at least 5 correct answers to earn your certificate.<br>Don't worry — you can try again! Read about the layers once more and come back even stronger! 💪</div>
+          <button class="retry-btn" onclick="restartQuiz()">🔄 Try Again!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 15: CERTIFICATE ===== -->
+  <div class="page" data-page="15">
+    <div class="cert-page">
+      <div class="page-corner">🎓</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#f1c40f;color:#856404;">🏆 Certificate</span><h2 class="story-title">Your Geologist Certificate!</h2></div>
+      <div class="cert-controls">
+        <input class="cert-name-input" id="certName" placeholder="Type the child's name here..." oninput="drawCert()"/>
+        <button class="cert-dl-btn" onclick="downloadCert()">⬇ Download PNG</button>
+        <button class="cert-print-btn" onclick="printCert()">🖨 Print</button>
+      </div>
+      <div class="cert-wrap">
+        <canvas id="cert" width="900" height="630"></canvas>
+      </div>
+      <p class="cert-hint">Type the name above, then click Download or Print!</p>
+    </div>
+  </div>
+
+</div><!-- end app -->
+
+<script>
+/* ===== FLOATING PARTICLES ===== */
+(function(){
+  const c=document.getElementById('particles');
+  const emojis=['🪨','💎','🔥','🌋','⛏️','🧱'];
+  for(let i=0;i<6;i++){
+    const el=document.createElement('div');
+    el.className='particle';
+    el.textContent=emojis[i%emojis.length];
+    el.style.left=(Math.random()*90+5)+'%';
+    el.style.animationDuration=(25+Math.random()*35)+'s';
+    el.style.animationDelay=(Math.random()*20)+'s';
+    el.style.fontSize=(30+Math.random()*25)+'px';
+    c.appendChild(el);
+  }
+})();
+
+/* ===== NAVIGATION ===== */
+const TOTAL=15;
+let currentPage=0;
+const pages=document.querySelectorAll('.page');
+const prevBtn=document.getElementById('prevBtn');
+const nextBtn=document.getElementById('nextBtn');
+const dotsContainer=document.getElementById('pageDots');
+
+for(let i=0;i<=TOTAL;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' active':'');
+  d.onclick=()=>goToPage(i);
+  dotsContainer.appendChild(d);
+}
+
+function goToPage(n){
+  if(n<0||n>TOTAL)return;
+  if(n===15&&!quizPassed){alert('You need to pass the quiz with at least 5/6 to get your certificate! 🌟');return;}
+  stopReadAloud();
+  pages[currentPage].classList.remove('active');
+  currentPage=n;
+  pages[currentPage].classList.add('active');
+  prevBtn.disabled=currentPage===0;
+  nextBtn.disabled=currentPage===TOTAL;
+  document.getElementById('progressFill').style.width=Math.round(currentPage/TOTAL*100)+'%';
+  document.getElementById('progressText').textContent='Page '+(currentPage+1)+' of '+(TOTAL+1);
+  document.querySelectorAll('.dot').forEach((d,i)=>{
+    d.classList.toggle('active',i===currentPage);
+    if(i<currentPage)d.classList.add('visited');
+  });
+  if(currentPage===14)initQuiz();
+  if(currentPage===15)setTimeout(drawCert,120);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function changePage(d){goToPage(currentPage+d);}
+
+/* ===== TEXT-TO-SPEECH ===== */
+let isSpeaking=false;
+let speechUtterance=null;
+
+function toggleReadAloud(){
+  if(isSpeaking){stopReadAloud();return;}
+  const activePage=pages[currentPage];
+  const ttsEl=activePage.querySelector('[data-tts]');
+  if(!ttsEl){
+    const fallback=activePage.querySelector('.story-text')||activePage.querySelector('.story-page');
+    if(!fallback)return;
+    speakText(fallback.textContent);
+    return;
+  }
+  speakText(ttsEl.textContent);
+}
+
+function cleanForSpeech(text){
+  text=text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{200D}\u{20E3}\u{E0020}-\u{E007F}]/gu,'');
+  text=text.replace(/[☀☿♀♂♃♆⛢⭐✨✈️⚡🅰🅱🅲🅳←→⬆️⬇️▶️◀️★●►°]/g,'');
+  text=text.replace(/\s+/g,' ').trim();
+  text=text.replace(/\s*[—–]\s*/g,', ');
+  text=text.replace(/\s*\.\.\.\s*/g,'. ');
+  text=text.replace(/(\d+),(\d+)/g,'$1$2');
+  text=text.replace(/km\b/gi,'kilometres');
+  text=text.replace(/°C/g,' degrees Celsius');
+  text=text.replace(/([.!?])\s+/g,'$1 ... ');
+  return text;
+}
+
+function speakText(text){
+  if(!('speechSynthesis' in window))return;
+  stopReadAloud();
+  text=cleanForSpeech(text);
+  speechUtterance=new SpeechSynthesisUtterance(text);
+  speechUtterance.rate=0.78;
+  speechUtterance.pitch=1.15;
+  speechUtterance.volume=1;
+  speechUtterance.lang='en-US';
+  const voices=speechSynthesis.getVoices();
+  const preferred=voices.find(v=>v.name.includes('Samantha'))
+    ||voices.find(v=>v.name.includes('Karen'))
+    ||voices.find(v=>v.name.includes('Google UK English Female'))
+    ||voices.find(v=>v.name.includes('Google')&&v.lang.startsWith('en'))
+    ||voices.find(v=>v.lang.startsWith('en')&&v.name.toLowerCase().includes('female'))
+    ||voices.find(v=>v.lang.startsWith('en'));
+  if(preferred)speechUtterance.voice=preferred;
+
+  speechUtterance.onstart=()=>{
+    isSpeaking=true;
+    document.getElementById('ttsBtn').classList.add('speaking');
+    document.getElementById('ttsBtn').textContent='🔊 Reading...';
+    document.getElementById('ttsStop').style.display='inline-flex';
+  };
+  speechUtterance.onend=()=>{resetTTSUI();};
+  speechUtterance.onerror=()=>{resetTTSUI();};
+  speechSynthesis.speak(speechUtterance);
+}
+
+function stopReadAloud(){
+  if('speechSynthesis' in window)speechSynthesis.cancel();
+  resetTTSUI();
+}
+
+function resetTTSUI(){
+  isSpeaking=false;
+  document.getElementById('ttsBtn').classList.remove('speaking');
+  document.getElementById('ttsBtn').textContent='🔊 Read Aloud';
+  document.getElementById('ttsStop').style.display='none';
+}
+
+if('speechSynthesis' in window){
+  speechSynthesis.onvoiceschanged=()=>{speechSynthesis.getVoices();};
+}
+
+/* ===== MINI QUIZZES ===== */
+function miniQuiz(btn,type,fbId){
+  const container=btn.closest('.quiz-bubble');
+  const btns=container.querySelectorAll('.q-opt');
+  btns.forEach(b=>b.style.pointerEvents='none');
+  const fb=document.getElementById(fbId);
+  if(type==='correct'){
+    btn.classList.add('correct');
+    fb.innerHTML='<span style="color:#27ae60;">🎉 Correct! Great digging, explorer!</span>';
+  } else {
+    btn.classList.add('wrong');
+    btns.forEach(b=>{if(b.onclick&&b.onclick.toString().includes("'correct'"))b.classList.add('correct');});
+    fb.innerHTML='<span style="color:#c0392b;">Not quite! The green one is correct. Keep digging! 💪</span>';
+  }
+}
+
+/* ===== INTERACTIVE HELPERS ===== */
+function showLayerInfo(msg){document.getElementById('layerInfo').textContent='✨ '+msg;}
+function showThicknessInfo(msg){document.getElementById('thicknessInfo').textContent='✨ '+msg;}
+
+/* ===== MEMORY TRICK ===== */
+const memAnswers=['🏔️ Crust — the thin outside layer!','🔥 Mantle — the thick gooey layer!','🌊 Outer Core — liquid metal!','💎 Inner Core — solid heart of Earth!'];
+
+function revealMem(row){
+  const spans=row.querySelectorAll('.mem-layer');
+  if(!spans.length)return;
+  const span=spans[0];
+  const idx=parseInt(span.id.replace('ml',''))-1;
+  if(idx>=0&&idx<memAnswers.length){
+    span.textContent=memAnswers[idx];
+    span.style.color='var(--purple)';
+    row.style.background='rgba(192,132,252,.1)';
+  }
+}
+
+/* ===== FINAL QUIZ ===== */
+const QUESTIONS=[
+  {emoji:'🌍',q:'How many main layers does the Earth have?',opts:['2 layers','3 layers','4 layers','6 layers'],ans:2},
+  {emoji:'🏔️',q:'If the Earth were a boiled egg, what would the crust be?',opts:['The yolk','The egg white','The eggshell','The whole egg'],ans:2},
+  {emoji:'🔥',q:'Which is the THICKEST layer of the Earth?',opts:['The Crust','The Mantle','The Outer Core','The Inner Core'],ans:1},
+  {emoji:'🧲',q:'What does the outer core create that protects us?',opts:['Gravity','Rain and clouds','The magnetic field','Earthquakes'],ans:2},
+  {emoji:'💎',q:'How hot is the inner core?',opts:['100 degrees','500 degrees','1,000 degrees','About 5,400 degrees — as hot as the Sun!'],ans:3},
+  {emoji:'🌊',q:'What is the outer core made of?',opts:['Solid rock','Liquid iron and nickel','Water and ice','Sand and dirt'],ans:1},
+];
+
+let qIdx=0,score=0,answered=false,quizPassed=false;
+
+function initQuiz(){
+  qIdx=0;score=0;answered=false;
+  document.getElementById('quizActive').style.display='block';
+  document.getElementById('quizPass').style.display='none';
+  document.getElementById('quizFail').style.display='none';
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q=QUESTIONS[qIdx];
+  document.getElementById('qEmoji').textContent=q.emoji;
+  document.getElementById('qText').textContent=q.q;
+  document.getElementById('qCounter').textContent='Question '+(qIdx+1)+' of 6';
+  document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';
+  document.getElementById('qResultMsg').textContent='';
+  document.getElementById('nextQBtn').style.display='none';
+  answered=false;
+  const opts=document.getElementById('fquizOptions');
+  opts.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const btn=document.createElement('button');
+    btn.className='fq-opt';
+    btn.textContent=o;
+    btn.onclick=()=>answerQ(i,btn);
+    opts.appendChild(btn);
+  });
+}
+
+function answerQ(i,btn){
+  if(answered)return;
+  answered=true;
+  const q=QUESTIONS[qIdx];
+  const allBtns=document.querySelectorAll('.fq-opt');
+  allBtns.forEach(b=>b.classList.add('locked'));
+  const msg=document.getElementById('qResultMsg');
+  if(i===q.ans){
+    btn.classList.add('correct');
+    score++;
+    const praise=['🎉 Fantastic!','🌟 Brilliant!','✨ Rock Star!','🏆 Amazing Geologist!','🎊 You Dig It!'];
+    msg.innerHTML='<span style="color:#27ae60;">'+praise[Math.floor(Math.random()*praise.length)]+'</span>';
+  } else {
+    btn.classList.add('wrong');
+    allBtns[q.ans].classList.add('correct');
+    msg.innerHTML='<span style="color:#c0392b;">Oops! The correct answer is highlighted in green. 💪</span>';
+  }
+  document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';
+  document.getElementById('nextQBtn').style.display='block';
+  document.getElementById('nextQBtn').textContent=qIdx===5?'See My Result! 🏁':'Next Question →';
+}
+
+function nextQuestion(){
+  qIdx++;
+  if(qIdx>=6){showResult();return;}
+  renderQuestion();
+}
+
+function showResult(){
+  document.getElementById('quizActive').style.display='none';
+  if(score>=5){
+    quizPassed=true;
+    document.getElementById('quizPass').style.display='block';
+    document.getElementById('passScore').textContent=score+' / 6';
+    const msgs={5:'So close to perfect! You really know your Earth layers! 🌍✨',6:'PERFECT SCORE! You\'re a true Earth Scientist! Rocky is so proud of you! 🏆🌟🎉'};
+    document.getElementById('passMsg').innerHTML=msgs[score]||'Amazing work, Geologist!';
+  } else {
+    document.getElementById('quizFail').style.display='block';
+    document.getElementById('failScore').textContent=score+' / 6';
+  }
+}
+
+function restartQuiz(){initQuiz();}
+function goToCertificate(){goToPage(15);}
+
+/* ===== CERTIFICATE CANVAS ===== */
+const certCanvas=document.getElementById('cert');
+const ctx=certCanvas.getContext('2d');
+const CW=900,CH=630;
+
+function drawStarShape(cx,cy,r,pts,color){
+  ctx.save();ctx.fillStyle=color;ctx.beginPath();
+  for(let i=0;i<pts*2;i++){const a=(i*Math.PI/pts)-Math.PI/2,rd=i%2===0?r:r*.45;i===0?ctx.moveTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a)):ctx.lineTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a));}
+  ctx.closePath();ctx.fill();ctx.restore();
+}
+function rr(x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();
+}
+const qrImage=new Image();let qrReady=false;qrImage.crossOrigin='anonymous';qrImage.onload=()=>{qrReady=true;drawCert();};qrImage.src='https://quickchart.io/qr?text='+encodeURIComponent('https://fivetofifteen.com/')+'&size=180';
+
+function drawCert(){
+  const name=document.getElementById('certName').value.trim()||'Explorer Name Here';
+  ctx.clearRect(0,0,CW,CH);
+
+  const bg=ctx.createLinearGradient(0,0,CW,CH);
+  bg.addColorStop(0,'#FFF8F0');bg.addColorStop(.5,'#FFF5EB');bg.addColorStop(1,'#FFF0F0');
+  ctx.fillStyle=bg;rr(0,0,CW,CH,20);ctx.fill();
+
+  ctx.strokeStyle='#f1c40f';ctx.lineWidth=6;rr(8,8,CW-16,CH-16,16);ctx.stroke();
+
+  ctx.strokeStyle='#e67e22';ctx.lineWidth=2;ctx.setLineDash([8,5]);
+  rr(20,20,CW-40,CH-40,10);ctx.stroke();ctx.setLineDash([]);
+
+  [[52,52],[CW-52,52],[52,CH-52],[CW-52,CH-52]].forEach(([x,y])=>drawStarShape(x,y,18,5,'#f1c40f'));
+
+  const rg=ctx.createLinearGradient(CW/2-220,0,CW/2+220,0);
+  rg.addColorStop(0,'#8B7355');rg.addColorStop(.3,'#e67e22');rg.addColorStop(.6,'#f39c12');rg.addColorStop(1,'#e74c3c');
+  ctx.fillStyle=rg;rr(CW/2-220,28,440,44,22);ctx.fill();
+  ctx.fillStyle='white';ctx.font='bold 17px "Fredoka One",cursive';ctx.textAlign='center';
+  ctx.fillText('JOURNEY TO THE CENTRE OF THE EARTH',CW/2,57);
+
+  ctx.font='64px serif';ctx.textAlign='center';ctx.fillText('🌍',CW/2,142);
+
+  ctx.fillStyle='#c0392b';ctx.font='bold 40px "Fredoka One",cursive';
+  ctx.fillText('Junior Geologist Certificate!',CW/2,196);
+
+  ctx.fillStyle='#888';ctx.font='17px "Nunito",sans-serif';
+  ctx.fillText('This is to proudly certify that the brilliant explorer',CW/2,232);
+
+  ctx.strokeStyle='#f1c40f';ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(CW/2-240,276);ctx.lineTo(CW/2+240,276);ctx.stroke();
+
+  ctx.fillStyle='#8e44ad';ctx.font='bold 38px "Fredoka One",cursive';
+  ctx.fillText(name,CW/2,270);
+
+  ctx.fillStyle='#444';ctx.font='17px "Nunito",sans-serif';
+  ctx.fillText('has completed the Journey to the Centre of the Earth and is now an official',CW/2,310);
+
+  ctx.fillStyle='#c0392b';ctx.font='bold 24px "Fredoka One",cursive';
+  ctx.fillText('Junior Geologist & Earth Layer Expert',CW/2,344);
+
+  ctx.fillStyle='#888';ctx.font='14px "Nunito",sans-serif';
+  ctx.fillText('Scored 5 or more on the final Earth Layer Challenge quiz!',CW/2,372);
+
+  const badges=[
+    {t:'Knows 4 Earth Layers',bg:'#fff3e0',c:'#e65100'},
+    {t:'Temperature Expert',bg:'#ffebee',c:'#c62828'},
+    {t:'Magnetic Field Pro',bg:'#e3f2fd',c:'#1565c0'},
+    {t:'Junior Geologist!',bg:'#f3e5f5',c:'#6a1b9a'},
+  ];
+  const bw=168,bh=30,bg2=10,tot=badges.length*(bw+bg2)-bg2;
+  let bx=CW/2-tot/2;
+  badges.forEach(b=>{
+    ctx.fillStyle=b.bg;rr(bx,390,bw,bh,15);ctx.fill();
+    ctx.fillStyle=b.c;ctx.font='bold 12px "Nunito",sans-serif';ctx.textAlign='center';
+    ctx.fillText(b.t,bx+bw/2,409);bx+=bw+bg2;
+  });
+
+  ctx.font='32px serif';ctx.textAlign='center';
+  ctx.fillText('🏔️  🔥  🌊  💎  🌍',CW/2,468);
+
+  const d=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
+  ctx.fillStyle='#ffffff';ctx.strokeStyle='#f3dfc6';ctx.lineWidth=2;rr(CW-154,68,102,102,14);ctx.fill();ctx.stroke();
+  if(qrReady){ctx.drawImage(qrImage,CW-144,78,82,82);}else{ctx.fillStyle='#fff7ef';ctx.fillRect(CW-144,78,82,82);ctx.fillStyle='#e67e22';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('QR loading...',CW-103,122);}
+  ctx.fillStyle='#e67e22';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('Scan to visit',CW-103,185);
+  ctx.fillStyle='#9e9e9e';ctx.font='bold 12px "Nunito",sans-serif';ctx.textAlign='center';
+  ctx.fillText('Presented by fivetofifteen.com',CW/2,538);
+  ctx.fillStyle='#bbb';ctx.font='12px "Nunito",sans-serif';
+  ctx.fillText('Awarded on '+d,CW/2,562);
+
+  [[80,200],[CW-80,200],[80,420],[CW-80,420],[150,340],[CW-150,340]].forEach(([x,y])=>drawStarShape(x,y,10,5,'rgba(241,196,15,.35)'));
+}
+
+function downloadCert(){
+  drawCert();
+  const link=document.createElement('a');
+  link.download='earth-layers-geologist-certificate.png';
+  link.href=certCanvas.toDataURL('image/png');
+  link.click();
+}
+
+function printCert(){
+  drawCert();
+  const dataUrl=certCanvas.toDataURL('image/png');
+  const win=window.open('','_blank');
+  win.document.write('<!DOCTYPE html><html><head><title>Junior Geologist Certificate<\/title><style>body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f5f5f5;}img{max-width:100%;box-shadow:0 4px 20px rgba(0,0,0,.15);border-radius:12px;}@media print{body{background:white;}img{box-shadow:none;width:100%;}}<\/style><\/head><body><img src="'+dataUrl+'"/><\/body><\/html>');
+  win.document.close();
+  win.onload=()=>{win.focus();win.print();};
+}
+
+/* ===== INIT ===== */
+drawCert();
+</script>
+</body>
+</html>

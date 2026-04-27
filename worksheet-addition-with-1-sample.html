@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Addition with 1 Worksheet Sample | FiveToFifteen</title>
+  <meta name="description" content="Printable sample worksheet for learning addition with 1." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <script src="slim-topbar.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <style>
+    :root{
+      --ink:#24324a;
+      --muted:#64748b;
+      --line:#d9e3f3;
+      --mint:#39c3ad;
+      --gold:#ffd869;
+      --orange:#ff9f5b;
+      --paper:#fffefb;
+      --sky:#f7fbff;
+      --pink:#fff3f0;
+    }
+    *{box-sizing:border-box}
+    html{font-size:17px}
+    body{
+      margin:0;
+      font-family:'Nunito',sans-serif;
+      color:var(--ink);
+      background:linear-gradient(180deg,#fffdf8 0%,#f7fafc 100%);
+      padding:24px 16px 48px;
+    }
+    .sheet{
+      max-width:920px;
+      margin:0 auto;
+      background:var(--paper);
+      border:2px solid #f1e7d6;
+      border-radius:28px;
+      box-shadow:0 18px 42px rgba(63,72,95,.1);
+      overflow:hidden;
+    }
+    .sheet-header{
+      padding:24px 28px 18px;
+      background:
+        radial-gradient(circle at top right, rgba(57,195,173,.18), transparent 180px),
+        radial-gradient(circle at top left, rgba(255,216,105,.18), transparent 180px),
+        linear-gradient(180deg,#fffefc 0%,#fff8ef 100%);
+      border-bottom:2px dashed #eedcc2;
+    }
+    .brand-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:16px;
+    }
+    .brand-mark{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .brand-mark img{
+      width:82px;
+      height:auto;
+      display:block;
+    }
+    .brand-copy{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .brand-copy strong{
+      font-family:'Fredoka',cursive;
+      font-size:1.2rem;
+      color:#234768;
+    }
+    .brand-copy span{
+      color:var(--muted);
+      font-weight:800;
+      font-size:.86rem;
+    }
+    .header-chip{
+      padding:9px 14px;
+      border-radius:999px;
+      background:linear-gradient(135deg,#39c3ad 0%,#48ceb3 100%);
+      color:#fff;
+      font-weight:900;
+      font-size:.88rem;
+      white-space:nowrap;
+    }
+    .title{
+      font-family:'Fredoka',cursive;
+      font-size:2rem;
+      line-height:1.1;
+      margin:0 0 8px;
+      color:#20324e;
+    }
+    .subtitle{
+      margin:0;
+      color:var(--muted);
+      font-size:1rem;
+      line-height:1.6;
+      max-width:720px;
+    }
+    .meta-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:14px;
+      padding:20px 28px;
+      border-bottom:1px solid #f2eadc;
+      background:#fffdfa;
+    }
+    .meta-card{
+      border:1px solid #eee5d8;
+      border-radius:18px;
+      padding:14px 16px;
+      background:#fff;
+    }
+    .meta-label{
+      display:block;
+      font-size:.8rem;
+      font-weight:900;
+      color:#b07d3c;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+      margin-bottom:6px;
+    }
+    .meta-line{
+      min-height:22px;
+      border-bottom:2px dashed #dce7f8;
+    }
+    .section{
+      padding:24px 28px 8px;
+    }
+    .section h2{
+      margin:0 0 14px;
+      font-family:'Fredoka',cursive;
+      font-size:1.35rem;
+      color:#27415f;
+    }
+    .direction-box{
+      padding:16px 18px;
+      background:var(--sky);
+      border:1px solid #dbe7fa;
+      border-radius:20px;
+      line-height:1.75;
+    }
+    .direction-box strong{
+      color:#214d73;
+    }
+    .fact-table{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:14px;
+      margin-top:16px;
+    }
+    .fact-card{
+      background:linear-gradient(180deg,#fff 0%,#fff8ee 100%);
+      border:1px solid #f0e0cb;
+      border-radius:20px;
+      padding:16px 18px;
+    }
+    .fact-card h3{
+      margin:0 0 10px;
+      font-family:'Fredoka',cursive;
+      font-size:1.05rem;
+      color:#a65b1e;
+    }
+    .sum-list{
+      display:grid;
+      gap:8px;
+      font-size:1rem;
+      font-weight:800;
+    }
+    .practice-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:18px;
+      margin-top:10px;
+    }
+    .practice-card{
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+      background:#fff;
+    }
+    .practice-card h3{
+      margin:0 0 10px;
+      font-family:'Fredoka',cursive;
+      font-size:1.05rem;
+      color:#2d4f73;
+    }
+    .question-list{
+      display:grid;
+      gap:12px;
+    }
+    .question{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px 14px;
+      border-radius:16px;
+      background:#fcfdff;
+      border:1px solid #e5edf8;
+      font-weight:800;
+    }
+    .answer-line{
+      width:90px;
+      flex-shrink:0;
+      border-bottom:2px solid #8ab1de;
+      height:18px;
+    }
+    .choice-row{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+      margin-top:8px;
+    }
+    .choice{
+      min-height:52px;
+      border:2px solid #eadfcd;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      background:#fffef8;
+    }
+    .challenge-strip{
+      margin:18px 0 8px;
+      padding:16px 18px;
+      border-radius:22px;
+      background:linear-gradient(135deg,#fff3f0 0%,#fffbea 100%);
+      border:1px solid #f4d8c8;
+    }
+    .challenge-strip p{
+      margin:0;
+      line-height:1.75;
+      font-weight:700;
+    }
+    .footer{
+      padding:18px 28px 28px;
+      color:var(--muted);
+      font-size:.92rem;
+    }
+    .print-row{
+      max-width:920px;
+      margin:0 auto 16px;
+      display:flex;
+      justify-content:flex-end;
+    }
+    .print-btn{
+      border:none;
+      border-radius:999px;
+      min-height:44px;
+      padding:11px 18px;
+      background:linear-gradient(135deg,#ff9f5b 0%,#ff7f50 100%);
+      color:#fff;
+      font:900 .92rem 'Nunito',sans-serif;
+      cursor:pointer;
+      box-shadow:0 12px 24px rgba(255,127,80,.22);
+    }
+    @media print{
+      body{background:#fff;padding:0}
+      .print-row,.global-slim-topbar,.site-drawer-toggle,.page-share-wrap{display:none!important}
+      .sheet{box-shadow:none;border:none;border-radius:0;max-width:none}
+    }
+    @media (max-width:700px){
+      body{padding:18px 12px 36px}
+      .sheet-header,.meta-grid,.section,.footer{padding-left:18px;padding-right:18px}
+      .brand-row,.practice-grid,.fact-table,.meta-grid{grid-template-columns:1fr}
+      .brand-row{display:grid}
+      .header-chip{justify-self:start}
+      .choice-row{grid-template-columns:1fr 1fr 1fr}
+      .title{font-size:1.65rem}
+    }
+  </style>
+</head>
+<body>
+  <div class="print-row">
+    <button class="print-btn" type="button" onclick="window.print()">🖨️ Print Worksheet</button>
+  </div>
+
+  <article class="sheet">
+    <header class="sheet-header">
+      <div class="brand-row">
+        <div class="brand-mark">
+          <img src="fivetofifteen-logo.svg" alt="FiveToFifteen logo" />
+          <div class="brand-copy">
+            <strong>FiveToFifteen</strong>
+            <span>Printable Worksheet Sample</span>
+          </div>
+        </div>
+        <div class="header-chip">Math Worksheet</div>
+      </div>
+      <h1 class="title">Addition with 1</h1>
+      <p class="subtitle">This sample shows the kind of printable worksheet we can create for the site. It mixes quick facts, guided practice, and a small challenge section.</p>
+    </header>
+
+    <section class="meta-grid">
+      <div class="meta-card">
+        <span class="meta-label">Name</span>
+        <div class="meta-line"></div>
+      </div>
+      <div class="meta-card">
+        <span class="meta-label">Date</span>
+        <div class="meta-line"></div>
+      </div>
+      <div class="meta-card">
+        <span class="meta-label">Score</span>
+        <div class="meta-line"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Look and Learn</h2>
+      <div class="direction-box">
+        <strong>Rule:</strong> when we add <strong>1</strong>, the number goes up by <strong>one more</strong>.<br />
+        Example: <strong>4 + 1 = 5</strong> and <strong>9 + 1 = 10</strong>.
+      </div>
+      <div class="fact-table">
+        <div class="fact-card">
+          <h3>Table Part A</h3>
+          <div class="sum-list">
+            <span>1 + 1 = 2</span>
+            <span>1 + 2 = 3</span>
+            <span>1 + 3 = 4</span>
+            <span>1 + 4 = 5</span>
+            <span>1 + 5 = 6</span>
+          </div>
+        </div>
+        <div class="fact-card">
+          <h3>Table Part B</h3>
+          <div class="sum-list">
+            <span>1 + 6 = 7</span>
+            <span>1 + 7 = 8</span>
+            <span>1 + 8 = 9</span>
+            <span>1 + 9 = 10</span>
+            <span>1 + 10 = 11</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Write the Answer</h2>
+      <div class="practice-grid">
+        <div class="practice-card">
+          <h3>Part 1</h3>
+          <div class="question-list">
+            <div class="question"><span>1 + 2 =</span><span class="answer-line"></span></div>
+            <div class="question"><span>1 + 4 =</span><span class="answer-line"></span></div>
+            <div class="question"><span>1 + 6 =</span><span class="answer-line"></span></div>
+            <div class="question"><span>1 + 8 =</span><span class="answer-line"></span></div>
+            <div class="question"><span>1 + 10 =</span><span class="answer-line"></span></div>
+          </div>
+        </div>
+        <div class="practice-card">
+          <h3>Part 2</h3>
+          <div class="question-list">
+            <div class="question"><span>3 + 1 =</span><span class="answer-line"></span></div>
+            <div class="question"><span>5 + 1 =</span><span class="answer-line"></span></div>
+            <div class="question"><span>7 + 1 =</span><span class="answer-line"></span></div>
+            <div class="question"><span>9 + 1 =</span><span class="answer-line"></span></div>
+            <div class="question"><span>10 + 1 =</span><span class="answer-line"></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Circle the Best Answer</h2>
+      <div class="practice-grid">
+        <div class="practice-card">
+          <h3>Part 3</h3>
+          <div class="question-list">
+            <div>
+              <div class="question"><span>1 + 5 =</span><span style="width:auto;border:none;height:auto">Choose one</span></div>
+              <div class="choice-row"><div class="choice">4</div><div class="choice">6</div><div class="choice">7</div></div>
+            </div>
+            <div>
+              <div class="question"><span>1 + 9 =</span><span style="width:auto;border:none;height:auto">Choose one</span></div>
+              <div class="choice-row"><div class="choice">8</div><div class="choice">9</div><div class="choice">10</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="practice-card">
+          <h3>Part 4</h3>
+          <div class="question-list">
+            <div>
+              <div class="question"><span>6 + 1 =</span><span style="width:auto;border:none;height:auto">Choose one</span></div>
+              <div class="choice-row"><div class="choice">6</div><div class="choice">7</div><div class="choice">8</div></div>
+            </div>
+            <div>
+              <div class="question"><span>10 + 1 =</span><span style="width:auto;border:none;height:auto">Choose one</span></div>
+              <div class="choice-row"><div class="choice">11</div><div class="choice">10</div><div class="choice">12</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="challenge-strip">
+        <p><strong>Mini Challenge:</strong> Ben has 7 stars. He gets 1 more star. How many stars does he have now? Write your own number sentence here: ______________________</p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      Sample printable created for FiveToFifteen. We can make full worksheet packs in this same style for maths, reading, writing, grammar, selective practice, and Focus &amp; Calm activities.
+    </footer>
+  </article>
+</body>
+</html>

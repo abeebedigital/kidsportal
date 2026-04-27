@@ -1,0 +1,38 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: docker/php-apache.Dockerfile
+    container_name: kids-php-web
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASS: root
+      DB_NAME: kids_exam
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html/kids_pjt/kids
+
+  db:
+    image: mysql:8.0
+    container_name: kids-php-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: kids_exam
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -proot --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - kids_mysql_data:/var/lib/mysql
+
+volumes:
+  kids_mysql_data:

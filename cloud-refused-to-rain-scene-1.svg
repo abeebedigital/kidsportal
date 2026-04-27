@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-label="Cloudy Refused To Rain">
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6a88c7"/>
+      <stop offset="55%" stop-color="#88a8de"/>
+      <stop offset="100%" stop-color="#b9d1f2"/>
+    </linearGradient>
+  </defs>
+  <rect width="1400" height="900" fill="url(#bg)"/>
+  <path d="M0 620 C200 560 340 660 540 618 C730 578 950 668 1200 616 C1290 598 1350 608 1400 620 L1400 900 L0 900 Z" fill="rgba(36,62,52,0.26)"/>
+  <path d="M0 690 C210 640 380 724 600 682 C820 640 1030 730 1260 688 C1330 676 1380 684 1400 690 L1400 900 L0 900 Z" fill="rgba(24,45,38,0.34)"/>
+  <g fill="#ffffff" opacity="0.22">
+    <circle cx="120" cy="100" r="6"/><circle cx="280" cy="88" r="5"/><circle cx="510" cy="120" r="6"/>
+    <circle cx="760" cy="92" r="6"/><circle cx="980" cy="110" r="5"/><circle cx="1220" cy="96" r="6"/>
+  </g>
+
+  <g transform="translate(700 270) scale(2.1)" opacity="0.95">
+    <ellipse cx="0" cy="0" rx="58" ry="34" fill="#f8fbff"/>
+    <ellipse cx="-42" cy="6" rx="44" ry="26" fill="#f8fbff"/>
+    <ellipse cx="44" cy="8" rx="42" ry="24" fill="#f8fbff"/>
+    <ellipse cx="4" cy="-18" rx="40" ry="24" fill="#f8fbff"/>
+  </g>
+  <g fill="#74a9ff" opacity="0.9">
+    <ellipse cx="620" cy="390" rx="10" ry="16"/><ellipse cx="670" cy="404" rx="10" ry="16"/>
+    <ellipse cx="730" cy="398" rx="10" ry="16"/><ellipse cx="780" cy="410" rx="10" ry="16"/>
+  </g>
+  <g transform="translate(280 640) scale(2.2)">
+    <rect x="-3" y="10" width="6" height="42" rx="3" fill="#5c9d53"/>
+    <circle cx="0" cy="0" r="8" fill="#f6d57a"/>
+    <circle cx="-10" cy="0" r="8" fill="#caa67d"/>
+    <circle cx="10" cy="0" r="8" fill="#caa67d"/>
+    <circle cx="0" cy="-10" r="8" fill="#caa67d"/>
+    <circle cx="0" cy="10" r="8" fill="#caa67d"/>
+  </g><g transform="translate(430 666) scale(2)">
+    <rect x="-3" y="10" width="6" height="42" rx="3" fill="#5c9d53"/>
+    <circle cx="0" cy="0" r="8" fill="#f6d57a"/>
+    <circle cx="-10" cy="0" r="8" fill="#caa67d"/>
+    <circle cx="10" cy="0" r="8" fill="#caa67d"/>
+    <circle cx="0" cy="-10" r="8" fill="#caa67d"/>
+    <circle cx="0" cy="10" r="8" fill="#caa67d"/>
+  </g><g transform="translate(990 650) scale(2)">
+    <rect x="-3" y="10" width="6" height="42" rx="3" fill="#5c9d53"/>
+    <circle cx="0" cy="0" r="8" fill="#f6d57a"/>
+    <circle cx="-10" cy="0" r="8" fill="#caa67d"/>
+    <circle cx="10" cy="0" r="8" fill="#caa67d"/>
+    <circle cx="0" cy="-10" r="8" fill="#caa67d"/>
+    <circle cx="0" cy="10" r="8" fill="#caa67d"/>
+  </g>
+  <g transform="translate(170 570) scale(1.2)">
+    <rect x="-12" y="-16" width="24" height="120" rx="10" fill="#7a4f32"/>
+    <circle cx="0" cy="-50" r="52" fill="#4fa75f"/>
+    <circle cx="-42" cy="-32" r="34" fill="#63bc6d"/>
+    <circle cx="40" cy="-28" r="32" fill="#63bc6d"/>
+  </g><g transform="translate(1220 560) scale(1.1)">
+    <rect x="-12" y="-16" width="24" height="120" rx="10" fill="#7a4f32"/>
+    <circle cx="0" cy="-50" r="52" fill="#4fa75f"/>
+    <circle cx="-42" cy="-32" r="34" fill="#63bc6d"/>
+    <circle cx="40" cy="-28" r="32" fill="#63bc6d"/>
+  </g>
+
+  <text x="700" y="110" text-anchor="middle" font-family="Nunito, sans-serif" font-size="52" font-weight="900" fill="#fff6e5">Cloudy Refused To Rain</text>
+  <text x="700" y="844" text-anchor="middle" font-family="Nunito, sans-serif" font-size="32" font-weight="800" fill="#fff6e5">She held every drop and stayed big and fluffy.</text>
+</svg>

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clock Match Rush</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet" />
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="voice-assist.js"></script>
+  <style>
+    :root{
+      --ink:#223354;
+      --line:#e4e8f8;
+      --mint:#39c3ad;
+      --blue:#4d96ff;
+      --paper:#fffefa;
+    }
+    html{font-size:17px}
+    @media (max-width:500px){html{font-size:16px}}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Nunito',sans-serif;
+      color:var(--ink);
+      min-height:100vh;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(77,150,255,.2) 0, transparent 25%),
+        radial-gradient(circle at 90% 8%, rgba(57,195,173,.19) 0, transparent 30%),
+        linear-gradient(180deg,#f6f9ff 0%,#fff9ed 100%);
+      padding:16px;
+    }
+    .app{
+      max-width:980px;
+      margin:0 auto;
+      border-radius:26px;
+      border:1px solid var(--line);
+      background:var(--paper);
+      overflow:hidden;
+      box-shadow:0 16px 32px rgba(29,42,74,.1);
+    }
+    .top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      background:linear-gradient(135deg,#edf4ff 0%,#e8fff9 55%,#fff6e2 100%);
+    }
+    .home-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-height:42px;
+      text-decoration:none;
+      border-radius:999px;
+      color:#fff;
+      font-weight:800;
+      padding:9px 14px;
+      background:linear-gradient(135deg,var(--mint) 0%,#48ceb3 100%);
+    }
+    .title{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-family:'Fredoka One',cursive;
+      font-size:1.2rem;
+      color:#2e476f;
+    }
+    .chip{
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg,#e1edff 0%,#ffe8bb 100%);
+    }
+    .content{padding:16px;display:grid;gap:12px}
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+    }
+    .stat{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      text-align:center;
+      padding:10px;
+    }
+    .label{
+      font-size:.76rem;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+      color:#7483a1;
+      font-weight:800;
+      display:block;
+    }
+    .value{
+      display:block;
+      margin-top:3px;
+      font-family:'Fredoka One',cursive;
+      font-size:1.18rem;
+      color:#325285;
+    }
+    .prompt{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:#fff;
+      padding:12px;
+      text-align:center;
+    }
+    .prompt .ask{
+      font-size:.82rem;
+      color:#7183a5;
+      letter-spacing:.7px;
+      text-transform:uppercase;
+      font-weight:800;
+      margin-bottom:4px;
+    }
+    .prompt .time-text{
+      font-family:'Fredoka One',cursive;
+      font-size:2rem;
+      color:#1f4c99;
+    }
+    .options{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+    }
+    .clock-option{
+      border:2px solid #dfe6fa;
+      border-radius:18px;
+      background:#fff;
+      min-height:210px;
+      cursor:pointer;
+      padding:10px;
+      transition:transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+      display:grid;
+      align-content:center;
+      justify-items:center;
+      gap:8px;
+    }
+    .clock-option:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 20px rgba(38,56,98,.1);
+    }
+    .clock-option.correct{
+      border-color:#2db980;
+      box-shadow:0 0 0 3px rgba(45,185,128,.18);
+    }
+    .clock-option.wrong{
+      border-color:#d94861;
+      box-shadow:0 0 0 3px rgba(217,72,97,.17);
+    }
+    .clock-face{
+      width:min(170px,90%);
+      aspect-ratio:1/1;
+      border-radius:50%;
+      border:8px solid #e7efff;
+      background:#f9fbff;
+      position:relative;
+      box-shadow:inset 0 0 0 5px #fff;
+    }
+    .clock-center{
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:#35558a;
+      transform:translate(-50%,-50%);
+      z-index:4;
+    }
+    .hand{
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform-origin:50% 100%;
+      border-radius:999px;
+      z-index:3;
+    }
+    .hour-hand{width:6px;height:44px;background:#35558a}
+    .min-hand{width:4px;height:64px;background:#4d96ff}
+    .option-label{
+      font-weight:800;
+      color:#3a517d;
+      font-size:.92rem;
+    }
+    .feedback{
+      min-height:24px;
+      text-align:center;
+      font-weight:800;
+      color:#2f5c90;
+    }
+    .guide{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+    }
+    .guide-card{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      padding:10px;
+      font-size:.9rem;
+      line-height:1.55;
+      color:#62738f;
+    }
+    .guide-card strong{
+      display:block;
+      margin-bottom:4px;
+      color:#334f7e;
+    }
+    .overlay{
+      position:fixed;
+      inset:0;
+      display:grid;
+      place-items:center;
+      z-index:20;
+      background:rgba(16,27,52,.45);
+      padding:16px;
+    }
+    .overlay-card{
+      width:min(100%,560px);
+      background:#fff;
+      border-radius:20px;
+      border:1px solid #e5e8f4;
+      text-align:center;
+      box-shadow:0 16px 28px rgba(20,32,60,.2);
+      padding:20px;
+    }
+    .overlay-card h1{
+      font-family:'Fredoka One',cursive;
+      font-size:1.55rem;
+      color:#2f466f;
+      margin-bottom:8px;
+    }
+    .overlay-card p{
+      color:#607193;
+      line-height:1.65;
+      margin-bottom:12px;
+    }
+    .tip{
+      display:inline-block;
+      border-radius:14px;
+      border:1px solid #d8e8ff;
+      background:#eef7ff;
+      color:#3e5885;
+      font-weight:800;
+      font-size:.88rem;
+      padding:8px 10px;
+      margin-bottom:14px;
+    }
+    .btn{
+      border:none;
+      border-radius:14px;
+      min-height:46px;
+      padding:12px 18px;
+      color:#fff;
+      cursor:pointer;
+      font-family:'Fredoka One',cursive;
+      font-size:.95rem;
+      background:linear-gradient(135deg,var(--blue) 0%,#3a78d7 100%);
+    }
+    @media (max-width:760px){
+      .stats,.guide{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .prompt .time-text{font-size:1.7rem}
+    }
+    @media (max-width:520px){
+      body{padding:10px}
+      .content{padding:12px}
+      .stats,.guide,.options{grid-template-columns:1fr}
+      .title{font-size:1.04rem}
+      .clock-option{min-height:180px}
+    }
+  </style>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+  <div class="app">
+    <div class="top">
+      <a class="home-link" href="https://fivetofifteen.com/#games">🏠 Back to Games</a>
+      <div class="title"><span class="chip">⏰</span> Clock Match Rush</div>
+    </div>
+
+    <div class="content">
+      <div class="voice-bar">
+        <button class="voice-btn voice-btn-read" id="voiceReadBtn" type="button">🔊 Read Task</button>
+        <button class="voice-btn voice-btn-stop" id="voiceStopBtn" type="button" style="display:none;">⏹ Stop</button>
+        <button class="voice-btn voice-btn-mute" id="voiceMuteBtn" type="button" aria-pressed="false">🔊 Sound On</button>
+        <span class="voice-note">Hear the time to match and your current round.</span>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><span class="label">Score</span><span class="value" id="scoreValue">0</span></div>
+        <div class="stat"><span class="label">Question</span><span class="value" id="questionValue">1/12</span></div>
+        <div class="stat"><span class="label">Streak</span><span class="value" id="streakValue">0</span></div>
+        <div class="stat"><span class="label">Time</span><span class="value" id="timeValue">75s</span></div>
+      </div>
+
+      <div class="prompt">
+        <div class="ask">Pick the clock that matches this time</div>
+        <div class="time-text" id="targetText">3:25</div>
+      </div>
+
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback"></div>
+
+      <div class="guide">
+        <div class="guide-card"><strong>🎯 Goal</strong>Read analog clocks faster and match them to digital time.</div>
+        <div class="guide-card"><strong>🧠 Tip</strong>Minute hand first, then check where the hour hand sits.</div>
+        <div class="guide-card"><strong>⚡ Rush</strong>You have 75 seconds to answer up to 12 rounds.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <div class="overlay-card">
+      <h1>Clock Challenge!</h1>
+      <p>Find the matching analog clock as quickly as you can.</p>
+      <span class="tip">Tip: 30 minutes means minute hand points to 6.</span><br />
+      <button class="btn" id="startBtn" type="button">Start Game</button>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const MAX_QUESTIONS = 12;
+      const GAME_SECONDS = 75;
+
+      const scoreValue = document.getElementById('scoreValue');
+      const questionValue = document.getElementById('questionValue');
+      const streakValue = document.getElementById('streakValue');
+      const timeValue = document.getElementById('timeValue');
+      const targetText = document.getElementById('targetText');
+      const optionsEl = document.getElementById('options');
+      const feedback = document.getElementById('feedback');
+      const overlay = document.getElementById('overlay');
+      const startBtn = document.getElementById('startBtn');
+
+      let score = 0;
+      let streak = 0;
+      let qIndex = 0;
+      let timeLeft = GAME_SECONDS;
+      let timerId = null;
+      let currentCorrect = 0;
+      let locked = false;
+
+      function overlayText() {
+        return overlay ? overlay.textContent.replace(/\s+/g, ' ').trim() : '';
+      }
+
+      function randomFrom(list) {
+        return list[rand(0, list.length - 1)];
+      }
+
+      function sayLine(text) {
+        if (window.voiceAssistSay) {
+          window.voiceAssistSay(text, { interrupt: true, rate: 1.03, pitch: 1.07, lang: 'en-AU' });
+        }
+      }
+
+      function rand(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      function minuteLabel(minutes) {
+        return minutes < 10 ? '0' + minutes : String(minutes);
+      }
+
+      function updateStats() {
+        scoreValue.textContent = String(score);
+        streakValue.textContent = String(streak);
+        questionValue.textContent = String(Math.min(qIndex + 1, MAX_QUESTIONS)) + '/' + MAX_QUESTIONS;
+        timeValue.textContent = String(timeLeft) + 's';
+      }
+
+      function buildClock(hour, minute) {
+        const face = document.createElement('div');
+        face.className = 'clock-face';
+
+        const center = document.createElement('div');
+        center.className = 'clock-center';
+
+        const hourHand = document.createElement('div');
+        hourHand.className = 'hand hour-hand';
+        const minHand = document.createElement('div');
+        minHand.className = 'hand min-hand';
+
+        const hourRotation = (hour % 12) * 30 + (minute / 60) * 30;
+        const minuteRotation = minute * 6;
+        hourHand.style.transform = 'translate(-50%,-100%) rotate(' + hourRotation + 'deg)';
+        minHand.style.transform = 'translate(-50%,-100%) rotate(' + minuteRotation + 'deg)';
+
+        face.appendChild(hourHand);
+        face.appendChild(minHand);
+        face.appendChild(center);
+        return face;
+      }
+
+      function makeRound() {
+        locked = false;
+        feedback.textContent = '';
+        optionsEl.innerHTML = '';
+
+        const hour = rand(1, 12);
+        const minute = rand(0, 11) * 5;
+        const target = hour + ':' + minuteLabel(minute);
+        targetText.textContent = target;
+
+        const choices = [{ hour: hour, minute: minute }];
+        while (choices.length < 4) {
+          const h = rand(1, 12);
+          const m = rand(0, 11) * 5;
+          const exists = choices.some(function (c) { return c.hour === h && c.minute === m; });
+          if (!exists) choices.push({ hour: h, minute: m });
+        }
+
+        for (let i = choices.length - 1; i > 0; i -= 1) {
+          const j = rand(0, i);
+          const temp = choices[i];
+          choices[i] = choices[j];
+          choices[j] = temp;
+        }
+
+        currentCorrect = choices.findIndex(function (c) {
+          return c.hour === hour && c.minute === minute;
+        });
+
+        choices.forEach(function (choice, idx) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'clock-option';
+          btn.appendChild(buildClock(choice.hour, choice.minute));
+          const label = document.createElement('div');
+          label.className = 'option-label';
+          label.textContent = 'Option ' + (idx + 1);
+          btn.appendChild(label);
+          btn.addEventListener('click', function () {
+            handleChoice(idx, btn);
+          });
+          optionsEl.appendChild(btn);
+        });
+      }
+
+      function handleChoice(index, button) {
+        if (locked) return;
+        locked = true;
+        const buttons = Array.from(document.querySelectorAll('.clock-option'));
+        const correctBtn = buttons[currentCorrect];
+
+        if (index === currentCorrect) {
+          sayLine(randomFrom([
+            'Great match. That clock is correct.',
+            'Yes. You picked the right time.',
+            'Well done. That clock matches.',
+            'Nice work. Correct clock.'
+          ]));
+          button.classList.add('correct');
+          score += 12;
+          streak += 1;
+          if (streak >= 3) score += 3;
+          feedback.textContent = 'Nice! Correct match.';
+        } else {
+          sayLine(randomFrom([
+            'Sorry, that clock does not match.',
+            'Not quite. Check the minute hand first.',
+            'Close. Try reading the minute hand carefully.',
+            'Almost. Look at both hands again.'
+          ]));
+          button.classList.add('wrong');
+          if (correctBtn) correctBtn.classList.add('correct');
+          streak = 0;
+          feedback.textContent = 'Close! Watch minute hand carefully.';
+        }
+
+        qIndex += 1;
+        updateStats();
+
+        window.setTimeout(function () {
+          if (qIndex >= MAX_QUESTIONS || timeLeft <= 0) {
+            endGame();
+          } else {
+            makeRound();
+            updateStats();
+          }
+        }, 650);
+      }
+
+      function endGame() {
+        clearInterval(timerId);
+        const best = Math.max(Number(localStorage.getItem('clockMatchRushBest') || 0), score);
+        localStorage.setItem('clockMatchRushBest', String(best));
+
+        const message = score >= 120
+          ? 'Fantastic timing skills!'
+          : score >= 70
+            ? 'Great progress. Keep practising.'
+            : 'Good try. One more round will help a lot.';
+
+        sayLine('Game complete. ' + message + ' Your score is ' + score + '.');
+
+        overlay.innerHTML =
+          '<div class="overlay-card">' +
+            '<h1>Game Complete</h1>' +
+            '<p>Your score: <strong>' + score + '</strong> · Best score: <strong>' + best + '</strong></p>' +
+            '<span class="tip">' + message + '</span><br />' +
+            '<button class="btn" id="restartBtn" type="button">Play Again</button>' +
+          '</div>';
+        overlay.style.display = 'grid';
+
+        const restartBtn = document.getElementById('restartBtn');
+        if (restartBtn) restartBtn.addEventListener('click', startGame);
+      }
+
+      function startGame() {
+        score = 0;
+        streak = 0;
+        qIndex = 0;
+        timeLeft = GAME_SECONDS;
+        overlay.style.display = 'none';
+        sayLine('Game started. Pick the clock that matches the time.');
+        makeRound();
+        updateStats();
+
+        clearInterval(timerId);
+        timerId = window.setInterval(function () {
+          timeLeft -= 1;
+          updateStats();
+          if (timeLeft <= 0) endGame();
+        }, 1000);
+      }
+
+      if (startBtn) startBtn.addEventListener('click', startGame);
+      updateStats();
+
+      if (window.setupVoiceAssist) {
+        window.setupVoiceAssist({
+          readButtonId: 'voiceReadBtn',
+          stopButtonId: 'voiceStopBtn',
+          muteButtonId: 'voiceMuteBtn',
+          getText: function () {
+            const overlayVisible = overlay && window.getComputedStyle(overlay).display !== 'none';
+            if (overlayVisible) {
+              return 'Clock Match Rush. ' + overlayText();
+            }
+            return [
+              'Clock Match Rush.',
+              'Pick the clock that matches this time.',
+              'Question ' + questionValue.textContent + '.',
+              'Target time ' + targetText.textContent + '.',
+              'Score ' + scoreValue.textContent + '.',
+              'Streak ' + streakValue.textContent + '.',
+              'Time ' + timeValue.textContent.replace('s', ' seconds') + '.'
+            ].join(' ');
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

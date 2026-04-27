@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multiply with 8! | FiveToFifteen</title>
+  <meta name="description" content="Learn the number 8 multiplication table with a fun storybook, animated facts, practice questions, and a certificate." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <style>
+        /* story-font-boost */
+    html{font-size:17px;}
+    @media (max-width:500px){html{font-size:16px;}}
+:root{
+      --coral:#FF6B6B; --mint:#6BCB77; --blue:#4D96FF; --purple:#C77DFF; --orange:#FF9F1C; --yellow:#FFD93D; --dark:#2D3436;
+      --navy:#1a1a2e; --sky:#eff8ff; --gold:#f8e08e; --cream:#fffdf7;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:'Nunito',sans-serif;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,217,61,.18) 0 120px, transparent 121px),
+        radial-gradient(circle at 80% 12%, rgba(77,150,255,.16) 0 140px, transparent 141px),
+        linear-gradient(180deg,#fffdf7 0%,#f3fbff 100%);
+      color:var(--dark);
+      overflow-x:hidden;
+    }
+    .clouds{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+    .cloud{position:absolute;opacity:.17;animation:floatCloud linear infinite;user-select:none}
+    @keyframes floatCloud{from{transform:translateX(-200px)}to{transform:translateX(calc(100vw + 200px))}}
+    #app{max-width:980px;margin:0 auto;padding:18px;position:relative;z-index:1}
+    .home-link{
+      display:inline-flex;align-items:center;gap:8px;background:white;border:2px solid #e9ddff;color:var(--purple);
+      padding:10px 18px;border-radius:999px;text-decoration:none;font-weight:800;margin-bottom:10px;box-shadow:0 2px 12px rgba(0,0,0,.06)
+    }
+    .tts-bar,.progress-strip,.nav-bar{
+      background:white;border-radius:16px;border:2px solid #f0e6c8;box-shadow:0 2px 12px rgba(0,0,0,.06)
+    }
+    .tts-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;padding:8px 12px}
+    .tts-btn{
+      border:none;border-radius:999px;padding:10px 16px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;
+      background:linear-gradient(135deg,#8e44ad,#c77dff);color:white
+    }
+    .tts-btn.speaking{background:linear-gradient(135deg,#ff9f1c,#ff6b6b)}
+    .progress-strip{padding:8px 16px;display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .progress-bar{flex:1;height:12px;background:#f2f2f2;border-radius:999px;overflow:hidden}
+    .progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--yellow),var(--orange));transition:width .35s ease}
+    .progress-text{font-weight:800;color:#666;white-space:nowrap;font-size:14px}
+    .nav-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;margin-bottom:10px}
+    .nav-btn{
+      border:none;border-radius:999px;padding:12px 18px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;
+      background:linear-gradient(135deg,var(--blue),#6fb1ff);color:white
+    }
+    .nav-btn[disabled]{background:#d9d9d9;cursor:not-allowed}
+    .dots{display:flex;gap:7px;justify-content:center;align-items:center;flex-wrap:wrap}
+    .dot{width:12px;height:12px;border-radius:50%;background:#ddd;cursor:pointer;border:none}
+    .dot.active{background:var(--orange);transform:scale(1.16)}
+    .dot.visited{background:var(--mint)}
+    .page{display:none}
+    .page.active{display:block;animation:fadeIn .45s ease}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    .cover{
+      background:linear-gradient(135deg,#16213e 0%,#1f6f78 55%,#6BCB77 100%);
+      color:white;border-radius:28px;padding:42px 24px;min-height:600px;display:flex;flex-direction:column;justify-content:center;align-items:center;
+      text-align:center;position:relative;overflow:hidden
+    }
+    .cover::before,.cover::after{content:'';position:absolute;border-radius:50%;background:rgba(255,255,255,.08)}
+    .cover::before{width:220px;height:220px;top:-40px;left:-60px}
+    .cover::after{width:180px;height:180px;bottom:-30px;right:-40px}
+    .cover-emoji{font-size:80px;animation:bounce 2s ease-in-out infinite;margin-bottom:8px}
+    @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    .story-page{background:white;border-radius:28px;padding:28px;border:3px solid #f3e7c8;box-shadow:0 10px 28px rgba(0,0,0,.08)}
+    .cover-title,.story-title{font-family:'Fredoka One',cursive}
+    .cover-title{font-size:clamp(2.3rem,5.4vw,4rem);line-height:1.05;margin:0 0 10px}
+    .cover-sub{font-size:1.2rem;font-weight:800;color:#fff7c8;margin-bottom:8px}
+    .cover-tagline{max-width:640px;font-size:1.06rem;line-height:1.7;color:#f8fbff}
+    .story-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+    .story-icon{font-size:46px}
+    .story-title{font-size:2rem;color:#2f3d67;margin:0}
+    .story-sub{margin:6px 0 0;color:#6d758f;font-weight:700}
+    .story-body{display:grid;grid-template-columns:1.05fr .95fr;gap:22px;align-items:start}
+    .story-text{font-size:1.05rem;line-height:1.8;color:#36405d}
+    .story-text p{margin:0 0 12px}
+    .story-text strong{color:#1d4fa8}
+    .story-art{background:linear-gradient(180deg,#fffaf0 0%,#eef8ff 100%);border:2px solid #efe3ba;border-radius:24px;padding:18px;min-height:280px}
+    .story-art h4{font-family:'Fredoka One',cursive;margin:0 0 10px;color:#2b4873;font-size:1.15rem}
+    .tiny-note{font-size:.95rem;color:#67728f;font-weight:800}
+    .table-card{display:grid;gap:10px}
+    .table-row{
+      display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:10px;
+      background:white;border:2px solid #d8ebff;border-radius:18px;padding:10px 14px;font-weight:900;font-size:1.2rem;color:#24426f
+    }
+    .table-row .ans{color:#ff7f22}
+    .eq-stage{background:white;border:2px dashed #c9defd;border-radius:24px;padding:22px;text-align:center}
+    .equation{
+      display:flex;justify-content:center;align-items:center;gap:16px;flex-wrap:wrap;
+      min-height:120px;margin:8px 0 12px
+    }
+    .eq-part{
+      width:82px;height:82px;border-radius:22px;display:flex;align-items:center;justify-content:center;
+      font-family:'Fredoka One',cursive;font-size:2.4rem;background:#eaf5ff;color:#1f5fb3;border:3px solid #d4e9ff;
+      opacity:.2;transform:translateY(8px) scale(.96);transition:all .28s ease
+    }
+    .eq-part.show{opacity:1;transform:translateY(0) scale(1)}
+    .eq-answer{background:#fff5d9;color:#ff8b1a;border-color:#ffe3a1}
+    .eq-read{background:#f5f9ff;border-radius:18px;padding:14px 16px;font-size:1.03rem;font-weight:800;color:#31507f;min-height:58px}
+    .teach-actions,.practice-actions,.quiz-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+    .fun-btn{
+      border:none;border-radius:999px;padding:12px 18px;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;
+      background:linear-gradient(135deg,var(--orange),#ffbf69);color:#5d2d00;box-shadow:0 8px 18px rgba(255,159,28,.2)
+    }
+    .fun-btn.alt{background:linear-gradient(135deg,var(--blue),#8ac6ff);color:white}
+    .practice-card{background:white;border:2px solid #d8ebff;border-radius:24px;padding:20px}
+    .practice-card h4{font-family:'Fredoka One',cursive;color:#2d4c80;margin:0 0 10px;font-size:1.3rem}
+    .practice-status{font-weight:900;color:#6a7188;margin-bottom:12px}
+    .practice-sum{
+      display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap;font-family:'Fredoka One',cursive;
+      font-size:2.4rem;color:#204980;margin:12px 0 18px
+    }
+    .sum-box{
+      min-width:92px;height:86px;border-radius:22px;background:#edf6ff;border:3px solid #d7ebff;display:flex;align-items:center;justify-content:center
+    }
+    .sum-box.answer{background:#fff8df;border-style:dashed}
+    .option-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .option-btn{
+      border:none;border-radius:18px;padding:16px 12px;font-weight:900;font-size:1.15rem;cursor:pointer;font-family:'Nunito',sans-serif;
+      background:#f6f8fc;color:#37517b;border:2px solid transparent
+    }
+    .option-btn.correct{background:#e8f8ec;color:#237942;border-color:#98ddb0}
+    .option-btn.wrong{background:#ffe9e9;color:#c0392b;border-color:#f4b4b0}
+    .option-btn.locked{pointer-events:none;opacity:.92}
+    .feedback{min-height:42px;margin-top:12px;font-weight:900;color:#5b6882;text-align:center}
+    .tip-band{background:linear-gradient(135deg,#fff6df,#eef8ff);border:2px solid #f3df9a;border-radius:20px;padding:14px 16px;margin-top:14px}
+    .tip-band strong{color:#cc7a00}
+    .review-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .review-box{background:white;border:2px solid #dbeaff;border-radius:20px;padding:14px;text-align:center}
+    .review-box h5{font-family:'Fredoka One',cursive;color:#2b4e84;font-size:1.05rem;margin:0 0 8px}
+    .bird-stage{
+      background:linear-gradient(180deg,#fffef7 0%,#eef8ff 100%);
+      border:2px solid #e6d8ff;border-radius:24px;padding:20px;text-align:center;min-height:300px
+    }
+    .bird-wrap{position:relative;min-height:180px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:14px}
+    .math-bird{font-size:5.4rem;display:inline-block;animation:birdBob 2.1s ease-in-out infinite;transform-origin:center bottom;filter:drop-shadow(0 10px 16px rgba(88,82,160,.18))}
+    .bird-spark{position:absolute;font-size:1.8rem;animation:sparkPop 1.8s ease-in-out infinite;opacity:.9}
+    .bird-spark.left{left:28%;top:18px;animation-delay:.2s}
+    .bird-spark.right{right:28%;top:30px;animation-delay:.7s}
+    @keyframes birdBob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(2deg)}}
+    @keyframes sparkPop{0%,100%{transform:translateY(0) scale(.95);opacity:.55}50%{transform:translateY(-8px) scale(1.08);opacity:1}}
+    .speech-bubble{
+      background:white;border:2px solid #d9ebff;border-radius:24px;padding:16px 18px;color:#35527f;font-weight:800;line-height:1.7;
+      box-shadow:0 10px 20px rgba(57,78,114,.08);position:relative;margin-bottom:12px
+    }
+    .speech-bubble::after{
+      content:'';position:absolute;left:50%;bottom:-12px;width:20px;height:20px;background:white;
+      border-right:2px solid #d9ebff;border-bottom:2px solid #d9ebff;transform:translateX(-50%) rotate(45deg)
+    }
+    .confidence-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+    .confidence-note{min-height:42px;margin-top:12px;text-align:center;font-weight:900;color:#5e6d8c}
+    .quiz-card{background:#fffefb;border:2px solid #f0e1b4;border-radius:24px;padding:18px;text-align:center}
+    .quiz-counter,.quiz-score{font-weight:900;color:#67728f}
+    .quiz-q-text{font-family:'Fredoka One',cursive;color:#2e4d82;font-size:1.5rem;margin:10px 0 18px}
+    .result-panel{border-radius:24px;padding:22px;text-align:center}
+    .result-panel.pass{background:linear-gradient(135deg,#effef3,#f7fff0);border:2px solid #b9efc3}
+    .result-panel.fail{background:linear-gradient(135deg,#fff6f6,#fffdf6);border:2px solid #ffd1d1}
+    .result-score{font-family:'Fredoka One',cursive;font-size:2.7rem;color:#2d4c80}
+    .certificate-wrap{text-align:center}
+    #cert{width:100%;max-width:900px;border-radius:22px;box-shadow:0 10px 28px rgba(0,0,0,.1);background:white}
+    @media (max-width:860px){
+      .story-body{grid-template-columns:1fr}
+      .option-grid{grid-template-columns:1fr}
+      .review-grid{grid-template-columns:1fr}
+    }
+    @media (max-width:560px){
+      #app{padding:14px}
+      .story-page{padding:20px}
+      .story-title{font-size:1.55rem}
+      .practice-sum{font-size:2rem;gap:10px}
+      .sum-box,.eq-part{min-width:70px;width:70px;height:70px;font-size:2rem}
+      .cover{min-height:540px}
+    }
+  </style>
+  <script src="natural-read-aloud.js" defer></script>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+<div class="clouds" id="clouds"></div>
+<div id="app"><div class="tts-bar">
+    <button class="tts-btn" id="ttsBtn" onclick="toggleReadAloud()">🔊 Read Aloud</button>
+    <button class="tts-btn" id="ttsStop" onclick="stopReadAloud()" style="display:none;background:linear-gradient(135deg,#ff6b6b,#ff9f1c);">⏹ Stop</button>
+  </div>
+
+  <div class="progress-strip">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">Page 1 of 9</div>
+  </div>
+
+  <div class="nav-bar">
+    <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Previous</button>
+    <div class="dots" id="pageDots"></div>
+    <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+  </div>
+
+  <section class="page active">
+    <div class="cover" data-tts="Welcome to Multiply with 8. Today we will learn the number 8 multiplication table, read each fact, practise in order, practise in mixed order, and earn a certificate.">
+      <div class="cover-emoji">✖️</div>
+      <h1 class="cover-title">Multiply with 8!</h1>
+      <div class="cover-sub">The Number 8 Multiplication Table Adventure</div>
+      <p class="cover-tagline">Meet Momo the Multiply Star and learn how multiplying by <strong>8</strong> helps us count in groups of 8. We will read the full table, watch each fact appear, practise in order, practise in mixed order, and then win a certificate.</p>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="story-page">
+      <div class="story-header">
+        <div class="story-icon">📘</div>
+        <div>
+          <h2 class="story-title">The Full Multiplication Table of 8</h2>
+          <p class="story-sub">Look at the whole table first. This is our map.</p>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="This is the full multiplication table of 8. When we multiply by 8, we count by 8s. 8 times one equals 8. 8 times two equals 16. Keep going until 8 times twelve equals 96.">
+          <p><strong>Big idea:</strong> when we multiply by <strong>8</strong>, we count in <strong>8s</strong>.</p>
+          <p>So if we see <strong>8 × 4</strong>, we think: “8, 16, 24, 32.” The answer is <strong>32</strong>.</p>
+          <p>Read each row slowly. Point with your finger if that helps. We want your eyes, ears, and brain to work together.</p>
+          <div class="tip-band"><strong>Remember:</strong> times 8 means “count by 8s”.</div>
+        </div>
+        <div class="story-art">
+          <h4>Table of 8</h4>
+          <div class="table-card" id="fullTable"></div>
+          <p class="tiny-note">Read each line: 8 times something equals a bigger count in 8s.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="story-page">
+      <div class="story-header">
+        <div class="story-icon">🎬</div>
+        <div>
+          <h2 class="story-title">Watch It Build</h2>
+          <p class="story-sub">We will show each fact one part at a time.</p>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="Watch the fact build. First see 8. Then times. Then the next number. Then equals. Then the answer. Read it aloud after it appears.">
+          <p>On this page, the fact appears like this:</p>
+          <p><strong>8</strong> → <strong>×</strong> → <strong>1</strong> → <strong>=</strong> → <strong>8</strong></p>
+          <p>After the answer appears, read the whole sentence aloud:</p>
+          <p><strong>8 times one equals 8.</strong></p>
+          <div class="tip-band"><strong>How to crack it:</strong> for <strong>8 × 5</strong>, count by 8s five times to reach <strong>40</strong>.</div>
+        </div>
+        <div class="story-art">
+          <h4>Read with Momo</h4>
+          <div class="eq-stage">
+            <div class="equation" id="equationStage">
+              <div class="eq-part" id="eqA">8</div>
+              <div class="eq-part" id="eqTimes">×</div>
+              <div class="eq-part" id="eqB">1</div>
+              <div class="eq-part" id="eqEq">=</div>
+              <div class="eq-part eq-answer" id="eqAns">8</div>
+            </div>
+            <div class="eq-read" id="eqRead">Press “Show This Fact” and then read it aloud.</div>
+            <div class="teach-actions">
+              <button class="fun-btn" onclick="playEquation()">Show This Fact</button>
+              <button class="fun-btn alt" onclick="nextEquation()">Next Fact</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="story-page">
+      <div class="story-header">
+        <div class="story-icon">🧩</div>
+        <div>
+          <h2 class="story-title">Practice in Order</h2>
+          <p class="story-sub">Start with 8 × 1 and go all the way to 8 × 12.</p>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="Now answer the facts in order. Start at 8 times one. Pick one of the three answers. Then keep going until 8 times twelve.">
+          <p>Now it is your turn.</p>
+          <p>Each question gives you <strong>3 choices</strong>. Pick the correct answer, then move to the next one.</p>
+          <p>Because these are in order, you can notice the pattern: the answers keep growing by <strong>8</strong> each time.</p>
+          <div class="tip-band"><strong>Helpful thought:</strong> 8 × 6 means count 8, 16, 24, 32, 40, <strong>48</strong>.</div>
+        </div>
+        <div class="story-art">
+          <div class="practice-card">
+            <h4>Ordered Practice</h4>
+            <div class="practice-status" id="orderedStatus">Question 1 of 12</div>
+            <div class="practice-sum"><div class="sum-box">8</div><div>×</div><div class="sum-box" id="orderedB">1</div><div>=</div><div class="sum-box answer">?</div></div>
+            <div class="option-grid" id="orderedOptions"></div>
+            <div class="feedback" id="orderedFeedback"></div>
+            <div class="practice-actions">
+              <button class="fun-btn alt" id="orderedNext" style="display:none" onclick="nextOrdered()">Next Fact</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="story-page">
+      <div class="story-header">
+        <div class="story-icon">🎲</div>
+        <div>
+          <h2 class="story-title">Practice in Mixed Order</h2>
+          <p class="story-sub">Now the facts jump around. Let’s see if you still know them.</p>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="Now the questions are mixed. You might see 8 times four, then 8 times nine, then 8 times two. The rule is still the same. Count in 8s each time.">
+          <p>This time, the questions are not in order.</p>
+          <p>You might see <strong>8 × 4</strong>, then <strong>8 × 9</strong>, then <strong>8 × 2</strong>.</p>
+          <p>That is how we check if you really know the rule, not just the order.</p>
+          <div class="tip-band"><strong>Same rule every time:</strong> count by 8s to reach the answer.</div>
+        </div>
+        <div class="story-art">
+          <div class="practice-card">
+            <h4>Mixed Practice</h4>
+            <div class="practice-status" id="mixedStatus">Question 1 of 12</div>
+            <div class="practice-sum"><div class="sum-box">8</div><div>×</div><div class="sum-box" id="mixedB">4</div><div>=</div><div class="sum-box answer">?</div></div>
+            <div class="option-grid" id="mixedOptions"></div>
+            <div class="feedback" id="mixedFeedback"></div>
+            <div class="practice-actions">
+              <button class="fun-btn alt" id="mixedNext" style="display:none" onclick="nextMixed()">Next Fact</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="story-page">
+      <div class="story-header">
+        <div class="story-icon">🌟</div>
+        <div>
+          <h2 class="story-title">Quick Review</h2>
+          <p class="story-sub">Let’s lock the pattern into your memory.</p>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="To multiply by 8, count in 8s. 8 times 3 equals 24. 8 times 9 equals 72. The pattern is simple and strong.">
+          <p>Here is the whole trick in one sentence:</p>
+          <p><strong>When you multiply by 8, count in 8s.</strong></p>
+          <p>If the number is 8, then <strong>8 × 8 = 64</strong>.</p>
+          <p>If the number is 12, then <strong>8 × 12 = 96</strong>.</p>
+        </div>
+        <div class="story-art">
+          <h4>Remember These</h4>
+          <div class="review-grid">
+            <div class="review-box"><h5>8 × 3</h5><p>= 24</p></div>
+            <div class="review-box"><h5>8 × 6</h5><p>= 48</p></div>
+            <div class="review-box"><h5>8 × 9</h5><p>= 72</p></div>
+            <div class="review-box"><h5>8 × 12</h5><p>= 96</p></div>
+          </div>
+          <div class="tip-band" style="margin-top:16px"><strong>Memory line:</strong> count by 8, and you’re done!</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="story-page">
+      <div class="story-header">
+        <div class="story-icon">🐧</div>
+        <div>
+          <h2 class="story-title">Ready for the Final Quiz?</h2>
+          <p class="story-sub">Listen to the animal coach before you begin.</p>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="Pip the Penguin says: Are you confident and do you know the table by heart? If yes, press thumbs up and go to the final quiz. If not, go back and practise more, then come back stronger.">
+          <p><strong>Pip the Penguin</strong> has one last question for you.</p>
+          <p>Do you feel <strong>confident</strong>? Can you say the table of 8 <strong>by heart</strong>?</p>
+          <p>If yes, press the <strong>thumbs up</strong> button and move on to the final quiz.</p>
+          <p>If not, that is okay. Go back, practise more and more, and then come back when you feel ready.</p>
+        </div>
+        <div class="story-art">
+          <div class="bird-stage">
+            <div class="speech-bubble" id="birdBubble">
+              “Can you say <strong>8 × 1 = 8</strong> all the way to <strong>8 × 12 = 96</strong> without help?”
+            </div>
+            <div class="bird-wrap">
+              <div class="bird-spark left">✨</div>
+              <div class="math-bird">🐧</div>
+              <div class="bird-spark right">⭐</div>
+            </div>
+            <div class="confidence-actions">
+              <button class="fun-btn" onclick="markConfidence()">👍 I’m confident!</button>
+              <button class="fun-btn alt" onclick="goPracticeAgain()">↺ I want more practice</button>
+            </div>
+            <div class="confidence-note" id="confidenceNote">Press thumbs up when you are ready, or go back and practise again.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="story-page">
+      <div class="story-header">
+        <div class="story-icon">🏁</div>
+        <div>
+          <h2 class="story-title">Final Quiz</h2>
+          <p class="story-sub">Answer the questions and win your certificate.</p>
+        </div>
+      </div>
+      <div class="quiz-card" data-tts="Final quiz. Answer twelve questions about the 8 multiplication table.">
+        <p style="font-size:14px;color:#666;margin-bottom:14px;">Answer <strong>12 questions</strong>. You need <strong>10 correct</strong> to earn your certificate.</p>
+
+        <div id="quizActive">
+          <div class="quiz-counter" id="qCounter">Question 1 of 12</div>
+          <div class="quiz-score" id="qScoreBadge">Score: 0 / 12</div>
+          <div class="quiz-q-text" id="qText">8 × 1 = ?</div>
+          <div class="option-grid" id="fquizOptions"></div>
+          <div class="feedback" id="qResultMsg"></div>
+          <div class="quiz-actions" style="justify-content:center">
+            <button class="fun-btn alt" id="nextQBtn" style="display:none" onclick="nextQuestion()">Next Question →</button>
+          </div>
+        </div>
+
+        <div id="quizPass" style="display:none">
+          <div class="result-panel pass">
+            <div class="result-score" id="passScore">10 / 12</div>
+            <div class="feedback" id="passMsg" style="min-height:auto">Amazing work!</div>
+            <div class="quiz-actions" style="justify-content:center;margin-top:16px">
+              <button class="fun-btn" onclick="goToCertificate()">Go to Certificate 🎓</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="quizFail" style="display:none">
+          <div class="result-panel fail">
+            <div class="result-score" id="failScore">7 / 12</div>
+            <div class="feedback" style="min-height:auto">You need at least 10 correct to earn your certificate. Try again — you are getting stronger every time!</div>
+            <div class="quiz-actions" style="justify-content:center;margin-top:16px">
+              <button class="fun-btn alt" onclick="restartQuiz()">Try Again ↺</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="story-page certificate-wrap" data-tts="Certificate page. Type your name and download your Multiplication with 8 certificate.">
+      <div class="story-header" style="justify-content:center">
+        <div class="story-icon">🎓</div>
+        <div>
+          <h2 class="story-title">Your Certificate</h2>
+          <p class="story-sub">Type your name and save your reward.</p>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:12px 0 18px">
+        <input id="certName" type="text" placeholder="Type your name here" oninput="drawCert()" style="min-width:280px;padding:14px 16px;border-radius:999px;border:2px solid #dbeaff;font-size:1rem;font-weight:800">
+        <button class="fun-btn" onclick="downloadCert()">Download PNG</button>
+        <button class="fun-btn alt" onclick="printCert()">Print</button>
+      </div>
+      <canvas id="cert" width="900" height="630"></canvas>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  const c=document.getElementById('clouds');
+  const emojis=['☁️','⭐','✖️'];
+  for(let i=0;i<7;i++){
+    const el=document.createElement('div');
+    el.className='cloud';
+    el.textContent=emojis[i%emojis.length];
+    el.style.top=(Math.random()*82)+'%';
+    el.style.animationDuration=(20+Math.random()*26)+'s';
+    el.style.animationDelay=(Math.random()*18)+'s';
+    el.style.fontSize=(34+Math.random()*30)+'px';
+    c.appendChild(el);
+  }
+})();
+
+const TABLE_NUMBER=8;
+const TABLE_FACTS=Array.from({length:12},(_,i)=>({b:i+1,ans:TABLE_NUMBER*(i+1)}));
+const TOTAL=8;
+let currentPage=0;
+const pages=document.querySelectorAll('.page');
+const prevBtn=document.getElementById('prevBtn');
+const nextBtn=document.getElementById('nextBtn');
+const dotsContainer=document.getElementById('pageDots');
+
+TABLE_FACTS.forEach(({b,ans})=>{
+  const row=document.createElement('div');
+  row.className='table-row';
+  row.innerHTML='<div>'+TABLE_NUMBER+'</div><div>×</div><div>'+b+'</div><div>=</div><div class="ans">'+ans+'</div>';
+  document.getElementById('fullTable').appendChild(row);
+});
+
+for(let i=0;i<=TOTAL;i++){
+  const d=document.createElement('button');
+  d.className='dot'+(i===0?' active':'');
+  d.onclick=()=>goToPage(i);
+  dotsContainer.appendChild(d);
+}
+
+function goToPage(n){
+  if(n<0||n>TOTAL)return;
+  if(n===8&&!quizPassed){alert('You need to pass the quiz with at least 10/12 to get your certificate! 🌟');return;}
+  stopReadAloud();
+  pages[currentPage].classList.remove('active');
+  currentPage=n;
+  pages[currentPage].classList.add('active');
+  prevBtn.disabled=currentPage===0;
+  nextBtn.disabled=currentPage===TOTAL;
+  document.getElementById('progressFill').style.width=Math.round(currentPage/TOTAL*100)+'%';
+  document.getElementById('progressText').textContent='Page '+(currentPage+1)+' of '+(TOTAL+1);
+  document.querySelectorAll('.dot').forEach((d,i)=>{
+    d.classList.toggle('active',i===currentPage);
+    if(i<currentPage)d.classList.add('visited');
+  });
+  if(currentPage===7)initQuiz();
+  if(currentPage===8)setTimeout(drawCert,120);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function changePage(d){goToPage(currentPage+d);}
+
+let isSpeaking=false;
+let speechUtterance=null;
+function toggleReadAloud(){
+  if(isSpeaking){stopReadAloud();return;}
+  const activePage=pages[currentPage];
+  const ttsEl=activePage.querySelector('[data-tts]');
+  const fallback=activePage.querySelector('.story-text')||activePage;
+  const text=(ttsEl?ttsEl.textContent:fallback.textContent||'').replace(/s+/g,' ').trim();
+  if(!text)return;
+  speakText(text);
+}
+function speakText(text){
+  if(!('speechSynthesis' in window))return;
+  stopReadAloud();
+  speechUtterance=new SpeechSynthesisUtterance(text);
+  speechUtterance.rate=0.8;
+  speechUtterance.pitch=1.12;
+  speechUtterance.lang='en-US';
+  speechUtterance.onstart=()=>{
+    isSpeaking=true;
+    document.getElementById('ttsBtn').classList.add('speaking');
+    document.getElementById('ttsBtn').textContent='🔊 Reading...';
+    document.getElementById('ttsStop').style.display='inline-flex';
+  };
+  speechUtterance.onend=resetTTSUI;
+  speechUtterance.onerror=resetTTSUI;
+  speechSynthesis.speak(speechUtterance);
+}
+function stopReadAloud(){ if('speechSynthesis' in window)speechSynthesis.cancel(); resetTTSUI(); }
+function resetTTSUI(){
+  isSpeaking=false;
+  document.getElementById('ttsBtn').classList.remove('speaking');
+  document.getElementById('ttsBtn').textContent='🔊 Read Aloud';
+  document.getElementById('ttsStop').style.display='none';
+}
+
+let equationIndex=0;
+let equationBusy=false;
+function setEquation(index){
+  const fact=TABLE_FACTS[index];
+  document.getElementById('eqA').textContent=TABLE_NUMBER;
+  document.getElementById('eqB').textContent=fact.b;
+  document.getElementById('eqAns').textContent=fact.ans;
+  document.getElementById('eqRead').textContent='Press “Show This Fact” and then read it aloud.';
+  ['eqA','eqTimes','eqB','eqEq','eqAns'].forEach(id=>document.getElementById(id).classList.remove('show'));
+}
+function playEquation(){
+  if(equationBusy)return;
+  equationBusy=true;
+  const ids=['eqA','eqTimes','eqB','eqEq','eqAns'];
+  ids.forEach(id=>document.getElementById(id).classList.remove('show'));
+  ids.forEach((id,i)=>setTimeout(()=>document.getElementById(id).classList.add('show'),i*420));
+  setTimeout(()=>{
+    const fact=TABLE_FACTS[equationIndex];
+    document.getElementById('eqRead').textContent='Now read it aloud: '+TABLE_NUMBER+' times '+fact.b+' equals '+fact.ans+'.';
+    equationBusy=false;
+  },ids.length*420+120);
+}
+function nextEquation(){
+  equationIndex=(equationIndex+1)%TABLE_FACTS.length;
+  setEquation(equationIndex);
+}
+setEquation(0);
+
+let orderedIndex=0;
+function shuffle(arr){
+  const copy=[...arr];
+  for(let i=copy.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [copy[i],copy[j]]=[copy[j],copy[i]];
+  }
+  return copy;
+}
+function makeOptions(correct){
+  const set=new Set([correct]);
+  const pool=shuffle([correct-6,correct-4,correct-3,correct-2,correct-1,correct+1,correct+2,correct+3,correct+4,correct+6].filter(v=>v>=0));
+  pool.forEach(v=>{ if(set.size<3) set.add(v); });
+  let step=7;
+  while(set.size<3){
+    set.add(correct+step);
+    step++;
+  }
+  return shuffle([...set]);
+}
+function renderOrdered(){
+  const fact=TABLE_FACTS[orderedIndex];
+  document.getElementById('orderedStatus').textContent='Question '+(orderedIndex+1)+' of 12';
+  document.getElementById('orderedB').textContent=fact.b;
+  const wrap=document.getElementById('orderedOptions');
+  const fb=document.getElementById('orderedFeedback');
+  wrap.innerHTML=''; fb.textContent=''; document.getElementById('orderedNext').style.display='none';
+  makeOptions(fact.ans).forEach(opt=>{
+    const btn=document.createElement('button');
+    btn.className='option-btn';
+    btn.textContent=opt;
+    btn.onclick=()=>answerOrdered(btn,opt===fact.ans,fact.ans);
+    wrap.appendChild(btn);
+  });
+}
+function answerOrdered(btn,isCorrect,ans){
+  const all=document.querySelectorAll('#orderedOptions .option-btn');
+  all.forEach(b=>b.classList.add('locked'));
+  if(isCorrect){
+    btn.classList.add('correct');
+    document.getElementById('orderedFeedback').innerHTML='<span style="color:#237942">Great! The answer is '+ans+'.</span>';
+  }else{
+    btn.classList.add('wrong');
+    [...all].find(b=>Number(b.textContent)===ans)?.classList.add('correct');
+    document.getElementById('orderedFeedback').innerHTML='<span style="color:#c0392b">Not quite. The right answer is '+ans+'.</span>';
+  }
+  const nextBtn=document.getElementById('orderedNext');
+  nextBtn.style.display='inline-flex';
+  nextBtn.textContent=orderedIndex===TABLE_FACTS.length-1?'Finish Ordered Practice ✅':'Next Fact';
+}
+function nextOrdered(){
+  if(orderedIndex===TABLE_FACTS.length-1){
+    document.getElementById('orderedStatus').textContent='Ordered practice complete!';
+    document.getElementById('orderedFeedback').innerHTML='<span style="color:#237942">Wonderful! You finished all the facts from '+TABLE_NUMBER+' × 1 to '+TABLE_NUMBER+' × 12.</span>';
+    document.getElementById('orderedNext').style.display='none';
+    return;
+  }
+  orderedIndex++;
+  renderOrdered();
+}
+renderOrdered();
+
+const mixedFacts=shuffle(TABLE_FACTS);
+let mixedIndex=0;
+function renderMixed(){
+  const fact=mixedFacts[mixedIndex];
+  document.getElementById('mixedStatus').textContent='Question '+(mixedIndex+1)+' of 12';
+  document.getElementById('mixedB').textContent=fact.b;
+  const wrap=document.getElementById('mixedOptions');
+  const fb=document.getElementById('mixedFeedback');
+  wrap.innerHTML=''; fb.textContent=''; document.getElementById('mixedNext').style.display='none';
+  makeOptions(fact.ans).forEach(opt=>{
+    const btn=document.createElement('button');
+    btn.className='option-btn';
+    btn.textContent=opt;
+    btn.onclick=()=>answerMixed(btn,opt===fact.ans,fact.ans);
+    wrap.appendChild(btn);
+  });
+}
+function answerMixed(btn,isCorrect,ans){
+  const all=document.querySelectorAll('#mixedOptions .option-btn');
+  all.forEach(b=>b.classList.add('locked'));
+  if(isCorrect){
+    btn.classList.add('correct');
+    document.getElementById('mixedFeedback').innerHTML='<span style="color:#237942">Yes! '+ans+' is correct.</span>';
+  }else{
+    btn.classList.add('wrong');
+    [...all].find(b=>Number(b.textContent)===ans)?.classList.add('correct');
+    document.getElementById('mixedFeedback').innerHTML='<span style="color:#c0392b">Oops. The answer is '+ans+'.</span>';
+  }
+  const nextBtn=document.getElementById('mixedNext');
+  nextBtn.style.display='inline-flex';
+  nextBtn.textContent=mixedIndex===mixedFacts.length-1?'Finish Mixed Practice ✅':'Next Fact';
+}
+function nextMixed(){
+  if(mixedIndex===mixedFacts.length-1){
+    document.getElementById('mixedStatus').textContent='Mixed practice complete!';
+    document.getElementById('mixedFeedback').innerHTML='<span style="color:#237942">Great job! You answered all the mixed-order facts.</span>';
+    document.getElementById('mixedNext').style.display='none';
+    return;
+  }
+  mixedIndex++;
+  renderMixed();
+}
+renderMixed();
+
+function markConfidence(){
+  document.getElementById('birdBubble').innerHTML='“Wonderful! Pip the Penguin thinks you sound ready. Tap <strong>Next</strong> to start the final quiz and show what you know!”';
+  document.getElementById('confidenceNote').innerHTML='<span style="color:#237942">Great choice! Tap <strong>Next</strong> for the final quiz.</span>';
+}
+function goPracticeAgain(){
+  document.getElementById('confidenceNote').innerHTML='<span style="color:#1d6fd6">Great thinking. Let’s go back and practise more first.</span>';
+  setTimeout(()=>goToPage(3),180);
+}
+
+const QUESTIONS=shuffle(TABLE_FACTS).map(({b,ans})=>({q:TABLE_NUMBER+' × '+b+' = ?',opts:makeOptions(ans),ans}));
+let qIdx=0,score=0,answered=false,quizPassed=false;
+function initQuiz(){
+  qIdx=0;score=0;answered=false;
+  document.getElementById('quizActive').style.display='block';
+  document.getElementById('quizPass').style.display='none';
+  document.getElementById('quizFail').style.display='none';
+  renderQuestion();
+}
+function renderQuestion(){
+  const q=QUESTIONS[qIdx];
+  document.getElementById('qText').textContent=q.q;
+  document.getElementById('qCounter').textContent='Question '+(qIdx+1)+' of 12';
+  document.getElementById('qScoreBadge').textContent='Score: '+score+' / 12';
+  document.getElementById('qResultMsg').textContent='';
+  document.getElementById('nextQBtn').style.display='none';
+  answered=false;
+  const opts=document.getElementById('fquizOptions');
+  opts.innerHTML='';
+  q.opts.forEach(opt=>{
+    const btn=document.createElement('button');
+    btn.className='option-btn';
+    btn.textContent=opt;
+    btn.onclick=()=>answerQ(btn,opt===q.ans,q.ans);
+    opts.appendChild(btn);
+  });
+}
+function answerQ(btn,isCorrect,ans){
+  if(answered)return;
+  answered=true;
+  const all=document.querySelectorAll('#fquizOptions .option-btn');
+  all.forEach(b=>b.classList.add('locked'));
+  if(isCorrect){
+    btn.classList.add('correct');
+    score++;
+    document.getElementById('qResultMsg').innerHTML='<span style="color:#237942">Brilliant! '+ans+' is correct.</span>';
+  }else{
+    btn.classList.add('wrong');
+    [...all].find(b=>Number(b.textContent)===ans)?.classList.add('correct');
+    document.getElementById('qResultMsg').innerHTML='<span style="color:#c0392b">The correct answer is '+ans+'.</span>';
+  }
+  document.getElementById('qScoreBadge').textContent='Score: '+score+' / 12';
+  document.getElementById('nextQBtn').style.display='inline-flex';
+  document.getElementById('nextQBtn').textContent=qIdx===11?'See My Result! 🏁':'Next Question →';
+}
+function nextQuestion(){ qIdx++; if(qIdx>=12){showResult();return;} renderQuestion(); }
+function showResult(){
+  document.getElementById('quizActive').style.display='none';
+  if(score>=10){
+    quizPassed=true;
+    document.getElementById('quizPass').style.display='block';
+    document.getElementById('passScore').textContent=score+' / 12';
+    document.getElementById('passMsg').textContent=score===12?'Perfect! You know the number '+TABLE_NUMBER+' multiplication table!':'Amazing work! You are strong with multiplying by '+TABLE_NUMBER+'.';
+  }else{
+    document.getElementById('quizFail').style.display='block';
+    document.getElementById('failScore').textContent=score+' / 12';
+  }
+}
+function restartQuiz(){initQuiz();}
+function goToCertificate(){goToPage(8);}
+
+const certCanvas=document.getElementById('cert');
+const ctx=certCanvas.getContext('2d');
+const CW=900,CH=630;
+function drawStarShape(cx,cy,r,pts,color){
+  ctx.save();ctx.fillStyle=color;ctx.beginPath();
+  for(let i=0;i<pts*2;i++){const a=(i*Math.PI/pts)-Math.PI/2,rd=i%2===0?r:r*.45;i===0?ctx.moveTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a)):ctx.lineTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a));}
+  ctx.closePath();ctx.fill();ctx.restore();
+}
+function rr(x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();
+}
+const qrImage=new Image(); let qrReady=false;
+qrImage.crossOrigin='anonymous';
+qrImage.onload=()=>{qrReady=true;drawCert();};
+qrImage.src='https://quickchart.io/qr?text='+encodeURIComponent('https://fivetofifteen.com/')+'&size=180';
+function drawCert(){
+  const name=document.getElementById('certName').value.trim()||'Explorer Name Here';
+  ctx.clearRect(0,0,CW,CH);
+  const bg=ctx.createLinearGradient(0,0,CW,CH);
+  bg.addColorStop(0,'#fffdf2'); bg.addColorStop(.5,'#ffffff'); bg.addColorStop(1,'#eef7ff');
+  ctx.fillStyle=bg; rr(0,0,CW,CH,20); ctx.fill();
+  ctx.strokeStyle='#f0b726'; ctx.lineWidth=6; rr(8,8,CW-16,CH-16,16); ctx.stroke();
+  ctx.strokeStyle='#4d96ff'; ctx.lineWidth=2; ctx.setLineDash([8,5]); rr(20,20,CW-40,CH-40,10); ctx.stroke(); ctx.setLineDash([]);
+  [[52,52],[CW-52,52],[52,CH-52],[CW-52,CH-52]].forEach(([x,y])=>drawStarShape(x,y,18,5,'#ffd93d'));
+  const rg=ctx.createLinearGradient(CW/2-220,0,CW/2+220,0);
+  rg.addColorStop(0,'#4d96ff'); rg.addColorStop(.5,'#6bcB77'); rg.addColorStop(1,'#ff9f1c');
+  ctx.fillStyle=rg; rr(CW/2-220,28,440,44,22); ctx.fill();
+  ctx.fillStyle='#fffef5'; ctx.font='bold 17px "Fredoka One",cursive'; ctx.textAlign='center';
+  ctx.fillText('✖️  MULTIPLY WITH 8  ✖️',CW/2,57);
+  ctx.font='64px serif'; ctx.fillText('✨',CW/2,142);
+  ctx.fillStyle='#274a7d'; ctx.font='bold 40px "Fredoka One",cursive'; ctx.fillText('Multiplication Table Certificate!',CW/2,196);
+  ctx.fillStyle='#888'; ctx.font='17px "Nunito",sans-serif'; ctx.fillText('This is to proudly certify that the number explorer',CW/2,232);
+  ctx.strokeStyle='#4d96ff'; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(CW/2-240,276); ctx.lineTo(CW/2+240,276); ctx.stroke();
+  ctx.fillStyle='#2f7d32'; ctx.font='bold 38px "Fredoka One",cursive'; ctx.fillText(name,CW/2,270);
+  ctx.fillStyle='#444'; ctx.font='17px "Nunito",sans-serif'; ctx.fillText('has mastered the multiplication table of 8 and is now an official',CW/2,310);
+  ctx.fillStyle='#ff8b1a'; ctx.font='bold 24px "Fredoka One",cursive'; ctx.fillText('🌟 Number 8 Multiplication Star 🌟',CW/2,344);
+  ctx.fillStyle='#888'; ctx.font='14px "Nunito",sans-serif'; ctx.fillText('Scored 10 or more on the final multiplication quiz!',CW/2,372);
+  const badges=[
+    {t:'✓ Multiplies by 8',bg:'#eaf5ff',c:'#1565c0'},
+    {t:'✓ Counts in 8s',bg:'#effcf0',c:'#2e7d32'},
+    {t:'✓ Fact Practice Hero',bg:'#fff3df',c:'#e67e22'},
+    {t:'✓ Ready for more',bg:'#f5edff',c:'#7a4ce0'},
+  ];
+  const bw=168,bh=30,g=10,total=badges.length*(bw+g)-g; let bx=CW/2-total/2;
+  badges.forEach(b=>{ctx.fillStyle=b.bg; rr(bx,390,bw,bh,15); ctx.fill(); ctx.fillStyle=b.c; ctx.font='bold 12px "Nunito",sans-serif'; ctx.fillText(b.t,bx+bw/2,409); bx+=bw+g;});
+  ctx.font='32px serif'; ctx.fillText('8 × 1 = 8   8 × 6 = 48   8 × 12 = 96',CW/2,468);
+  ctx.fillStyle='#ffffff'; ctx.strokeStyle='#d7e2f4'; ctx.lineWidth=2; rr(CW-154,68,102,102,14); ctx.fill(); ctx.stroke();
+  if(qrReady){ctx.drawImage(qrImage,CW-144,78,82,82);}else{ctx.fillStyle='#eef7ff';ctx.fillRect(CW-144,78,82,82);ctx.fillStyle='#1d6fd6';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('QR loading...',CW-103,122);}
+  ctx.fillStyle='#1d6fd6'; ctx.font='bold 10px "Nunito",sans-serif'; ctx.fillText('Scan to visit',CW-103,185);
+  const d=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
+  ctx.fillStyle='#9e9e9e'; ctx.font='bold 12px "Nunito",sans-serif'; ctx.fillText('Presented by fivetofifteen.com',CW/2,538);
+  ctx.fillStyle='#bbb'; ctx.font='12px "Nunito",sans-serif'; ctx.fillText('Awarded on '+d,CW/2,562);
+}
+function downloadCert(){ drawCert(); const link=document.createElement('a'); link.download='multiplication-table-8-certificate.png'; link.href=certCanvas.toDataURL('image/png'); link.click(); }
+function printCert(){
+  drawCert();
+  const dataUrl=certCanvas.toDataURL('image/png');
+  const win=window.open('','_blank');
+  const html=[
+    '<!DOCTYPE html><html><head><title>Multiplication Table Certificate<\\/title>',
+    '<style>body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f5f5f5;}img{max-width:100%;box-shadow:0 4px 20px rgba(0,0,0,.15);border-radius:12px;}@media print{body{background:white;}img{box-shadow:none;width:100%;}}<\\/style><\\/head><body>',
+    '<img src="'+dataUrl+'"/><\\/body><\\/html>'
+  ].join('');
+  win.document.write(html);
+  win.document.close();
+  win.onload=()=>{win.focus();win.print();};
+}
+drawCert();
+</script>
+</body>
+</html>

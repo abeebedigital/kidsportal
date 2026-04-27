@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Solar Clock Story! ☀️</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+    /* story-font-boost */
+    html{font-size:17px;}
+    @media (max-width:500px){html{font-size:16px;}}
+:root{
+  --dark:#2c2d5b;
+  --card:#fffefb;
+  --bg:#f9fbff;
+  --navy:#1d6fd6;
+  --sky:#7dd3fc;
+  --mint:#52c41a;
+  --sun:#ffd166;
+  --peach:#ff9f68;
+  --violet:#8b5cf6;
+  --sand:#f7ecd1;
+  --gold:#d97706;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overflow-x:hidden}
+.floaty{position:fixed;opacity:.08;z-index:0;pointer-events:none;animation:drift linear infinite}
+@keyframes drift{from{transform:translateX(-120px)}to{transform:translateX(calc(100vw + 120px))}}
+#app{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:12px}
+.home-link{display:inline-flex;align-items:center;gap:6px;background:var(--mint);color:#fff;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;text-decoration:none;transition:all .2s;margin-bottom:10px}
+.home-link:hover{transform:scale(1.05)}
+.tts-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.tts-btn{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--navy),var(--violet));color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s}
+.tts-btn:hover{transform:scale(1.05)}
+.tts-btn.speaking{animation:pulse 1s ease infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(29,111,214,.45)}50%{box-shadow:0 0 0 8px rgba(29,111,214,0)}}
+.tts-stop{background:linear-gradient(135deg,#95a5a6,#7f8c8d);color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer}
+.progress-strip{background:#fff;border-radius:12px;padding:8px 16px;display:flex;align-items:center;gap:10px;margin-bottom:8px;border:2px solid #dce6ff;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.progress-bar{flex:1;height:7px;background:#dce6ff;border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--mint),var(--navy),var(--sun));border-radius:4px;transition:width .5s ease}
+.progress-label{font-family:'Fredoka One',cursive;font-size:12px;color:#8084a0;white-space:nowrap}
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#fff;border-radius:16px;margin-bottom:10px;border:2px solid #dce6ff;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.nav-btn{background:var(--navy);color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:8px 22px;border-radius:20px;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:scale(1.06)}
+.nav-btn:disabled{background:#ddd;color:#999;cursor:not-allowed;transform:none}
+.page-dots{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;max-width:320px}
+.dot{width:9px;height:9px;border-radius:50%;background:#ddd;cursor:pointer;transition:all .2s;border:none;padding:0}
+.dot.active{background:var(--navy);transform:scale(1.3);box-shadow:0 0 6px var(--navy)}
+.dot.visited{background:rgba(29,111,214,.4)}
+.page{display:none;animation:pageIn .5s ease}
+.page.active{display:block}
+@keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.cover{background:linear-gradient(160deg,#1d4ed8 0%,#2563eb 40%,#fde68a 100%);border-radius:22px;border:2px solid rgba(255,255,255,.35);padding:50px 30px;text-align:center;position:relative;overflow:hidden;min-height:540px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.cover-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:430px;height:430px;background:radial-gradient(circle,rgba(255,255,255,.18) 0%,transparent 70%)}
+.cover-title{font-family:'Fredoka One',cursive;font-size:38px;color:#fff;line-height:1.15;margin-bottom:8px;position:relative;z-index:2;text-shadow:0 4px 16px rgba(0,0,0,.2)}
+.cover-sub{font-family:'Fredoka One',cursive;font-size:20px;color:#eef6ff;position:relative;z-index:2;margin-bottom:10px}
+.cover-tagline{font-size:13px;color:rgba(255,255,255,.85);position:relative;z-index:2;margin-top:16px;font-style:italic}
+.cover-icons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:20px 0;position:relative;z-index:2}
+.cover-icon{font-size:38px;animation:bob var(--dur,3s) ease-in-out infinite var(--delay,0s)}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.hero-sun{font-size:60px;position:relative;z-index:2;animation:heroFloat 3.2s ease-in-out infinite}
+@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+.story-page,.quiz-page,.cert-page{background:var(--card);border-radius:22px;padding:26px;min-height:540px;border:3px solid #dce6ff;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.page-corner{position:absolute;top:14px;right:16px;font-family:'Fredoka One',cursive;font-size:16px;color:#a7acc5}
+.story-header{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.chapter-badge{font-family:'Fredoka One',cursive;font-size:12px;padding:4px 13px;border-radius:16px;white-space:nowrap;color:#fff}
+.story-title{font-family:'Fredoka One',cursive;font-size:22px;color:var(--dark)}
+.story-body{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.story-text{font-size:15px;line-height:1.85;color:#444}
+.story-text p{margin-bottom:10px}
+.hw{font-weight:800;color:#1d4ed8}
+.hw2{font-weight:800;color:#7c3aed}
+.hw3{font-weight:800;color:#16a34a}
+.story-art{border-radius:16px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:8px;border:2px dashed #cfe0ff;background:linear-gradient(135deg,#f8fbff,#eef4ff)}
+.wonder-label{font-family:'Fredoka One',cursive;font-size:13px;color:#8e93b2;margin-top:4px;text-align:center}
+.wonder-facts{background:rgba(0,0,0,.03);border-radius:12px;padding:10px 14px;width:100%;border:1px solid rgba(0,0,0,.06)}
+.fact-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:13px;color:#555}
+.fact-row:last-child{border-bottom:none}
+.fact-icon{font-size:16px;min-width:22px}
+.quiz-bubble{background:linear-gradient(135deg,#eef2ff,#fff8e6);border:2px solid #b6c4ff;border-radius:18px;padding:18px;margin-top:16px}
+.quiz-title{font-family:'Fredoka One',cursive;font-size:17px;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.quiz-options,.fquiz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.q-opt,.fq-opt{background:#fff;border:2px solid #dce6ff;border-radius:12px;padding:10px 14px;font-size:14px;color:var(--dark);cursor:pointer;transition:all .2s;text-align:left;font-family:'Nunito',sans-serif;font-weight:700}
+.q-opt:hover,.fq-opt:hover:not(.locked){background:#eef4ff;border-color:#a8bbff;transform:translateY(-2px)}
+.q-opt.correct,.fq-opt.correct{background:#d4edda;border-color:#27ae60;color:#155724}
+.q-opt.wrong,.fq-opt.wrong{background:#f8d7da;border-color:#c0392b;color:#721c24}
+.quiz-feedback,.q-result-msg{font-family:'Fredoka One',cursive;font-size:16px;margin-top:10px;min-height:24px;text-align:center}
+.fun-fact{background:#fff8dc;border:2px solid #ffd93d;border-radius:14px;padding:14px 16px;margin-top:14px}
+.fun-fact-title{font-family:'Fredoka One',cursive;font-size:15px;color:#8a6b00;margin-bottom:6px}
+.fun-fact-text{font-size:13px;color:#444;line-height:1.6}
+.memory-card{background:#eef4ff;border:2px solid #a8bbff;border-radius:14px;padding:14px;margin-top:14px}
+.mem-row{display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;transition:background .2s;border-radius:8px;padding:8px}
+.mem-row:hover{background:rgba(29,111,214,.08)}
+.mem-letter{font-family:'Fredoka One',cursive;font-size:18px;color:#1d4ed8;min-width:24px}
+.mem-word{color:#5b21b6;min-width:120px;font-weight:700}
+.mem-note{color:#bbb}
+.quiz-progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.q-counter{font-family:'Fredoka One',cursive;font-size:13px;color:#999}
+.q-score-badge{font-family:'Fredoka One',cursive;font-size:14px;background:#eef4ff;border:2px solid #b6c4ff;padding:4px 14px;border-radius:20px;color:#4c3ff5}
+.quiz-question-card{background:#fff;border-radius:16px;padding:20px;margin-bottom:16px;border:2px solid #dce6ff;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.quiz-q-text{font-family:'Fredoka One',cursive;font-size:19px;color:var(--dark);line-height:1.4;margin-bottom:4px}
+.quiz-q-emoji{font-size:40px;margin-bottom:10px}
+.fq-opt.locked{cursor:not-allowed;opacity:.72}
+.next-q-btn{display:block;margin:12px auto 0;background:linear-gradient(135deg,var(--navy),var(--violet));color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:16px;padding:10px 28px;border-radius:22px;cursor:pointer;transition:all .2s}
+.next-q-btn:hover{transform:scale(1.05)}
+.result-screen{text-align:center;padding:20px 10px}
+.result-trophy{font-size:80px;margin-bottom:12px;animation:bounce 1s ease infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+.result-title{font-family:'Fredoka One',cursive;font-size:28px;margin-bottom:10px}
+.result-score{font-family:'Fredoka One',cursive;font-size:48px;color:var(--sun)}
+.result-msg{font-size:16px;color:#888;margin:12px 0 20px;line-height:1.7}
+.retry-btn,.proceed-btn{color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:18px;padding:12px 32px;border-radius:24px;cursor:pointer;transition:all .2s;margin:8px}
+.retry-btn{background:linear-gradient(135deg,#e74c3c,#ff6b6b)}
+.proceed-btn{background:linear-gradient(135deg,#27ae60,#2ecc71)}
+.retry-btn:hover,.proceed-btn:hover{transform:scale(1.06)}
+.cert-page{border-color:#ffd93d}
+.cert-controls{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+.cert-name-input{font-family:'Nunito',sans-serif;font-size:16px;padding:10px 16px;border:2px solid #ffd93d;border-radius:12px;outline:none;flex:1;min-width:180px;color:#333}
+.cert-name-input:focus{border-color:var(--violet)}
+.cert-dl-btn,.cert-print-btn{color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:24px;cursor:pointer}
+.cert-dl-btn{background:var(--navy)}
+.cert-print-btn{background:#1565c0}
+.cert-wrap{background:#fff;border-radius:16px;padding:6px;border:3px solid #ffd93d;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+canvas#cert{width:100%;border-radius:12px;display:block}
+.cert-hint{font-size:12px;color:#aaa;margin-top:8px;text-align:center}
+.example-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%}
+.example-card{background:#fff;border-radius:12px;border:2px solid #dce6ff;padding:10px;text-align:center}
+.example-card strong{display:block;font-family:'Fredoka One',cursive;color:var(--dark);margin-top:8px}
+.sun-track{display:flex;justify-content:space-between;align-items:end;gap:12px;width:100%;padding:8px 0}
+.sun-step{flex:1;text-align:center}
+.sun-step .sun-face{font-size:32px}
+.sun-step strong{display:block;font-family:'Fredoka One',cursive;font-size:13px;color:var(--dark);margin-top:6px}
+.dial-card{width:100%;max-width:250px;background:#fff7db;border:2px solid #f2cf66;border-radius:18px;padding:16px;text-align:center}
+@media(max-width:580px){
+  .story-body{grid-template-columns:1fr}
+  .cover-title{font-size:28px}
+  .quiz-options,.fquiz-options,.example-grid{grid-template-columns:1fr}
+  .cert-controls{flex-direction:column}
+}
+</style>
+<script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="natural-read-aloud.js" defer></script>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+<div id="floaties"></div>
+<div id="app"><div class="tts-bar">
+    <button class="tts-btn" id="ttsBtn" onclick="toggleReadAloud()">🔊 Read Aloud</button>
+    <button class="tts-stop" id="ttsStop" onclick="stopReadAloud()" style="display:none;">⏹ Stop</button>
+  </div>
+  <div class="progress-strip">
+    <span class="progress-label">☀️ Exploring...</span>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <span class="progress-label" id="progressText">Page 1 of 15</span>
+  </div>
+  <div class="nav-bar">
+    <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Back</button>
+    <div class="page-dots" id="pageDots"></div>
+    <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+  </div>
+
+  <div class="page active" data-page="0">
+    <div class="cover">
+      <div class="cover-glow"></div>
+      <div class="hero-sun">☀️</div>
+      <div class="cover-title">The Solar Clock Story!</div>
+      <div class="cover-sub">How Sunlight Helped People Tell Time</div>
+      <div class="cover-icons">
+        <span class="cover-icon" style="--dur:3s;--delay:0s">☀️</span>
+        <span class="cover-icon" style="--dur:3.4s;--delay:.2s">🪨</span>
+        <span class="cover-icon" style="--dur:3.8s;--delay:.4s">👤</span>
+        <span class="cover-icon" style="--dur:3.3s;--delay:.6s">⏰</span>
+        <span class="cover-icon" style="--dur:3.9s;--delay:.8s">🌤️</span>
+      </div>
+      <p class="cover-tagline">Learn what a solar clock is, how a shadow can show time, and how people used sunlight long ago! · For ages 6–10</p>
+    </div>
+  </div>
+
+  <div class="page" data-page="1">
+    <div class="story-page">
+      <div class="page-corner">p.1</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--mint);">Welcome!</span><h2 class="story-title">Meet Soli the Sun Guide! ☀️</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Hello, explorer! I am <span class="hw">Soli</span>, and I love stories about sunlight, shadows, and old inventions.</p>
+          <p>Long before people had watches and wall clocks, they still needed to know the time.</p>
+          <p>So they looked at the <span class="hw2">Sun</span> and the <span class="hw3">shadow</span> it made.</p>
+          <p>Today we will learn about a clever old idea called a <span class="hw">solar clock</span>.</p>
+        </div>
+        <div class="story-art">
+          <div style="font-size:70px;">☀️</div>
+          <div class="wonder-label">Soli the Sun Guide</div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">☀️</span> Loves sunshine</div>
+            <div class="fact-row"><span class="fact-icon">🕰️</span> Knows old clocks</div>
+            <div class="fact-row"><span class="fact-icon">👤</span> Watches shadows move</div>
+            <div class="fact-row"><span class="fact-icon">📚</span> Shares history stories</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="2">
+    <div class="story-page">
+      <div class="page-corner">p.2</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--navy);">Chapter 1</span><h2 class="story-title">What Is a Solar Clock?</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>A <span class="hw">solar clock</span> is a very old tool that uses the <span class="hw2">Sun</span> to help show the time.</p>
+          <p>Another name for it is a <span class="hw3">sundial</span>.</p>
+          <p>It does not tick like a modern clock.</p>
+          <p>Instead, it uses a <span class="hw">shadow</span>. When the Sun moves across the sky, the shadow moves too.</p>
+          <p>People watched where the shadow pointed.</p>
+        </div>
+        <div class="story-art">
+          <div class="example-grid">
+            <div class="example-card"><div style="font-size:32px;">☀️</div><strong>Sunlight</strong></div>
+            <div class="example-card"><div style="font-size:32px;">▲</div><strong>Pointer</strong></div>
+            <div class="example-card"><div style="font-size:32px;">👤</div><strong>Shadow</strong></div>
+          </div>
+          <div class="wonder-label">Sunlight + pointer + shadow = solar clock</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="3">
+    <div class="story-page">
+      <div class="page-corner">p.3</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--peach);">History</span><h2 class="story-title">How Did People Tell Time Long Ago?</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Long ago, people did not have digital clocks, phones, or watches.</p>
+          <p>But they still needed to know when to work, eat, travel, or rest.</p>
+          <p>They looked at the <span class="hw">sky</span>.</p>
+          <p>In the morning, the Sun was low. In the middle of the day, it was high. Later, it moved down again.</p>
+          <p>This gave people clues about the time of day.</p>
+        </div>
+        <div class="story-art">
+          <div class="sun-track">
+            <div class="sun-step"><div class="sun-face">🌅</div><strong>Morning</strong></div>
+            <div class="sun-step"><div class="sun-face">☀️</div><strong>Midday</strong></div>
+            <div class="sun-step"><div class="sun-face">🌇</div><strong>Evening</strong></div>
+          </div>
+          <div class="wonder-label">The Sun's place in the sky gave time clues</div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🌟 Quick Note</div>
+        <div class="fun-fact-text">The Sun could help people know the part of the day, even before modern clocks existed.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="4">
+    <div class="story-page">
+      <div class="page-corner">p.4</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--sun);color:#6b4a00;">Step 1</span><h2 class="story-title">The Sun Makes a Shadow</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>When sunlight hits an object, it can make a <span class="hw">shadow</span>.</p>
+          <p>If the object stands up, the shadow falls on the ground.</p>
+          <p>On a solar clock, a standing piece in the middle makes the shadow.</p>
+          <p>As the Sun moves, the shadow moves too.</p>
+          <p>That moving shadow is the important clue.</p>
+        </div>
+        <div class="story-art">
+          <div class="dial-card">
+            <div style="font-size:42px;">☀️</div>
+            <div style="font-size:28px;line-height:1;margin:8px 0;">＼</div>
+            <div style="font-size:34px;">▲</div>
+            <div style="font-size:18px;color:#555;margin-top:6px;">shadow ➜</div>
+          </div>
+          <div class="wonder-label">Sunlight shines, and a shadow appears</div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">🧠 Quick Quiz Time!</div>
+        <p style="font-size:14px;color:#555;margin-bottom:10px;">What does a solar clock use to help show time?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅰️ Rain and wind</button>
+          <button class="q-opt" onclick="miniQuiz(this,'correct','fb1')">🅱️ Sunlight and shadow</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅲 Sound and music</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅳 Snow and ice</button>
+        </div>
+        <div class="quiz-feedback" id="fb1"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="5">
+    <div class="story-page">
+      <div class="page-corner">p.5</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--violet);">Step 2</span><h2 class="story-title">The Shadow Moves Through the Day</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>In the <span class="hw">morning</span>, the Sun is in one part of the sky, so the shadow points one way.</p>
+          <p>Later, the Sun moves higher, and the shadow changes.</p>
+          <p>By the <span class="hw2">middle of the day</span>, the shadow is shorter.</p>
+          <p>Later in the day, the shadow stretches in another direction.</p>
+          <p>That is how the solar clock gives time clues.</p>
+        </div>
+        <div class="story-art">
+          <div class="example-grid">
+            <div class="example-card"><div style="font-size:32px;">🌅</div><strong>Morning</strong><div style="font-size:12px;color:#777;">Long shadow</div></div>
+            <div class="example-card"><div style="font-size:32px;">☀️</div><strong>Midday</strong><div style="font-size:12px;color:#777;">Shorter shadow</div></div>
+            <div class="example-card"><div style="font-size:32px;">🌇</div><strong>Late day</strong><div style="font-size:12px;color:#777;">Shadow changes again</div></div>
+          </div>
+          <div class="wonder-label">The shadow changes as the Sun changes place</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="6">
+    <div class="story-page">
+      <div class="page-corner">p.6</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#0ea5a4;">Step 3</span><h2 class="story-title">Parts of a Simple Sundial</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>A simple sundial has two main parts.</p>
+          <p>First, it has a <span class="hw">standing piece</span> that makes the shadow.</p>
+          <p>Second, it has a <span class="hw2">flat surface</span> where the shadow falls.</p>
+          <p>Some sundials also have <span class="hw3">marks or lines</span> to help show parts of the day.</p>
+          <p>The shadow moves across those marks.</p>
+        </div>
+        <div class="story-art">
+          <div class="example-grid">
+            <div class="example-card"><div style="font-size:32px;">▲</div><strong>Pointer</strong></div>
+            <div class="example-card"><div style="font-size:32px;">🟨</div><strong>Flat base</strong></div>
+            <div class="example-card"><div style="font-size:32px;">➖</div><strong>Time marks</strong></div>
+          </div>
+          <div class="wonder-label">Pointer + base + marks</div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">▲</span> The pointer makes the shadow</div>
+            <div class="fact-row"><span class="fact-icon">🟨</span> The base catches the shadow</div>
+            <div class="fact-row"><span class="fact-icon">➖</span> Marks help show the day moving</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">🧠 Quick Quiz Time!</div>
+        <p style="font-size:14px;color:#555;margin-bottom:10px;">What does the standing piece on a sundial do?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'correct','fb2')">🅰️ It makes the shadow</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅱️ It sings a bell</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅲 It makes rain</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅳 It glows at night</button>
+        </div>
+        <div class="quiz-feedback" id="fb2"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="7">
+    <div class="story-page">
+      <div class="page-corner">p.7</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#f59e0b;">Science Note</span><h2 class="story-title">When Did It Work Best?</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>A solar clock works best when the Sun is shining clearly.</p>
+          <p>If it is <span class="hw">night</span>, there is no sunlight.</p>
+          <p>If it is very <span class="hw2">cloudy</span>, the shadow may be hard to see.</p>
+          <p>That means a solar clock is useful in daylight, but not in every kind of weather.</p>
+        </div>
+        <div class="story-art">
+          <div class="example-grid">
+            <div class="example-card"><div style="font-size:32px;">☀️</div><strong>Works well</strong></div>
+            <div class="example-card"><div style="font-size:32px;">☁️</div><strong>Harder to use</strong></div>
+            <div class="example-card"><div style="font-size:32px;">🌙</div><strong>Does not work</strong></div>
+          </div>
+          <div class="wonder-label">It needs sunlight to help</div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🌟 Good Thinking</div>
+        <div class="fun-fact-text">That is one reason people later invented clocks that could work indoors, at night, and in all kinds of weather.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="8">
+    <div class="story-page">
+      <div class="page-corner">p.8</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#2563eb;">Compare</span><h2 class="story-title">Solar Clock vs Modern Clock</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>A <span class="hw">solar clock</span> uses sunlight and shadow.</p>
+          <p>A <span class="hw2">modern clock</span> uses moving hands, gears, batteries, or electronics.</p>
+          <p>Both help people know the time.</p>
+          <p>But a modern clock can show time more exactly and can work indoors too.</p>
+        </div>
+        <div class="story-art">
+          <div class="example-grid">
+            <div class="example-card"><div style="font-size:32px;">☀️</div><strong>Solar clock</strong><div style="font-size:12px;color:#777;">Sun + shadow</div></div>
+            <div class="example-card"><div style="font-size:32px;">⏰</div><strong>Modern clock</strong><div style="font-size:12px;color:#777;">Hands or numbers</div></div>
+            <div class="example-card"><div style="font-size:32px;">🕰️</div><strong>Both tell time</strong></div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">🧠 Quick Quiz Time!</div>
+        <p style="font-size:14px;color:#555;margin-bottom:10px;">Which one can work indoors without sunlight?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅰️ Only the solar clock</button>
+          <button class="q-opt" onclick="miniQuiz(this,'correct','fb3')">🅱️ A modern clock</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅲 A rainbow</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅳 A cloud</button>
+        </div>
+        <div class="quiz-feedback" id="fb3"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="9">
+    <div class="story-page">
+      <div class="page-corner">p.9</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#14b8a6;">Fun Page</span><h2 class="story-title">Watch the Shadow Clues</h2></div>
+      <div class="story-text" data-tts style="margin-bottom:14px;">
+        <p>Tap each card to see what the shadow can tell us about the part of the day.</p>
+      </div>
+      <div class="example-grid">
+        <div class="example-card" onclick="showInfo('A long shadow in the morning means the Sun is still low in the sky.')"><div style="font-size:32px;">🌅</div><strong>Morning shadow</strong></div>
+        <div class="example-card" onclick="showInfo('A shorter shadow around the middle of the day means the Sun is higher.')"><div style="font-size:32px;">☀️</div><strong>Midday shadow</strong></div>
+        <div class="example-card" onclick="showInfo('A different long shadow later means the Sun has moved across the sky.')"><div style="font-size:32px;">🌇</div><strong>Late-day shadow</strong></div>
+      </div>
+      <div style="text-align:center;font-family:'Fredoka One',cursive;font-size:14px;color:#8e93b2;margin:10px 0;">⬆️ Tap a card!</div>
+      <div id="infoBox" style="text-align:center;font-family:'Fredoka One',cursive;font-size:15px;color:var(--navy);min-height:42px;padding:8px;">✨ Tap a shadow card to learn more!</div>
+    </div>
+  </div>
+
+  <div class="page" data-page="10">
+    <div class="story-page">
+      <div class="page-corner">p.10</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#0ea5a4;">Real Life</span><h2 class="story-title">How People Used It</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>People used solar clocks to help plan the day.</p>
+          <p>They could use them to know when it was time to <span class="hw">start work</span>, <span class="hw2">rest</span>, or <span class="hw3">meet others</span>.</p>
+          <p>It was not always exact like a modern clock, but it was very helpful.</p>
+          <p>It gave people a smart way to measure the day using nature.</p>
+        </div>
+        <div class="story-art">
+          <div class="example-grid">
+            <div class="example-card"><div style="font-size:32px;">🌾</div><strong>Work time</strong></div>
+            <div class="example-card"><div style="font-size:32px;">🥣</div><strong>Meal time</strong></div>
+            <div class="example-card"><div style="font-size:32px;">🤝</div><strong>Meeting time</strong></div>
+          </div>
+          <div class="wonder-label">A solar clock helped people plan the day</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="11">
+    <div class="story-page">
+      <div class="page-corner">p.11</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--violet);">Memory Trick</span><h2 class="story-title">Remember the Solar Clock Clue!</h2></div>
+      <div class="story-text" data-tts style="margin-bottom:14px;">
+        <p>Use this easy memory line:</p>
+        <p style="text-align:center;font-family:'Fredoka One',cursive;font-size:18px;color:var(--navy);margin:12px 0;">🌟 “<span class="hw">S</span>un makes a <span class="hw2">S</span>hadow that <span class="hw3">S</span>hows the day!” 🌟</p>
+        <p>Tap each row to reveal the meaning.</p>
+      </div>
+      <div class="memory-card">
+        <div class="mem-row" onclick="revealMem(this)"><span class="mem-letter">S</span><span class="mem-word">Sun</span><span class="mem-note" id="mw1">☀️ ???</span></div>
+        <div class="mem-row" onclick="revealMem(this)"><span class="mem-letter">S</span><span class="mem-word">Shadow</span><span class="mem-note" id="mw2">👤 ???</span></div>
+        <div class="mem-row" onclick="revealMem(this)"><span class="mem-letter">S</span><span class="mem-word">Shows</span><span class="mem-note" id="mw3">🕰️ ???</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="12">
+    <div class="story-page">
+      <div class="page-corner">p.12</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#4c6ef5;">Review</span><h2 class="story-title">What We Learned</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p><span class="hw">1.</span> A solar clock is also called a sundial.</p>
+          <p><span class="hw">2.</span> It uses sunlight and shadow.</p>
+          <p><span class="hw">3.</span> A pointer makes the shadow.</p>
+          <p><span class="hw">4.</span> The shadow moves as the Sun moves.</p>
+          <p><span class="hw">5.</span> It worked best in daylight.</p>
+          <p><span class="hw">6.</span> It helped people long ago tell parts of the day.</p>
+        </div>
+        <div class="story-art">
+          <div style="font-size:60px;">☀️ ▲ 👤 ⏰</div>
+          <div class="wonder-label">You are ready for the solar clock challenge!</div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🎯 Ready?</div>
+        <div class="fun-fact-text">You need 5 out of 6 or better to earn your Solar Clock Explorer certificate!</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="13">
+    <div class="quiz-page">
+      <div id="quizActive">
+        <div class="story-header"><span class="chapter-badge" style="background:var(--violet);">🏆 Final Quiz!</span><h2 class="story-title">The Solar Clock Challenge!</h2></div>
+        <p style="font-size:14px;color:#666;margin-bottom:16px;">Answer 6 questions. You need <strong>at least 5 correct</strong> to earn your certificate! ☀️</p>
+        <div class="quiz-progress-row">
+          <span class="q-counter" id="qCounter">Question 1 of 6</span>
+          <span class="q-score-badge" id="qScoreBadge">Score: 0 / 6</span>
+        </div>
+        <div class="quiz-question-card">
+          <div class="quiz-q-emoji" id="qEmoji">☀️</div>
+          <div class="quiz-q-text" id="qText"></div>
+        </div>
+        <div class="fquiz-options" id="fquizOptions"></div>
+        <div class="q-result-msg" id="qResultMsg"></div>
+        <button class="next-q-btn" id="nextQBtn" onclick="nextQuestion()" style="display:none;">Next Question →</button>
+      </div>
+      <div id="quizPass" style="display:none;">
+        <div class="result-screen">
+          <div class="result-trophy">🏆</div>
+          <div class="result-title" style="color:var(--mint);">Amazing Work!</div>
+          <div class="result-score" id="passScore">6 / 6</div>
+          <div class="result-msg" id="passMsg"></div>
+          <button class="proceed-btn" onclick="goToCertificate()">🎓 Get My Certificate! →</button>
+        </div>
+      </div>
+      <div id="quizFail" style="display:none;">
+        <div class="result-screen">
+          <div class="result-trophy">🌟</div>
+          <div class="result-title" style="color:var(--peach);">Almost There!</div>
+          <div class="result-score" id="failScore">3 / 6</div>
+          <div class="result-msg">You need at least 5 correct answers to earn your certificate.<br>Read the solar clock story once more and try again! 💪</div>
+          <button class="retry-btn" onclick="restartQuiz()">🔄 Try Again!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="14">
+    <div class="cert-page">
+      <div class="page-corner">🎓</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#ffd93d;color:#856404;">🏆 Certificate</span><h2 class="story-title">Your Solar Clock Explorer Certificate!</h2></div>
+      <div class="cert-controls">
+        <input class="cert-name-input" id="certName" placeholder="Type the child's name here..." oninput="drawCert()"/>
+        <button class="cert-dl-btn" onclick="downloadCert()">⬇ Download PNG</button>
+        <button class="cert-print-btn" onclick="printCert()">🖨 Print</button>
+      </div>
+      <div class="cert-wrap">
+        <canvas id="cert" width="900" height="630"></canvas>
+      </div>
+      <p class="cert-hint">Type the name above, then click Download or Print!</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const box=document.getElementById('floaties');
+  ['☀️','⭐','👤','🕰️','🌤️'].forEach((icon)=>{
+    for(let n=0;n<2;n++){
+      const el=document.createElement('div');
+      el.className='floaty';
+      el.textContent=icon;
+      el.style.top=(8+Math.random()*80)+'%';
+      el.style.animationDuration=(24+Math.random()*18)+'s';
+      el.style.animationDelay=(Math.random()*16)+'s';
+      el.style.fontSize=(34+Math.random()*24)+'px';
+      box.appendChild(el);
+    }
+  });
+})();
+
+const TOTAL=14;
+let currentPage=0;
+let quizPassed=false;
+const pages=document.querySelectorAll('.page');
+const prevBtn=document.getElementById('prevBtn');
+const nextBtn=document.getElementById('nextBtn');
+const dotsContainer=document.getElementById('pageDots');
+for(let i=0;i<=TOTAL;i++){
+  const d=document.createElement('button');
+  d.className='dot'+(i===0?' active':'');
+  d.onclick=()=>goToPage(i);
+  dotsContainer.appendChild(d);
+}
+
+function goToPage(n){
+  if(n<0||n>TOTAL)return;
+  if(n===14&&!quizPassed){alert('You need to pass the quiz with at least 5 out of 6 to get your certificate! 🌟');return;}
+  stopReadAloud();
+  pages[currentPage].classList.remove('active');
+  currentPage=n;
+  pages[currentPage].classList.add('active');
+  prevBtn.disabled=currentPage===0;
+  nextBtn.disabled=currentPage===TOTAL;
+  document.getElementById('progressFill').style.width=Math.round(currentPage/TOTAL*100)+'%';
+  document.getElementById('progressText').textContent='Page '+(currentPage+1)+' of '+(TOTAL+1);
+  document.querySelectorAll('.dot').forEach((d,i)=>{
+    d.classList.toggle('active',i===currentPage);
+    if(i<currentPage)d.classList.add('visited');
+  });
+  if(currentPage===13)initQuiz();
+  if(currentPage===14)setTimeout(drawCert,120);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function changePage(d){goToPage(currentPage+d);}
+
+let isSpeaking=false;
+let speechUtterance=null;
+function toggleReadAloud(){
+  if(isSpeaking){stopReadAloud();return;}
+  const active=pages[currentPage];
+  const ttsEl=active.querySelector('[data-tts]');
+  const fallback=active.querySelector('.story-text')||active.querySelector('.story-page')||active.querySelector('.quiz-page');
+  if(ttsEl)speakText(ttsEl.textContent); else if(fallback)speakText(fallback.textContent);
+}
+function cleanForSpeech(text){
+  return text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{200D}\u{20E3}]/gu,'').replace(/\s+/g,' ').trim();
+}
+function speakText(text){
+  if(!('speechSynthesis' in window))return;
+  stopReadAloud();
+  speechUtterance=new SpeechSynthesisUtterance(cleanForSpeech(text));
+  speechUtterance.rate=.8;
+  speechUtterance.pitch=1.12;
+  speechUtterance.lang='en-US';
+  const voices=speechSynthesis.getVoices();
+  const preferred=voices.find(v=>v.name.includes('Samantha'))||voices.find(v=>v.name.includes('Karen'))||voices.find(v=>v.lang.startsWith('en'));
+  if(preferred)speechUtterance.voice=preferred;
+  speechUtterance.onstart=()=>{isSpeaking=true;document.getElementById('ttsBtn').classList.add('speaking');document.getElementById('ttsBtn').textContent='🔊 Reading...';document.getElementById('ttsStop').style.display='inline-flex';};
+  speechUtterance.onend=resetTTSUI;
+  speechUtterance.onerror=resetTTSUI;
+  speechSynthesis.speak(speechUtterance);
+}
+function stopReadAloud(){if('speechSynthesis' in window)speechSynthesis.cancel();resetTTSUI();}
+function resetTTSUI(){isSpeaking=false;document.getElementById('ttsBtn').classList.remove('speaking');document.getElementById('ttsBtn').textContent='🔊 Read Aloud';document.getElementById('ttsStop').style.display='none';}
+if('speechSynthesis' in window){speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();}
+
+function miniQuiz(btn,type,fbId){
+  const container=btn.closest('.quiz-bubble');
+  const btns=container.querySelectorAll('.q-opt');
+  btns.forEach(b=>b.style.pointerEvents='none');
+  const fb=document.getElementById(fbId);
+  if(type==='correct'){
+    btn.classList.add('correct');
+    fb.innerHTML='<span style="color:#27ae60;">🎉 Correct! Great science thinking!</span>';
+  } else {
+    btn.classList.add('wrong');
+    btns.forEach(b=>{if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'correct'"))b.classList.add('correct');});
+    fb.innerHTML='<span style="color:#c0392b;">Not quite! The green answer is correct. Keep going! 💪</span>';
+  }
+}
+
+function showInfo(msg){document.getElementById('infoBox').textContent='✨ '+msg;}
+const memAnswers=['☀️ Sunlight helps','👤 A shadow appears','🕰️ The day can be measured'];
+function revealMem(row){
+  const span=row.querySelector('.mem-note');
+  const idx=parseInt(span.id.replace('mw',''))-1;
+  if(idx>=0&&idx<memAnswers.length){
+    span.textContent=memAnswers[idx];
+    span.style.color='var(--navy)';
+    row.style.background='rgba(29,111,214,.08)';
+  }
+}
+
+const QUESTIONS=[
+  {emoji:'☀️',q:'What is another name for a solar clock?',opts:['Snow wheel','Sundial','Moon map','Rain stick'],ans:1},
+  {emoji:'👤',q:'What moves on a solar clock to help show time?',opts:['The shadow','The rain','The stars','The wind'],ans:0},
+  {emoji:'▲',q:'What does the standing piece on a sundial do?',opts:['It makes the shadow','It rings a bell','It glows in the dark','It catches rain'],ans:0},
+  {emoji:'🌙',q:'When does a solar clock not work well?',opts:['At night','At breakfast','At lunchtime','At story time'],ans:0},
+  {emoji:'☁️',q:'What can make a solar clock harder to use?',opts:['Clear sunshine','Cloudy weather','A sunny day','A bright sky'],ans:1},
+  {emoji:'🕰️',q:'Why did people use solar clocks long ago?',opts:['To make shadows bigger','To help tell the time of day','To change the weather','To stop the Sun moving'],ans:1},
+];
+let qIdx=0,score=0,answered=false;
+function initQuiz(){
+  qIdx=0;score=0;answered=false;
+  document.getElementById('quizActive').style.display='block';
+  document.getElementById('quizPass').style.display='none';
+  document.getElementById('quizFail').style.display='none';
+  renderQuestion();
+}
+function renderQuestion(){
+  const q=QUESTIONS[qIdx];
+  document.getElementById('qEmoji').textContent=q.emoji;
+  document.getElementById('qText').textContent=q.q;
+  document.getElementById('qCounter').textContent='Question '+(qIdx+1)+' of 6';
+  document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';
+  document.getElementById('qResultMsg').textContent='';
+  document.getElementById('nextQBtn').style.display='none';
+  answered=false;
+  const opts=document.getElementById('fquizOptions');
+  opts.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const btn=document.createElement('button');
+    btn.className='fq-opt';
+    btn.textContent=o;
+    btn.onclick=()=>answerQ(i,btn);
+    opts.appendChild(btn);
+  });
+}
+function answerQ(i,btn){
+  if(answered)return;
+  answered=true;
+  const q=QUESTIONS[qIdx];
+  const allBtns=document.querySelectorAll('.fq-opt');
+  allBtns.forEach(b=>b.classList.add('locked'));
+  const msg=document.getElementById('qResultMsg');
+  if(i===q.ans){
+    btn.classList.add('correct');
+    score++;
+    const praise=['🎉 Fantastic!','🌟 Brilliant!','☀️ Sun Smart!','✨ Great job!'];
+    msg.innerHTML='<span style="color:#27ae60;">'+praise[Math.floor(Math.random()*praise.length)]+'</span>';
+  } else {
+    btn.classList.add('wrong');
+    allBtns[q.ans].classList.add('correct');
+    msg.innerHTML='<span style="color:#c0392b;">Oops! The correct answer is highlighted in green. 💪</span>';
+  }
+  document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';
+  document.getElementById('nextQBtn').style.display='block';
+  document.getElementById('nextQBtn').textContent=qIdx===5?'See My Result! 🏁':'Next Question →';
+}
+function nextQuestion(){qIdx++;if(qIdx>=6){showResult();return;}renderQuestion();}
+function showResult(){
+  document.getElementById('quizActive').style.display='none';
+  if(score>=5){
+    quizPassed=true;
+    document.getElementById('quizPass').style.display='block';
+    document.getElementById('passScore').textContent=score+' / 6';
+    document.getElementById('passMsg').innerHTML=score===6?'PERFECT SCORE! You are a true Solar Clock Explorer! ☀️🏆':'Wonderful work! You understand how a solar clock was used long ago! 🌟';
+  } else {
+    document.getElementById('quizFail').style.display='block';
+    document.getElementById('failScore').textContent=score+' / 6';
+  }
+}
+function restartQuiz(){initQuiz();}
+function goToCertificate(){goToPage(14);}
+
+const certCanvas=document.getElementById('cert');
+const ctx=certCanvas.getContext('2d');
+const CW=900,CH=630;
+function drawStarShape(cx,cy,r,pts,color){
+  ctx.save();ctx.fillStyle=color;ctx.beginPath();
+  for(let i=0;i<pts*2;i++){const a=(i*Math.PI/pts)-Math.PI/2,rd=i%2===0?r:r*.45;i===0?ctx.moveTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a)):ctx.lineTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a));}
+  ctx.closePath();ctx.fill();ctx.restore();
+}
+function rr(x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();
+}
+const qrImage=new Image();let qrReady=false;qrImage.crossOrigin='anonymous';qrImage.onload=()=>{qrReady=true;drawCert();};qrImage.src='https://quickchart.io/qr?text='+encodeURIComponent('https://fivetofifteen.com/')+'&size=180';
+function drawCert(){
+  const name=document.getElementById('certName').value.trim()||'Explorer Name Here';
+  ctx.clearRect(0,0,CW,CH);
+  const bg=ctx.createLinearGradient(0,0,CW,CH);bg.addColorStop(0,'#fff9e8');bg.addColorStop(.5,'#ffffff');bg.addColorStop(1,'#eef6ff');
+  ctx.fillStyle=bg;rr(0,0,CW,CH,20);ctx.fill();
+  ctx.strokeStyle='#d97706';ctx.lineWidth=6;rr(8,8,CW-16,CH-16,16);ctx.stroke();
+  ctx.strokeStyle='#1d6fd6';ctx.lineWidth=2;ctx.setLineDash([8,5]);rr(20,20,CW-40,CH-40,10);ctx.stroke();ctx.setLineDash([]);
+  [[52,52],[CW-52,52],[52,CH-52],[CW-52,CH-52]].forEach(([x,y])=>drawStarShape(x,y,18,5,'#f59e0b'));
+  const rg=ctx.createLinearGradient(CW/2-220,0,CW/2+220,0);rg.addColorStop(0,'#d97706');rg.addColorStop(.5,'#f59e0b');rg.addColorStop(1,'#d97706');
+  ctx.fillStyle=rg;rr(CW/2-220,28,440,44,22);ctx.fill();
+  ctx.fillStyle='#fff9ef';ctx.font='bold 17px "Fredoka One",cursive';ctx.textAlign='center';ctx.fillText('☀️  SOLAR CLOCK STORY  ☀️',CW/2,57);
+  ctx.font='64px serif';ctx.fillText('☀️',CW/2,142);
+  ctx.fillStyle='#8a4b06';ctx.font='bold 40px "Fredoka One",cursive';ctx.fillText('Solar Clock Explorer Certificate!',CW/2,196);
+  ctx.fillStyle='#888';ctx.font='17px "Nunito",sans-serif';ctx.fillText('This is to proudly certify that the amazing history and science explorer',CW/2,232);
+  ctx.strokeStyle='#d97706';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(CW/2-240,276);ctx.lineTo(CW/2+240,276);ctx.stroke();
+  ctx.fillStyle='#1d4ed8';ctx.font='bold 38px "Fredoka One",cursive';ctx.fillText(name,CW/2,270);
+  ctx.fillStyle='#444';ctx.font='17px "Nunito",sans-serif';ctx.fillText('has completed the Solar Clock story and is now an official',CW/2,310);
+  ctx.fillStyle='#d97706';ctx.font='bold 24px "Fredoka One",cursive';ctx.fillText('🌟 Certified Solar Clock Explorer 🌟',CW/2,344);
+  ctx.fillStyle='#888';ctx.font='14px "Nunito",sans-serif';ctx.fillText('Scored 5 or more on the final Solar Clock Challenge quiz!',CW/2,372);
+  const badges=[
+    {t:'✓ Sun Smart',bg:'#fff4d6',c:'#b7791f'},
+    {t:'✓ Shadow Watcher',bg:'#eef4ff',c:'#1d4ed8'},
+    {t:'✓ History Helper',bg:'#f3e8ff',c:'#7c3aed'},
+    {t:'✓ Explorer!',bg:'#e8fff0',c:'#15803d'}
+  ];
+  const bw=168,bh=30,gap=10,tot=badges.length*(bw+gap)-gap;let bx=CW/2-tot/2;
+  badges.forEach(b=>{ctx.fillStyle=b.bg;rr(bx,390,bw,bh,15);ctx.fill();ctx.fillStyle=b.c;ctx.font='bold 12px "Nunito",sans-serif';ctx.fillText(b.t,bx+bw/2,409);bx+=bw+gap;});
+  ctx.font='32px serif';ctx.fillStyle='#333';ctx.fillText('☀️  ▲  👤  🕰️  🌤️',CW/2,468);
+  ctx.fillStyle='#fff';ctx.strokeStyle='#d7e2f4';ctx.lineWidth=2;rr(CW-154,68,102,102,14);ctx.fill();ctx.stroke();
+  if(qrReady){ctx.drawImage(qrImage,CW-144,78,82,82);}else{ctx.fillStyle='#eef7ff';ctx.fillRect(CW-144,78,82,82);ctx.fillStyle='#1d6fd6';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('QR loading...',CW-103,122);}
+  ctx.fillStyle='#1d6fd6';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('Scan to visit',CW-103,185);
+  const d=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
+  ctx.fillStyle='#9e9e9e';ctx.font='bold 12px "Nunito",sans-serif';ctx.fillText('Presented by fivetofifteen.com',CW/2,538);
+  ctx.fillStyle='#bbb';ctx.font='12px "Nunito",sans-serif';ctx.fillText('Awarded on '+d,CW/2,562);
+}
+function downloadCert(){drawCert();const link=document.createElement('a');link.download='solar-clock-explorer-certificate.png';link.href=certCanvas.toDataURL('image/png');link.click();}
+function printCert(){
+  drawCert();
+  const dataUrl=certCanvas.toDataURL('image/png');
+  const win=window.open('','_blank');
+  const html=[
+    '<!DOCTYPE html>',
+    '<html><head><title>Solar Clock Explorer Certificate<\\/title>',
+    '<style>body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f5f5f5;}img{max-width:100%;box-shadow:0 4px 20px rgba(0,0,0,.15);border-radius:12px;}@media print{body{background:#fff;}img{box-shadow:none;width:100%;}}<\\/style>',
+    '<\\/head><body>',
+    '<img src=\"'+dataUrl+'\" alt=\"Certificate\"/>',
+    '<\\/body><\\/html>'
+  ].join('');
+  win.document.write(html);win.document.close();win.onload=()=>{win.focus();win.print();};
+}
+drawCert();
+</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-label="Kind Words Rebuilt The Bond">
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6f7fb4"/>
+      <stop offset="55%" stop-color="#95a2cf"/>
+      <stop offset="100%" stop-color="#b8c5de"/>
+    </linearGradient>
+  </defs>
+  <rect width="1400" height="900" fill="url(#bg)"/>
+  <path d="M0 620 C200 560 340 660 540 618 C730 578 950 668 1200 616 C1290 598 1350 608 1400 620 L1400 900 L0 900 Z" fill="rgba(36,62,52,0.26)"/>
+  <path d="M0 690 C210 640 380 724 600 682 C820 640 1030 730 1260 688 C1330 676 1380 684 1400 690 L1400 900 L0 900 Z" fill="rgba(24,45,38,0.34)"/>
+  <g fill="#ffffff" opacity="0.22">
+    <circle cx="120" cy="100" r="6"/><circle cx="280" cy="88" r="5"/><circle cx="510" cy="120" r="6"/>
+    <circle cx="760" cy="92" r="6"/><circle cx="980" cy="110" r="5"/><circle cx="1220" cy="96" r="6"/>
+  </g>
+
+  <g transform="translate(190 520) scale(1.2)">
+    <rect x="0" y="34" width="150" height="108" rx="12" fill="#f6ddb3"/>
+    <polygon points="-10,34 75,-22 160,34" fill="#c95d54"/>
+    <rect x="22" y="64" width="30" height="24" rx="4" fill="#8bc2ff"/>
+    <rect x="62" y="64" width="30" height="24" rx="4" fill="#8bc2ff"/>
+    <rect x="106" y="64" width="22" height="78" rx="4" fill="#88624a"/>
+  </g>
+  <g transform="translate(1020 520) scale(1.2)">
+    <rect x="0" y="34" width="150" height="108" rx="12" fill="#f6ddb3"/>
+    <polygon points="-10,34 75,-22 160,34" fill="#d97158"/>
+    <rect x="22" y="64" width="30" height="24" rx="4" fill="#8bc2ff"/>
+    <rect x="62" y="64" width="30" height="24" rx="4" fill="#8bc2ff"/>
+    <rect x="106" y="64" width="22" height="78" rx="4" fill="#88624a"/>
+  </g>
+  <path d="M520 650 C600 620 780 680 880 650" stroke="#4f8fc1" stroke-width="44" fill="none"/>
+  <g transform="translate(590 520) scale(1.2)">
+    <path d="M0 80 C60 20 160 20 220 80" stroke="#d5b88a" stroke-width="16" fill="none" stroke-linecap="round"/>
+    <line x1="24" y1="80" x2="196" y2="80" stroke="#d5b88a" stroke-width="14"/>
+    <line x1="52" y1="48" x2="52" y2="80" stroke="#d5b88a" stroke-width="8"/>
+    <line x1="92" y1="34" x2="92" y2="80" stroke="#d5b88a" stroke-width="8"/>
+    <line x1="132" y1="34" x2="132" y2="80" stroke="#d5b88a" stroke-width="8"/>
+    <line x1="172" y1="48" x2="172" y2="80" stroke="#d5b88a" stroke-width="8"/>
+  </g>
+  <g transform="translate(660 560) scale(1.5)">
+    <circle cx="0" cy="-58" r="24" fill="#ffd8b1"/>
+    <path d="M-22 -65 Q0 -96 22 -65" fill="#5b3f2d"/>
+    <circle cx="-8" cy="-58" r="3.5" fill="#2e3d57"/>
+    <circle cx="8" cy="-58" r="3.5" fill="#2e3d57"/>
+    <path d="M-8 -46 Q0 -40 8 -46" stroke="#2e3d57" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <rect x="-20" y="-32" width="40" height="58" rx="12" fill="#d77a5a"/>
+    <rect x="-30" y="-26" width="10" height="46" rx="5" fill="#d77a5a"/>
+    <rect x="20" y="-26" width="10" height="46" rx="5" fill="#d77a5a"/>
+    <rect x="-16" y="24" width="12" height="34" rx="6" fill="#2f649f"/>
+    <rect x="4" y="24" width="12" height="34" rx="6" fill="#2f649f"/>
+  </g>
+  <g transform="translate(740 560) scale(1.5)">
+    <circle cx="0" cy="-58" r="24" fill="#ffd8b1"/>
+    <path d="M-22 -65 Q0 -96 22 -65" fill="#5b3f2d"/>
+    <circle cx="-8" cy="-58" r="3.5" fill="#2e3d57"/>
+    <circle cx="8" cy="-58" r="3.5" fill="#2e3d57"/>
+    <path d="M-8 -46 Q0 -40 8 -46" stroke="#2e3d57" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <rect x="-20" y="-32" width="40" height="58" rx="12" fill="#6b9fd8"/>
+    <rect x="-30" y="-26" width="10" height="46" rx="5" fill="#6b9fd8"/>
+    <rect x="20" y="-26" width="10" height="46" rx="5" fill="#6b9fd8"/>
+    <rect x="-16" y="24" width="12" height="34" rx="6" fill="#2f649f"/>
+    <rect x="4" y="24" width="12" height="34" rx="6" fill="#2f649f"/>
+  </g>
+  <path d="M692 548 Q700 540 708 548" stroke="#f1e6d0" stroke-width="4" fill="none"/>
+
+  <text x="700" y="110" text-anchor="middle" font-family="Nunito, sans-serif" font-size="52" font-weight="900" fill="#fff6e5">Kind Words Rebuilt The Bond</text>
+  <text x="700" y="844" text-anchor="middle" font-family="Nunito, sans-serif" font-size="32" font-weight="800" fill="#fff6e5">Forgiveness turned the bridge solid and bright.</text>
+</svg>

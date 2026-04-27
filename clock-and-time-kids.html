@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tick Tock Time! ⏰</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+    /* story-font-boost */
+    html{font-size:17px;}
+    @media (max-width:500px){html{font-size:16px;}}
+:root{
+  --dark:#2c2d5b;
+  --card:#fffefb;
+  --bg:#f9fbff;
+  --navy:#4c6ef5;
+  --sky:#7dd3fc;
+  --mint:#52c41a;
+  --sun:#ffd166;
+  --peach:#ff9f68;
+  --violet:#8b5cf6;
+  --pink:#ff6fb5;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overflow-x:hidden}
+.floaty{position:fixed;opacity:.08;z-index:0;pointer-events:none;animation:drift linear infinite}
+@keyframes drift{from{transform:translateX(-120px)}to{transform:translateX(calc(100vw + 120px))}}
+#app{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:12px}
+.home-link{display:inline-flex;align-items:center;gap:6px;background:var(--mint);color:#fff;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;text-decoration:none;transition:all .2s;margin-bottom:10px}
+.home-link:hover{transform:scale(1.05)}
+.tts-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.tts-btn{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--navy),var(--violet));color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s}
+.tts-btn:hover{transform:scale(1.05)}
+.tts-btn.speaking{animation:pulse 1s ease infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(76,110,245,.45)}50%{box-shadow:0 0 0 8px rgba(76,110,245,0)}}
+.tts-stop{background:linear-gradient(135deg,#95a5a6,#7f8c8d);color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer}
+.progress-strip{background:#fff;border-radius:12px;padding:8px 16px;display:flex;align-items:center;gap:10px;margin-bottom:8px;border:2px solid #dce6ff;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.progress-bar{flex:1;height:7px;background:#dce6ff;border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--mint),var(--navy),var(--pink));border-radius:4px;transition:width .5s ease}
+.progress-label{font-family:'Fredoka One',cursive;font-size:12px;color:#8084a0;white-space:nowrap}
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#fff;border-radius:16px;margin-bottom:10px;border:2px solid #dce6ff;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.nav-btn{background:var(--navy);color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:8px 22px;border-radius:20px;cursor:pointer;transition:all .2s}
+.nav-btn:hover{transform:scale(1.06)}
+.nav-btn:disabled{background:#ddd;color:#999;cursor:not-allowed;transform:none}
+.page-dots{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;max-width:320px}
+.dot{width:9px;height:9px;border-radius:50%;background:#ddd;cursor:pointer;transition:all .2s;border:none;padding:0}
+.dot.active{background:var(--navy);transform:scale(1.3);box-shadow:0 0 6px var(--navy)}
+.dot.visited{background:rgba(76,110,245,.4)}
+.page{display:none;animation:pageIn .5s ease}
+.page.active{display:block}
+@keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.cover{background:linear-gradient(160deg,#1d4ed8 0%,#5b7cfa 45%,#9be7ff 100%);border-radius:22px;border:2px solid rgba(255,255,255,.35);padding:50px 30px;text-align:center;position:relative;overflow:hidden;min-height:540px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.cover-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:430px;height:430px;background:radial-gradient(circle,rgba(255,255,255,.18) 0%,transparent 70%)}
+.cover-title{font-family:'Fredoka One',cursive;font-size:38px;color:#fff;line-height:1.15;margin-bottom:8px;position:relative;z-index:2;text-shadow:0 4px 16px rgba(0,0,0,.2)}
+.cover-sub{font-family:'Fredoka One',cursive;font-size:20px;color:#eef6ff;position:relative;z-index:2;margin-bottom:10px}
+.cover-tagline{font-size:13px;color:rgba(255,255,255,.82);position:relative;z-index:2;margin-top:16px;font-style:italic}
+.cover-icons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:20px 0;position:relative;z-index:2}
+.cover-icon{font-size:38px;animation:bob var(--dur,3s) ease-in-out infinite var(--delay,0s)}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.hero-clock{font-size:60px;position:relative;z-index:2;animation:heroFloat 3.2s ease-in-out infinite}
+@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+.story-page,.quiz-page,.cert-page{background:var(--card);border-radius:22px;padding:26px;min-height:540px;border:3px solid #dce6ff;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.page-corner{position:absolute;top:14px;right:16px;font-family:'Fredoka One',cursive;font-size:16px;color:#a7acc5}
+.story-header{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.chapter-badge{font-family:'Fredoka One',cursive;font-size:12px;padding:4px 13px;border-radius:16px;white-space:nowrap;color:#fff}
+.story-title{font-family:'Fredoka One',cursive;font-size:22px;color:var(--dark)}
+.story-body{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.story-text{font-size:15px;line-height:1.85;color:#444}
+.story-text p{margin-bottom:10px}
+.hw{font-weight:800;color:#1d4ed8}
+.hw2{font-weight:800;color:#7c3aed}
+.hw3{font-weight:800;color:#16a34a}
+.story-art{border-radius:16px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:8px;border:2px dashed #cfe0ff;background:linear-gradient(135deg,#f8fbff,#eef4ff)}
+.wonder-label{font-family:'Fredoka One',cursive;font-size:13px;color:#8e93b2;margin-top:4px;text-align:center}
+.wonder-facts{background:rgba(0,0,0,.03);border-radius:12px;padding:10px 14px;width:100%;border:1px solid rgba(0,0,0,.06)}
+.fact-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:13px;color:#555}
+.fact-row:last-child{border-bottom:none}
+.fact-icon{font-size:16px;min-width:22px}
+.quiz-bubble{background:linear-gradient(135deg,#eef2ff,#f5edff);border:2px solid #b6c4ff;border-radius:18px;padding:18px;margin-top:16px}
+.quiz-title{font-family:'Fredoka One',cursive;font-size:17px;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.quiz-options,.fquiz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.q-opt,.fq-opt{background:#fff;border:2px solid #dce6ff;border-radius:12px;padding:10px 14px;font-size:14px;color:var(--dark);cursor:pointer;transition:all .2s;text-align:left;font-family:'Nunito',sans-serif;font-weight:700}
+.q-opt:hover,.fq-opt:hover:not(.locked){background:#eef4ff;border-color:#a8bbff;transform:translateY(-2px)}
+.q-opt.correct,.fq-opt.correct{background:#d4edda;border-color:#27ae60;color:#155724}
+.q-opt.wrong,.fq-opt.wrong{background:#f8d7da;border-color:#c0392b;color:#721c24}
+.quiz-feedback,.q-result-msg{font-family:'Fredoka One',cursive;font-size:16px;margin-top:10px;min-height:24px;text-align:center}
+.fun-fact{background:#fff8dc;border:2px solid #ffd93d;border-radius:14px;padding:14px 16px;margin-top:14px}
+.fun-fact-title{font-family:'Fredoka One',cursive;font-size:15px;color:#8a6b00;margin-bottom:6px}
+.fun-fact-text{font-size:13px;color:#444;line-height:1.6}
+.memory-card{background:#eef4ff;border:2px solid #a8bbff;border-radius:14px;padding:14px;margin-top:14px}
+.mem-row{display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;transition:background .2s;border-radius:8px;padding:8px}
+.mem-row:hover{background:rgba(76,110,245,.08)}
+.mem-letter{font-family:'Fredoka One',cursive;font-size:18px;color:#1d4ed8;min-width:24px}
+.mem-word{color:#5b21b6;min-width:120px;font-weight:700}
+.mem-note{color:#bbb}
+.quiz-progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.q-counter{font-family:'Fredoka One',cursive;font-size:13px;color:#999}
+.q-score-badge{font-family:'Fredoka One',cursive;font-size:14px;background:#eef4ff;border:2px solid #b6c4ff;padding:4px 14px;border-radius:20px;color:#4c3ff5}
+.quiz-question-card{background:#fff;border-radius:16px;padding:20px;margin-bottom:16px;border:2px solid #dce6ff;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.quiz-q-text{font-family:'Fredoka One',cursive;font-size:19px;color:var(--dark);line-height:1.4;margin-bottom:4px}
+.quiz-q-emoji{font-size:40px;margin-bottom:10px}
+.fq-opt.locked{cursor:not-allowed;opacity:.72}
+.next-q-btn{display:block;margin:12px auto 0;background:linear-gradient(135deg,var(--navy),var(--violet));color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:16px;padding:10px 28px;border-radius:22px;cursor:pointer;transition:all .2s}
+.next-q-btn:hover{transform:scale(1.05)}
+.result-screen{text-align:center;padding:20px 10px}
+.result-trophy{font-size:80px;margin-bottom:12px;animation:bounce 1s ease infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+.result-title{font-family:'Fredoka One',cursive;font-size:28px;margin-bottom:10px}
+.result-score{font-family:'Fredoka One',cursive;font-size:48px;color:var(--sun)}
+.result-msg{font-size:16px;color:#888;margin:12px 0 20px;line-height:1.7}
+.retry-btn,.proceed-btn{color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:18px;padding:12px 32px;border-radius:24px;cursor:pointer;transition:all .2s;margin:8px}
+.retry-btn{background:linear-gradient(135deg,#e74c3c,#ff6b6b)}
+.proceed-btn{background:linear-gradient(135deg,#27ae60,#2ecc71)}
+.retry-btn:hover,.proceed-btn:hover{transform:scale(1.06)}
+.cert-page{border-color:#ffd93d}
+.cert-controls{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+.cert-name-input{font-family:'Nunito',sans-serif;font-size:16px;padding:10px 16px;border:2px solid #ffd93d;border-radius:12px;outline:none;flex:1;min-width:180px;color:#333}
+.cert-name-input:focus{border-color:var(--violet)}
+.cert-dl-btn,.cert-print-btn{color:#fff;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:24px;cursor:pointer}
+.cert-dl-btn{background:var(--navy)}
+.cert-print-btn{background:#1565c0}
+.cert-wrap{background:#fff;border-radius:16px;padding:6px;border:3px solid #ffd93d;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+canvas#cert{width:100%;border-radius:12px;display:block}
+.cert-hint{font-size:12px;color:#aaa;margin-top:8px;text-align:center}
+.clock-face{position:relative;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,#fffefc 0%,#fff 60%,#eef3ff 100%);border:8px solid #4c6ef5;box-shadow:inset 0 0 0 6px #e2e8ff,0 10px 24px rgba(76,110,245,.15)}
+.clock-face.small{width:140px;height:140px}
+.clock-center{position:absolute;left:50%;top:50%;width:16px;height:16px;background:#4c6ef5;border-radius:50%;transform:translate(-50%,-50%);z-index:4}
+.hand{position:absolute;left:50%;bottom:50%;transform-origin:bottom center;border-radius:999px;z-index:3}
+.hour-hand{width:10px;height:48px;background:#1f2a44;margin-left:-5px}
+.minute-hand{width:6px;height:68px;background:#ff6fb5;margin-left:-3px}
+.n{position:absolute;left:50%;top:50%;font-family:'Fredoka One',cursive;font-size:16px;color:#334155;transform:translate(-50%,-50%)}
+.n12{transform:translate(-50%,-84px)} .n3{transform:translate(74px,-50%)} .n6{transform:translate(-50%,68px)} .n9{transform:translate(-84px,-50%)}
+.time-pill{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px;border-radius:999px;background:#eef4ff;border:2px solid #b6c4ff;font-family:'Fredoka One',cursive;color:var(--navy);font-size:15px}
+.example-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%}
+.example-card{background:#fff;border-radius:12px;border:2px solid #dce6ff;padding:10px;text-align:center}
+.example-card strong{display:block;font-family:'Fredoka One',cursive;color:var(--dark);margin-top:8px}
+.day-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.day-card{background:#fff;border:2px solid #dce6ff;border-radius:14px;padding:14px;text-align:center}
+.day-card div:first-child{font-size:34px}
+.day-card strong{display:block;font-family:'Fredoka One',cursive;color:var(--dark);margin-top:6px}
+@media(max-width:580px){
+  .story-body{grid-template-columns:1fr}
+  .cover-title{font-size:28px}
+  .quiz-options,.fquiz-options{grid-template-columns:1fr}
+  .cert-controls{flex-direction:column}
+  .example-grid,.day-row{grid-template-columns:1fr}
+}
+</style>
+<script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="natural-read-aloud.js" defer></script>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+
+<div id="floaties"></div>
+
+<div id="app"><div class="tts-bar">
+    <button class="tts-btn" id="ttsBtn" onclick="toggleReadAloud()">🔊 Read Aloud</button>
+    <button class="tts-stop" id="ttsStop" onclick="stopReadAloud()" style="display:none;">⏹ Stop</button>
+  </div>
+
+  <div class="progress-strip">
+    <span class="progress-label">⏰ Learning Time...</span>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <span class="progress-label" id="progressText">Page 1 of 17</span>
+  </div>
+
+  <div class="nav-bar">
+    <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Back</button>
+    <div class="page-dots" id="pageDots"></div>
+    <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+  </div>
+
+  <div class="page active" data-page="0">
+    <div class="cover">
+      <div class="cover-glow"></div>
+      <div class="hero-clock">⏰</div>
+      <div class="cover-title">Tick Tock Time!</div>
+      <div class="cover-sub">A Clock and Time Adventure for Kids</div>
+      <div class="cover-icons">
+        <span class="cover-icon" style="--dur:3s;--delay:0s">🕐</span>
+        <span class="cover-icon" style="--dur:3.4s;--delay:.2s">🕒</span>
+        <span class="cover-icon" style="--dur:3.8s;--delay:.4s">🕕</span>
+        <span class="cover-icon" style="--dur:3.3s;--delay:.6s">🌞</span>
+        <span class="cover-icon" style="--dur:3.9s;--delay:.8s">🌙</span>
+      </div>
+      <p class="cover-tagline">Learn how to read clocks, understand the hands, and tell time with confidence! · For ages 5–9</p>
+    </div>
+  </div>
+
+  <div class="page" data-page="1">
+    <div class="story-page">
+      <div class="page-corner">p.1</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--mint);">Welcome!</span><h2 class="story-title">Meet Tiko the Time Bird! 🐦</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Hello, little learner! I am <span class="hw">Tiko</span>, the Time Bird.</p>
+          <p>I love clocks, bells, school starts, snack time, story time, and bedtime.</p>
+          <p>Today I will show you how to read a clock step by step.</p>
+          <p>We will learn the <span class="hw2">short hand</span>, the <span class="hw2">long hand</span>, and what times like <span class="hw3">o'clock</span>, <span class="hw3">half past</span>, and <span class="hw3">quarter past</span> mean.</p>
+          <p>Ready to flap through time with me? ⏰✨</p>
+        </div>
+        <div class="story-art">
+          <div style="font-size:70px;">🐦</div>
+          <div class="wonder-label">Tiko the Time Bird</div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">🕐</span> Loves reading clocks</div>
+            <div class="fact-row"><span class="fact-icon">🎒</span> Knows school time</div>
+            <div class="fact-row"><span class="fact-icon">🍎</span> Never misses snack time</div>
+            <div class="fact-row"><span class="fact-icon">🌙</span> Helps with bedtime too</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="2">
+    <div class="story-page">
+      <div class="page-corner">p.2</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--navy);">Chapter 1</span><h2 class="story-title">What Is a Clock? ⏰</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>A <span class="hw">clock</span> helps us know the time.</p>
+          <p>It tells us when to wake up, go to school, eat lunch, play, and sleep.</p>
+          <p>Many clocks have a round face with the numbers <span class="hw2">1 to 12</span>.</p>
+          <p>They also have <span class="hw3">hands</span> that point to the numbers.</p>
+          <p>The hands are what help us read the time.</p>
+        </div>
+        <div class="story-art">
+          <div class="clock-face">
+            <div class="n n12">12</div><div class="n n3">3</div><div class="n n6">6</div><div class="n n9">9</div>
+            <div class="hand hour-hand" style="transform:translateX(-50%) rotate(300deg)"></div>
+            <div class="hand minute-hand" style="transform:translateX(-50%) rotate(0deg)"></div>
+            <div class="clock-center"></div>
+          </div>
+          <div class="wonder-label">A clock face with numbers and hands</div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">🔢</span> Numbers go from 1 to 12</div>
+            <div class="fact-row"><span class="fact-icon">✋</span> Hands point to the numbers</div>
+            <div class="fact-row"><span class="fact-icon">⏰</span> Clocks help us know time</div>
+            <div class="fact-row"><span class="fact-icon">📅</span> Time helps us plan the day</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="3">
+    <div class="story-page">
+      <div class="page-corner">p.3</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--peach);">Step 1</span><h2 class="story-title">The Short Hand and the Long Hand</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>The <span class="hw">short hand</span> tells the <span class="hw3">hour</span>.</p>
+          <p>The <span class="hw2">long hand</span> tells the <span class="hw3">minutes</span>.</p>
+          <p>If the short hand points to <span class="hw">3</span>, the hour is three.</p>
+          <p>If the long hand points to <span class="hw2">12</span>, it means <span class="hw3">zero minutes</span>.</p>
+          <p>That is why 3 o'clock is read when the short hand is on 3 and the long hand is on 12.</p>
+        </div>
+        <div class="story-art">
+          <div class="example-grid">
+            <div class="example-card">
+              <div style="font-size:34px;">🟦</div>
+              <strong>Short hand</strong>
+              <div style="font-size:12px;color:#777;">Tells the hour</div>
+            </div>
+            <div class="example-card">
+              <div style="font-size:34px;">🩷</div>
+              <strong>Long hand</strong>
+              <div style="font-size:12px;color:#777;">Tells the minutes</div>
+            </div>
+            <div class="example-card">
+              <div style="font-size:34px;">🕒</div>
+              <strong>Read both</strong>
+              <div style="font-size:12px;color:#777;">Hour first, minutes next</div>
+            </div>
+          </div>
+          <div class="time-pill">Short hand = hour · Long hand = minutes</div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">🟦</span> Short hand tells the hour</div>
+            <div class="fact-row"><span class="fact-icon">🩷</span> Long hand tells the minutes</div>
+            <div class="fact-row"><span class="fact-icon">⬆️</span> Long hand at 12 means zero minutes</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">🧠 Quick Quiz Time!</div>
+        <p style="font-size:14px;color:#555;margin-bottom:10px;">Which hand tells the hour?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'correct','fb1')">🅰️ The short hand</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅱️ The long hand</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅲 The bright hand</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅳 The fast hand</button>
+        </div>
+        <div class="quiz-feedback" id="fb1"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="4">
+    <div class="story-page">
+      <div class="page-corner">p.4</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--sun);color:#6b4a00;">Step 2</span><h2 class="story-title">O'Clock Time</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>When the <span class="hw2">long hand points to 12</span>, we say <span class="hw3">o'clock</span>.</p>
+          <p>The short hand shows the hour.</p>
+          <p>If the short hand points to 1, it is <span class="hw">1 o'clock</span>.</p>
+          <p>If it points to 6, it is <span class="hw">6 o'clock</span>.</p>
+          <p>So first, look at the long hand. If it is on 12, you are reading an o'clock time.</p>
+        </div>
+        <div class="story-art">
+          <div class="example-grid">
+            <div class="example-card"><div style="font-size:36px;">🕐</div><strong>1 o'clock</strong></div>
+            <div class="example-card"><div style="font-size:36px;">🕒</div><strong>3 o'clock</strong></div>
+            <div class="example-card"><div style="font-size:36px;">🕕</div><strong>6 o'clock</strong></div>
+          </div>
+          <div class="wonder-label">Long hand on 12 = o'clock</div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🌟 Remember!</div>
+        <div class="fun-fact-text">O'clock means the minutes are zero. The long hand is straight up on 12.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="5">
+    <div class="story-page">
+      <div class="page-corner">p.5</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--pink);">Step 3</span><h2 class="story-title">Half Past Means 30 Minutes</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>When the long hand points to <span class="hw2">6</span>, it means <span class="hw3">30 minutes</span>.</p>
+          <p>We say <span class="hw">half past</span>.</p>
+          <p>Half past 2 means it is <span class="hw">2:30</span>.</p>
+          <p>The short hand will be <span class="hw2">between two numbers</span> because the hour is halfway through.</p>
+          <p>So half past 2 has the short hand between 2 and 3.</p>
+        </div>
+        <div class="story-art">
+          <div class="clock-face small">
+            <div class="n n12">12</div><div class="n n3">3</div><div class="n n6">6</div><div class="n n9">9</div>
+            <div class="hand hour-hand" style="transform:translateX(-50%) rotate(75deg)"></div>
+            <div class="hand minute-hand" style="transform:translateX(-50%) rotate(180deg)"></div>
+            <div class="clock-center"></div>
+          </div>
+          <div class="time-pill">2:30 = half past 2</div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">🧠 Quick Quiz Time!</div>
+        <p style="font-size:14px;color:#555;margin-bottom:10px;">What does the long hand on 6 mean?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅰️ 6 minutes</button>
+          <button class="q-opt" onclick="miniQuiz(this,'correct','fb2')">🅱️ 30 minutes</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅲 12 minutes</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅳 60 minutes</button>
+        </div>
+        <div class="quiz-feedback" id="fb2"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="6">
+    <div class="story-page">
+      <div class="page-corner">p.6</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--violet);">Step 4</span><h2 class="story-title">Quarter Past and Quarter To</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>A <span class="hw">quarter</span> means one part out of four equal parts.</p>
+          <p>On a clock, one quarter is <span class="hw2">15 minutes</span>.</p>
+          <p>When the long hand points to <span class="hw2">3</span>, it is <span class="hw">quarter past</span>.</p>
+          <p>When the long hand points to <span class="hw2">9</span>, it is <span class="hw">quarter to</span> the next hour.</p>
+          <p>Quarter past 4 is 4:15. Quarter to 5 is 4:45.</p>
+        </div>
+        <div class="story-art">
+          <div class="example-grid">
+            <div class="example-card"><div style="font-size:16px;font-family:'Fredoka One',cursive;color:var(--navy)">Hand on 3</div><strong>Quarter past</strong><div style="font-size:12px;color:#777;">15 minutes</div></div>
+            <div class="example-card"><div style="font-size:16px;font-family:'Fredoka One',cursive;color:var(--violet)">Hand on 6</div><strong>Half past</strong><div style="font-size:12px;color:#777;">30 minutes</div></div>
+            <div class="example-card"><div style="font-size:16px;font-family:'Fredoka One',cursive;color:var(--pink)">Hand on 9</div><strong>Quarter to</strong><div style="font-size:12px;color:#777;">45 minutes</div></div>
+          </div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">3️⃣</span> On 3 = 15 minutes</div>
+            <div class="fact-row"><span class="fact-icon">9️⃣</span> On 9 = 45 minutes</div>
+            <div class="fact-row"><span class="fact-icon">🧩</span> Quarter means one of four parts</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="7">
+    <div class="story-page">
+      <div class="page-corner">p.7</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#0ea5a4;">Chapter 2</span><h2 class="story-title">Morning, Afternoon, and Night</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Time also helps us know <span class="hw">what part of the day</span> it is.</p>
+          <p><span class="hw2">Morning</span> is when we wake up and get ready.</p>
+          <p><span class="hw2">Afternoon</span> is after lunch.</p>
+          <p><span class="hw2">Night</span> is when it gets dark and we rest.</p>
+          <p>So time is not only about numbers. It helps us follow our daily routine too.</p>
+        </div>
+        <div class="story-art">
+          <div class="day-row">
+            <div class="day-card"><div>🌞</div><strong>Morning</strong><span>Wake up</span></div>
+            <div class="day-card"><div>🏫</div><strong>Afternoon</strong><span>School & play</span></div>
+            <div class="day-card"><div>🌙</div><strong>Night</strong><span>Bedtime</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">🧠 Quick Quiz Time!</div>
+        <p style="font-size:14px;color:#555;margin-bottom:10px;">Which part of the day usually comes after lunch?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅰️ Morning</button>
+          <button class="q-opt" onclick="miniQuiz(this,'correct','fb3')">🅱️ Afternoon</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅲 Midnight</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅳 Dawn</button>
+        </div>
+        <div class="quiz-feedback" id="fb3"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="8">
+    <div class="story-page">
+      <div class="page-corner">p.8</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#2563eb;">Chapter 3</span><h2 class="story-title">Digital Time and Analog Time</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Some clocks are <span class="hw">analog</span> clocks with hands.</p>
+          <p>Some clocks are <span class="hw2">digital</span> clocks with numbers like 7:30.</p>
+          <p>Both kinds tell the same time.</p>
+          <p>If you see <span class="hw3">3:00</span> on a digital clock, that matches 3 o'clock on an analog clock.</p>
+          <p>If you see <span class="hw3">6:30</span>, that means half past 6.</p>
+        </div>
+        <div class="story-art">
+          <div class="example-grid">
+            <div class="example-card"><div style="font-size:38px;">🕒</div><strong>3 o'clock</strong></div>
+            <div class="example-card"><div style="font-size:28px;font-family:'Fredoka One',cursive;color:var(--navy);margin-top:4px;">3:00</div><strong>Digital</strong></div>
+            <div class="example-card"><div style="font-size:28px;font-family:'Fredoka One',cursive;color:var(--pink);margin-top:4px;">6:30</div><strong>Half past 6</strong></div>
+          </div>
+          <div class="wonder-label">Analog = hands · Digital = numbers</div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🌟 Smart Tip!</div>
+        <div class="fun-fact-text">If you know how to read an analog clock, it becomes much easier to understand digital time too.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="9">
+    <div class="story-page">
+      <div class="page-corner">p.9</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#f59e0b;">History</span><h2 class="story-title">Long Ago, People Watched the Sun</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>Long ago, people did not have wristwatches or alarm clocks.</p>
+          <p>They looked at the <span class="hw">Sun</span> to understand time.</p>
+          <p>When the Sun was low in the sky, it was often <span class="hw2">morning</span>.</p>
+          <p>When the Sun was high above, it was around <span class="hw2">middle of the day</span>.</p>
+          <p>When the Sun started going down, people knew it was becoming <span class="hw3">evening</span>.</p>
+        </div>
+        <div class="story-art">
+          <div class="example-grid">
+            <div class="example-card"><div style="font-size:36px;">🌅</div><strong>Morning</strong><div style="font-size:12px;color:#777;">Sun low</div></div>
+            <div class="example-card"><div style="font-size:36px;">☀️</div><strong>Noon</strong><div style="font-size:12px;color:#777;">Sun high</div></div>
+            <div class="example-card"><div style="font-size:36px;">🌇</div><strong>Evening</strong><div style="font-size:12px;color:#777;">Sun going down</div></div>
+          </div>
+          <div class="wonder-label">The sky gave people clues about time</div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🌟 Time Clue</div>
+        <div class="fun-fact-text">People could not read exact minutes from the Sun, but they could still tell if it was early, middle, or late in the day.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="10">
+    <div class="story-page">
+      <div class="page-corner">p.10</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#eab308;color:#6b4a00;">History</span><h2 class="story-title">A Quick Look at the Sun Clock</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p>A <span class="hw">sun clock</span> is also called a <span class="hw2">sundial</span>.</p>
+          <p>It uses sunlight and a <span class="hw3">shadow</span> to show the time.</p>
+          <p>As the Sun moves across the sky, the shadow moves too.</p>
+          <p>People looked at where the shadow pointed to guess the time of day.</p>
+          <p>A sundial works best when the Sun is shining brightly.</p>
+        </div>
+        <div class="story-art">
+          <div style="width:100%;max-width:250px;background:#fff7db;border:2px solid #f2cf66;border-radius:18px;padding:16px;text-align:center;">
+            <div style="font-size:42px;">☀️</div>
+            <div style="font-size:30px;line-height:1;margin:8px 0;">＼</div>
+            <div style="font-size:34px;">▲</div>
+            <div style="font-size:18px;color:#555;margin-top:6px;">shadow ➜</div>
+          </div>
+          <div class="wonder-label">Sunlight makes a moving shadow</div>
+          <div class="wonder-facts">
+            <div class="fact-row"><span class="fact-icon">☀️</span> Needs sunlight</div>
+            <div class="fact-row"><span class="fact-icon">👤</span> Uses a shadow</div>
+            <div class="fact-row"><span class="fact-icon">🕰️</span> One of the oldest ways to tell time</div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-bubble">
+        <div class="quiz-title">🧠 Quick Quiz Time!</div>
+        <p style="font-size:14px;color:#555;margin-bottom:10px;">What does a sun clock use to help show time?</p>
+        <div class="quiz-options">
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅰️ Rain and wind</button>
+          <button class="q-opt" onclick="miniQuiz(this,'correct','fb4')">🅱️ Sunlight and shadow</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅲 Sound and music</button>
+          <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅳 Snow and ice</button>
+        </div>
+        <div class="quiz-feedback" id="fb4"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="11">
+    <div class="story-page">
+      <div class="page-corner">p.11</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#f59e0b;">Practice</span><h2 class="story-title">Let's Read Some Times Together!</h2></div>
+      <div class="story-text" data-tts style="margin-bottom:14px;">
+        <p>Look at these times and say them out loud. Reading time gets easier when you practise often.</p>
+      </div>
+      <div class="example-grid">
+        <div class="example-card"><div style="font-size:42px;">🕗</div><strong>8 o'clock</strong></div>
+        <div class="example-card"><div style="font-size:42px;">🕘</div><strong>9 o'clock</strong></div>
+        <div class="example-card"><div style="font-size:42px;">🕙</div><strong>10 o'clock</strong></div>
+        <div class="example-card"><div style="font-size:28px;font-family:'Fredoka One',cursive;color:var(--navy)">2:30</div><strong>Half past 2</strong></div>
+        <div class="example-card"><div style="font-size:28px;font-family:'Fredoka One',cursive;color:var(--violet)">4:15</div><strong>Quarter past 4</strong></div>
+        <div class="example-card"><div style="font-size:28px;font-family:'Fredoka One',cursive;color:var(--pink)">7:45</div><strong>Quarter to 8</strong></div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">👄 Say It Clearly</div>
+        <div class="fun-fact-text">Try saying each time aloud: “eight o'clock”, “half past two”, “quarter past four”, and “quarter to eight”.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="12">
+    <div class="story-page">
+      <div class="page-corner">p.12</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#14b8a6;">Fun Page</span><h2 class="story-title">A Day with Tiko</h2></div>
+      <div class="story-text" data-tts style="margin-bottom:14px;">
+        <p>Tiko follows a simple day plan. Tap each card to remember what might happen at that time.</p>
+      </div>
+      <div class="day-row">
+        <div class="day-card" onclick="showDayInfo('7 o\\'clock is a common wake-up time for many children.')"><div>🕖</div><strong>7:00</strong><span>Wake up</span></div>
+        <div class="day-card" onclick="showDayInfo('12 o\\'clock is often lunchtime.')"><div>🕛</div><strong>12:00</strong><span>Lunch</span></div>
+        <div class="day-card" onclick="showDayInfo('8 o\\'clock at night can be a bedtime for children.')"><div>🕗</div><strong>8:00</strong><span>Bedtime</span></div>
+      </div>
+      <div style="text-align:center;font-family:'Fredoka One',cursive;font-size:14px;color:#8e93b2;margin:10px 0;">⬆️ Tap a time card!</div>
+      <div id="dayInfo" style="text-align:center;font-family:'Fredoka One',cursive;font-size:15px;color:var(--navy);min-height:40px;padding:8px;">✨ Tap a card to learn more!</div>
+    </div>
+  </div>
+
+  <div class="page" data-page="13">
+    <div class="story-page">
+      <div class="page-corner">p.13</div>
+      <div class="story-header"><span class="chapter-badge" style="background:var(--violet);">Memory Trick</span><h2 class="story-title">Remember the Clock Clues!</h2></div>
+      <div class="story-text" data-tts style="margin-bottom:14px;">
+        <p>Use this easy clue sentence:</p>
+        <p style="text-align:center;font-family:'Fredoka One',cursive;font-size:18px;color:var(--navy);margin:12px 0;">🌟 “<span class="hw">S</span>hort = <span class="hw2">H</span>our, <span class="hw">L</span>ong = <span class="hw2">M</span>inutes!” 🌟</p>
+        <p>Tap each row to reveal the meaning.</p>
+      </div>
+      <div class="memory-card">
+        <div class="mem-row" onclick="revealMem(this)">
+          <span class="mem-letter">S</span>
+          <span class="mem-word">Short</span>
+          <span class="mem-note" id="mw1">🟦 ???</span>
+        </div>
+        <div class="mem-row" onclick="revealMem(this)">
+          <span class="mem-letter">H</span>
+          <span class="mem-word">Hour</span>
+          <span class="mem-note" id="mw2">🕐 ???</span>
+        </div>
+        <div class="mem-row" onclick="revealMem(this)">
+          <span class="mem-letter">L</span>
+          <span class="mem-word">Long</span>
+          <span class="mem-note" id="mw3">🩷 ???</span>
+        </div>
+        <div class="mem-row" onclick="revealMem(this)">
+          <span class="mem-letter">M</span>
+          <span class="mem-word">Minutes</span>
+          <span class="mem-note" id="mw4">⏱️ ???</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="14">
+    <div class="story-page">
+      <div class="page-corner">p.14</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#4c6ef5;">Review</span><h2 class="story-title">What We Learned</h2></div>
+      <div class="story-body">
+        <div class="story-text" data-tts>
+          <p><span class="hw">1.</span> A clock tells the time.</p>
+          <p><span class="hw">2.</span> The short hand tells the hour.</p>
+          <p><span class="hw">3.</span> The long hand tells the minutes.</p>
+          <p><span class="hw">4.</span> Long hand on 12 means o'clock.</p>
+          <p><span class="hw">5.</span> Long hand on 6 means half past.</p>
+          <p><span class="hw">6.</span> Long hand on 3 means quarter past.</p>
+          <p><span class="hw">7.</span> Long hand on 9 means quarter to the next hour.</p>
+          <p><span class="hw">8.</span> Long ago, people also used the Sun and shadows to guess time.</p>
+        </div>
+        <div class="story-art">
+          <div style="font-size:60px;">🕐 🕞 🕘</div>
+          <div class="wonder-label">You are ready for the time challenge!</div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <div class="fun-fact-title">🎯 Ready?</div>
+        <div class="fun-fact-text">You need 5 out of 6 or better to earn your Time Explorer certificate!</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="15">
+    <div class="quiz-page">
+      <div id="quizActive">
+        <div class="story-header"><span class="chapter-badge" style="background:var(--violet);">🏆 Final Quiz!</span><h2 class="story-title">The Time Challenge!</h2></div>
+        <p style="font-size:14px;color:#666;margin-bottom:16px;">Answer 6 time questions. You need <strong>at least 5 correct</strong> to earn your certificate! ⏰</p>
+        <div class="quiz-progress-row">
+          <span class="q-counter" id="qCounter">Question 1 of 6</span>
+          <span class="q-score-badge" id="qScoreBadge">Score: 0 / 6</span>
+        </div>
+        <div class="quiz-question-card">
+          <div class="quiz-q-emoji" id="qEmoji">⏰</div>
+          <div class="quiz-q-text" id="qText"></div>
+        </div>
+        <div class="fquiz-options" id="fquizOptions"></div>
+        <div class="q-result-msg" id="qResultMsg"></div>
+        <button class="next-q-btn" id="nextQBtn" onclick="nextQuestion()" style="display:none;">Next Question →</button>
+      </div>
+      <div id="quizPass" style="display:none;">
+        <div class="result-screen">
+          <div class="result-trophy">🏆</div>
+          <div class="result-title" style="color:var(--mint);">Amazing Time Work!</div>
+          <div class="result-score" id="passScore">6 / 6</div>
+          <div class="result-msg" id="passMsg"></div>
+          <button class="proceed-btn" onclick="goToCertificate()">🎓 Get My Certificate! →</button>
+        </div>
+      </div>
+      <div id="quizFail" style="display:none;">
+        <div class="result-screen">
+          <div class="result-trophy">🌟</div>
+          <div class="result-title" style="color:var(--peach);">Almost There!</div>
+          <div class="result-score" id="failScore">3 / 6</div>
+          <div class="result-msg">You need at least 5 correct answers to earn your certificate.<br>Read the clock story once more and try again! 💪</div>
+          <button class="retry-btn" onclick="restartQuiz()">🔄 Try Again!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" data-page="16">
+    <div class="cert-page">
+      <div class="page-corner">🎓</div>
+      <div class="story-header"><span class="chapter-badge" style="background:#ffd93d;color:#856404;">🏆 Certificate</span><h2 class="story-title">Your Time Explorer Certificate!</h2></div>
+      <div class="cert-controls">
+        <input class="cert-name-input" id="certName" placeholder="Type the child's name here..." oninput="drawCert()"/>
+        <button class="cert-dl-btn" onclick="downloadCert()">⬇ Download PNG</button>
+        <button class="cert-print-btn" onclick="printCert()">🖨 Print</button>
+      </div>
+      <div class="cert-wrap">
+        <canvas id="cert" width="900" height="630"></canvas>
+      </div>
+      <p class="cert-hint">Type the name above, then click Download or Print!</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const box=document.getElementById('floaties');
+  ['⏰','🕒','⭐','🌙','☀️'].forEach((icon,i)=>{
+    for(let n=0;n<2;n++){
+      const el=document.createElement('div');
+      el.className='floaty';
+      el.textContent=icon;
+      el.style.top=(8+Math.random()*80)+'%';
+      el.style.animationDuration=(24+Math.random()*18)+'s';
+      el.style.animationDelay=(Math.random()*16)+'s';
+      el.style.fontSize=(34+Math.random()*24)+'px';
+      box.appendChild(el);
+    }
+  });
+})();
+
+const TOTAL=16;
+let currentPage=0;
+let quizPassed=false;
+const pages=document.querySelectorAll('.page');
+const prevBtn=document.getElementById('prevBtn');
+const nextBtn=document.getElementById('nextBtn');
+const dotsContainer=document.getElementById('pageDots');
+for(let i=0;i<=TOTAL;i++){
+  const d=document.createElement('button');
+  d.className='dot'+(i===0?' active':'');
+  d.onclick=()=>goToPage(i);
+  dotsContainer.appendChild(d);
+}
+
+function goToPage(n){
+  if(n<0||n>TOTAL)return;
+  if(n===16&&!quizPassed){alert('You need to pass the quiz with at least 5 out of 6 to get your certificate! 🌟');return;}
+  stopReadAloud();
+  pages[currentPage].classList.remove('active');
+  currentPage=n;
+  pages[currentPage].classList.add('active');
+  prevBtn.disabled=currentPage===0;
+  nextBtn.disabled=currentPage===TOTAL;
+  document.getElementById('progressFill').style.width=Math.round(currentPage/TOTAL*100)+'%';
+  document.getElementById('progressText').textContent='Page '+(currentPage+1)+' of '+(TOTAL+1);
+  document.querySelectorAll('.dot').forEach((d,i)=>{
+    d.classList.toggle('active',i===currentPage);
+    if(i<currentPage)d.classList.add('visited');
+  });
+  if(currentPage===15)initQuiz();
+  if(currentPage===16)setTimeout(drawCert,120);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function changePage(d){goToPage(currentPage+d);}
+
+let isSpeaking=false;
+let speechUtterance=null;
+function toggleReadAloud(){
+  if(isSpeaking){stopReadAloud();return;}
+  const active=pages[currentPage];
+  const ttsEl=active.querySelector('[data-tts]');
+  const fallback=active.querySelector('.story-text')||active.querySelector('.story-page')||active.querySelector('.quiz-page');
+  if(ttsEl)speakText(ttsEl.textContent); else if(fallback)speakText(fallback.textContent);
+}
+function cleanForSpeech(text){
+  return text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{200D}\u{20E3}]/gu,'').replace(/\s+/g,' ').trim();
+}
+function speakText(text){
+  if(!('speechSynthesis' in window))return;
+  stopReadAloud();
+  speechUtterance=new SpeechSynthesisUtterance(cleanForSpeech(text));
+  speechUtterance.rate=.8;
+  speechUtterance.pitch=1.12;
+  speechUtterance.lang='en-US';
+  const voices=speechSynthesis.getVoices();
+  const preferred=voices.find(v=>v.name.includes('Samantha'))||voices.find(v=>v.name.includes('Karen'))||voices.find(v=>v.lang.startsWith('en'));
+  if(preferred)speechUtterance.voice=preferred;
+  speechUtterance.onstart=()=>{isSpeaking=true;document.getElementById('ttsBtn').classList.add('speaking');document.getElementById('ttsBtn').textContent='🔊 Reading...';document.getElementById('ttsStop').style.display='inline-flex';};
+  speechUtterance.onend=resetTTSUI;
+  speechUtterance.onerror=resetTTSUI;
+  speechSynthesis.speak(speechUtterance);
+}
+function stopReadAloud(){if('speechSynthesis' in window)speechSynthesis.cancel();resetTTSUI();}
+function resetTTSUI(){isSpeaking=false;document.getElementById('ttsBtn').classList.remove('speaking');document.getElementById('ttsBtn').textContent='🔊 Read Aloud';document.getElementById('ttsStop').style.display='none';}
+if('speechSynthesis' in window){speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();}
+
+function miniQuiz(btn,type,fbId){
+  const container=btn.closest('.quiz-bubble');
+  const btns=container.querySelectorAll('.q-opt');
+  btns.forEach(b=>b.style.pointerEvents='none');
+  const fb=document.getElementById(fbId);
+  if(type==='correct'){
+    btn.classList.add('correct');
+    fb.innerHTML='<span style="color:#27ae60;">🎉 Correct! Great time reading!</span>';
+  } else {
+    btn.classList.add('wrong');
+    btns.forEach(b=>{if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'correct'"))b.classList.add('correct');});
+    fb.innerHTML='<span style="color:#c0392b;">Not quite! The green answer is correct. Keep practising! 💪</span>';
+  }
+}
+
+function showDayInfo(msg){document.getElementById('dayInfo').textContent='✨ '+msg;}
+
+const memAnswers=['🟦 Short hand','🕐 Hour number','🩷 Long hand','⏱️ Minute count'];
+function revealMem(row){
+  const span=row.querySelector('.mem-note');
+  const idx=parseInt(span.id.replace('mw',''))-1;
+  if(idx>=0&&idx<memAnswers.length){
+    span.textContent=memAnswers[idx];
+    span.style.color='var(--navy)';
+    row.style.background='rgba(76,110,245,.08)';
+  }
+}
+
+const QUESTIONS=[
+  {emoji:'🖐️',q:'Which hand tells the hour?',opts:['The short hand','The long hand','The shiny hand','The noisy hand'],ans:0},
+  {emoji:'🕛',q:'What does the long hand on 12 mean?',opts:['30 minutes','15 minutes','0 minutes','45 minutes'],ans:2},
+  {emoji:'🕡',q:'What does the long hand on 6 mean?',opts:['10 minutes','30 minutes','60 minutes','6 minutes'],ans:1},
+  {emoji:'3️⃣',q:'Quarter past means the long hand is on which number?',opts:['12','3','6','9'],ans:1},
+  {emoji:'9️⃣',q:'Quarter to means the long hand is on which number?',opts:['3','6','9','12'],ans:2},
+  {emoji:'💻',q:'Which digital time means half past 7?',opts:['7:00','7:15','7:30','7:45'],ans:2},
+];
+let qIdx=0,score=0,answered=false;
+function initQuiz(){
+  qIdx=0;score=0;answered=false;
+  document.getElementById('quizActive').style.display='block';
+  document.getElementById('quizPass').style.display='none';
+  document.getElementById('quizFail').style.display='none';
+  renderQuestion();
+}
+function renderQuestion(){
+  const q=QUESTIONS[qIdx];
+  document.getElementById('qEmoji').textContent=q.emoji;
+  document.getElementById('qText').textContent=q.q;
+  document.getElementById('qCounter').textContent='Question '+(qIdx+1)+' of 6';
+  document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';
+  document.getElementById('qResultMsg').textContent='';
+  document.getElementById('nextQBtn').style.display='none';
+  answered=false;
+  const opts=document.getElementById('fquizOptions');
+  opts.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const btn=document.createElement('button');
+    btn.className='fq-opt';
+    btn.textContent=o;
+    btn.onclick=()=>answerQ(i,btn);
+    opts.appendChild(btn);
+  });
+}
+function answerQ(i,btn){
+  if(answered)return;
+  answered=true;
+  const q=QUESTIONS[qIdx];
+  const allBtns=document.querySelectorAll('.fq-opt');
+  allBtns.forEach(b=>b.classList.add('locked'));
+  const msg=document.getElementById('qResultMsg');
+  if(i===q.ans){
+    btn.classList.add('correct');
+    score++;
+    const praise=['🎉 Fantastic!','🌟 Brilliant!','⏰ Time Star!','✨ Great job!'];
+    msg.innerHTML='<span style="color:#27ae60;">'+praise[Math.floor(Math.random()*praise.length)]+'</span>';
+  } else {
+    btn.classList.add('wrong');
+    allBtns[q.ans].classList.add('correct');
+    msg.innerHTML='<span style="color:#c0392b;">Oops! The correct answer is highlighted in green. 💪</span>';
+  }
+  document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';
+  document.getElementById('nextQBtn').style.display='block';
+  document.getElementById('nextQBtn').textContent=qIdx===5?'See My Result! 🏁':'Next Question →';
+}
+function nextQuestion(){qIdx++;if(qIdx>=6){showResult();return;}renderQuestion();}
+function showResult(){
+  document.getElementById('quizActive').style.display='none';
+  if(score>=5){
+    quizPassed=true;
+    document.getElementById('quizPass').style.display='block';
+    document.getElementById('passScore').textContent=score+' / 6';
+    document.getElementById('passMsg').innerHTML=score===6?'PERFECT SCORE! You are a true Time Explorer! ⏰🏆':'Wonderful work! You understand clocks and time really well! 🌟';
+  } else {
+    document.getElementById('quizFail').style.display='block';
+    document.getElementById('failScore').textContent=score+' / 6';
+  }
+}
+function restartQuiz(){initQuiz();}
+function goToCertificate(){goToPage(14);}
+
+const certCanvas=document.getElementById('cert');
+const ctx=certCanvas.getContext('2d');
+const CW=900,CH=630;
+function drawStarShape(cx,cy,r,pts,color){
+  ctx.save();ctx.fillStyle=color;ctx.beginPath();
+  for(let i=0;i<pts*2;i++){const a=(i*Math.PI/pts)-Math.PI/2,rd=i%2===0?r:r*.45;i===0?ctx.moveTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a)):ctx.lineTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a));}
+  ctx.closePath();ctx.fill();ctx.restore();
+}
+function rr(x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();
+}
+const qrImage=new Image();let qrReady=false;qrImage.crossOrigin='anonymous';qrImage.onload=()=>{qrReady=true;drawCert();};qrImage.src='https://quickchart.io/qr?text='+encodeURIComponent('https://fivetofifteen.com/')+'&size=180';
+function drawCert(){
+  const name=document.getElementById('certName').value.trim()||'Explorer Name Here';
+  ctx.clearRect(0,0,CW,CH);
+  const bg=ctx.createLinearGradient(0,0,CW,CH);bg.addColorStop(0,'#f7fbff');bg.addColorStop(.5,'#ffffff');bg.addColorStop(1,'#f6f0ff');
+  ctx.fillStyle=bg;rr(0,0,CW,CH,20);ctx.fill();
+  ctx.strokeStyle='#4c6ef5';ctx.lineWidth=6;rr(8,8,CW-16,CH-16,16);ctx.stroke();
+  ctx.strokeStyle='#7c3aed';ctx.lineWidth=2;ctx.setLineDash([8,5]);rr(20,20,CW-40,CH-40,10);ctx.stroke();ctx.setLineDash([]);
+  [[52,52],[CW-52,52],[52,CH-52],[CW-52,CH-52]].forEach(([x,y])=>drawStarShape(x,y,18,5,'#7c3aed'));
+  const rg=ctx.createLinearGradient(CW/2-220,0,CW/2+220,0);rg.addColorStop(0,'#4c6ef5');rg.addColorStop(.5,'#7c3aed');rg.addColorStop(1,'#4c6ef5');
+  ctx.fillStyle=rg;rr(CW/2-220,28,440,44,22);ctx.fill();
+  ctx.fillStyle='#f4f3ff';ctx.font='bold 17px "Fredoka One",cursive';ctx.textAlign='center';ctx.fillText('⏰  TICK TOCK TIME  ⏰',CW/2,57);
+  ctx.font='64px serif';ctx.fillText('🕒',CW/2,142);
+  ctx.fillStyle='#30336b';ctx.font='bold 40px "Fredoka One",cursive';ctx.fillText('Time Explorer Certificate!',CW/2,196);
+  ctx.fillStyle='#888';ctx.font='17px "Nunito",sans-serif';ctx.fillText('This is to proudly certify that the amazing time learner',CW/2,232);
+  ctx.strokeStyle='#4c6ef5';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(CW/2-240,276);ctx.lineTo(CW/2+240,276);ctx.stroke();
+  ctx.fillStyle='#1d4ed8';ctx.font='bold 38px "Fredoka One",cursive';ctx.fillText(name,CW/2,270);
+  ctx.fillStyle='#444';ctx.font='17px "Nunito",sans-serif';ctx.fillText('has completed the Tick Tock Time adventure and is now an official',CW/2,310);
+  ctx.fillStyle='#7c3aed';ctx.font='bold 24px "Fredoka One",cursive';ctx.fillText('🌟 Certified Time Explorer 🌟',CW/2,344);
+  ctx.fillStyle='#888';ctx.font='14px "Nunito",sans-serif';ctx.fillText('Scored 5 or more on the final Time Challenge quiz!',CW/2,372);
+  const badges=[
+    {t:'✓ Hour Hand Hero',bg:'#e8f0ff',c:'#1d4ed8'},
+    {t:'✓ Minute Master',bg:'#f3e8ff',c:'#7c3aed'},
+    {t:'✓ Clock Reader',bg:'#ecfeff',c:'#0f766e'},
+    {t:'✓ Time Explorer!',bg:'#fff7db',c:'#b7791f'}
+  ];
+  const bw=168,bh=30,gap=10,tot=badges.length*(bw+gap)-gap;let bx=CW/2-tot/2;
+  badges.forEach(b=>{ctx.fillStyle=b.bg;rr(bx,390,bw,bh,15);ctx.fill();ctx.fillStyle=b.c;ctx.font='bold 12px "Nunito",sans-serif';ctx.fillText(b.t,bx+bw/2,409);bx+=bw+gap;});
+  ctx.font='32px serif';ctx.fillStyle='#333';ctx.fillText('🕐  🕒  🕕  🌞  🌙',CW/2,468);
+  ctx.fillStyle='#fff';ctx.strokeStyle='#d7e2f4';ctx.lineWidth=2;rr(CW-154,68,102,102,14);ctx.fill();ctx.stroke();
+  if(qrReady){ctx.drawImage(qrImage,CW-144,78,82,82);}else{ctx.fillStyle='#eef7ff';ctx.fillRect(CW-144,78,82,82);ctx.fillStyle='#1d6fd6';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('QR loading...',CW-103,122);}
+  ctx.fillStyle='#1d6fd6';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('Scan to visit',CW-103,185);
+  const d=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
+  ctx.fillStyle='#9e9e9e';ctx.font='bold 12px "Nunito",sans-serif';ctx.fillText('Presented by fivetofifteen.com',CW/2,538);
+  ctx.fillStyle='#bbb';ctx.font='12px "Nunito",sans-serif';ctx.fillText('Awarded on '+d,CW/2,562);
+}
+function downloadCert(){drawCert();const link=document.createElement('a');link.download='time-explorer-certificate.png';link.href=certCanvas.toDataURL('image/png');link.click();}
+function printCert(){
+  drawCert();
+  const dataUrl=certCanvas.toDataURL('image/png');
+  const win=window.open('','_blank');
+  const html=[
+    '<!DOCTYPE html>',
+    '<html><head><title>Time Explorer Certificate<\\/title>',
+    '<style>body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f5f5f5;}img{max-width:100%;box-shadow:0 4px 20px rgba(0,0,0,.15);border-radius:12px;}@media print{body{background:#fff;}img{box-shadow:none;width:100%;}}<\\/style>',
+    '<\\/head><body>',
+    '<img src=\"'+dataUrl+'\" alt=\"Certificate\"/>',
+    '<\\/body><\\/html>'
+  ].join('');
+  win.document.write(html);win.document.close();win.onload=()=>{win.focus();win.print();};
+}
+drawCert();
+</script>
+</body>
+</html>

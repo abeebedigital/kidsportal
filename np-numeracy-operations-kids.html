@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Number Dojo! 🥷</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+    /* global-font-boost */
+    html{font-size:17px;}
+    @media (max-width:500px){html{font-size:16px;}}
+
+:root{
+  --coral:#ff6b6b;--mint:#6bcb77;--blue:#4d96ff;--purple:#c77dff;
+  --orange:#ff9f1c;--yellow:#ffd93d;--dark:#2c3e50;
+  --card-bg:#fffef5;--warm-bg:#fff8f0;
+  --ninja:#e65100;--ninja-light:#fff3e0;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--warm-bg);min-height:100vh;overflow-x:hidden;}
+.cloud{position:fixed;opacity:.06;font-size:60px;z-index:0;animation:drift linear infinite;pointer-events:none;}
+@keyframes drift{from{transform:translateX(-100px)}to{transform:translateX(calc(100vw + 100px))}}
+#app{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:12px;}
+.home-link{display:inline-flex;align-items:center;gap:6px;background:var(--mint);color:white;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;text-decoration:none;transition:all .2s;margin-bottom:10px;}
+.home-link:hover{transform:scale(1.05);background:#4db860;}
+.tts-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.tts-btn{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#f39c12,#e67e22);color:white;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.tts-btn:hover{transform:scale(1.05);}
+.tts-btn.speaking{background:linear-gradient(135deg,#e74c3c,#c0392b);animation:pulse 1s ease infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(231,76,60,.4)}50%{box-shadow:0 0 0 8px rgba(231,76,60,0)}}
+.tts-stop{background:linear-gradient(135deg,#95a5a6,#7f8c8d);color:white;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.progress-strip{background:white;border-radius:12px;padding:8px 16px;display:flex;align-items:center;gap:10px;margin-bottom:8px;border:2px solid var(--ninja-light);box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.progress-bar{flex:1;height:7px;background:var(--ninja-light);border-radius:4px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--ninja),var(--orange),var(--yellow));border-radius:4px;transition:width .5s ease;}
+.progress-label{font-family:'Fredoka One',cursive;font-size:12px;color:#999;white-space:nowrap;}
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:white;border-radius:16px;margin-bottom:10px;border:2px solid var(--ninja-light);box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.nav-btn{background:var(--orange);color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:8px 22px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.nav-btn:hover{transform:scale(1.06);box-shadow:0 4px 12px rgba(255,159,28,.3);}
+.nav-btn:disabled{background:#ddd;cursor:not-allowed;transform:none;box-shadow:none;color:#999;}
+.page-dots{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;max-width:300px;}
+.dot{width:9px;height:9px;border-radius:50%;background:#ddd;cursor:pointer;transition:all .2s;}
+.dot.active{background:var(--ninja);transform:scale(1.3);box-shadow:0 0 6px rgba(230,81,0,.5);}
+.dot.visited{background:rgba(230,81,0,.3);}
+.page{display:none;animation:pageIn .5s ease;}
+.page.active{display:block;}
+@keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.cover{background:linear-gradient(160deg,#1a1a2e 0%,#2d1506 40%,#4a2000 100%);border-radius:22px;border:2px solid rgba(255,159,28,.3);padding:50px 30px;text-align:center;position:relative;overflow:hidden;min-height:540px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.cover-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(255,159,28,.15) 0%,transparent 70%);pointer-events:none;}
+.cover-icons{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:20px 0;position:relative;z-index:2;}
+.cover-icon{font-size:36px;animation:iconBounce var(--wb,3s) ease-in-out infinite var(--wd,0s);}
+@keyframes iconBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.cover-title{font-family:'Fredoka One',cursive;font-size:38px;color:var(--yellow);position:relative;z-index:2;line-height:1.15;margin-bottom:8px;text-shadow:0 4px 20px rgba(0,0,0,.4);}
+.cover-sub{font-family:'Fredoka One',cursive;font-size:20px;color:#ffcc80;position:relative;z-index:2;margin-bottom:6px;}
+.cover-tagline{font-size:13px;color:rgba(255,255,255,.6);position:relative;z-index:2;margin-top:16px;font-style:italic;}
+.hero-anim{font-size:52px;animation:heroFloat 3s ease-in-out infinite;position:relative;z-index:2;}
+@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-12px) rotate(5deg)}}
+.cover svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
+.story-page{background:var(--card-bg);border-radius:22px;padding:26px;min-height:540px;border:3px solid var(--ninja-light);position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.page-corner{position:absolute;top:14px;right:16px;font-family:'Fredoka One',cursive;font-size:16px;color:#b0bec5;}
+.story-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.chapter-badge{font-family:'Fredoka One',cursive;font-size:12px;padding:4px 13px;border-radius:16px;white-space:nowrap;color:white;}
+.story-title{font-family:'Fredoka One',cursive;font-size:22px;color:var(--dark);}
+.story-body{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+.story-text{font-size:15px;line-height:1.85;color:#444;}
+.story-text p{margin-bottom:10px;}
+.hw{font-weight:800;color:#e65100;}
+.hw2{font-weight:800;color:#1565c0;}
+.hw3{font-weight:800;color:#2e7d32;}
+.story-art{border-radius:16px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:8px;border:2px dashed #cfd8dc;background:linear-gradient(135deg,#fff8f0,#fff3e0);}
+.wonder-label{font-family:'Fredoka One',cursive;font-size:13px;color:#999;margin-top:4px;}
+.wonder-facts{background:rgba(0,0,0,.03);border-radius:12px;padding:10px 14px;width:100%;border:1px solid rgba(0,0,0,.06);}
+.fact-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:13px;color:#555;}
+.fact-row:last-child{border-bottom:none;}
+.fact-icon{font-size:16px;min-width:22px;}
+.quiz-bubble{background:linear-gradient(135deg,#fff3e0,#ffe0b2);border:2px solid var(--orange);border-radius:18px;padding:18px;margin-top:16px;}
+.quiz-title{font-family:'Fredoka One',cursive;font-size:17px;color:var(--ninja);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.q-opt{background:white;border:2px solid #cfd8dc;border-radius:12px;padding:10px 14px;font-size:14px;color:var(--dark);cursor:pointer;transition:all .2s;text-align:left;font-family:'Nunito',sans-serif;font-weight:600;}
+.q-opt:hover{background:#fff3e0;border-color:var(--orange);transform:translateY(-2px);}
+.q-opt.correct{background:#d4edda;border-color:#27ae60;color:#155724;}
+.q-opt.wrong{background:#f8d7da;border-color:#c0392b;color:#721c24;}
+.quiz-feedback{font-family:'Fredoka One',cursive;font-size:16px;margin-top:10px;min-height:24px;text-align:center;}
+.fun-fact{background:#e3f2fd;border:2px solid var(--blue);border-radius:14px;padding:14px 16px;margin-top:14px;}
+.fun-fact-title{font-family:'Fredoka One',cursive;font-size:15px;color:#0d47a1;margin-bottom:6px;}
+.fun-fact-text{font-size:13px;color:#444;line-height:1.6;}
+.tip-box{background:#fff3e0;border:2px solid var(--orange);border-radius:14px;padding:14px 16px;margin-top:14px;}
+.tip-box-title{font-family:'Fredoka One',cursive;font-size:15px;color:#e65100;margin-bottom:6px;}
+.tip-box-text{font-size:13px;color:#444;line-height:1.6;}
+.num-table{width:100%;border-collapse:separate;border-spacing:0;border:2px solid #ffe0b2;border-radius:12px;overflow:hidden;margin:10px 0;}
+.num-table th{background:var(--ninja);color:white;font-family:'Fredoka One',cursive;font-size:13px;padding:10px 12px;text-align:left;}
+.num-table td{padding:8px 12px;font-size:14px;color:#444;border-bottom:1px solid #fff3e0;}
+.num-table tr:last-child td{border-bottom:none;}
+.num-table tr:nth-child(even) td{background:#fffaf0;}
+.memory-card{background:#fff3e0;border:2px solid var(--orange);border-radius:14px;padding:14px;margin-top:14px;}
+.mem-row{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:14px;cursor:pointer;transition:background .2s;border-radius:8px;padding-left:8px;}
+.mem-row:hover{background:rgba(230,81,0,.07);}
+.mem-letter{font-family:'Fredoka One',cursive;font-size:18px;color:var(--coral);min-width:24px;}
+.mem-word{color:var(--ninja);min-width:110px;font-weight:700;}
+.mem-tip{color:#ccc;}
+/* Interactive drag areas */
+.coins-area{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:12px 0;}
+.coin{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:50%;font-family:'Fredoka One',cursive;font-size:14px;color:white;cursor:pointer;transition:all .2s;border:3px solid rgba(255,255,255,.4);box-shadow:0 3px 8px rgba(0,0,0,.15);}
+.coin:hover{transform:scale(1.12);}
+.coin-gold{background:linear-gradient(135deg,#f9a825,#f57f17);}
+.coin-silver{background:linear-gradient(135deg,#90a4ae,#607d8b);}
+.coin-copper{background:linear-gradient(135deg,#8d6e63,#5d4037);}
+.coin-note{background:linear-gradient(135deg,#2e7d32,#1b5e20);border-radius:12px;width:70px;height:40px;font-size:13px;}
+/* FINAL QUIZ */
+.quiz-page{background:var(--card-bg);border-radius:22px;padding:26px;min-height:540px;border:3px solid var(--orange);box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.quiz-progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.q-counter{font-family:'Fredoka One',cursive;font-size:13px;color:#999;}
+.q-score-badge{font-family:'Fredoka One',cursive;font-size:14px;background:#fff3e0;border:2px solid var(--orange);padding:4px 14px;border-radius:20px;color:var(--ninja);}
+.quiz-question-card{background:white;border-radius:16px;padding:20px;margin-bottom:16px;border:2px solid #fff3e0;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.quiz-q-text{font-family:'Fredoka One',cursive;font-size:19px;color:var(--dark);line-height:1.4;margin-bottom:4px;}
+.quiz-q-emoji{font-size:40px;margin-bottom:10px;}
+.quiz-q-passage{background:#f5f5f5;border-radius:10px;padding:12px;font-size:13px;line-height:1.7;margin-bottom:12px;color:#444;}
+.fquiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.fq-opt{background:white;border:2px solid #cfd8dc;border-radius:14px;padding:12px 16px;font-size:15px;color:var(--dark);cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif;font-weight:700;}
+.fq-opt:hover:not(.locked){background:#fff3e0;border-color:var(--orange);transform:translateY(-2px);}
+.fq-opt.correct{background:#d4edda;border-color:#27ae60;color:#155724;}
+.fq-opt.wrong{background:#f8d7da;border-color:#c0392b;color:#721c24;}
+.fq-opt.locked{cursor:not-allowed;opacity:.7;}
+.q-result-msg{font-family:'Fredoka One',cursive;font-size:16px;text-align:center;min-height:28px;margin-top:8px;}
+.next-q-btn{display:block;margin:12px auto 0;background:linear-gradient(135deg,var(--orange),var(--yellow));color:white;border:none;font-family:'Fredoka One',cursive;font-size:16px;padding:10px 28px;border-radius:22px;cursor:pointer;transition:all .2s;}
+.next-q-btn:hover{transform:scale(1.05);}
+.result-screen{text-align:center;padding:20px 10px;}
+.result-trophy{font-size:80px;margin-bottom:12px;animation:bounce 1s ease infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+.result-title{font-family:'Fredoka One',cursive;font-size:28px;margin-bottom:10px;}
+.result-score{font-family:'Fredoka One',cursive;font-size:48px;color:var(--yellow);}
+.result-msg{font-size:16px;color:#888;margin:12px 0 20px;line-height:1.7;}
+.retry-btn{background:linear-gradient(135deg,#e74c3c,#ff6b6b);color:white;border:none;font-family:'Fredoka One',cursive;font-size:18px;padding:12px 32px;border-radius:24px;cursor:pointer;transition:all .2s;margin:8px;}
+.retry-btn:hover{transform:scale(1.06);}
+.proceed-btn{background:linear-gradient(135deg,#27ae60,#2ecc71);color:white;border:none;font-family:'Fredoka One',cursive;font-size:18px;padding:12px 32px;border-radius:24px;cursor:pointer;transition:all .2s;margin:8px;}
+.proceed-btn:hover{transform:scale(1.06);}
+.cert-page{background:var(--card-bg);border-radius:22px;padding:24px;min-height:540px;border:3px solid var(--yellow);box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.cert-controls{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+.cert-name-input{font-family:'Nunito',sans-serif;font-size:16px;padding:10px 16px;border:2px solid var(--yellow);border-radius:12px;outline:none;flex:1;min-width:180px;color:#333;}
+.cert-name-input:focus{border-color:var(--orange);}
+.cert-dl-btn{background:var(--orange);color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:24px;cursor:pointer;transition:transform .15s;white-space:nowrap;}
+.cert-dl-btn:hover{transform:scale(1.05);}
+.cert-print-btn{background:#1565c0;color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:24px;cursor:pointer;transition:transform .15s;}
+.cert-print-btn:hover{transform:scale(1.05);}
+.cert-wrap{background:white;border-radius:16px;padding:6px;border:3px solid var(--yellow);box-shadow:0 4px 20px rgba(0,0,0,.08);}
+canvas#cert{width:100%;border-radius:12px;display:block;}
+.cert-hint{font-size:12px;color:#aaa;margin-top:8px;text-align:center;}
+@media(max-width:580px){
+  .story-body{grid-template-columns:1fr;}
+  .cover-title{font-size:26px;}
+  .fquiz-options,.quiz-options{grid-template-columns:1fr;}
+  .cert-controls{flex-direction:column;}
+  .num-table{font-size:12px;}
+}
+</style>
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="natural-read-aloud.js" defer></script>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+<div id="clouds"></div>
+<div id="app"><div class="tts-bar">
+  <button class="tts-btn" id="ttsBtn" onclick="toggleTTS()">🔊 Read Aloud</button>
+  <button class="tts-stop" id="ttsStop" onclick="stopTTS()" style="display:none;">⏹ Stop</button>
+</div>
+<div class="progress-strip">
+  <span class="progress-label">🥷 Numbers...</span>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <span class="progress-label" id="progressText">Page 1 of 14</span>
+</div>
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Back</button>
+  <div class="page-dots" id="pageDots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+</div>
+
+<!-- PAGE 0: COVER -->
+<div class="page active" data-page="0">
+  <div class="cover">
+    <svg viewBox="0 0 820 540" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="40" r="2" fill="white" opacity=".6"/><circle cx="120" cy="80" r="1.5" fill="white" opacity=".5"/>
+      <circle cx="200" cy="25" r="2.5" fill="white" opacity=".7"/><circle cx="300" cy="60" r="1.5" fill="white" opacity=".6"/>
+      <circle cx="400" cy="30" r="2" fill="white" opacity=".5"/><circle cx="600" cy="45" r="2" fill="white" opacity=".6"/>
+      <circle cx="700" cy="20" r="2.5" fill="white" opacity=".5"/>
+    </svg>
+    <div class="cover-glow"></div>
+    <div class="hero-anim">🥷</div>
+    <div class="cover-title">The Number<br>Dojo!</div>
+    <div class="cover-sub">A Numeracy Ninja Adventure!</div>
+    <div class="cover-icons">
+      <span class="cover-icon" style="--wb:3s;--wd:0s">🔢</span>
+      <span class="cover-icon" style="--wb:3.5s;--wd:0.3s">➕</span>
+      <span class="cover-icon" style="--wb:4s;--wd:0.6s">✖️</span>
+      <span class="cover-icon" style="--wb:3.2s;--wd:0.9s">💰</span>
+      <span class="cover-icon" style="--wb:3.8s;--wd:1.2s">⭐</span>
+    </div>
+    <p class="cover-tagline">Master place value, operations, times tables, and money! · Year 3–5</p>
+  </div>
+</div>
+
+<!-- PAGE 1: MEET NUMI -->
+<div class="page" data-page="1">
+  <div class="story-page">
+    <div class="page-corner">p.1</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--orange);">Welcome!</span><h2 class="story-title">Meet Numi the Ninja! 🥷</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Hi-YAH! Welcome to the Number Dojo, young ninja! 👋</p>
+        <p>I'm <span class="hw">Numi the Number Ninja</span>, and I'm going to train you in the FOUR secret arts of numbers! 🔢</p>
+        <p>Every great ninja needs sharp maths skills. Today you'll learn:</p>
+        <p>🏯 <span class="hw2">Place Value</span> — what each digit is worth</p>
+        <p>⚔️ <span class="hw3">Addition & Subtraction</span> — fast mental tricks</p>
+        <p>🌀 <span class="hw">Multiplication & Division</span> — times tables power</p>
+        <p>💰 <span class="hw2">Money</span> — Aussie coins and notes!</p>
+        <p>Each skill you master earns you a ninja belt! Ready to train? Let's go! 🥋</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:70px;">🥷</div>
+        <div class="wonder-label">Numi the Number Ninja</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🏯</span> Master of Place Value</div>
+          <div class="fact-row"><span class="fact-icon">⚡</span> Lightning-fast calculator</div>
+          <div class="fact-row"><span class="fact-icon">💰</span> Money maths expert</div>
+          <div class="fact-row"><span class="fact-icon">🥋</span> Belts: White → Black!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2: PLACE VALUE — BASICS -->
+<div class="page" data-page="2">
+  <div class="story-page">
+    <div class="page-corner">p.2</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--ninja);">Skill 1</span><h2 class="story-title">🏯 Place Value — What's Each Digit Worth?</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>In the Number Dojo, the FIRST secret is <span class="hw">Place Value</span>! 🏯</p>
+        <p>Every digit in a number has a <span class="hw2">position</span>, and that position tells you its VALUE!</p>
+        <p>Look at the number <span class="hw3">3,472</span>:</p>
+        <p>🔹 <strong>3</strong> is in the <span class="hw">Thousands</span> place → worth <strong>3,000</strong></p>
+        <p>🔹 <strong>4</strong> is in the <span class="hw2">Hundreds</span> place → worth <strong>400</strong></p>
+        <p>🔹 <strong>7</strong> is in the <span class="hw3">Tens</span> place → worth <strong>70</strong></p>
+        <p>🔹 <strong>2</strong> is in the <span class="hw">Ones</span> place → worth <strong>2</strong></p>
+        <p>So 3,472 = <span class="hw2">3,000 + 400 + 70 + 2</span></p>
+        <p>This is called <span class="hw3">expanded form</span>! 💪</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🏯</div>
+        <div class="wonder-label">Place Value Chart</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🔴</span> Thousands = × 1,000</div>
+          <div class="fact-row"><span class="fact-icon">🟠</span> Hundreds = × 100</div>
+          <div class="fact-row"><span class="fact-icon">🟡</span> Tens = × 10</div>
+          <div class="fact-row"><span class="fact-icon">🟢</span> Ones = × 1</div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">In the number 5,816, what is the value of the digit 8?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅰️ 8</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅱️ 80</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb1')">🅲 800</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅳 8,000</button>
+      </div>
+      <div class="quiz-feedback" id="fb1"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3: PLACE VALUE — COMPARING & ROUNDING -->
+<div class="page" data-page="3">
+  <div class="story-page">
+    <div class="page-corner">p.3</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--ninja);">Skill 1</span><h2 class="story-title">🏯 Comparing & Rounding Numbers!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>A ninja always knows which number is <span class="hw">bigger</span> or <span class="hw2">smaller</span>! 🐊</p>
+        <p>We use these special symbols:</p>
+        <p>🔹 <strong>&gt;</strong> means <span class="hw">greater than</span> (the big mouth eats the bigger number!)</p>
+        <p>🔹 <strong>&lt;</strong> means <span class="hw2">less than</span></p>
+        <p>🔹 <strong>=</strong> means <span class="hw3">equal to</span></p>
+        <p>Example: 4,526 <strong>&gt;</strong> 3,981 ✅</p>
+        <p><span class="hw">Rounding</span> makes numbers simpler! Look at the digit to the RIGHT of the one you're rounding:</p>
+        <p>🔹 If it's <strong>0–4</strong> → round DOWN</p>
+        <p>🔹 If it's <strong>5–9</strong> → round UP</p>
+        <p>Example: Round 367 to the nearest hundred → look at the 6 (tens) → 6 ≥ 5 → round UP → <span class="hw3">400</span>! 🎯</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🐊</div>
+        <div class="wonder-label">The Hungry Crocodile!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🐊</span> Mouth opens to the BIGGER number</div>
+          <div class="fact-row"><span class="fact-icon">&gt;</span> 52 > 38 (52 is bigger)</div>
+          <div class="fact-row"><span class="fact-icon">&lt;</span> 15 < 42 (15 is smaller)</div>
+          <div class="fact-row"><span class="fact-icon">=</span> 25 = 25 (they match!)</div>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <div class="tip-box-title">💡 Numi's Rounding Trick!</div>
+      <div class="tip-box-text">Think of a hill! Numbers 1–4 roll BACK down (round down). Numbers 5–9 roll OVER the top (round up)! 🏔️ So 73 rounded to the nearest ten? The 3 rolls back → <strong>70</strong>. And 78? The 8 rolls over → <strong>80</strong>!</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4: ADDITION & SUBTRACTION — MENTAL STRATEGIES -->
+<div class="page" data-page="4">
+  <div class="story-page">
+    <div class="page-corner">p.4</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#1565c0;">Skill 2</span><h2 class="story-title">⚔️ Addition — Mental Ninja Tricks!</h2></div>
+    <div class="story-text" data-tts style="margin-bottom:10px;">
+      <p>A true Number Ninja doesn't always need a pencil — you can add in your HEAD! Here are Numi's secret tricks: 🧠</p>
+    </div>
+    <table class="num-table">
+      <tr><th>Strategy</th><th>How It Works</th><th>Example</th></tr>
+      <tr><td><strong>Jump Strategy</strong></td><td>Start at one number and jump by tens, then ones</td><td>48 + 35 → 48 + 30 = 78, then + 5 = <strong>83</strong></td></tr>
+      <tr><td><strong>Split Strategy</strong></td><td>Split both numbers into tens and ones, add separately</td><td>46 + 37 → (40+30) + (6+7) = 70 + 13 = <strong>83</strong></td></tr>
+      <tr><td><strong>Compensate</strong></td><td>Round one number up, add, then take away the extra</td><td>56 + 29 → 56 + 30 = 86, then − 1 = <strong>85</strong></td></tr>
+      <tr><td><strong>Doubles</strong></td><td>Use known doubles to help</td><td>7 + 8 → double 7 = 14, then + 1 = <strong>15</strong></td></tr>
+    </table>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">Using the jump strategy: 63 + 25 = ?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅰️ 78</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb2')">🅱️ 88</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅲 98</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅳 85</button>
+      </div>
+      <div class="quiz-feedback" id="fb2"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 5: SUBTRACTION & WORD PROBLEMS -->
+<div class="page" data-page="5">
+  <div class="story-page">
+    <div class="page-corner">p.5</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#1565c0;">Skill 2</span><h2 class="story-title">⚔️ Subtraction & Word Problems!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Subtraction is the REVERSE ninja move! Take away, find the difference, or find what's missing! ⚔️</p>
+        <p><span class="hw">Strategy 1: Count Back</span></p>
+        <p>🔹 72 − 5 → count back: 71, 70, 69, 68, <strong>67</strong> ✅</p>
+        <p><span class="hw2">Strategy 2: Jump Back</span></p>
+        <p>🔹 85 − 32 → jump back 30: 55, then − 2 = <strong>53</strong></p>
+        <p><span class="hw3">Strategy 3: Add Up (Shopkeeper's Method!)</span></p>
+        <p>🔹 "What's 100 − 67?" → start at 67, add up to 100: 67 + 3 = 70, + 30 = 100 → answer is <strong>33</strong>!</p>
+        <p><span class="hw">Word Problem Tip:</span> Look for clue words!</p>
+        <p>➕ Add: altogether, total, in all, combined, sum</p>
+        <p>➖ Subtract: left over, remaining, difference, fewer, less than</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">⚔️</div>
+        <div class="wonder-label">Clue Words!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">➕</span> "altogether" = ADD</div>
+          <div class="fact-row"><span class="fact-icon">➕</span> "how many in total" = ADD</div>
+          <div class="fact-row"><span class="fact-icon">➖</span> "how many left" = SUBTRACT</div>
+          <div class="fact-row"><span class="fact-icon">➖</span> "difference between" = SUBTRACT</div>
+        </div>
+      </div>
+    </div>
+    <div class="fun-fact">
+      <div class="fun-fact-title">📖 Maths Tip!</div>
+      <div class="fun-fact-text">Challenge questions love word problems! Always read the question TWICE, circle the clue words, and decide if you need to add or subtract BEFORE you start calculating! 🎯</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 6: MULTIPLICATION — TIMES TABLES -->
+<div class="page" data-page="6">
+  <div class="story-page">
+    <div class="page-corner">p.6</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#2e7d32;">Skill 3</span><h2 class="story-title">🌀 Multiplication — Times Tables Power!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p><span class="hw">Multiplication</span> is just FAST adding — groups of the same number! 🌀</p>
+        <p>3 × 4 means "3 groups of 4" = 4 + 4 + 4 = <strong>12</strong></p>
+        <p>Numi's times table tricks:</p>
+        <p>🔹 <span class="hw2">×2</span> = just double it! (7 × 2 = 14)</p>
+        <p>🔹 <span class="hw3">×5</span> = count by 5s: 5, 10, 15, 20...</p>
+        <p>🔹 <span class="hw">×10</span> = add a zero! (6 × 10 = 60)</p>
+        <p>🔹 <span class="hw2">×9</span> = the finger trick! Hold up 10 fingers. Put down finger #4 for 9 × 4. Count: 3 fingers left, gap, 6 fingers right = <strong>36</strong>! 🖐️</p>
+        <p>🔹 <span class="hw3">×4</span> = double then double again! (6 × 4 = 6×2=12, then 12×2 = 24)</p>
+        <p>Remember: <span class="hw">order doesn't matter!</span> 3 × 7 = 7 × 3 = 21</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🌀</div>
+        <div class="wonder-label">Array Power!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🔵</span> 🔵🔵🔵🔵 = 3 rows × 4 = 12</div>
+          <div class="fact-row"><span class="fact-icon">🔵</span> 🔵🔵🔵🔵</div>
+          <div class="fact-row"><span class="fact-icon">🔵</span> 🔵🔵🔵🔵</div>
+          <div class="fact-row"><span class="fact-icon">💡</span> Arrays help you SEE multiplication!</div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">What is 7 × 8?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅰️ 54</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb3')">🅱️ 56</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅲 48</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅳 63</button>
+      </div>
+      <div class="quiz-feedback" id="fb3"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 7: DIVISION -->
+<div class="page" data-page="7">
+  <div class="story-page">
+    <div class="page-corner">p.7</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#2e7d32;">Skill 3</span><h2 class="story-title">🌀 Division — Sharing & Grouping!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p><span class="hw">Division</span> is the opposite of multiplication! It means sharing equally or making groups. ÷</p>
+        <p><span class="hw2">Sharing</span>: 12 ÷ 3 = "Share 12 among 3 people" → each gets <strong>4</strong></p>
+        <p><span class="hw3">Grouping</span>: 12 ÷ 3 = "How many groups of 3 in 12?" → <strong>4 groups</strong></p>
+        <p>The ninja shortcut? Use your times tables BACKWARDS! 🔄</p>
+        <p>🔹 24 ÷ 6 = ? → Think: "6 × <strong>?</strong> = 24" → 6 × 4 = 24 → answer is <strong>4</strong>!</p>
+        <p>🔹 45 ÷ 9 = ? → Think: "9 × <strong>?</strong> = 45" → 9 × 5 = 45 → answer is <strong>5</strong>!</p>
+        <p><span class="hw">Remainders</span>: Sometimes it doesn't divide evenly!</p>
+        <p>🔹 14 ÷ 3 = <strong>4 remainder 2</strong> (because 3 × 4 = 12, and 14 − 12 = 2 left over)</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">÷</div>
+        <div class="wonder-label">Division is Backwards ×!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🔄</span> Division = reverse multiplication</div>
+          <div class="fact-row"><span class="fact-icon">🤝</span> Sharing = equal parts for each</div>
+          <div class="fact-row"><span class="fact-icon">📦</span> Grouping = how many groups?</div>
+          <div class="fact-row"><span class="fact-icon">🧩</span> Remainder = what's left over</div>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <div class="tip-box-title">💡 Numi's Division Trick!</div>
+      <div class="tip-box-text">If you know your times tables, you ALREADY know division! Just flip the question around. "35 ÷ 7 = ?" becomes "7 × ? = 35". The answer is 5! Times tables are the KEY to division mastery! 🔑</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 8: MULTIPLICATION & DIVISION WORD PROBLEMS -->
+<div class="page" data-page="8">
+  <div class="story-page">
+    <div class="page-corner">p.8</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#2e7d32;">Skill 3</span><h2 class="story-title">🌀 × and ÷ Word Problems!</h2></div>
+    <div class="story-text" data-tts style="margin-bottom:10px;">
+      <p>Challenge questions love giving you word problems for multiplication and division! Here's how to spot which operation to use: 🔍</p>
+    </div>
+    <table class="num-table">
+      <tr><th>Clue Words</th><th>Operation</th><th>Example</th></tr>
+      <tr><td>groups of, rows of, times, each, every, per</td><td><strong>Multiply (×)</strong></td><td>"5 bags with 8 apples each" → 5 × 8 = <strong>40</strong></td></tr>
+      <tr><td>share equally, divide, split, each gets</td><td><strong>Divide (÷)</strong></td><td>"24 stickers shared among 6 kids" → 24 ÷ 6 = <strong>4</strong></td></tr>
+      <tr><td>how many groups, how many in each</td><td><strong>Divide (÷)</strong></td><td>"How many teams of 4 from 20 kids?" → 20 ÷ 4 = <strong>5</strong></td></tr>
+      <tr><td>array, rows × columns</td><td><strong>Multiply (×)</strong></td><td>"3 rows of 6 chairs" → 3 × 6 = <strong>18</strong></td></tr>
+    </table>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">"A baker made 36 cupcakes and put them in boxes of 9. How many boxes did he fill?"</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅰️ 3</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb4')">🅱️ 4</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅲 5</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅳  6</button>
+      </div>
+      <div class="quiz-feedback" id="fb4"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 9: MONEY — AUSTRALIAN COINS & NOTES -->
+<div class="page" data-page="9">
+  <div class="story-page">
+    <div class="page-corner">p.9</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#f57f17;">Skill 4</span><h2 class="story-title">💰 Aussie Money — Coins & Notes!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Time to master <span class="hw">Australian money</span>! A ninja always knows the value of their coins! 💰</p>
+        <p>🪙 <span class="hw2">Coins:</span></p>
+        <p>🔹 <strong>5c</strong> (small, round, silver)</p>
+        <p>🔹 <strong>10c</strong> (larger, round, silver)</p>
+        <p>🔹 <strong>20c</strong> (12-sided, silver)</p>
+        <p>🔹 <strong>50c</strong> (big 12-sided, silver)</p>
+        <p>🔹 <strong>$1</strong> (small, gold)</p>
+        <p>🔹 <strong>$2</strong> (tiny, gold — smaller than $1!)</p>
+        <p>💵 <span class="hw3">Notes:</span> $5, $10, $20, $50, $100</p>
+        <p><span class="hw">Tricky!</span> Australia has NO 1c or 2c coins — prices get rounded to the nearest 5c when paying cash!</p>
+      </div>
+      <div class="story-art">
+        <div class="wonder-label">Australian Money!</div>
+        <div class="coins-area">
+          <div class="coin coin-silver" style="width:38px;height:38px;font-size:11px;">5c</div>
+          <div class="coin coin-silver" style="width:44px;height:44px;font-size:12px;">10c</div>
+          <div class="coin coin-silver" style="width:48px;height:48px;border-radius:35%;font-size:12px;">20c</div>
+          <div class="coin coin-silver" style="width:56px;height:56px;border-radius:35%;font-size:13px;">50c</div>
+          <div class="coin coin-gold" style="width:44px;height:44px;font-size:12px;">$1</div>
+          <div class="coin coin-gold" style="width:38px;height:38px;font-size:11px;">$2</div>
+        </div>
+        <div class="coins-area">
+          <div class="coin coin-note" style="background:linear-gradient(135deg,#c62828,#e53935);">$5</div>
+          <div class="coin coin-note" style="background:linear-gradient(135deg,#1565c0,#42a5f5);">$10</div>
+          <div class="coin coin-note" style="background:linear-gradient(135deg,#e65100,#ff9800);">$20</div>
+          <div class="coin coin-note" style="background:linear-gradient(135deg,#f9a825,#ffeb3b);color:#333;">$50</div>
+          <div class="coin coin-note" style="background:linear-gradient(135deg,#2e7d32,#66bb6a);">$100</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 10: MONEY — ADDING & GIVING CHANGE -->
+<div class="page" data-page="10">
+  <div class="story-page">
+    <div class="page-corner">p.10</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#f57f17;">Skill 4</span><h2 class="story-title">💰 Adding Money & Giving Change!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>To add money, start with the <span class="hw">biggest</span> and count on! 💰</p>
+        <p>Example: $2 + $1 + 50c + 20c + 5c</p>
+        <p>→ $2 ... $3 ... $3.50 ... $3.70 ... <span class="hw2">$3.75</span> ✅</p>
+        <p><span class="hw3">Giving Change</span> — use the "count up" method!</p>
+        <p>You buy something for <strong>$3.40</strong> and pay with <strong>$5.00</strong>.</p>
+        <p>🔹 Start at $3.40</p>
+        <p>🔹 +10c = $3.50</p>
+        <p>🔹 +50c = $4.00</p>
+        <p>🔹 +$1 = $5.00 ✅</p>
+        <p>Change = 10c + 50c + $1 = <span class="hw">$1.60</span>!</p>
+        <p><span class="hw2">Top tip:</span> Always write money with 2 decimal places! $3.40 not $3.4 ✍️</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🛒</div>
+        <div class="wonder-label">Shopping Ninja!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">💡</span> Add biggest coins/notes first</div>
+          <div class="fact-row"><span class="fact-icon">🔢</span> Change = paid − cost</div>
+          <div class="fact-row"><span class="fact-icon">⬆️</span> "Count up" for easy change</div>
+          <div class="fact-row"><span class="fact-icon">✍️</span> Always 2 decimal places!</div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">You buy a toy for $7.50 and pay with $10. How much change do you get?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb5')">🅰️ $3.50</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb5')">🅱️ $2.50</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb5')">🅲 $2.00</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb5')">🅳 $1.50</button>
+      </div>
+      <div class="quiz-feedback" id="fb5"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 11: REVIEW — MNEMONIC -->
+<div class="page" data-page="11">
+  <div class="story-page">
+    <div class="page-corner">p.11</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--orange);">Review</span><h2 class="story-title">🧠 Remember All 4 Ninja Skills!</h2></div>
+    <div class="story-text" data-tts style="margin-bottom:12px;">
+      <p>Numi's memory trick to remember your 4 number ninja skills:</p>
+      <p style="text-align:center;font-family:'Fredoka One',cursive;font-size:18px;color:var(--ninja);margin:12px 0;">🌟 "<span class="hw">P</span>owerful <span class="hw">A</span>mazing <span class="hw">M</span>aths <span class="hw">M</span>oney!" 🌟</p>
+    </div>
+    <div class="memory-card">
+      <div class="mem-row" onclick="revealMem(this,'m1','🏯 Place Value — ones, tens, hundreds, thousands, expanded form!')">
+        <span class="mem-letter">P</span>
+        <span class="mem-word">Powerful</span>
+        <span class="mem-tip" id="m1">🏯 ??? (tap to reveal!)</span>
+      </div>
+      <div class="mem-row" onclick="revealMem(this,'m2','⚔️ Addition & Subtraction — jump, split, compensate!')">
+        <span class="mem-letter">A</span>
+        <span class="mem-word">Amazing</span>
+        <span class="mem-tip" id="m2">⚔️ ??? (tap to reveal!)</span>
+      </div>
+      <div class="mem-row" onclick="revealMem(this,'m3','🌀 Multiplication & Division — times tables, arrays, remainders!')">
+        <span class="mem-letter">M</span>
+        <span class="mem-word">Maths</span>
+        <span class="mem-tip" id="m3">🌀 ??? (tap to reveal!)</span>
+      </div>
+      <div class="mem-row" onclick="revealMem(this,'m4','💰 Money — Aussie coins, adding up, giving change!')">
+        <span class="mem-letter">M</span>
+        <span class="mem-word">Money</span>
+        <span class="mem-tip" id="m4">💰 ??? (tap to reveal!)</span>
+      </div>
+    </div>
+    <div style="margin-top:14px;">
+      <div class="wonder-facts">
+        <div class="fact-row"><span class="fact-icon">🏯</span> <strong>Place Value:</strong> Every digit has a place and a value!</div>
+        <div class="fact-row"><span class="fact-icon">⚔️</span> <strong>Add/Subtract:</strong> Jump, split, or compensate!</div>
+        <div class="fact-row"><span class="fact-icon">🌀</span> <strong>Multiply/Divide:</strong> Times tables are the key!</div>
+        <div class="fact-row"><span class="fact-icon">💰</span> <strong>Money:</strong> Biggest first, count up for change!</div>
+        <div class="fact-row"><span class="fact-icon">📖</span> <strong>Word Problems:</strong> Circle clue words first!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 12: FINAL QUIZ -->
+<div class="page" data-page="12">
+  <div class="quiz-page" id="quizPage">
+    <div id="quizActive">
+      <div class="story-header"><span class="chapter-badge" style="background:var(--orange);">🏆 Final Quiz!</span><h2 class="story-title">The Number Ninja Challenge!</h2></div>
+      <p style="font-size:14px;color:#666;margin-bottom:16px;">Numi wants to test your number skills! Answer 8 questions. You need <strong>at least 6 correct</strong> to earn your certificate! 🌟</p>
+      <div class="quiz-progress-row">
+        <span class="q-counter" id="qCounter">Question 1 of 8</span>
+        <span class="q-score-badge" id="qScoreBadge">Score: 0 / 8</span>
+      </div>
+      <div class="quiz-question-card">
+        <div class="quiz-q-emoji" id="qEmoji">🥷</div>
+        <div class="quiz-q-passage" id="qPassage"></div>
+        <div class="quiz-q-text" id="qText"></div>
+      </div>
+      <div class="fquiz-options" id="fquizOptions"></div>
+      <div class="q-result-msg" id="qResultMsg"></div>
+      <button class="next-q-btn" id="nextQBtn" onclick="nextQuestion()" style="display:none;">Next Question →</button>
+    </div>
+    <div id="quizPass" style="display:none;">
+      <div class="result-screen">
+        <div class="result-trophy">🏆</div>
+        <div class="result-title" style="color:#2e7d32;">AMAZING! Number Ninja!</div>
+        <div class="result-score" id="passScore">8 / 8</div>
+        <div class="result-msg" id="passMsg"></div>
+        <button class="proceed-btn" onclick="goToCert()">🎓 Get My Certificate! →</button>
+      </div>
+    </div>
+    <div id="quizFail" style="display:none;">
+      <div class="result-screen">
+        <div class="result-trophy">🌟</div>
+        <div class="result-title" style="color:var(--coral);">Almost There!</div>
+        <div class="result-score" id="failScore">3 / 8</div>
+        <div class="result-msg">You need at least 6 correct to earn your certificate.<br>Re-read the lessons and try again! 💪</div>
+        <button class="retry-btn" onclick="restartQuiz()">🔄 Try Again!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 13: CERTIFICATE -->
+<div class="page" data-page="13">
+  <div class="cert-page">
+    <div class="page-corner">🎓</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--yellow);color:#856404;">🏆 Certificate</span><h2 class="story-title">Your Number Ninja Certificate!</h2></div>
+    <div class="cert-controls">
+      <input class="cert-name-input" id="certName" placeholder="Type the child's name here..." oninput="drawCert()"/>
+      <button class="cert-dl-btn" onclick="downloadCert()">⬇ Download PNG</button>
+      <button class="cert-print-btn" onclick="printCert()">🖨 Print</button>
+    </div>
+    <div class="cert-wrap">
+      <canvas id="cert" width="900" height="630"></canvas>
+    </div>
+    <p class="cert-hint">Type the name above, then click Download or Print!</p>
+  </div>
+</div>
+
+</div>
+
+<script>
+(function(){const c=document.getElementById('clouds');const e=['☁️','⛅','✨'];for(let i=0;i<6;i++){const el=document.createElement('div');el.className='cloud';el.textContent=e[i%e.length];el.style.top=(Math.random()*80)+'%';el.style.animationDuration=(20+Math.random()*30)+'s';el.style.animationDelay=(Math.random()*20)+'s';el.style.fontSize=(40+Math.random()*30)+'px';c.appendChild(el);}})();
+
+const TOTAL=13;let currentPage=0;const pages=document.querySelectorAll('.page');
+const dotsC=document.getElementById('pageDots');for(let i=0;i<=TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.onclick=()=>goToPage(i);dotsC.appendChild(d);}
+
+function goToPage(n){if(n<0||n>TOTAL)return;if(n===13&&!quizPassed){alert('Pass the quiz first to get your certificate! 🌟');return;}stopTTS();pages[currentPage].classList.remove('active');currentPage=n;pages[currentPage].classList.add('active');document.getElementById('prevBtn').disabled=currentPage===0;document.getElementById('nextBtn').disabled=currentPage===TOTAL;document.getElementById('progressFill').style.width=Math.round(currentPage/TOTAL*100)+'%';document.getElementById('progressText').textContent='Page '+(currentPage+1)+' of '+(TOTAL+1);document.querySelectorAll('.dot').forEach((d,i)=>{d.classList.toggle('active',i===currentPage);if(i<currentPage)d.classList.add('visited');});if(currentPage===12)initQuiz();if(currentPage===13)setTimeout(drawCert,120);window.scrollTo({top:0,behavior:'smooth'});}
+function changePage(d){goToPage(currentPage+d);}
+
+let isSpeaking=false,utterance=null;
+function toggleTTS(){if(isSpeaking){stopTTS();return;}const el=pages[currentPage].querySelector('[data-tts]')||pages[currentPage].querySelector('.story-text')||pages[currentPage].querySelector('.story-page');if(!el)return;speak(el.textContent);}
+function speak(text){if(!('speechSynthesis' in window))return;stopTTS();text=text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{200D}\u{20E3}\u{E0020}-\u{E007F}]/gu,'').replace(/\s+/g,' ').trim();utterance=new SpeechSynthesisUtterance(text);utterance.rate=0.78;utterance.pitch=1.15;utterance.lang='en-AU';const v=speechSynthesis.getVoices();const pref=v.find(x=>x.name.includes('Karen'))||v.find(x=>x.name.includes('Samantha'))||v.find(x=>x.lang.startsWith('en'));if(pref)utterance.voice=pref;utterance.onstart=()=>{isSpeaking=true;document.getElementById('ttsBtn').classList.add('speaking');document.getElementById('ttsBtn').textContent='🔊 Reading...';document.getElementById('ttsStop').style.display='inline-flex';};utterance.onend=resetTTS;utterance.onerror=resetTTS;speechSynthesis.speak(utterance);}
+function stopTTS(){if('speechSynthesis' in window)speechSynthesis.cancel();resetTTS();}
+function resetTTS(){isSpeaking=false;document.getElementById('ttsBtn').classList.remove('speaking');document.getElementById('ttsBtn').textContent='🔊 Read Aloud';document.getElementById('ttsStop').style.display='none';}
+if('speechSynthesis' in window)speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
+
+function miniQuiz(btn,type,fbId){const c=btn.closest('.quiz-bubble');c.querySelectorAll('.q-opt').forEach(b=>b.style.pointerEvents='none');const fb=document.getElementById(fbId);if(type==='correct'){btn.classList.add('correct');fb.innerHTML='<span style="color:#27ae60;">🎉 Correct! Great work, Ninja!</span>';}else{btn.classList.add('wrong');c.querySelectorAll('.q-opt').forEach(b=>{if(b.onclick&&b.onclick.toString().includes("'correct'"))b.classList.add('correct');});fb.innerHTML='<span style="color:#c0392b;">Not quite! The green one is correct. Keep training! 💪</span>';}}
+
+function revealMem(row,id,answer){document.getElementById(id).textContent=answer;document.getElementById(id).style.color='var(--ninja)';row.style.background='rgba(230,81,0,.05)';}
+
+const QUESTIONS=[
+  {emoji:'🏯',q:'What is the value of the digit 6 in the number 2,637?',opts:['6','60','600','6,000'],ans:2},
+  {emoji:'🏯',q:'Round 478 to the nearest hundred.',opts:['400','470','480','500'],ans:3},
+  {emoji:'⚔️',q:'Using the split strategy: 53 + 29 = ?',opts:['72','82','92','78'],ans:1},
+  {emoji:'⚔️',q:'What is 503 − 248?',opts:['245','255','265','355'],ans:1},
+  {emoji:'🌀',q:'What is 6 × 7?',opts:['36','42','48','56'],ans:1},
+  {emoji:'🌀',q:'A farmer has 48 eggs. He puts them in cartons of 6. How many cartons does he need?',opts:['6','7','8','9'],ans:2},
+  {emoji:'💰',q:'You have two $2 coins, one $1 coin and three 20c coins. How much do you have?',opts:['$5.60','$5.40','$4.60','$5.20'],ans:0},
+  {emoji:'💰',q:'A book costs $8.50. You pay with $10. How much change?',opts:['$2.50','$1.50','$2.00','$1.00'],ans:1}
+];
+const QCOUNT=QUESTIONS.length;const PASS_THRESHOLD=6;
+let qIdx=0,score=0,answered=false,quizPassed=false;
+function initQuiz(){qIdx=0;score=0;answered=false;document.getElementById('quizActive').style.display='block';document.getElementById('quizPass').style.display='none';document.getElementById('quizFail').style.display='none';renderQ();}
+function renderQ(){const q=QUESTIONS[qIdx];document.getElementById('qEmoji').textContent=q.emoji;document.getElementById('qPassage').textContent=q.passage||'';document.getElementById('qPassage').style.display=q.passage?'block':'none';document.getElementById('qText').textContent=q.q;document.getElementById('qCounter').textContent='Question '+(qIdx+1)+' of '+QCOUNT;document.getElementById('qScoreBadge').textContent='Score: '+score+' / '+QCOUNT;document.getElementById('qResultMsg').textContent='';document.getElementById('nextQBtn').style.display='none';answered=false;const o=document.getElementById('fquizOptions');o.innerHTML='';q.opts.forEach((t,i)=>{const b=document.createElement('button');b.className='fq-opt';b.textContent=t;b.onclick=()=>answerQ(i,b);o.appendChild(b);});}
+function answerQ(i,btn){if(answered)return;answered=true;const q=QUESTIONS[qIdx];document.querySelectorAll('.fq-opt').forEach(b=>b.classList.add('locked'));const msg=document.getElementById('qResultMsg');if(i===q.ans){btn.classList.add('correct');score++;msg.innerHTML='<span style="color:#27ae60;">🎉 Correct!</span>';}else{btn.classList.add('wrong');document.querySelectorAll('.fq-opt')[q.ans].classList.add('correct');msg.innerHTML='<span style="color:#c0392b;">Not quite! Correct answer is in green. 💪</span>';}document.getElementById('qScoreBadge').textContent='Score: '+score+' / '+QCOUNT;document.getElementById('nextQBtn').style.display='block';document.getElementById('nextQBtn').textContent=qIdx===QCOUNT-1?'See My Result! 🏁':'Next Question →';}
+function nextQuestion(){qIdx++;if(qIdx>=QCOUNT){showResult();return;}renderQ();}
+function showResult(){document.getElementById('quizActive').style.display='none';if(score>=PASS_THRESHOLD){quizPassed=true;document.getElementById('quizPass').style.display='block';document.getElementById('passScore').textContent=score+' / '+QCOUNT;document.getElementById('passMsg').innerHTML=score===QCOUNT?'PERFECT SCORE! You\'re an unstoppable Number Ninja! 🏆🥷🎉':'Brilliant work! You really know your numbers! 🔢✨';}else{document.getElementById('quizFail').style.display='block';document.getElementById('failScore').textContent=score+' / '+QCOUNT;}}
+function restartQuiz(){initQuiz();}
+function goToCert(){goToPage(13);}
+
+const canvas=document.getElementById('cert'),ctx=canvas.getContext('2d');
+function drawStar(cx,cy,r,pts,col){ctx.save();ctx.fillStyle=col;ctx.beginPath();for(let i=0;i<pts*2;i++){const a=(i*Math.PI/pts)-Math.PI/2,rd=i%2===0?r:r*.45;i===0?ctx.moveTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a)):ctx.lineTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a));}ctx.closePath();ctx.fill();ctx.restore();}
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();}
+const qrImage=new Image();let qrReady=false;qrImage.crossOrigin='anonymous';qrImage.onload=()=>{qrReady=true;drawCert();};qrImage.src='https://quickchart.io/qr?text='+encodeURIComponent('https://fivetofifteen.com/')+'&size=180';
+
+function drawCert(){
+  const name=document.getElementById('certName').value.trim()||'Number Ninja';
+  const CW=900,CH=630;ctx.clearRect(0,0,CW,CH);
+  const bg=ctx.createLinearGradient(0,0,CW,CH);bg.addColorStop(0,'#FFF8F0');bg.addColorStop(.5,'#FFF3E0');bg.addColorStop(1,'#FFFDE7');ctx.fillStyle=bg;rr(0,0,CW,CH,20);ctx.fill();
+  ctx.strokeStyle='#ff9f1c';ctx.lineWidth=6;rr(8,8,CW-16,CH-16,16);ctx.stroke();
+  ctx.strokeStyle='#e65100';ctx.lineWidth=2;ctx.setLineDash([8,5]);rr(20,20,CW-40,CH-40,10);ctx.stroke();ctx.setLineDash([]);
+  [[52,52],[CW-52,52],[52,CH-52],[CW-52,CH-52]].forEach(([x,y])=>drawStar(x,y,18,5,'#ff9f1c'));
+  const rg=ctx.createLinearGradient(CW/2-220,0,CW/2+220,0);rg.addColorStop(0,'#e65100');rg.addColorStop(.5,'#f57c00');rg.addColorStop(1,'#e65100');ctx.fillStyle=rg;rr(CW/2-220,28,440,44,22);ctx.fill();
+  ctx.fillStyle='#ffd93d';ctx.font='bold 17px "Fredoka One",cursive';ctx.textAlign='center';ctx.fillText('🌟  THE NUMBER DOJO  🌟',CW/2,57);
+  ctx.font='64px serif';ctx.fillText('🥷',CW/2,142);
+  ctx.fillStyle='#e65100';ctx.font='bold 40px "Fredoka One",cursive';ctx.fillText('Number Ninja Certificate!',CW/2,196);
+  ctx.fillStyle='#888';ctx.font='17px "Nunito",sans-serif';ctx.fillText('This is to proudly certify that the amazing mathematician',CW/2,232);
+  ctx.strokeStyle='#ff9f1c';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(CW/2-240,276);ctx.lineTo(CW/2+240,276);ctx.stroke();
+  ctx.fillStyle='#e65100';ctx.font='bold 38px "Fredoka One",cursive';ctx.fillText(name,CW/2,270);
+  ctx.fillStyle='#444';ctx.font='17px "Nunito",sans-serif';ctx.fillText('has completed the Number Dojo and is now an official',CW/2,310);
+  ctx.fillStyle='#e65100';ctx.font='bold 24px "Fredoka One",cursive';ctx.fillText('🌟 Certified Number Ninja 🌟',CW/2,344);
+  ctx.fillStyle='#888';ctx.font='14px "Nunito",sans-serif';ctx.fillText('Mastered: Place Value • Addition & Subtraction • Multiplication & Division • Money',CW/2,372);
+  const badges=[{t:'✓ Place Value Pro',bg:'#fff3e0',c:'#e65100'},{t:'✓ Operations Master',bg:'#e3f2fd',c:'#1565c0'},{t:'✓ Times Table Ninja',bg:'#e8f5e9',c:'#2e7d32'},{t:'✓ Money Wizard!',bg:'#fffde7',c:'#f57f17'}];
+  const bw=168,bh=30,bg2=10,tot=badges.length*(bw+bg2)-bg2;let bx=CW/2-tot/2;
+  badges.forEach(b=>{ctx.fillStyle=b.bg;rr(bx,390,bw,bh,15);ctx.fill();ctx.fillStyle=b.c;ctx.font='bold 12px "Nunito",sans-serif';ctx.textAlign='center';ctx.fillText(b.t,bx+bw/2,409);bx+=bw+bg2;});
+  ctx.font='32px serif';ctx.fillText('🏯  ⚔️  🌀  💰  🥷',CW/2,468);
+  ctx.fillStyle='#ffffff';ctx.strokeStyle='#e7d7bf';ctx.lineWidth=2;rr(CW-154,68,102,102,14);ctx.fill();ctx.stroke();
+  if(qrReady){ctx.drawImage(qrImage,CW-144,78,82,82);}else{ctx.fillStyle='#fff7ef';ctx.fillRect(CW-144,78,82,82);ctx.fillStyle='#e65100';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('QR loading...',CW-103,122);}
+  ctx.fillStyle='#e65100';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('Scan to visit',CW-103,185);
+  ctx.fillStyle='#9e9e9e';ctx.font='bold 12px "Nunito",sans-serif';ctx.fillText('Presented by fivetofifteen.com',CW/2,538);
+  const d=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});ctx.fillStyle='#bbb';ctx.font='12px "Nunito",sans-serif';ctx.fillText('Awarded on '+d,CW/2,562);
+  [[80,200],[CW-80,200],[80,420],[CW-80,420]].forEach(([x,y])=>drawStar(x,y,10,5,'rgba(255,159,28,.35)'));
+}
+function downloadCert(){drawCert();const a=document.createElement('a');a.download='number-ninja-certificate.png';a.href=canvas.toDataURL('image/png');a.click();}
+function printCert(){drawCert();const u=canvas.toDataURL('image/png');const w=window.open('','_blank');w.document.write('<!DOCTYPE html><html><head><title>Number Ninja Certificate<\/title><style>body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f5f5f5;}img{max-width:100%;box-shadow:0 4px 20px rgba(0,0,0,.15);border-radius:12px;}@media print{body{background:white;}img{box-shadow:none;width:100%;}}<\/style><\/head><body><img src="'+u+'"/><\/body><\/html>');w.document.close();w.onload=()=>{w.focus();w.print();};}
+drawCert();
+</script>
+</body>
+</html>

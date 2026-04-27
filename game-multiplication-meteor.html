@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multiplication Meteor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet" />
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="voice-assist.js"></script>
+  <style>
+    :root{
+      --ink:#1f2f4d;
+      --bg:#f8fbff;
+      --card:#fffefa;
+      --line:#e3e8f8;
+      --mint:#39c3ad;
+      --blue:#4d96ff;
+      --sun:#ffd166;
+      --rose:#ff7f96;
+    }
+    html{font-size:17px}
+    @media (max-width:500px){html{font-size:16px}}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      min-height:100vh;
+      font-family:'Nunito',sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 15% 9%, rgba(77,150,255,.18) 0, transparent 26%),
+        radial-gradient(circle at 90% 12%, rgba(255,209,102,.25) 0, transparent 30%),
+        linear-gradient(180deg,#f5f8ff 0%,#fff9ec 100%);
+      padding:16px;
+    }
+    .app{
+      max-width:980px;
+      margin:0 auto;
+      border:1px solid var(--line);
+      border-radius:26px;
+      overflow:hidden;
+      background:var(--card);
+      box-shadow:0 16px 34px rgba(33,45,77,.1);
+    }
+    .top{
+      padding:14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      border-bottom:1px solid var(--line);
+      background:linear-gradient(140deg,#eff6ff 0%,#fff6e8 100%);
+    }
+    .home-link{
+      display:inline-flex;
+      min-height:42px;
+      align-items:center;
+      gap:8px;
+      text-decoration:none;
+      border-radius:999px;
+      padding:9px 14px;
+      color:#fff;
+      font-weight:800;
+      background:linear-gradient(135deg,var(--mint) 0%,#48ceb3 100%);
+    }
+    .title{
+      display:flex;
+      align-items:center;
+      gap:9px;
+      font-family:'Fredoka One',cursive;
+      color:#2b426d;
+      font-size:1.2rem;
+    }
+    .title-chip{
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg,#e1eeff 0%,#ffe8b3 100%);
+    }
+    .content{padding:16px;display:grid;gap:12px}
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+    }
+    .stat{
+      border:1px solid var(--line);
+      border-radius:15px;
+      padding:10px;
+      text-align:center;
+      background:#fff;
+    }
+    .stat .label{
+      font-size:.76rem;
+      text-transform:uppercase;
+      letter-spacing:.6px;
+      color:#7482a1;
+      font-weight:800;
+    }
+    .stat .value{
+      font-family:'Fredoka One',cursive;
+      font-size:1.2rem;
+      color:#2f4e7f;
+      margin-top:3px;
+      display:block;
+    }
+    .question-wrap{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:10px;
+      text-align:center;
+      background:#fff;
+    }
+    .question-wrap .label{
+      font-size:.8rem;
+      text-transform:uppercase;
+      letter-spacing:.7px;
+      color:#7282a0;
+      font-weight:800;
+    }
+    .question{
+      margin-top:4px;
+      font-family:'Fredoka One',cursive;
+      font-size:2rem;
+      color:#1d4d99;
+    }
+    .arena{
+      position:relative;
+      min-height:380px;
+      height:56vh;
+      max-height:530px;
+      overflow:hidden;
+      border:2px dashed #d5e0fb;
+      border-radius:22px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(77,150,255,.08) 0, transparent 24%),
+        radial-gradient(circle at 85% 26%, rgba(255,127,150,.10) 0, transparent 28%),
+        linear-gradient(180deg,#f4f8ff 0%,#fffdf5 100%);
+      touch-action:manipulation;
+    }
+    .meteor{
+      position:absolute;
+      border:none;
+      border-radius:999px;
+      color:#1f3259;
+      font-family:'Fredoka One',cursive;
+      font-size:1.12rem;
+      box-shadow:
+        0 8px 18px rgba(31,50,89,.17),
+        -14px -2px 22px rgba(255,176,96,.28);
+      cursor:pointer;
+      transition:transform .08s ease, filter .12s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:0 10px;
+      min-height:48px;
+    }
+    .meteor:active{transform:scale(.95)}
+    .meteor.good{outline:3px solid rgba(57,195,173,.35);outline-offset:2px}
+    .meteor.pop{animation:pop .2s ease forwards;pointer-events:none}
+    @keyframes pop{to{transform:scale(1.25);opacity:0}}
+    .overlay{
+      position:absolute;
+      inset:0;
+      z-index:4;
+      display:grid;
+      place-items:center;
+      background:rgba(19,29,54,.45);
+      padding:16px;
+    }
+    .overlay-card{
+      width:min(100%,560px);
+      background:#fff;
+      border-radius:20px;
+      border:1px solid #e6e9f4;
+      box-shadow:0 16px 28px rgba(21,32,60,.2);
+      text-align:center;
+      padding:20px;
+    }
+    .overlay-card h1{
+      font-family:'Fredoka One',cursive;
+      color:#2e466f;
+      font-size:1.55rem;
+      margin-bottom:8px;
+    }
+    .overlay-card p{
+      color:#5f7090;
+      line-height:1.65;
+      font-size:1rem;
+      margin-bottom:12px;
+    }
+    .tip{
+      display:inline-block;
+      background:#eef7ff;
+      border:1px solid #d6e9ff;
+      color:#3e5985;
+      border-radius:14px;
+      padding:8px 10px;
+      font-size:.88rem;
+      font-weight:800;
+      margin-bottom:14px;
+    }
+    .btn{
+      border:none;
+      border-radius:14px;
+      min-height:46px;
+      padding:12px 18px;
+      color:#fff;
+      cursor:pointer;
+      font-family:'Fredoka One',cursive;
+      font-size:.95rem;
+      background:linear-gradient(135deg,var(--blue) 0%,#3a78d7 100%);
+    }
+    .guide{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+    }
+    .guide-card{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      padding:10px;
+      font-size:.9rem;
+      line-height:1.55;
+      color:#64738f;
+    }
+    .guide-card strong{
+      display:block;
+      color:#2f4a74;
+      margin-bottom:4px;
+      font-size:.92rem;
+    }
+    @media (max-width:760px){
+      .stats,.guide{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .question{font-size:1.75rem}
+      .arena{height:52vh}
+    }
+    @media (max-width:520px){
+      body{padding:10px}
+      .top{padding:12px}
+      .content{padding:12px}
+      .stats,.guide{grid-template-columns:1fr}
+      .title{font-size:1.04rem}
+      .meteor{font-size:1rem}
+    }
+  </style>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+  <div class="app">
+    <div class="top">
+      <a class="home-link" href="https://fivetofifteen.com/#games">🏠 Back to Games</a>
+      <div class="title"><span class="title-chip">☄️</span> Multiplication Meteor</div>
+    </div>
+
+    <div class="content">
+      <div class="voice-bar">
+        <button class="voice-btn voice-btn-read" id="voiceReadBtn" type="button">🔊 Read Task</button>
+        <button class="voice-btn voice-btn-stop" id="voiceStopBtn" type="button" style="display:none;">⏹ Stop</button>
+        <button class="voice-btn voice-btn-mute" id="voiceMuteBtn" type="button" aria-pressed="false">🔊 Sound On</button>
+        <span class="voice-note">Hear the current multiplication mission.</span>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><span class="label">Score</span><span class="value" id="scoreValue">0</span></div>
+        <div class="stat"><span class="label">Question</span><span class="value" id="questionValue">1</span></div>
+        <div class="stat"><span class="label">Lives</span><span class="value" id="livesValue">3</span></div>
+        <div class="stat"><span class="label">Time</span><span class="value" id="timeValue">60s</span></div>
+      </div>
+
+      <div class="question-wrap">
+        <div class="label">Tap the correct multiplication answer</div>
+        <div class="question" id="questionText">3 × 4 = ?</div>
+      </div>
+
+      <div class="arena" id="arena">
+        <div class="overlay" id="startOverlay">
+          <div class="overlay-card">
+            <h1>Meteor Mission!</h1>
+            <p>Tap the meteor with the correct answer before it escapes. You have 60 seconds and 3 lives.</p>
+            <span class="tip">Tip: Correct meteors look slightly brighter.</span><br />
+            <button class="btn" id="startBtn" type="button">Start Game</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="guide">
+        <div class="guide-card"><strong>🎯 Goal</strong>Build multiplication speed with fun, repeated practice.</div>
+        <div class="guide-card"><strong>⚡ Play Smart</strong>Tap quickly but carefully to protect your lives.</div>
+        <div class="guide-card"><strong>🔁 Practice</strong>Replay and beat your best score each round.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const GAME_SECONDS = 60;
+      const SPAWN_MS = 720;
+      const MAX_METEORS = 8;
+
+      const arena = document.getElementById('arena');
+      const startOverlay = document.getElementById('startOverlay');
+      const startBtn = document.getElementById('startBtn');
+      const scoreValue = document.getElementById('scoreValue');
+      const questionValue = document.getElementById('questionValue');
+      const livesValue = document.getElementById('livesValue');
+      const timeValue = document.getElementById('timeValue');
+      const questionText = document.getElementById('questionText');
+
+      let running = false;
+      let score = 0;
+      let questionNumber = 1;
+      let lives = 3;
+      let timeLeft = GAME_SECONDS;
+      let answer = 0;
+      let meteors = [];
+      let rafId = null;
+      let timerId = null;
+      let spawnId = null;
+      let lastTs = 0;
+
+      function overlayText() {
+        return startOverlay ? startOverlay.textContent.replace(/\s+/g, ' ').trim() : '';
+      }
+
+      function randomFrom(list) {
+        return list[rand(0, list.length - 1)];
+      }
+
+      function sayLine(text) {
+        if (window.voiceAssistSay) {
+          window.voiceAssistSay(text, { interrupt: true, rate: 1.03, pitch: 1.07, lang: 'en-AU' });
+        }
+      }
+
+      function rand(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      function setQuestion() {
+        const left = rand(2, 10);
+        const right = rand(2, 12);
+        answer = left * right;
+        questionText.textContent = left + ' × ' + right + ' = ?';
+      }
+
+      function wrongAnswer() {
+        let value = answer + rand(-12, 12);
+        if (value === answer || value < 0) value = answer + rand(1, 8);
+        return value;
+      }
+
+      function updateStats() {
+        scoreValue.textContent = String(score);
+        questionValue.textContent = String(questionNumber);
+        livesValue.textContent = lives > 0 ? '❤'.repeat(lives) : '0';
+        timeValue.textContent = String(timeLeft) + 's';
+      }
+
+      function removeMeteor(meteor) {
+        meteors = meteors.filter(function (m) { return m !== meteor; });
+        if (meteor.el && meteor.el.parentNode) {
+          meteor.el.parentNode.removeChild(meteor.el);
+        }
+      }
+
+      function clearMeteors() {
+        meteors.forEach(function (m) {
+          if (m.el && m.el.parentNode) {
+            m.el.parentNode.removeChild(m.el);
+          }
+        });
+        meteors = [];
+      }
+
+      function endGame() {
+        running = false;
+        clearInterval(timerId);
+        clearInterval(spawnId);
+        cancelAnimationFrame(rafId);
+
+        const best = Math.max(Number(localStorage.getItem('multiplicationMeteorBest') || 0), score);
+        localStorage.setItem('multiplicationMeteorBest', String(best));
+
+        const message = score >= 150
+          ? 'Outstanding! Your multiplication reflex is super strong.'
+          : score >= 80
+            ? 'Great job! Keep practising for an even higher score.'
+            : 'Good effort! One more round will make you stronger.';
+
+        sayLine('Round complete. ' + message + ' Your score is ' + score + '.');
+
+        startOverlay.innerHTML =
+          '<div class="overlay-card">' +
+          '<h1>Round Complete</h1>' +
+          '<p>Your score: <strong>' + score + '</strong> · Best score: <strong>' + best + '</strong></p>' +
+          '<span class="tip">' + message + '</span><br />' +
+          '<button class="btn" id="restartBtn" type="button">Play Again</button>' +
+          '</div>';
+        startOverlay.style.display = 'grid';
+
+        const restartBtn = document.getElementById('restartBtn');
+        if (restartBtn) restartBtn.addEventListener('click', startGame);
+      }
+
+      function meteorColor(value) {
+        if (value === answer) return 'linear-gradient(135deg,#b5f3df 0%,#73ddbf 100%)';
+        const shades = [
+          'linear-gradient(135deg,#ffd8c2 0%,#ffb28a 100%)',
+          'linear-gradient(135deg,#dfe9ff 0%,#abc3ff 100%)',
+          'linear-gradient(135deg,#ffe8bf 0%,#ffd27b 100%)',
+          'linear-gradient(135deg,#eddfff 0%,#cdb5ff 100%)'
+        ];
+        return shades[rand(0, shades.length - 1)];
+      }
+
+      function createMeteor(forceCorrect) {
+        if (!running || meteors.length >= MAX_METEORS) return;
+        const rect = arena.getBoundingClientRect();
+        const width = rand(62, 90);
+        const height = rand(50, 64);
+        const x = rand(8, Math.max(8, Math.floor(rect.width - width - 8)));
+        const value = forceCorrect ? answer : wrongAnswer();
+
+        const el = document.createElement('button');
+        el.className = 'meteor' + (value === answer ? ' good' : '');
+        el.type = 'button';
+        el.textContent = String(value);
+        el.style.width = width + 'px';
+        el.style.height = height + 'px';
+        el.style.left = '0px';
+        el.style.top = '0px';
+        el.style.background = meteorColor(value);
+
+        const meteor = {
+          el: el,
+          x: x,
+          y: -height - rand(0, 60),
+          speed: rand(76, 120),
+          width: width,
+          height: height,
+          value: value
+        };
+
+        el.addEventListener('click', function () {
+          if (!running) return;
+          if (meteor.value === answer) {
+            sayLine(randomFrom([
+              'Brilliant. That meteor was correct.',
+              'Great hit. You got the right answer.',
+              'Well done. Keep chasing the right one.',
+              'Nice work. Correct multiplication answer.'
+            ]));
+            score += 12;
+            questionNumber += 1;
+            setQuestion();
+            clearMeteors();
+            createMeteor(true);
+            createMeteor(false);
+            createMeteor(false);
+          } else {
+            sayLine(randomFrom([
+              'Sorry, that one is not correct.',
+              'Not quite. Check the multiplication again.',
+              'Oops. Try another meteor.',
+              'Close. Look carefully and try again.'
+            ]));
+            lives -= 1;
+            el.style.filter = 'brightness(.88)';
+          }
+          el.classList.add('pop');
+          window.setTimeout(function () { removeMeteor(meteor); }, 170);
+          updateStats();
+          if (lives <= 0) endGame();
+        });
+
+        arena.appendChild(el);
+        meteors.push(meteor);
+      }
+
+      function gameLoop(ts) {
+        if (!running) return;
+        if (!lastTs) lastTs = ts;
+        const dt = (ts - lastTs) / 1000;
+        lastTs = ts;
+        const rect = arena.getBoundingClientRect();
+
+        meteors.slice().forEach(function (meteor) {
+          meteor.y += meteor.speed * dt;
+          meteor.el.style.transform = 'translate(' + meteor.x + 'px,' + meteor.y + 'px)';
+
+          if (meteor.y > rect.height + 12) {
+            const wasCorrect = meteor.value === answer;
+            removeMeteor(meteor);
+            if (wasCorrect && running) {
+              sayLine('The correct meteor escaped. Stay focused and try the next one.');
+              lives -= 1;
+              updateStats();
+              if (lives <= 0) {
+                endGame();
+                return;
+              }
+            }
+          }
+        });
+
+        rafId = requestAnimationFrame(gameLoop);
+      }
+
+      function startGame() {
+        score = 0;
+        questionNumber = 1;
+        lives = 3;
+        timeLeft = GAME_SECONDS;
+        running = true;
+        lastTs = 0;
+        clearMeteors();
+        setQuestion();
+        updateStats();
+
+        startOverlay.style.display = 'none';
+        startOverlay.innerHTML = '';
+        sayLine('Game started. Tap the correct multiplication meteor.');
+
+        createMeteor(true);
+        createMeteor(false);
+        createMeteor(false);
+
+        clearInterval(timerId);
+        clearInterval(spawnId);
+
+        timerId = window.setInterval(function () {
+          timeLeft -= 1;
+          updateStats();
+          if (timeLeft <= 0) endGame();
+        }, 1000);
+
+        let tick = 0;
+        spawnId = window.setInterval(function () {
+          if (!running) return;
+          tick += 1;
+          createMeteor(tick % 3 === 0);
+        }, SPAWN_MS);
+
+        cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(gameLoop);
+      }
+
+      if (startBtn) startBtn.addEventListener('click', startGame);
+      setQuestion();
+      updateStats();
+
+      if (window.setupVoiceAssist) {
+        window.setupVoiceAssist({
+          readButtonId: 'voiceReadBtn',
+          stopButtonId: 'voiceStopBtn',
+          muteButtonId: 'voiceMuteBtn',
+          getText: function () {
+            const overlayVisible = startOverlay && window.getComputedStyle(startOverlay).display !== 'none';
+            if (overlayVisible) {
+              return 'Multiplication Meteor. ' + overlayText();
+            }
+            return [
+              'Multiplication Meteor.',
+              'Tap the correct multiplication answer.',
+              'Question ' + questionValue.textContent + '.',
+              questionText.textContent + '.',
+              'Score ' + scoreValue.textContent + '.',
+              'Lives ' + livesValue.textContent.replace(/❤/g, ' heart ') + '.',
+              'Time ' + timeValue.textContent.replace('s', ' seconds') + '.'
+            ].join(' ');
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

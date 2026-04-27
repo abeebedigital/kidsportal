@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Addition Bubble Pop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet" />
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="voice-assist.js"></script>
+  <style>
+    :root{
+      --ink:#23324a;
+      --mint:#39c3ad;
+      --blue:#4d96ff;
+      --sun:#ffd166;
+      --rose:#ff7f96;
+      --paper:#fffdf8;
+      --line:#e8e6f3;
+    }
+    html{font-size:17px}
+    @media (max-width:500px){html{font-size:16px}}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Nunito',sans-serif;
+      color:var(--ink);
+      min-height:100vh;
+      background:
+        radial-gradient(circle at 14% 10%, rgba(77,150,255,.24) 0, transparent 26%),
+        radial-gradient(circle at 88% 10%, rgba(255,209,102,.34) 0, transparent 24%),
+        linear-gradient(180deg,#f8fbff 0%,#fff9ee 100%);
+      padding:16px;
+    }
+    .app{
+      max-width:980px;
+      margin:0 auto;
+      background:var(--paper);
+      border:1px solid var(--line);
+      border-radius:26px;
+      box-shadow:0 18px 34px rgba(45,56,89,.10);
+      overflow:hidden;
+    }
+    .top{
+      padding:14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      background:linear-gradient(120deg,#f0f8ff 0%,#f8fff8 55%,#fff8e5 100%);
+      border-bottom:1px solid #e4ebf9;
+    }
+    .home-link{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      padding:9px 14px;
+      border-radius:999px;
+      text-decoration:none;
+      background:linear-gradient(135deg,var(--mint) 0%,#48ceb3 100%);
+      color:#fff;
+      font-weight:800;
+      min-height:42px;
+    }
+    .title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-family:'Fredoka One',cursive;
+      font-size:1.2rem;
+      color:#30456b;
+    }
+    .title-emoji{
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg,#dbeafe 0%,#fef3c7 100%);
+    }
+    .content{
+      padding:16px;
+      display:grid;
+      gap:14px;
+    }
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+    }
+    .stat{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:10px;
+      text-align:center;
+    }
+    .stat .label{
+      display:block;
+      font-size:.76rem;
+      text-transform:uppercase;
+      letter-spacing:.6px;
+      color:#71819f;
+      font-weight:800;
+    }
+    .stat .value{
+      display:block;
+      margin-top:3px;
+      font-family:'Fredoka One',cursive;
+      font-size:1.25rem;
+      color:#2f4d79;
+    }
+    .question-box{
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:12px;
+      background:linear-gradient(135deg,#fff 0%,#f9fbff 100%);
+      text-align:center;
+    }
+    .question-label{
+      font-size:.82rem;
+      font-weight:800;
+      color:#6f7f9d;
+      text-transform:uppercase;
+      letter-spacing:.7px;
+    }
+    .question{
+      margin-top:4px;
+      font-family:'Fredoka One',cursive;
+      font-size:2rem;
+      color:#1f4b99;
+    }
+    .game-wrap{
+      position:relative;
+      border-radius:22px;
+      border:2px dashed #d5e4ff;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(77,150,255,.08) 0, transparent 25%),
+        radial-gradient(circle at 80% 22%, rgba(255,127,150,.09) 0, transparent 28%),
+        linear-gradient(180deg,#f6fbff 0%,#fffdf6 100%);
+      min-height:380px;
+      height:56vh;
+      max-height:520px;
+      overflow:hidden;
+      touch-action:manipulation;
+    }
+    .bubble{
+      position:absolute;
+      border:none;
+      border-radius:50%;
+      color:#17325f;
+      font-family:'Fredoka One',cursive;
+      font-size:1.25rem;
+      box-shadow:0 10px 20px rgba(35,50,74,.15);
+      cursor:pointer;
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      transition:transform .08s ease, filter .12s ease;
+    }
+    .bubble:active{transform:scale(.95)}
+    .bubble.good{
+      outline:3px solid rgba(57,195,173,.36);
+      outline-offset:2px;
+    }
+    .bubble.pop{
+      animation:pop .2s ease forwards;
+      pointer-events:none;
+    }
+    @keyframes pop{
+      to{transform:scale(1.25);opacity:0}
+    }
+    .overlay{
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      padding:16px;
+      background:rgba(18,28,53,.42);
+      z-index:5;
+    }
+    .overlay-card{
+      width:min(100%,560px);
+      background:#fff;
+      border-radius:20px;
+      border:1px solid #e6e7f2;
+      box-shadow:0 16px 28px rgba(21,35,65,.2);
+      padding:20px;
+      text-align:center;
+    }
+    .overlay-card h1{
+      font-family:'Fredoka One',cursive;
+      font-size:1.6rem;
+      color:#233f66;
+      margin-bottom:8px;
+    }
+    .overlay-card p{
+      color:#5b6c8b;
+      line-height:1.65;
+      font-size:1rem;
+      margin-bottom:12px;
+    }
+    .overlay-card .tip{
+      display:block;
+      margin:0 auto 16px;
+      background:#eef8ff;
+      border:1px solid #d8e9ff;
+      border-radius:14px;
+      padding:8px 10px;
+      width:fit-content;
+      color:#3c557f;
+      font-size:.88rem;
+      font-weight:800;
+    }
+    .btn{
+      border:none;
+      border-radius:14px;
+      min-height:46px;
+      padding:12px 18px;
+      font-family:'Fredoka One',cursive;
+      font-size:.95rem;
+      cursor:pointer;
+      color:#fff;
+      background:linear-gradient(135deg,#39c3ad 0%,#48ceb3 100%);
+    }
+    .guide{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+    }
+    .guide-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px;
+      line-height:1.55;
+      color:#5f6d89;
+      font-size:.9rem;
+    }
+    .guide-card strong{
+      display:block;
+      color:#2c466e;
+      margin-bottom:4px;
+      font-size:.92rem;
+    }
+    @media (max-width:760px){
+      .stats,.guide{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .question{font-size:1.7rem}
+      .game-wrap{min-height:360px;height:52vh}
+    }
+    @media (max-width:520px){
+      body{padding:10px}
+      .top{padding:12px}
+      .content{padding:12px}
+      .stats,.guide{grid-template-columns:1fr}
+      .title{font-size:1.05rem}
+      .bubble{font-size:1.05rem}
+    }
+  </style>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+  <div class="app">
+    <div class="top">
+      <a class="home-link" href="https://fivetofifteen.com/#games">🏠 Back to Games</a>
+      <div class="title"><span class="title-emoji">🎈</span> Addition Bubble Pop</div>
+    </div>
+
+    <div class="content">
+      <div class="voice-bar">
+        <button class="voice-btn voice-btn-read" id="voiceReadBtn" type="button">🔊 Read Task</button>
+        <button class="voice-btn voice-btn-stop" id="voiceStopBtn" type="button" style="display:none;">⏹ Stop</button>
+        <button class="voice-btn voice-btn-mute" id="voiceMuteBtn" type="button" aria-pressed="false">🔊 Sound On</button>
+        <span class="voice-note">Hear the current question and game status.</span>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><span class="label">Score</span><span class="value" id="scoreValue">0</span></div>
+        <div class="stat"><span class="label">Question</span><span class="value" id="questionCount">1</span></div>
+        <div class="stat"><span class="label">Lives</span><span class="value" id="livesValue">3</span></div>
+        <div class="stat"><span class="label">Time</span><span class="value" id="timeValue">60s</span></div>
+      </div>
+
+      <div class="question-box">
+        <div class="question-label">Tap the bubble with the right answer</div>
+        <div class="question" id="questionText">2 + 3 = ?</div>
+      </div>
+
+      <div class="game-wrap" id="gameArea">
+        <div class="overlay" id="startOverlay">
+          <div class="overlay-card">
+            <h1>Ready to Pop?</h1>
+            <p>Pop the bubble that matches the addition answer. You have 60 seconds and 3 lives.</p>
+            <span class="tip">Tip: Fast + accurate = higher score</span>
+            <button class="btn" id="startBtn" type="button">Start Game</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="guide">
+        <div class="guide-card"><strong>🎯 Goal</strong>Build addition confidence from 1 to 10 in a fast and fun way.</div>
+        <div class="guide-card"><strong>⚡ How to Win</strong>Tap correct answers quickly and avoid wrong bubbles to keep lives.</div>
+        <div class="guide-card"><strong>🔁 Practice</strong>Play multiple rounds and try to beat your best score each time.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const GAME_SECONDS = 60;
+      const SPAWN_MS = 760;
+      const MAX_BUBBLES = 9;
+
+      const gameArea = document.getElementById('gameArea');
+      const scoreValue = document.getElementById('scoreValue');
+      const questionCount = document.getElementById('questionCount');
+      const livesValue = document.getElementById('livesValue');
+      const timeValue = document.getElementById('timeValue');
+      const questionText = document.getElementById('questionText');
+      const startOverlay = document.getElementById('startOverlay');
+      const startBtn = document.getElementById('startBtn');
+
+      let score = 0;
+      let questionNumber = 1;
+      let lives = 3;
+      let timeLeft = GAME_SECONDS;
+      let running = false;
+      let currentAnswer = 0;
+      let rafId = null;
+      let timerId = null;
+      let spawnId = null;
+      let bubbles = [];
+      let lastTs = 0;
+
+      function overlayText() {
+        return startOverlay ? startOverlay.textContent.replace(/\s+/g, ' ').trim() : '';
+      }
+
+      function randomFrom(list) {
+        return list[rand(0, list.length - 1)];
+      }
+
+      function sayLine(text) {
+        if (window.voiceAssistSay) {
+          window.voiceAssistSay(text, { interrupt: true, rate: 1.03, pitch: 1.07, lang: 'en-AU' });
+        }
+      }
+
+      function rand(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      function buildQuestion() {
+        const a = rand(1, 10);
+        const b = rand(1, 10);
+        currentAnswer = a + b;
+        questionText.textContent = a + ' + ' + b + ' = ?';
+      }
+
+      function randomWrongAnswer() {
+        const delta = rand(1, 6) * (Math.random() > 0.5 ? 1 : -1);
+        let value = currentAnswer + delta;
+        if (value < 0) value = currentAnswer + rand(1, 5);
+        if (value === currentAnswer) value += 1;
+        return value;
+      }
+
+      function bubbleColor(value) {
+        if (value === currentAnswer) return 'linear-gradient(145deg,#b7f9ea 0%,#69e0c5 100%)';
+        const colors = [
+          'linear-gradient(145deg,#d9e9ff 0%,#9ec3ff 100%)',
+          'linear-gradient(145deg,#ffe8bf 0%,#ffd27a 100%)',
+          'linear-gradient(145deg,#ffd9e1 0%,#ffa6ba 100%)',
+          'linear-gradient(145deg,#ede3ff 0%,#c7b2ff 100%)'
+        ];
+        return colors[rand(0, colors.length - 1)];
+      }
+
+      function removeBubble(target) {
+        bubbles = bubbles.filter(function (b) { return b !== target; });
+        if (target.el && target.el.parentNode) {
+          target.el.parentNode.removeChild(target.el);
+        }
+      }
+
+      function popBubble(target) {
+        if (!target.el) return;
+        target.el.classList.add('pop');
+        window.setTimeout(function () {
+          removeBubble(target);
+        }, 170);
+      }
+
+      function clearAllBubbles() {
+        bubbles.forEach(function (bubble) {
+          if (bubble.el && bubble.el.parentNode) {
+            bubble.el.parentNode.removeChild(bubble.el);
+          }
+        });
+        bubbles = [];
+      }
+
+      function updateStats() {
+        scoreValue.textContent = String(score);
+        questionCount.textContent = String(questionNumber);
+        livesValue.textContent = lives > 0 ? '❤'.repeat(lives) : '0';
+        timeValue.textContent = String(timeLeft) + 's';
+      }
+
+      function endGame() {
+        running = false;
+        clearInterval(timerId);
+        clearInterval(spawnId);
+        cancelAnimationFrame(rafId);
+
+        const best = Math.max(Number(localStorage.getItem('additionBubbleBest') || 0), score);
+        localStorage.setItem('additionBubbleBest', String(best));
+
+        const resultMsg = score >= 120
+          ? 'Amazing work! You are super fast with addition.'
+          : score >= 70
+            ? 'Great job! Keep practising to level up.'
+            : 'Good try! Play again and beat your score.';
+
+        sayLine('Round finished. ' + resultMsg + ' Your score is ' + score + '.');
+
+        startOverlay.innerHTML =
+          '<div class="overlay-card">' +
+            '<h1>Round Finished</h1>' +
+            '<p>Your score: <strong>' + score + '</strong> · Best score: <strong>' + best + '</strong></p>' +
+            '<span class="tip">' + resultMsg + '</span>' +
+            '<button class="btn" id="restartBtn" type="button">Play Again</button>' +
+          '</div>';
+        startOverlay.style.display = 'grid';
+
+        const restartBtn = document.getElementById('restartBtn');
+        if (restartBtn) {
+          restartBtn.addEventListener('click', startGame);
+        }
+      }
+
+      function onBubbleClick(target) {
+        if (!running) return;
+        if (target.value === currentAnswer) {
+          sayLine(randomFrom([
+            'Great job. That is the right answer.',
+            'Yes. You popped the correct bubble.',
+            'Well done. Keep going.',
+            'Nice work. That answer is correct.'
+          ]));
+          score += 10;
+          questionNumber += 1;
+          clearAllBubbles();
+          buildQuestion();
+          spawnBubble(true);
+          spawnBubble(false);
+          spawnBubble(false);
+        } else {
+          sayLine(randomFrom([
+            'Sorry, not that one. Try the next bubble.',
+            'Not quite. Look for the matching answer.',
+            'Almost. Read the question again.',
+            'Oops. Try again and find the correct sum.'
+          ]));
+          lives -= 1;
+          if (target.el) target.el.style.filter = 'grayscale(0.1) brightness(0.85)';
+        }
+        popBubble(target);
+        updateStats();
+        if (lives <= 0) {
+          endGame();
+        }
+      }
+
+      function spawnBubble(forceCorrect) {
+        if (!running) return;
+        if (bubbles.length >= MAX_BUBBLES) return;
+
+        const areaRect = gameArea.getBoundingClientRect();
+        const size = rand(56, 86);
+        const maxX = Math.max(6, areaRect.width - size - 6);
+        const x = rand(6, Math.floor(maxX));
+        const value = forceCorrect ? currentAnswer : randomWrongAnswer();
+
+        const button = document.createElement('button');
+        button.className = 'bubble' + (value === currentAnswer ? ' good' : '');
+        button.type = 'button';
+        button.textContent = String(value);
+        button.style.width = size + 'px';
+        button.style.height = size + 'px';
+        button.style.left = '0px';
+        button.style.top = '0px';
+        button.style.background = bubbleColor(value);
+
+        const bubble = {
+          el: button,
+          x: x,
+          y: areaRect.height + size + rand(0, 40),
+          speed: rand(46, 88),
+          size: size,
+          value: value
+        };
+
+        button.addEventListener('click', function () {
+          onBubbleClick(bubble);
+        });
+
+        gameArea.appendChild(button);
+        bubbles.push(bubble);
+      }
+
+      function gameLoop(ts) {
+        if (!running) return;
+        if (!lastTs) lastTs = ts;
+        const dt = (ts - lastTs) / 1000;
+        lastTs = ts;
+
+        const areaHeight = gameArea.getBoundingClientRect().height;
+
+        bubbles.slice().forEach(function (bubble) {
+          bubble.y -= bubble.speed * dt;
+          bubble.el.style.transform = 'translate(' + bubble.x + 'px,' + bubble.y + 'px)';
+          if (bubble.y < -bubble.size - 10) {
+            removeBubble(bubble);
+          }
+        });
+
+        rafId = requestAnimationFrame(gameLoop);
+      }
+
+      function startGame() {
+        score = 0;
+        questionNumber = 1;
+        lives = 3;
+        timeLeft = GAME_SECONDS;
+        running = true;
+        lastTs = 0;
+
+        startOverlay.style.display = 'none';
+        startOverlay.innerHTML = '';
+        sayLine('Game started. Pop the bubble with the right answer.');
+
+        clearAllBubbles();
+        buildQuestion();
+        updateStats();
+
+        spawnBubble(true);
+        spawnBubble(false);
+        spawnBubble(false);
+
+        clearInterval(timerId);
+        clearInterval(spawnId);
+
+        timerId = window.setInterval(function () {
+          timeLeft -= 1;
+          updateStats();
+          if (timeLeft <= 0) {
+            endGame();
+          }
+        }, 1000);
+
+        let tick = 0;
+        spawnId = window.setInterval(function () {
+          if (!running) return;
+          tick += 1;
+          spawnBubble(tick % 3 === 0);
+        }, SPAWN_MS);
+
+        cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(gameLoop);
+      }
+
+      if (startBtn) {
+        startBtn.addEventListener('click', startGame);
+      }
+
+      updateStats();
+      buildQuestion();
+
+      if (window.setupVoiceAssist) {
+        window.setupVoiceAssist({
+          readButtonId: 'voiceReadBtn',
+          stopButtonId: 'voiceStopBtn',
+          muteButtonId: 'voiceMuteBtn',
+          getText: function () {
+            const overlayVisible = startOverlay && window.getComputedStyle(startOverlay).display !== 'none';
+            if (overlayVisible) {
+              return 'Addition Bubble Pop. ' + overlayText();
+            }
+            return [
+              'Addition Bubble Pop.',
+              'Tap the bubble with the right answer.',
+              'Question ' + questionCount.textContent + '.',
+              questionText.textContent + '.',
+              'Score ' + scoreValue.textContent + '.',
+              'Lives ' + livesValue.textContent.replace(/❤/g, ' heart ') + '.',
+              'Time ' + timeValue.textContent.replace('s', ' seconds') + '.'
+            ].join(' ');
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

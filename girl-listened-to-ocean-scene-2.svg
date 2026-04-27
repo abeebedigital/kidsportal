@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-label="Every Wave Belonged">
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#355b8c"/>
+      <stop offset="55%" stop-color="#4e83b7"/>
+      <stop offset="100%" stop-color="#8ec0de"/>
+    </linearGradient>
+  </defs>
+  <rect width="1400" height="900" fill="url(#bg)"/>
+  <path d="M0 620 C200 560 340 660 540 618 C730 578 950 668 1200 616 C1290 598 1350 608 1400 620 L1400 900 L0 900 Z" fill="rgba(36,62,52,0.26)"/>
+  <path d="M0 690 C210 640 380 724 600 682 C820 640 1030 730 1260 688 C1330 676 1380 684 1400 690 L1400 900 L0 900 Z" fill="rgba(24,45,38,0.34)"/>
+  <g fill="#ffffff" opacity="0.22">
+    <circle cx="120" cy="100" r="6"/><circle cx="280" cy="88" r="5"/><circle cx="510" cy="120" r="6"/>
+    <circle cx="760" cy="92" r="6"/><circle cx="980" cy="110" r="5"/><circle cx="1220" cy="96" r="6"/>
+  </g>
+
+  <path d="M0 620 C180 580 350 670 560 622 C760 578 980 676 1220 628 C1310 610 1364 620 1400 624 L1400 900 L0 900 Z" fill="#3a7eb5"/>
+  <path d="M0 670 C200 630 380 720 580 676 C760 636 980 720 1180 678 C1280 656 1350 664 1400 670" stroke="#d7f1ff" stroke-width="10" fill="none" opacity="0.7"/>
+  <path d="M0 730 C200 700 380 772 590 734 C780 698 980 772 1180 736 C1280 716 1350 722 1400 728" stroke="#d7f1ff" stroke-width="10" fill="none" opacity="0.52"/>
+  <g fill="#f6ead2">
+    <path d="M360 770 C372 748 404 748 416 770 C402 782 374 782 360 770 Z"/>
+    <path d="M460 784 C470 762 500 762 510 784 C496 794 474 794 460 784 Z"/>
+  </g>
+
+  <text x="700" y="110" text-anchor="middle" font-family="Nunito, sans-serif" font-size="52" font-weight="900" fill="#fff6e5">Every Wave Belonged</text>
+  <text x="700" y="844" text-anchor="middle" font-family="Nunito, sans-serif" font-size="32" font-weight="800" fill="#fff6e5">Big or small, each wave was part of one ocean.</text>
+</svg>

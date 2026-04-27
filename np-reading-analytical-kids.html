@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Analytical Reader! 🔍</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+    /* global-font-boost */
+    html{font-size:17px;}
+    @media (max-width:500px){html{font-size:16px;}}
+
+:root{
+  --coral:#ff6b6b;--mint:#6bcb77;--blue:#4d96ff;--purple:#c77dff;
+  --orange:#ff9f1c;--yellow:#ffd93d;--dark:#2c3e50;
+  --card-bg:#fffef5;--warm-bg:#fff8f0;
+  --read:#0d47a1;--read-light:#e3f2fd;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--warm-bg);min-height:100vh;overflow-x:hidden;}
+.cloud{position:fixed;opacity:.06;font-size:60px;z-index:0;animation:drift linear infinite;pointer-events:none;}
+@keyframes drift{from{transform:translateX(-100px)}to{transform:translateX(calc(100vw + 100px))}}
+#app{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:12px;}
+.home-link{display:inline-flex;align-items:center;gap:6px;background:var(--mint);color:white;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;text-decoration:none;transition:all .2s;margin-bottom:10px;}
+.home-link:hover{transform:scale(1.05);background:#4db860;}
+.tts-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.tts-btn{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#f39c12,#e67e22);color:white;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.tts-btn:hover{transform:scale(1.05);}
+.tts-btn.speaking{background:linear-gradient(135deg,#e74c3c,#c0392b);animation:pulse 1s ease infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(231,76,60,.4)}50%{box-shadow:0 0 0 8px rgba(231,76,60,0)}}
+.tts-stop{background:linear-gradient(135deg,#95a5a6,#7f8c8d);color:white;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.progress-strip{background:white;border-radius:12px;padding:8px 16px;display:flex;align-items:center;gap:10px;margin-bottom:8px;border:2px solid var(--read-light);box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.progress-bar{flex:1;height:7px;background:var(--read-light);border-radius:4px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--read),var(--blue),var(--purple));border-radius:4px;transition:width .5s ease;}
+.progress-label{font-family:'Fredoka One',cursive;font-size:12px;color:#999;white-space:nowrap;}
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:white;border-radius:16px;margin-bottom:10px;border:2px solid var(--read-light);box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.nav-btn{background:var(--blue);color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:8px 22px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.nav-btn:hover{transform:scale(1.06);box-shadow:0 4px 12px rgba(77,150,255,.3);}
+.nav-btn:disabled{background:#ddd;cursor:not-allowed;transform:none;box-shadow:none;color:#999;}
+.page-dots{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;max-width:300px;}
+.dot{width:9px;height:9px;border-radius:50%;background:#ddd;cursor:pointer;transition:all .2s;}
+.dot.active{background:var(--read);transform:scale(1.3);box-shadow:0 0 6px rgba(13,71,161,.5);}
+.dot.visited{background:rgba(13,71,161,.3);}
+.page{display:none;animation:pageIn .5s ease;}
+.page.active{display:block;}
+@keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.cover{background:linear-gradient(160deg,#0a1628 0%,#0d2137 40%,#1a237e 100%);border-radius:22px;border:2px solid rgba(77,150,255,.3);padding:50px 30px;text-align:center;position:relative;overflow:hidden;min-height:540px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.cover-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(77,150,255,.15) 0%,transparent 70%);pointer-events:none;}
+.cover-icons{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:20px 0;position:relative;z-index:2;}
+.cover-icon{font-size:36px;animation:iconBounce var(--wb,3s) ease-in-out infinite var(--wd,0s);}
+@keyframes iconBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.cover-title{font-family:'Fredoka One',cursive;font-size:38px;color:var(--yellow);position:relative;z-index:2;line-height:1.15;margin-bottom:8px;text-shadow:0 4px 20px rgba(0,0,0,.4);}
+.cover-sub{font-family:'Fredoka One',cursive;font-size:20px;color:#90caf9;position:relative;z-index:2;margin-bottom:6px;}
+.cover-tagline{font-size:13px;color:rgba(255,255,255,.6);position:relative;z-index:2;margin-top:16px;font-style:italic;}
+.hero-anim{font-size:52px;animation:heroFloat 3s ease-in-out infinite;position:relative;z-index:2;}
+@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-12px) rotate(5deg)}}
+.cover svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
+.story-page{background:var(--card-bg);border-radius:22px;padding:26px;min-height:540px;border:3px solid var(--read-light);position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.page-corner{position:absolute;top:14px;right:16px;font-family:'Fredoka One',cursive;font-size:16px;color:#b0bec5;}
+.story-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.chapter-badge{font-family:'Fredoka One',cursive;font-size:12px;padding:4px 13px;border-radius:16px;white-space:nowrap;color:white;}
+.story-title{font-family:'Fredoka One',cursive;font-size:22px;color:var(--dark);}
+.story-body{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+.story-text{font-size:15px;line-height:1.85;color:#444;}
+.story-text p{margin-bottom:10px;}
+.hw{font-weight:800;color:#0d47a1;}
+.hw2{font-weight:800;color:#c62828;}
+.hw3{font-weight:800;color:#2e7d32;}
+.story-art{border-radius:16px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:8px;border:2px dashed #cfd8dc;background:linear-gradient(135deg,#e3f2fd,#f0f4ff);}
+.wonder-label{font-family:'Fredoka One',cursive;font-size:13px;color:#999;margin-top:4px;}
+.wonder-facts{background:rgba(0,0,0,.03);border-radius:12px;padding:10px 14px;width:100%;border:1px solid rgba(0,0,0,.06);}
+.fact-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:13px;color:#555;}
+.fact-row:last-child{border-bottom:none;}
+.fact-icon{font-size:16px;min-width:22px;}
+.quiz-bubble{background:linear-gradient(135deg,#e3f2fd,#bbdefb);border:2px solid var(--blue);border-radius:18px;padding:18px;margin-top:16px;}
+.quiz-title{font-family:'Fredoka One',cursive;font-size:17px;color:var(--read);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.q-opt{background:white;border:2px solid #cfd8dc;border-radius:12px;padding:10px 14px;font-size:14px;color:var(--dark);cursor:pointer;transition:all .2s;text-align:left;font-family:'Nunito',sans-serif;font-weight:600;}
+.q-opt:hover{background:#e3f2fd;border-color:var(--blue);transform:translateY(-2px);}
+.q-opt.correct{background:#d4edda;border-color:#27ae60;color:#155724;}
+.q-opt.wrong{background:#f8d7da;border-color:#c0392b;color:#721c24;}
+.quiz-feedback{font-family:'Fredoka One',cursive;font-size:16px;margin-top:10px;min-height:24px;text-align:center;}
+.fun-fact{background:#e8f5e9;border:2px solid var(--mint);border-radius:14px;padding:14px 16px;margin-top:14px;}
+.fun-fact-title{font-family:'Fredoka One',cursive;font-size:15px;color:#1b5e20;margin-bottom:6px;}
+.fun-fact-text{font-size:13px;color:#444;line-height:1.6;}
+.tip-box{background:#fff3e0;border:2px solid var(--orange);border-radius:14px;padding:14px 16px;margin-top:14px;}
+.tip-box-title{font-family:'Fredoka One',cursive;font-size:15px;color:#e65100;margin-bottom:6px;}
+.tip-box-text{font-size:13px;color:#444;line-height:1.6;}
+.read-table{width:100%;border-collapse:separate;border-spacing:0;border:2px solid #bbdefb;border-radius:12px;overflow:hidden;margin:10px 0;}
+.read-table th{background:var(--read);color:white;font-family:'Fredoka One',cursive;font-size:13px;padding:10px 12px;text-align:left;}
+.read-table td{padding:8px 12px;font-size:14px;color:#444;border-bottom:1px solid #e3f2fd;}
+.read-table tr:last-child td{border-bottom:none;}
+.read-table tr:nth-child(even) td{background:#f0f7ff;}
+.passage-box{background:#f5f5f5;border:2px solid #e0e0e0;border-radius:14px;padding:16px;margin:10px 0;font-size:14px;line-height:1.8;color:#444;font-style:italic;}
+.passage-box .passage-title{font-family:'Fredoka One',cursive;font-size:14px;color:var(--read);font-style:normal;margin-bottom:8px;}
+.memory-card{background:#e3f2fd;border:2px solid var(--blue);border-radius:14px;padding:14px;margin-top:14px;}
+.mem-row{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:14px;cursor:pointer;transition:background .2s;border-radius:8px;padding-left:8px;}
+.mem-row:hover{background:rgba(13,71,161,.07);}
+.mem-letter{font-family:'Fredoka One',cursive;font-size:18px;color:var(--coral);min-width:24px;}
+.mem-word{color:var(--read);min-width:110px;font-weight:700;}
+.mem-tip{color:#ccc;}
+/* FINAL QUIZ */
+.quiz-page{background:var(--card-bg);border-radius:22px;padding:26px;min-height:540px;border:3px solid var(--blue);box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.quiz-progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.q-counter{font-family:'Fredoka One',cursive;font-size:13px;color:#999;}
+.q-score-badge{font-family:'Fredoka One',cursive;font-size:14px;background:#e3f2fd;border:2px solid var(--blue);padding:4px 14px;border-radius:20px;color:var(--read);}
+.quiz-question-card{background:white;border-radius:16px;padding:20px;margin-bottom:16px;border:2px solid #e3f2fd;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.quiz-q-text{font-family:'Fredoka One',cursive;font-size:19px;color:var(--dark);line-height:1.4;margin-bottom:4px;}
+.quiz-q-emoji{font-size:40px;margin-bottom:10px;}
+.quiz-q-passage{background:#f5f5f5;border-radius:10px;padding:12px;font-size:13px;line-height:1.7;margin-bottom:12px;color:#444;}
+.fquiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.fq-opt{background:white;border:2px solid #cfd8dc;border-radius:14px;padding:12px 16px;font-size:15px;color:var(--dark);cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif;font-weight:700;}
+.fq-opt:hover:not(.locked){background:#e3f2fd;border-color:var(--blue);transform:translateY(-2px);}
+.fq-opt.correct{background:#d4edda;border-color:#27ae60;color:#155724;}
+.fq-opt.wrong{background:#f8d7da;border-color:#c0392b;color:#721c24;}
+.fq-opt.locked{cursor:not-allowed;opacity:.7;}
+.q-result-msg{font-family:'Fredoka One',cursive;font-size:16px;text-align:center;min-height:28px;margin-top:8px;}
+.next-q-btn{display:block;margin:12px auto 0;background:linear-gradient(135deg,var(--blue),#90caf9);color:white;border:none;font-family:'Fredoka One',cursive;font-size:16px;padding:10px 28px;border-radius:22px;cursor:pointer;transition:all .2s;}
+.next-q-btn:hover{transform:scale(1.05);}
+.result-screen{text-align:center;padding:20px 10px;}
+.result-trophy{font-size:80px;margin-bottom:12px;animation:bounce 1s ease infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+.result-title{font-family:'Fredoka One',cursive;font-size:28px;margin-bottom:10px;}
+.result-score{font-family:'Fredoka One',cursive;font-size:48px;color:var(--yellow);}
+.result-msg{font-size:16px;color:#888;margin:12px 0 20px;line-height:1.7;}
+.retry-btn{background:linear-gradient(135deg,#e74c3c,#ff6b6b);color:white;border:none;font-family:'Fredoka One',cursive;font-size:18px;padding:12px 32px;border-radius:24px;cursor:pointer;transition:all .2s;margin:8px;}
+.retry-btn:hover{transform:scale(1.06);}
+.proceed-btn{background:linear-gradient(135deg,#27ae60,#2ecc71);color:white;border:none;font-family:'Fredoka One',cursive;font-size:18px;padding:12px 32px;border-radius:24px;cursor:pointer;transition:all .2s;margin:8px;}
+.proceed-btn:hover{transform:scale(1.06);}
+.cert-page{background:var(--card-bg);border-radius:22px;padding:24px;min-height:540px;border:3px solid var(--yellow);box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.cert-controls{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+.cert-name-input{font-family:'Nunito',sans-serif;font-size:16px;padding:10px 16px;border:2px solid var(--yellow);border-radius:12px;outline:none;flex:1;min-width:180px;color:#333;}
+.cert-name-input:focus{border-color:var(--blue);}
+.cert-dl-btn{background:var(--blue);color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:24px;cursor:pointer;transition:transform .15s;white-space:nowrap;}
+.cert-dl-btn:hover{transform:scale(1.05);}
+.cert-print-btn{background:#1565c0;color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:24px;cursor:pointer;transition:transform .15s;}
+.cert-print-btn:hover{transform:scale(1.05);}
+.cert-wrap{background:white;border-radius:16px;padding:6px;border:3px solid var(--yellow);box-shadow:0 4px 20px rgba(0,0,0,.08);}
+canvas#cert{width:100%;border-radius:12px;display:block;}
+.cert-hint{font-size:12px;color:#aaa;margin-top:8px;text-align:center;}
+@media(max-width:580px){
+  .story-body{grid-template-columns:1fr;}
+  .cover-title{font-size:26px;}
+  .fquiz-options,.quiz-options{grid-template-columns:1fr;}
+  .cert-controls{flex-direction:column;}
+  .read-table{font-size:12px;}
+}
+</style>
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="natural-read-aloud.js" defer></script>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+<div id="clouds"></div>
+<div id="app"><div class="tts-bar">
+  <button class="tts-btn" id="ttsBtn" onclick="toggleTTS()">🔊 Read Aloud</button>
+  <button class="tts-stop" id="ttsStop" onclick="stopTTS()" style="display:none;">⏹ Stop</button>
+</div>
+<div class="progress-strip">
+  <span class="progress-label">🔍 Reading...</span>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <span class="progress-label" id="progressText">Page 1 of 14</span>
+</div>
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Back</button>
+  <div class="page-dots" id="pageDots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+</div>
+
+<!-- PAGE 0: COVER -->
+<div class="page active" data-page="0">
+  <div class="cover">
+    <svg viewBox="0 0 820 540" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="40" r="2" fill="white" opacity=".6"/><circle cx="120" cy="80" r="1.5" fill="white" opacity=".5"/>
+      <circle cx="200" cy="25" r="2.5" fill="white" opacity=".7"/><circle cx="300" cy="60" r="1.5" fill="white" opacity=".6"/>
+      <circle cx="400" cy="30" r="2" fill="white" opacity=".5"/><circle cx="600" cy="45" r="2" fill="white" opacity=".6"/>
+      <circle cx="700" cy="20" r="2.5" fill="white" opacity=".5"/>
+    </svg>
+    <div class="cover-glow"></div>
+    <div class="hero-anim">🐛</div>
+    <div class="cover-title">The Analytical<br>Reader!</div>
+    <div class="cover-sub">Deep-Dive Reading Skills!</div>
+    <div class="cover-icons">
+      <span class="cover-icon" style="--wb:3s;--wd:0s">🔍</span>
+      <span class="cover-icon" style="--wb:3.5s;--wd:0.3s">📖</span>
+      <span class="cover-icon" style="--wb:4s;--wd:0.6s">🧩</span>
+      <span class="cover-icon" style="--wb:3.2s;--wd:0.9s">💡</span>
+      <span class="cover-icon" style="--wb:3.8s;--wd:1.2s">⭐</span>
+    </div>
+    <p class="cover-tagline">Master cause & effect, fact vs opinion, vocabulary and text types! · Year 3–5</p>
+  </div>
+</div>
+
+<!-- PAGE 1: MEET LEXIE -->
+<div class="page" data-page="1">
+  <div class="story-page">
+    <div class="page-corner">p.1</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--blue);">Welcome!</span><h2 class="story-title">Welcome Back, Lexie! 🐛📖</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Hello again, super reader! 👋</p>
+        <p>It's me, <span class="hw">Lexie the Bookworm</span>! You learned some amazing comprehension skills last time. Now it's time to go DEEPER! 🔍</p>
+        <p>Today we'll learn FOUR advanced reading powers:</p>
+        <p>🔗 <span class="hw2">Cause & Effect</span> — why things happen and what happens next</p>
+        <p>⚖️ <span class="hw3">Fact vs Opinion</span> — is it TRUE or just someone's thought?</p>
+        <p>📚 <span class="hw">Vocabulary in Context</span> — figuring out word meanings from clues</p>
+        <p>📝 <span class="hw2">Text Types</span> — narrative, informative, or persuasive?</p>
+        <p>These are the skills that turn a GOOD reader into a <span class="hw3">GREAT reader</span>! Let's dive in! 🚀</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:70px;">🐛</div>
+        <div class="wonder-label">Lexie the Bookworm</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🔍</span> Detective reader!</div>
+          <div class="fact-row"><span class="fact-icon">📖</span> Reads between the lines</div>
+          <div class="fact-row"><span class="fact-icon">🧠</span> Word meaning expert</div>
+          <div class="fact-row"><span class="fact-icon">⚖️</span> Fact vs opinion master!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2: CAUSE & EFFECT -->
+<div class="page" data-page="2">
+  <div class="story-page">
+    <div class="page-corner">p.2</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--read);">Skill 1</span><h2 class="story-title">🔗 Cause & Effect — Why Did It Happen?</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Every event has a <span class="hw">CAUSE</span> (why it happened) and an <span class="hw2">EFFECT</span> (what happened as a result)! 🔗</p>
+        <p><span class="hw3">Cause</span> = the REASON something happens</p>
+        <p><span class="hw">Effect</span> = the RESULT — what happens next</p>
+        <p>Example: "Sam didn't study for the test, <strong>so</strong> he got a low score."</p>
+        <p>🔹 Cause: Sam didn't study</p>
+        <p>🔹 Effect: He got a low score</p>
+        <p>Look for these <span class="hw2">signal words</span>:</p>
+        <p>➡️ <strong>because, since, so, therefore, as a result, due to, consequently, this led to</strong></p>
+        <p>Sometimes the effect comes FIRST! "The road was wet <strong>because</strong> it rained." (Effect first, then cause!)</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🔗</div>
+        <div class="wonder-label">Cause → Effect Chain!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">❓</span> Cause = WHY?</div>
+          <div class="fact-row"><span class="fact-icon">💥</span> Effect = WHAT happened?</div>
+          <div class="fact-row"><span class="fact-icon">🔑</span> Signal: because, so, therefore</div>
+          <div class="fact-row"><span class="fact-icon">⚠️</span> Order can be swapped!</div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">"The flowers grew tall <strong>because</strong> they got plenty of sunlight." What is the CAUSE?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅰️ The flowers grew tall</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb1')">🅱️ They got plenty of sunlight</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅲 The flowers were pretty</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅳 It rained a lot</button>
+      </div>
+      <div class="quiz-feedback" id="fb1"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3: CAUSE & EFFECT — CHAIN EVENTS -->
+<div class="page" data-page="3">
+  <div class="story-page">
+    <div class="page-corner">p.3</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--read);">Skill 1</span><h2 class="story-title">🔗 Chain Reactions!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Sometimes one cause leads to an effect, which becomes the cause for something ELSE! It's like dominoes! 🎲</p>
+        <p><span class="hw">Chain Example:</span></p>
+        <p>1️⃣ The alarm didn't ring (cause)</p>
+        <p>→ 2️⃣ Mia woke up late (effect → becomes new cause)</p>
+        <p>→ 3️⃣ She missed the school bus (effect → becomes new cause)</p>
+        <p>→ 4️⃣ She was late for school (final effect)</p>
+        <p><span class="hw2">Challenge tip:</span> Sometimes the question asks "What CAUSED this?" and the answer might be earlier in the chain — not the event right before it!</p>
+        <p>Always ask: <span class="hw3">"What started this whole thing?"</span> 🔍</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🎲</div>
+        <div class="wonder-label">Domino Effect!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">1️⃣</span> Alarm didn't ring</div>
+          <div class="fact-row"><span class="fact-icon">2️⃣</span> → Woke up late</div>
+          <div class="fact-row"><span class="fact-icon">3️⃣</span> → Missed the bus</div>
+          <div class="fact-row"><span class="fact-icon">4️⃣</span> → Late for school!</div>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <div class="tip-box-title">💡 Lexie's Detective Trick!</div>
+      <div class="tip-box-text">When you see a chain of events, draw arrows between them! This helps you SEE the connections. In challenge questions, many wrong answers are effects — but the question asked for the CAUSE! Read carefully! 🔍</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4: FACT VS OPINION -->
+<div class="page" data-page="4">
+  <div class="story-page">
+    <div class="page-corner">p.4</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#c62828;">Skill 2</span><h2 class="story-title">⚖️ Fact vs Opinion — True or Just a Thought?</h2></div>
+    <div class="story-text" data-tts style="margin-bottom:10px;">
+      <p>A <span class="hw">FACT</span> is something that can be PROVEN true. An <span class="hw2">OPINION</span> is what someone THINKS or FEELS! ⚖️</p>
+    </div>
+    <table class="read-table">
+      <tr><th>Type</th><th>What It Is</th><th>Examples</th></tr>
+      <tr><td><strong>FACT ✅</strong></td><td>Can be checked and proven true</td><td>Australia has 6 states. Water boils at 100°C.</td></tr>
+      <tr><td><strong>OPINION 💭</strong></td><td>Someone's personal thought, belief, or feeling</td><td>Chocolate is the best flavour. Dogs are better than cats.</td></tr>
+    </table>
+    <div class="story-text" data-tts style="margin-top:10px;">
+      <p><span class="hw3">Signal words for opinions:</span></p>
+      <p>💭 I think, I believe, in my view, the best, the worst, should, beautiful, favourite, boring, amazing, everybody knows</p>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">Which of these is an OPINION?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅰️ The Earth orbits the Sun</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅱️ Canberra is Australia's capital</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb2')">🅲 Summer is the best season</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅳 There are 7 days in a week</button>
+      </div>
+      <div class="quiz-feedback" id="fb2"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 5: TRICKY FACT VS OPINION -->
+<div class="page" data-page="5">
+  <div class="story-page">
+    <div class="page-corner">p.5</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#c62828;">Skill 2</span><h2 class="story-title">⚖️ Tricky Fact vs Opinion!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Some statements are SNEAKY — they LOOK like facts but are really opinions! 😈</p>
+        <p><span class="hw2">Tricky Example 1:</span></p>
+        <p>"Everyone knows that pizza is the tastiest food."</p>
+        <p>→ OPINION! "Everyone knows" doesn't make it a fact. "Tastiest" is a personal judgement! 💭</p>
+        <p><span class="hw3">Tricky Example 2:</span></p>
+        <p>"Scientists say you should drink 8 glasses of water a day."</p>
+        <p>→ This looks like a fact because it mentions scientists. But "should" makes it more of a recommendation (opinion).</p>
+        <p><span class="hw">The Test:</span> Ask yourself — "Could someone disagree with this?" If YES, it's probably an opinion! 🤔</p>
+        <p>Also ask: "Can I check this in a book or a reliable source?" If YES, it's probably a fact! ✅</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🕵️</div>
+        <div class="wonder-label">The Disagree Test!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">✅</span> Fact = can be PROVEN</div>
+          <div class="fact-row"><span class="fact-icon">💭</span> Opinion = could be DISAGREED with</div>
+          <div class="fact-row"><span class="fact-icon">⚠️</span> "Best/worst" = always opinion!</div>
+          <div class="fact-row"><span class="fact-icon">🔍</span> "Should/must" = often opinion!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 6: VOCABULARY IN CONTEXT -->
+<div class="page" data-page="6">
+  <div class="story-page">
+    <div class="page-corner">p.6</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#2e7d32;">Skill 3</span><h2 class="story-title">📚 Vocabulary in Context — Word Detective!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Sometimes you see a word you DON'T know — but you can figure out its meaning from the <span class="hw">context</span> (the words around it)! 🔍</p>
+        <p><span class="hw2">Strategy 1: Look at the sentence</span></p>
+        <p>"The <strong>ferocious</strong> lion roared and chased the zebra."</p>
+        <p>→ Clues: roared, chased → ferocious probably means <span class="hw3">fierce or scary</span>!</p>
+        <p><span class="hw">Strategy 2: Look for synonyms nearby</span></p>
+        <p>"She was <strong>jubilant</strong> — so happy she could burst!"</p>
+        <p>→ "so happy" tells us jubilant means <span class="hw2">very happy</span>!</p>
+        <p><span class="hw3">Strategy 3: Look for opposites</span></p>
+        <p>"Unlike the <strong>timid</strong> rabbit, the bear was bold and brave."</p>
+        <p>→ Opposite of bold/brave → timid means <span class="hw">shy or scared</span>!</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🔎</div>
+        <div class="wonder-label">Context Clue Strategies!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">1️⃣</span> Read the WHOLE sentence</div>
+          <div class="fact-row"><span class="fact-icon">2️⃣</span> Look for synonyms (similar words)</div>
+          <div class="fact-row"><span class="fact-icon">3️⃣</span> Look for antonyms (opposites)</div>
+          <div class="fact-row"><span class="fact-icon">4️⃣</span> Replace word — does it make sense?</div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">"The <strong>enormous</strong> elephant towered over the tiny mouse." What does "enormous" most likely mean?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅰️ Colourful</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅱️ Friendly</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb3')">🅲 Very large</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅳 Very fast</button>
+      </div>
+      <div class="quiz-feedback" id="fb3"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 7: MULTIPLE-MEANING WORDS -->
+<div class="page" data-page="7">
+  <div class="story-page">
+    <div class="page-corner">p.7</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#2e7d32;">Skill 3</span><h2 class="story-title">📚 Multiple-Meaning Words!</h2></div>
+    <div class="story-text" data-tts style="margin-bottom:10px;">
+      <p>Some words have MORE than one meaning — the context tells you which one! These are called <span class="hw">homonyms</span>! 🎭</p>
+    </div>
+    <table class="read-table">
+      <tr><th>Word</th><th>Meaning 1</th><th>Meaning 2</th></tr>
+      <tr><td><strong>bat</strong></td><td>🏏 Something you hit a ball with</td><td>🦇 A flying animal</td></tr>
+      <tr><td><strong>bank</strong></td><td>🏦 Where you keep money</td><td>🌊 The side of a river</td></tr>
+      <tr><td><strong>light</strong></td><td>💡 What helps you see</td><td>🪶 Not heavy</td></tr>
+      <tr><td><strong>bark</strong></td><td>🐕 Sound a dog makes</td><td>🌳 Outside of a tree trunk</td></tr>
+      <tr><td><strong>ring</strong></td><td>💍 Jewellery for your finger</td><td>📞 Sound a phone makes</td></tr>
+      <tr><td><strong>right</strong></td><td>➡️ The opposite of left</td><td>✅ Correct</td></tr>
+    </table>
+    <div class="fun-fact">
+      <div class="fun-fact-title">📖 Reading Tip!</div>
+      <div class="fun-fact-text">Challenge questions often ask "In this text, what does the word ___ mean?" Don't just pick ANY meaning — pick the one that <strong>fits the sentence</strong>! Try replacing the word with each answer choice and see which one makes sense! 🧪</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 8: TEXT TYPES — NARRATIVE -->
+<div class="page" data-page="8">
+  <div class="story-page">
+    <div class="page-corner">p.8</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#6a1b9a;">Skill 4</span><h2 class="story-title">📝 Text Types — Narrative!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Different texts are written for different <span class="hw">purposes</span>! There are 3 main types: 📝</p>
+        <p><span class="hw2">Type 1: NARRATIVE</span> 📖</p>
+        <p>Purpose: To <strong>entertain</strong> — tell a story!</p>
+        <p>Features:</p>
+        <p>🔹 Has characters, a setting, and a plot</p>
+        <p>🔹 Beginning → problem → resolution → ending</p>
+        <p>🔹 Uses past tense ("She walked...")</p>
+        <p>🔹 Has dialogue with speech marks</p>
+        <p>🔹 Uses descriptive language & emotions</p>
+        <p>Examples: fairy tales, adventure stories, picture books, myths, fables</p>
+        <p><span class="hw3">How to spot it:</span> Does it tell a STORY with characters? Is there a problem to solve? → It's a narrative! 📖</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">📖</div>
+        <div class="wonder-label">Narrative = Story!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🎯</span> Purpose: ENTERTAIN</div>
+          <div class="fact-row"><span class="fact-icon">👤</span> Has characters</div>
+          <div class="fact-row"><span class="fact-icon">🗺️</span> Has setting & plot</div>
+          <div class="fact-row"><span class="fact-icon">💬</span> Has dialogue</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 9: TEXT TYPES — INFORMATIVE & PERSUASIVE -->
+<div class="page" data-page="9">
+  <div class="story-page">
+    <div class="page-corner">p.9</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#6a1b9a;">Skill 4</span><h2 class="story-title">📝 Informative & Persuasive Texts!</h2></div>
+    <div class="story-text" data-tts style="margin-bottom:10px;">
+      <p>Two more important text types you'll see in challenge reading! 📝</p>
+    </div>
+    <table class="read-table">
+      <tr><th></th><th>Informative (Report) 📋</th><th>Persuasive (Argument) 💬</th></tr>
+      <tr><td><strong>Purpose</strong></td><td>To INFORM — teach facts</td><td>To PERSUADE — convince you</td></tr>
+      <tr><td><strong>Features</strong></td><td>Facts, headings, diagrams, no opinions</td><td>Opinions, reasons, emotive language</td></tr>
+      <tr><td><strong>Language</strong></td><td>Present tense, factual, technical words</td><td>"I believe", "should", "must", "the best"</td></tr>
+      <tr><td><strong>Structure</strong></td><td>Introduction → facts by topic → summary</td><td>Opinion → reasons → conclusion</td></tr>
+      <tr><td><strong>Examples</strong></td><td>Encyclopaedia, news report, textbook</td><td>Letter to the editor, advertisement, speech</td></tr>
+    </table>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">"All schools should ban junk food because it is unhealthy for children." What text type is this?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅰️ Narrative</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅱️ Informative</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb4')">🅲 Persuasive</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅳 Poetry</button>
+      </div>
+      <div class="quiz-feedback" id="fb4"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 10: IDENTIFYING TEXT PURPOSE -->
+<div class="page" data-page="10">
+  <div class="story-page">
+    <div class="page-corner">p.10</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#6a1b9a;">Skill 4</span><h2 class="story-title">📝 Why Was This Text Written?</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Challenge questions love asking: <span class="hw">"What is the main purpose of this text?"</span> 🎯</p>
+        <p>Here's Lexie's 3-question checklist:</p>
+        <p>1️⃣ Does it tell a <strong>story</strong> with characters? → <span class="hw2">To entertain</span> (narrative)</p>
+        <p>2️⃣ Does it teach you <strong>facts</strong> about something? → <span class="hw3">To inform</span> (informative)</p>
+        <p>3️⃣ Does it try to <strong>change your mind</strong>? → <span class="hw">To persuade</span> (persuasive)</p>
+        <p><span class="hw2">Bonus types you might see:</span></p>
+        <p>📜 <strong>Procedural</strong> — gives instructions/steps (recipe, how-to guide)</p>
+        <p>📝 <strong>Recount</strong> — retells events that really happened (diary, news)</p>
+        <p>🔍 <strong>Explanation</strong> — explains HOW or WHY something works</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🎯</div>
+        <div class="wonder-label">Purpose Checklist!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">📖</span> Story? → To entertain</div>
+          <div class="fact-row"><span class="fact-icon">📋</span> Facts? → To inform</div>
+          <div class="fact-row"><span class="fact-icon">💬</span> Change your mind? → To persuade</div>
+          <div class="fact-row"><span class="fact-icon">📜</span> Steps? → To instruct</div>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <div class="tip-box-title">💡 Lexie's Power Tip!</div>
+      <div class="tip-box-text">Some texts have MORE than one purpose! A recipe book might inform (teach facts about food) AND instruct (give steps). A persuasive letter might also include facts to support the argument. Look for the MAIN purpose — the BIGGEST reason the author wrote it! 🏆</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 11: REVIEW — MNEMONIC -->
+<div class="page" data-page="11">
+  <div class="story-page">
+    <div class="page-corner">p.11</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--blue);">Review</span><h2 class="story-title">🧠 Remember All 4 Analytical Skills!</h2></div>
+    <div class="story-text" data-tts style="margin-bottom:12px;">
+      <p>Lexie's memory trick to remember your 4 reading powers:</p>
+      <p style="text-align:center;font-family:'Fredoka One',cursive;font-size:18px;color:var(--read);margin:12px 0;">🌟 "<span class="hw">C</span>lever <span class="hw">F</span>ox <span class="hw">V</span>isits <span class="hw">T</span>own!" 🌟</p>
+    </div>
+    <div class="memory-card">
+      <div class="mem-row" onclick="revealMem(this,'m1','🔗 Cause & Effect — why things happen and what results!')">
+        <span class="mem-letter">C</span>
+        <span class="mem-word">Clever</span>
+        <span class="mem-tip" id="m1">🔗 ??? (tap to reveal!)</span>
+      </div>
+      <div class="mem-row" onclick="revealMem(this,'m2','⚖️ Fact vs Opinion — proven true or just a thought!')">
+        <span class="mem-letter">F</span>
+        <span class="mem-word">Fox</span>
+        <span class="mem-tip" id="m2">⚖️ ??? (tap to reveal!)</span>
+      </div>
+      <div class="mem-row" onclick="revealMem(this,'m3','📚 Vocabulary in Context — use clues around the word!')">
+        <span class="mem-letter">V</span>
+        <span class="mem-word">Visits</span>
+        <span class="mem-tip" id="m3">📚 ??? (tap to reveal!)</span>
+      </div>
+      <div class="mem-row" onclick="revealMem(this,'m4','📝 Text Types — narrative, informative, or persuasive!')">
+        <span class="mem-letter">T</span>
+        <span class="mem-word">Town</span>
+        <span class="mem-tip" id="m4">📝 ??? (tap to reveal!)</span>
+      </div>
+    </div>
+    <div style="margin-top:14px;">
+      <div class="wonder-facts">
+        <div class="fact-row"><span class="fact-icon">🔗</span> <strong>Cause & Effect:</strong> Find signal words — because, so, therefore!</div>
+        <div class="fact-row"><span class="fact-icon">⚖️</span> <strong>Fact vs Opinion:</strong> Can it be proven? Could someone disagree?</div>
+        <div class="fact-row"><span class="fact-icon">📚</span> <strong>Vocabulary:</strong> Read around the word for clues!</div>
+        <div class="fact-row"><span class="fact-icon">📝</span> <strong>Text Types:</strong> Story = entertain, Facts = inform, Convince = persuade!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 12: FINAL QUIZ -->
+<div class="page" data-page="12">
+  <div class="quiz-page" id="quizPage">
+    <div id="quizActive">
+      <div class="story-header"><span class="chapter-badge" style="background:var(--blue);">🏆 Final Quiz!</span><h2 class="story-title">The Analytical Reader Challenge!</h2></div>
+      <p style="font-size:14px;color:#666;margin-bottom:16px;">Lexie wants to test your analysis skills! Answer 8 questions. You need <strong>at least 6 correct</strong> to earn your certificate! 🌟</p>
+      <div class="quiz-progress-row">
+        <span class="q-counter" id="qCounter">Question 1 of 8</span>
+        <span class="q-score-badge" id="qScoreBadge">Score: 0 / 8</span>
+      </div>
+      <div class="quiz-question-card">
+        <div class="quiz-q-emoji" id="qEmoji">🔍</div>
+        <div class="quiz-q-passage" id="qPassage"></div>
+        <div class="quiz-q-text" id="qText"></div>
+      </div>
+      <div class="fquiz-options" id="fquizOptions"></div>
+      <div class="q-result-msg" id="qResultMsg"></div>
+      <button class="next-q-btn" id="nextQBtn" onclick="nextQuestion()" style="display:none;">Next Question →</button>
+    </div>
+    <div id="quizPass" style="display:none;">
+      <div class="result-screen">
+        <div class="result-trophy">🏆</div>
+        <div class="result-title" style="color:#2e7d32;">AMAZING! Analytical Reader!</div>
+        <div class="result-score" id="passScore">8 / 8</div>
+        <div class="result-msg" id="passMsg"></div>
+        <button class="proceed-btn" onclick="goToCert()">🎓 Get My Certificate! →</button>
+      </div>
+    </div>
+    <div id="quizFail" style="display:none;">
+      <div class="result-screen">
+        <div class="result-trophy">🌟</div>
+        <div class="result-title" style="color:var(--coral);">Almost There!</div>
+        <div class="result-score" id="failScore">3 / 8</div>
+        <div class="result-msg">You need at least 6 correct to earn your certificate.<br>Re-read the lessons and try again! 💪</div>
+        <button class="retry-btn" onclick="restartQuiz()">🔄 Try Again!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 13: CERTIFICATE -->
+<div class="page" data-page="13">
+  <div class="cert-page">
+    <div class="page-corner">🎓</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--yellow);color:#856404;">🏆 Certificate</span><h2 class="story-title">Your Analytical Reader Certificate!</h2></div>
+    <div class="cert-controls">
+      <input class="cert-name-input" id="certName" placeholder="Type the child's name here..." oninput="drawCert()"/>
+      <button class="cert-dl-btn" onclick="downloadCert()">⬇ Download PNG</button>
+      <button class="cert-print-btn" onclick="printCert()">🖨 Print</button>
+    </div>
+    <div class="cert-wrap">
+      <canvas id="cert" width="900" height="630"></canvas>
+    </div>
+    <p class="cert-hint">Type the name above, then click Download or Print!</p>
+  </div>
+</div>
+
+</div>
+
+<script>
+(function(){const c=document.getElementById('clouds');const e=['☁️','⛅','✨'];for(let i=0;i<6;i++){const el=document.createElement('div');el.className='cloud';el.textContent=e[i%e.length];el.style.top=(Math.random()*80)+'%';el.style.animationDuration=(20+Math.random()*30)+'s';el.style.animationDelay=(Math.random()*20)+'s';el.style.fontSize=(40+Math.random()*30)+'px';c.appendChild(el);}})();
+
+const TOTAL=13;let currentPage=0;const pages=document.querySelectorAll('.page');
+const dotsC=document.getElementById('pageDots');for(let i=0;i<=TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.onclick=()=>goToPage(i);dotsC.appendChild(d);}
+
+function goToPage(n){if(n<0||n>TOTAL)return;if(n===13&&!quizPassed){alert('Pass the quiz first to get your certificate! 🌟');return;}stopTTS();pages[currentPage].classList.remove('active');currentPage=n;pages[currentPage].classList.add('active');document.getElementById('prevBtn').disabled=currentPage===0;document.getElementById('nextBtn').disabled=currentPage===TOTAL;document.getElementById('progressFill').style.width=Math.round(currentPage/TOTAL*100)+'%';document.getElementById('progressText').textContent='Page '+(currentPage+1)+' of '+(TOTAL+1);document.querySelectorAll('.dot').forEach((d,i)=>{d.classList.toggle('active',i===currentPage);if(i<currentPage)d.classList.add('visited');});if(currentPage===12)initQuiz();if(currentPage===13)setTimeout(drawCert,120);window.scrollTo({top:0,behavior:'smooth'});}
+function changePage(d){goToPage(currentPage+d);}
+
+let isSpeaking=false,utterance=null;
+function toggleTTS(){if(isSpeaking){stopTTS();return;}const el=pages[currentPage].querySelector('[data-tts]')||pages[currentPage].querySelector('.story-text')||pages[currentPage].querySelector('.story-page');if(!el)return;speak(el.textContent);}
+function speak(text){if(!('speechSynthesis' in window))return;stopTTS();text=text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{200D}\u{20E3}\u{E0020}-\u{E007F}]/gu,'').replace(/\s+/g,' ').trim();utterance=new SpeechSynthesisUtterance(text);utterance.rate=0.78;utterance.pitch=1.15;utterance.lang='en-AU';const v=speechSynthesis.getVoices();const pref=v.find(x=>x.name.includes('Karen'))||v.find(x=>x.name.includes('Samantha'))||v.find(x=>x.lang.startsWith('en'));if(pref)utterance.voice=pref;utterance.onstart=()=>{isSpeaking=true;document.getElementById('ttsBtn').classList.add('speaking');document.getElementById('ttsBtn').textContent='🔊 Reading...';document.getElementById('ttsStop').style.display='inline-flex';};utterance.onend=resetTTS;utterance.onerror=resetTTS;speechSynthesis.speak(utterance);}
+function stopTTS(){if('speechSynthesis' in window)speechSynthesis.cancel();resetTTS();}
+function resetTTS(){isSpeaking=false;document.getElementById('ttsBtn').classList.remove('speaking');document.getElementById('ttsBtn').textContent='🔊 Read Aloud';document.getElementById('ttsStop').style.display='none';}
+if('speechSynthesis' in window)speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
+
+function miniQuiz(btn,type,fbId){const c=btn.closest('.quiz-bubble');c.querySelectorAll('.q-opt').forEach(b=>b.style.pointerEvents='none');const fb=document.getElementById(fbId);if(type==='correct'){btn.classList.add('correct');fb.innerHTML='<span style="color:#27ae60;">🎉 Correct! Great analysis!</span>';}else{btn.classList.add('wrong');c.querySelectorAll('.q-opt').forEach(b=>{if(b.onclick&&b.onclick.toString().includes("'correct'"))b.classList.add('correct');});fb.innerHTML='<span style="color:#c0392b;">Not quite! The green one is correct. Keep reading! 💪</span>';}}
+
+function revealMem(row,id,answer){document.getElementById(id).textContent=answer;document.getElementById(id).style.color='var(--read)';row.style.background='rgba(13,71,161,.05)';}
+
+const QUESTIONS=[
+  {emoji:'🔗',passage:'"The cat knocked the vase off the table, so it smashed into pieces on the floor."',q:'What is the EFFECT in this sentence?',opts:['The cat was on the table','The vase smashed into pieces','The floor was clean','The cat was hungry'],ans:1},
+  {emoji:'🔗',passage:'',q:'Which word is a cause-and-effect signal word?',opts:['and','the','because','very'],ans:2},
+  {emoji:'⚖️',passage:'',q:'Which of these is a FACT?',opts:['Maths is the hardest subject','Australia is the best country','The Pacific Ocean is the largest ocean','Everyone should eat fruit'],ans:2},
+  {emoji:'⚖️',passage:'"I believe all children should learn to swim because it could save their lives."',q:'Is this statement a fact or an opinion?',opts:['Fact — it can be proven','Opinion — it uses "I believe" and "should"','Fact — swimming saves lives','Neither fact nor opinion'],ans:1},
+  {emoji:'📚',passage:'"The exhausted runner collapsed at the finish line after running for three hours."',q:'What does "exhausted" most likely mean?',opts:['Excited','Extremely tired','Very fast','Happy'],ans:1},
+  {emoji:'📚',passage:'',q:'The word "bark" can mean different things. In "The dog let out a loud bark," what does it mean?',opts:['The outside of a tree','A type of boat','The sound a dog makes','A piece of wood'],ans:2},
+  {emoji:'📝',passage:'"Once upon a time, a brave knight set off on a dangerous quest to find a magical sword."',q:'What type of text is this?',opts:['Informative','Persuasive','Narrative','Procedural'],ans:2},
+  {emoji:'📝',passage:'',q:'A text that gives you facts about dolphins and how they live is called:',opts:['Narrative','Persuasive','Procedural','Informative'],ans:3}
+];
+const QCOUNT=QUESTIONS.length;const PASS_THRESHOLD=6;
+let qIdx=0,score=0,answered=false,quizPassed=false;
+function initQuiz(){qIdx=0;score=0;answered=false;document.getElementById('quizActive').style.display='block';document.getElementById('quizPass').style.display='none';document.getElementById('quizFail').style.display='none';renderQ();}
+function renderQ(){const q=QUESTIONS[qIdx];document.getElementById('qEmoji').textContent=q.emoji;document.getElementById('qPassage').textContent=q.passage||'';document.getElementById('qPassage').style.display=q.passage?'block':'none';document.getElementById('qText').textContent=q.q;document.getElementById('qCounter').textContent='Question '+(qIdx+1)+' of '+QCOUNT;document.getElementById('qScoreBadge').textContent='Score: '+score+' / '+QCOUNT;document.getElementById('qResultMsg').textContent='';document.getElementById('nextQBtn').style.display='none';answered=false;const o=document.getElementById('fquizOptions');o.innerHTML='';q.opts.forEach((t,i)=>{const b=document.createElement('button');b.className='fq-opt';b.textContent=t;b.onclick=()=>answerQ(i,b);o.appendChild(b);});}
+function answerQ(i,btn){if(answered)return;answered=true;const q=QUESTIONS[qIdx];document.querySelectorAll('.fq-opt').forEach(b=>b.classList.add('locked'));const msg=document.getElementById('qResultMsg');if(i===q.ans){btn.classList.add('correct');score++;msg.innerHTML='<span style="color:#27ae60;">🎉 Correct!</span>';}else{btn.classList.add('wrong');document.querySelectorAll('.fq-opt')[q.ans].classList.add('correct');msg.innerHTML='<span style="color:#c0392b;">Not quite! Correct answer is in green. 💪</span>';}document.getElementById('qScoreBadge').textContent='Score: '+score+' / '+QCOUNT;document.getElementById('nextQBtn').style.display='block';document.getElementById('nextQBtn').textContent=qIdx===QCOUNT-1?'See My Result! 🏁':'Next Question →';}
+function nextQuestion(){qIdx++;if(qIdx>=QCOUNT){showResult();return;}renderQ();}
+function showResult(){document.getElementById('quizActive').style.display='none';if(score>=PASS_THRESHOLD){quizPassed=true;document.getElementById('quizPass').style.display='block';document.getElementById('passScore').textContent=score+' / '+QCOUNT;document.getElementById('passMsg').innerHTML=score===QCOUNT?'PERFECT SCORE! You\'re an incredible Analytical Reader! 🏆🔍🎉':'Brilliant analysis! Your reading detective skills are amazing! 📖✨';}else{document.getElementById('quizFail').style.display='block';document.getElementById('failScore').textContent=score+' / '+QCOUNT;}}
+function restartQuiz(){initQuiz();}
+function goToCert(){goToPage(13);}
+
+const canvas=document.getElementById('cert'),ctx=canvas.getContext('2d');
+function drawStar(cx,cy,r,pts,col){ctx.save();ctx.fillStyle=col;ctx.beginPath();for(let i=0;i<pts*2;i++){const a=(i*Math.PI/pts)-Math.PI/2,rd=i%2===0?r:r*.45;i===0?ctx.moveTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a)):ctx.lineTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a));}ctx.closePath();ctx.fill();ctx.restore();}
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();}
+const qrImage=new Image();let qrReady=false;qrImage.crossOrigin='anonymous';qrImage.onload=()=>{qrReady=true;drawCert();};qrImage.src='https://quickchart.io/qr?text='+encodeURIComponent('https://fivetofifteen.com/')+'&size=180';
+
+function drawCert(){
+  const name=document.getElementById('certName').value.trim()||'Analytical Reader';
+  const CW=900,CH=630;ctx.clearRect(0,0,CW,CH);
+  const bg=ctx.createLinearGradient(0,0,CW,CH);bg.addColorStop(0,'#F0F7FF');bg.addColorStop(.5,'#E3F2FD');bg.addColorStop(1,'#F5F5FF');ctx.fillStyle=bg;rr(0,0,CW,CH,20);ctx.fill();
+  ctx.strokeStyle='#4d96ff';ctx.lineWidth=6;rr(8,8,CW-16,CH-16,16);ctx.stroke();
+  ctx.strokeStyle='#0d47a1';ctx.lineWidth=2;ctx.setLineDash([8,5]);rr(20,20,CW-40,CH-40,10);ctx.stroke();ctx.setLineDash([]);
+  [[52,52],[CW-52,52],[52,CH-52],[CW-52,CH-52]].forEach(([x,y])=>drawStar(x,y,18,5,'#4d96ff'));
+  const rg=ctx.createLinearGradient(CW/2-220,0,CW/2+220,0);rg.addColorStop(0,'#0d47a1');rg.addColorStop(.5,'#1565c0');rg.addColorStop(1,'#0d47a1');ctx.fillStyle=rg;rr(CW/2-220,28,440,44,22);ctx.fill();
+  ctx.fillStyle='#ffd93d';ctx.font='bold 17px "Fredoka One",cursive';ctx.textAlign='center';ctx.fillText('🌟  THE ANALYTICAL READER  🌟',CW/2,57);
+  ctx.font='64px serif';ctx.fillText('🐛',CW/2,142);
+  ctx.fillStyle='#0d47a1';ctx.font='bold 40px "Fredoka One",cursive';ctx.fillText('Analytical Reader Certificate!',CW/2,196);
+  ctx.fillStyle='#888';ctx.font='17px "Nunito",sans-serif';ctx.fillText('This is to proudly certify that the brilliant reader',CW/2,232);
+  ctx.strokeStyle='#4d96ff';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(CW/2-240,276);ctx.lineTo(CW/2+240,276);ctx.stroke();
+  ctx.fillStyle='#0d47a1';ctx.font='bold 38px "Fredoka One",cursive';ctx.fillText(name,CW/2,270);
+  ctx.fillStyle='#444';ctx.font='17px "Nunito",sans-serif';ctx.fillText('has completed the Analytical Reader Quest and is now an official',CW/2,310);
+  ctx.fillStyle='#0d47a1';ctx.font='bold 24px "Fredoka One",cursive';ctx.fillText('🌟 Certified Analytical Reader 🌟',CW/2,344);
+  ctx.fillStyle='#888';ctx.font='14px "Nunito",sans-serif';ctx.fillText('Mastered: Cause & Effect • Fact vs Opinion • Vocabulary in Context • Text Types',CW/2,372);
+  const badges=[{t:'✓ Cause & Effect',bg:'#e3f2fd',c:'#0d47a1'},{t:'✓ Fact vs Opinion',bg:'#fce4ec',c:'#c62828'},{t:'✓ Vocab Detective',bg:'#e8f5e9',c:'#2e7d32'},{t:'✓ Text Type Pro!',bg:'#f3e5f5',c:'#6a1b9a'}];
+  const bw=168,bh=30,bg2=10,tot=badges.length*(bw+bg2)-bg2;let bx=CW/2-tot/2;
+  badges.forEach(b=>{ctx.fillStyle=b.bg;rr(bx,390,bw,bh,15);ctx.fill();ctx.fillStyle=b.c;ctx.font='bold 12px "Nunito",sans-serif';ctx.textAlign='center';ctx.fillText(b.t,bx+bw/2,409);bx+=bw+bg2;});
+  ctx.font='32px serif';ctx.fillText('🔍  📖  ⚖️  📚  🐛',CW/2,468);
+  ctx.fillStyle='#ffffff';ctx.strokeStyle='#d7e2f4';ctx.lineWidth=2;rr(CW-154,68,102,102,14);ctx.fill();ctx.stroke();
+  if(qrReady){ctx.drawImage(qrImage,CW-144,78,82,82);}else{ctx.fillStyle='#eef7ff';ctx.fillRect(CW-144,78,82,82);ctx.fillStyle='#0d47a1';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('QR loading...',CW-103,122);}
+  ctx.fillStyle='#0d47a1';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('Scan to visit',CW-103,185);
+  ctx.fillStyle='#9e9e9e';ctx.font='bold 12px "Nunito",sans-serif';ctx.fillText('Presented by fivetofifteen.com',CW/2,538);
+  const d=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});ctx.fillStyle='#bbb';ctx.font='12px "Nunito",sans-serif';ctx.fillText('Awarded on '+d,CW/2,562);
+  [[80,200],[CW-80,200],[80,420],[CW-80,420]].forEach(([x,y])=>drawStar(x,y,10,5,'rgba(77,150,255,.35)'));
+}
+function downloadCert(){drawCert();const a=document.createElement('a');a.download='analytical-reader-certificate.png';a.href=canvas.toDataURL('image/png');a.click();}
+function printCert(){drawCert();const u=canvas.toDataURL('image/png');const w=window.open('','_blank');w.document.write('<!DOCTYPE html><html><head><title>Analytical Reader Certificate<\/title><style>body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f5f5f5;}img{max-width:100%;box-shadow:0 4px 20px rgba(0,0,0,.15);border-radius:12px;}@media print{body{background:white;}img{box-shadow:none;width:100%;}}<\/style><\/head><body><img src="'+u+'"/><\/body><\/html>');w.document.close();w.onload=()=>{w.focus();w.print();};}
+drawCert();
+</script>
+</body>
+</html>

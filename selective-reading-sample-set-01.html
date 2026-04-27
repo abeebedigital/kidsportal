@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Selective Reading Sample Set 01</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --bg-1:#f4fbff;
+      --bg-2:#fff9ef;
+      --ink:#233047;
+      --muted:#5c6a7f;
+      --line:#d9e4f2;
+      --card:#ffffff;
+      --brand:#1ea98b;
+      --brand-2:#2f7ddf;
+      --accent:#ff8b57;
+      --good:#1f8e55;
+      --shadow:0 12px 30px rgba(24,42,75,.11);
+      --radius:18px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Nunito",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 500px at 0% -10%, rgba(30,169,139,.14), transparent 45%),
+        radial-gradient(1200px 600px at 100% -15%, rgba(47,125,223,.13), transparent 45%),
+        linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      min-height:100vh;
+    }
+
+    .wrap{
+      width:min(1080px,94vw);
+      margin:20px auto 56px;
+    }
+
+    .hero{
+      background:linear-gradient(135deg,#ffffff 0%,#f7fbff 45%,#fff8ee 100%);
+      border:1px solid var(--line);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      padding:20px 22px;
+    }
+
+    .hero-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border-radius:999px;
+      border:1px solid #cde8df;
+      background:#e9fbf4;
+      color:#13745f;
+      font-weight:800;
+      font-size:.8rem;
+      padding:6px 12px;
+    }
+
+    h1{
+      margin:8px 0 6px;
+      font-family:"Fredoka",sans-serif;
+      font-weight:700;
+      letter-spacing:.2px;
+      font-size:clamp(1.28rem,2.2vw,1.92rem);
+    }
+
+    .meta{
+      color:var(--muted);
+      font-weight:700;
+      font-size:.95rem;
+    }
+
+    .controls{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+    .controls-left,
+    .controls-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .controls-right{margin-left:auto}
+
+    .btn{
+      border:1px solid #cfe0f3;
+      background:#fff;
+      color:#2f4e72;
+      border-radius:999px;
+      min-height:40px;
+      padding:10px 16px;
+      font-weight:800;
+      font-size:.92rem;
+      cursor:pointer;
+      transition:transform .16s ease, box-shadow .16s ease, background .16s ease;
+    }
+    .btn:hover{transform:translateY(-1px); box-shadow:0 8px 16px rgba(31,58,102,.14)}
+    .btn-primary{
+      border-color:#89d9c9;
+      background:linear-gradient(135deg,#c9f4e8 0%,#d8f0ff 100%);
+      color:#155a6c;
+    }
+    .btn.active{
+      background:linear-gradient(135deg,#1ea98b 0%,#2f7ddf 100%);
+      border-color:transparent;
+      color:#fff;
+      box-shadow:0 10px 18px rgba(30,121,182,.27);
+    }
+
+    .section-nav{
+      margin-top:12px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .section-chip{
+      text-decoration:none;
+      border:1px solid #d4e1f1;
+      background:#fff;
+      color:#375572;
+      border-radius:999px;
+      padding:7px 12px;
+      font-size:.84rem;
+      font-weight:800;
+    }
+
+    .stack{
+      display:grid;
+      gap:14px;
+      margin-top:16px;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:0 8px 22px rgba(27,52,90,.07);
+      overflow:hidden;
+    }
+    .card-head{
+      padding:14px 16px;
+      border-bottom:1px solid #e8f0fb;
+      background:linear-gradient(180deg,#fcfeff 0%,#f7fbff 100%);
+    }
+    .card-head h2{
+      margin:0;
+      font-family:"Fredoka",sans-serif;
+      font-size:1.08rem;
+    }
+    .card-sub{
+      margin-top:5px;
+      color:var(--muted);
+      font-size:.9rem;
+      font-weight:700;
+    }
+    .card-body{padding:14px 16px 16px}
+
+    .extract{
+      border:1px solid #e0ebf8;
+      border-radius:14px;
+      background:#fff;
+      padding:12px;
+      margin-bottom:10px;
+    }
+    .extract h3{
+      margin:0 0 7px;
+      font-family:"Fredoka",sans-serif;
+      font-size:1rem;
+    }
+    .extract p{
+      margin:0;
+      white-space:pre-line;
+      color:#2e405c;
+      line-height:1.62;
+      font-size:.94rem;
+    }
+
+    .poem{
+      border:1px solid #e0ebf8;
+      border-radius:14px;
+      background:#fff;
+      padding:12px;
+      margin-bottom:10px;
+    }
+    .poem-title{
+      margin:0 0 8px;
+      font-family:"Fredoka",sans-serif;
+      font-size:1rem;
+    }
+    .poem-lines{
+      font-size:.95rem;
+      line-height:1.62;
+      color:#2f4462;
+      white-space:pre-line;
+    }
+
+    .gapped{
+      border:1px solid #e0ebf8;
+      border-radius:14px;
+      background:#fff;
+      padding:12px;
+      margin-bottom:10px;
+    }
+
+    .q-list{
+      display:grid;
+      gap:10px;
+    }
+    .q{
+      border:1px solid #dce8f8;
+      border-radius:14px;
+      background:#fff;
+      padding:12px;
+    }
+    .q-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .q-num{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:34px;
+      min-height:30px;
+      border-radius:999px;
+      font-size:.8rem;
+      font-weight:900;
+      color:#1a5688;
+      background:#eaf5ff;
+      border:1px solid #cfe6ff;
+    }
+    .q-stem{
+      margin:0;
+      flex:1;
+      font-weight:800;
+      line-height:1.46;
+      font-size:.95rem;
+      color:#22344f;
+    }
+    .opts{
+      margin:10px 0 0;
+      padding-left:16px;
+      color:#415674;
+      display:grid;
+      gap:4px;
+      font-size:.92rem;
+    }
+    .opts li{line-height:1.45}
+
+    .answer{
+      margin-top:10px;
+      border:1px dashed #b9d8f1;
+      background:#f6fbff;
+      border-radius:10px;
+      padding:9px 10px;
+      display:none;
+    }
+    .answer.show{display:block}
+    .answer-line{
+      color:var(--good);
+      font-weight:900;
+      font-size:.9rem;
+      margin-bottom:5px;
+    }
+    .explain{
+      color:#33506f;
+      font-size:.88rem;
+      line-height:1.5;
+      margin:0;
+    }
+
+    .option-bank{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:8px;
+      margin-top:10px;
+    }
+    .option-item{
+      border:1px solid #d8e6f8;
+      background:#fff;
+      border-radius:10px;
+      padding:8px 9px;
+      font-size:.88rem;
+      color:#375270;
+      line-height:1.45;
+    }
+
+    .status{
+      margin-top:14px;
+      color:#4a5f7d;
+      font-weight:700;
+      font-size:.89rem;
+    }
+
+    @media (max-width: 860px){
+      .option-bank{grid-template-columns:1fr}
+      .card-body,.card-head,.hero{padding:12px}
+      .wrap{width:min(1080px,96vw)}
+      .btn{min-height:38px; padding:9px 13px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <div class="hero-top">
+        <div>
+          <span class="badge">Selective Reading · Original Sample</span>
+          <h1 id="pageTitle">Loading sample set...</h1>
+          <div class="meta" id="metaLine"></div>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="controls-left">
+          <button class="btn" id="expandAll">Expand All Sections</button>
+          <button class="btn" id="collapseAll">Collapse All Sections</button>
+        </div>
+        <div class="controls-right">
+          <button class="btn btn-primary" id="toggleAnswers">Show Answers</button>
+        </div>
+      </div>
+      <div class="section-nav" id="sectionNav"></div>
+      <div class="status" id="statusMsg"></div>
+    </header>
+
+    <main class="stack" id="content"></main>
+  </div>
+
+  <script>
+    (function () {
+      var jsonPath = 'selective-reading-sample-set-01.json';
+      var contentEl = document.getElementById('content');
+      var navEl = document.getElementById('sectionNav');
+      var titleEl = document.getElementById('pageTitle');
+      var metaEl = document.getElementById('metaLine');
+      var statusEl = document.getElementById('statusMsg');
+      var toggleAnswersBtn = document.getElementById('toggleAnswers');
+      var expandAllBtn = document.getElementById('expandAll');
+      var collapseAllBtn = document.getElementById('collapseAll');
+      var answersVisible = false;
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function sectionLabel(id, range) {
+        if (id === 'dual_extract') return 'Dual Extract (' + range + ')';
+        if (id === 'poetry') return 'Poetry (' + range + ')';
+        if (id === 'gap_fill') return 'Gap Fill (' + range + ')';
+        if (id === 'multi_extract_match') return 'Extract Match (' + range + ')';
+        return (id || 'Section') + ' (' + (range || '') + ')';
+      }
+
+      function makeOptionList(optionsObj) {
+        if (!optionsObj || !Object.keys(optionsObj).length) return '';
+        var keys = Object.keys(optionsObj).sort();
+        if (!keys.length) return '';
+        var html = '<ul class="opts">';
+        keys.forEach(function (k) {
+          html += '<li><strong>' + escapeHtml(k) + '.</strong> ' + escapeHtml(optionsObj[k]) + '</li>';
+        });
+        html += '</ul>';
+        return html;
+      }
+
+      function renderQuestion(q) {
+        var optionSet = q.options;
+        if ((!optionSet || !Object.keys(optionSet).length) && q.type === 'which_extract_abcd') {
+          optionSet = {
+            "A": "Extract A",
+            "B": "Extract B",
+            "C": "Extract C",
+            "D": "Extract D"
+          };
+        }
+        var optsHtml = makeOptionList(optionSet);
+        var explainParts = [];
+        if (q.explanation && q.explanation.why_correct) {
+          explainParts.push('<p class="explain"><strong>Why:</strong> ' + escapeHtml(q.explanation.why_correct) + '</p>');
+        }
+        if (q.explanation && q.explanation.why_not_others) {
+          if (typeof q.explanation.why_not_others === 'string') {
+            explainParts.push('<p class="explain"><strong>Why not others:</strong> ' + escapeHtml(q.explanation.why_not_others) + '</p>');
+          } else {
+            var wn = q.explanation.why_not_others;
+            var entries = Object.keys(wn).map(function (k) {
+              return k + ': ' + wn[k];
+            }).join(' | ');
+            explainParts.push('<p class="explain"><strong>Why not others:</strong> ' + escapeHtml(entries) + '</p>');
+          }
+        }
+
+        return [
+          '<article class="q">',
+          '  <div class="q-top">',
+          '    <span class="q-num">Q' + escapeHtml(q.number) + '</span>',
+          '    <p class="q-stem">' + escapeHtml(q.stem || '') + '</p>',
+          '  </div>',
+             optsHtml,
+          '  <div class="answer">',
+          '    <div class="answer-line">Answer: ' + escapeHtml(q.answer || '') + '</div>',
+               explainParts.join(''),
+          '  </div>',
+          '</article>'
+        ].join('');
+      }
+
+      function renderSection(section, idx) {
+        var id = 'sec-' + idx;
+        var navText = sectionLabel(section.id, section.question_range);
+        var html = '';
+
+        html += '<section class="card" id="' + id + '">';
+        html += '<div class="card-head">';
+        html += '<h2>' + escapeHtml(navText) + '</h2>';
+        if (section.instructions) html += '<div class="card-sub">' + escapeHtml(section.instructions) + '</div>';
+        html += '</div>';
+        html += '<div class="card-body">';
+
+        if (section.extracts && section.id === 'dual_extract') {
+          section.extracts.forEach(function (ex) {
+            html += '<div class="extract">';
+            html += '<h3>Extract ' + escapeHtml(ex.label || '') + ': ' + escapeHtml(ex.title || '') + '</h3>';
+            html += '<p>' + escapeHtml(ex.text || '') + '</p>';
+            html += '</div>';
+          });
+        }
+
+        if (section.poem) {
+          html += '<div class="poem">';
+          html += '<h3 class="poem-title">' + escapeHtml(section.poem.title || 'Poem') + '</h3>';
+          html += '<div class="poem-lines">' + escapeHtml((section.poem.lines || []).join('\n')) + '</div>';
+          html += '</div>';
+        }
+
+        if (section.text_with_gaps) {
+          html += '<div class="gapped">';
+          if (section.title) html += '<h3 style="margin:0 0 8px;font-family:Fredoka,sans-serif;font-size:1rem;">' + escapeHtml(section.title) + '</h3>';
+          html += '<p style="margin:0;white-space:pre-line;line-height:1.62;color:#2e405c;font-size:.94rem;">' + escapeHtml(section.text_with_gaps) + '</p>';
+          if (section.option_bank) {
+            html += '<div class="option-bank">';
+            Object.keys(section.option_bank).forEach(function (k) {
+              html += '<div class="option-item"><strong>' + escapeHtml(k) + '.</strong> ' + escapeHtml(section.option_bank[k]) + '</div>';
+            });
+            html += '</div>';
+          }
+          html += '</div>';
+        }
+
+        if (section.extracts && section.id === 'multi_extract_match') {
+          section.extracts.forEach(function (ex) {
+            html += '<div class="extract">';
+            html += '<h3>Extract ' + escapeHtml(ex.label || '') + '</h3>';
+            html += '<p>' + escapeHtml(ex.text || '') + '</p>';
+            html += '</div>';
+          });
+        }
+
+        if (section.questions && section.questions.length) {
+          html += '<div class="q-list">';
+          section.questions.forEach(function (q) { html += renderQuestion(q); });
+          html += '</div>';
+        }
+
+        html += '</div>';
+        html += '</section>';
+
+        var chip = document.createElement('a');
+        chip.className = 'section-chip';
+        chip.href = '#' + id;
+        chip.textContent = navText;
+        navEl.appendChild(chip);
+
+        return html;
+      }
+
+      function setAnswerVisibility(show) {
+        answersVisible = show;
+        document.querySelectorAll('.answer').forEach(function (el) {
+          el.classList.toggle('show', show);
+        });
+        toggleAnswersBtn.classList.toggle('active', show);
+        toggleAnswersBtn.textContent = show ? 'Hide Answers' : 'Show Answers';
+      }
+
+      function setSectionsCollapsed(collapsed) {
+        document.querySelectorAll('.card').forEach(function (card) {
+          var body = card.querySelector('.card-body');
+          if (!body) return;
+          body.style.display = collapsed ? 'none' : 'block';
+        });
+      }
+
+      toggleAnswersBtn.addEventListener('click', function () {
+        setAnswerVisibility(!answersVisible);
+      });
+      expandAllBtn.addEventListener('click', function () {
+        setSectionsCollapsed(false);
+      });
+      collapseAllBtn.addEventListener('click', function () {
+        setSectionsCollapsed(true);
+      });
+
+      fetch(jsonPath)
+        .then(function (res) {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.json();
+        })
+        .then(function (data) {
+          titleEl.textContent = data.meta && data.meta.title ? data.meta.title : 'Selective Reading Sample Set';
+          var mins = data.meta && data.meta.time_minutes ? data.meta.time_minutes : '-';
+          var total = data.meta && data.meta.total_questions ? data.meta.total_questions : '-';
+          metaEl.textContent = 'Time: ' + mins + ' mins • Questions: ' + total;
+          statusEl.textContent = 'Tip: Use "Show Answers" after trying each section.';
+
+          var html = '';
+          (data.sections || []).forEach(function (section, idx) {
+            html += renderSection(section, idx + 1);
+          });
+          contentEl.innerHTML = html;
+          setAnswerVisibility(false);
+        })
+        .catch(function (err) {
+          titleEl.textContent = 'Unable to load sample set';
+          metaEl.textContent = '';
+          statusEl.textContent = 'Could not load "' + jsonPath + '". Check file path and local server.';
+          contentEl.innerHTML = '<section class="card"><div class="card-body"><p style="margin:0;color:#b42318;font-weight:800">Load error: ' + escapeHtml(err.message || String(err)) + '</p></div></section>';
+        });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matching Fun</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="accessibility-modes.css" />
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="accessibility-preferences.js" defer></script>
+  <script src="focus-calm-guide.js"></script>
+  <style>
+    :root{
+      --ink:#28415f;
+      --muted:#64758a;
+      --paper:#fffef9;
+      --line:#e3ebf2;
+      --sky:#e5f3ff;
+      --sun:#ffe3a5;
+      --lav:#efe8ff;
+    }
+    html{font-size:17px}
+    @media (max-width:500px){html{font-size:16px}}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Nunito',sans-serif;
+      color:var(--ink);
+      min-height:100vh;
+      background:
+        radial-gradient(circle at 12% 9%, rgba(229,243,255,.96) 0, transparent 24%),
+        radial-gradient(circle at 88% 10%, rgba(255,227,165,.62) 0, transparent 25%),
+        linear-gradient(180deg,#f8fffd 0%,#fffaf2 100%);
+      padding:16px;
+    }
+    .page{
+      max-width:1080px;
+      margin:0 auto;
+      background:var(--paper);
+      border:1px solid var(--line);
+      border-radius:28px;
+      overflow:hidden;
+      box-shadow:0 18px 34px rgba(37,64,90,.09);
+    }
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      padding:16px 18px;
+      border-bottom:1px solid var(--line);
+      background:linear-gradient(135deg,#eefbf6 0%,#f7fbff 48%,#fff7ea 100%);
+    }
+    .home-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-height:44px;
+      padding:10px 16px;
+      border-radius:999px;
+      text-decoration:none;
+      font-weight:800;
+      color:#fff;
+      background:linear-gradient(135deg,#39c3ad 0%,#48ceb3 100%);
+    }
+    .title-lockup{display:flex;align-items:center;gap:12px}
+    .title-icon{
+      width:52px;height:52px;border-radius:16px;display:grid;place-items:center;
+      background:linear-gradient(135deg,#efeaff 0%,#fff0bc 100%);font-size:1.7rem;
+    }
+    .title-lockup h1{
+      font-family:'Fredoka One',cursive;font-size:1.6rem;color:#2e5670;line-height:1.15;
+    }
+    .title-lockup p{color:var(--muted);font-size:.94rem;margin-top:4px}
+    .shell{padding:20px;display:grid;gap:18px}
+    .support-bar,.game-board,.reward-card{
+      border:1px solid var(--line);border-radius:26px;box-shadow:0 10px 22px rgba(37,64,90,.06);
+    }
+    .support-bar{
+      background:linear-gradient(135deg,#fbfffd 0%,#f7fbff 55%,#fffaf2 100%);
+      padding:18px;
+    }
+    .support-bar h2,.mission-copy h2,.reward-card h2{
+      font-family:'Fredoka One',cursive;color:#2e5670;
+    }
+    .support-bar h2{font-size:1.18rem;margin-bottom:8px}
+    .support-bar p{color:var(--muted);line-height:1.65;margin-bottom:14px}
+    .pref-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .game-board{
+      background:linear-gradient(135deg,#fffdfa 0%,#f6fbff 50%,#fff9ef 100%);
+      padding:20px;display:grid;gap:16px;
+    }
+    .mission-top{display:grid;grid-template-columns:128px minmax(0,1fr);gap:16px;align-items:center}
+    .guide-box{
+      min-height:126px;border-radius:26px;display:grid;place-items:center;font-size:4rem;
+      border:1px solid #e2e9f1;
+      background:radial-gradient(circle at 28% 24%, rgba(255,255,255,.82) 0, transparent 18%),linear-gradient(180deg,#eef7ff 0%,#fff0bf 100%);
+      position:relative;overflow:hidden;
+    }
+    .guide-box::after{
+      content:'';position:absolute;bottom:-10px;width:72px;height:28px;border-radius:50%;
+      background:rgba(255,255,255,.45);filter:blur(6px);
+    }
+    .mission-copy h2{font-size:1.45rem;margin-bottom:8px}
+    .mission-copy p{color:var(--muted);line-height:1.7}
+    .play-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .play-stat{
+      border-radius:18px;border:1px solid #dde7ef;background:#fff;padding:12px;text-align:center;
+    }
+    .play-stat-label{
+      display:block;font-size:.74rem;text-transform:uppercase;letter-spacing:.6px;font-weight:800;color:#7b8794;
+    }
+    .play-stat-value{
+      display:block;margin-top:4px;font-family:'Fredoka One',cursive;font-size:1.14rem;color:#2f5671;
+    }
+    .play-field{
+      background:#fff;border:1px solid var(--line);border-radius:24px;padding:18px;
+      box-shadow:0 10px 20px rgba(37,64,90,.05);position:relative;overflow:hidden;display:grid;gap:14px;
+    }
+    .play-field::before{
+      content:'';position:absolute;right:-24px;bottom:-24px;width:180px;height:180px;
+      background:radial-gradient(circle, rgba(239,232,255,.72) 0%, transparent 70%);pointer-events:none;
+    }
+    .scene-header{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;position:relative;z-index:1;
+    }
+    .scene-badge{
+      display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;
+      background:#eef8ff;border:1px solid #dce8f4;color:#4b6981;font-weight:800;font-size:.86rem;
+    }
+    .scene-title{font-family:'Fredoka One',cursive;font-size:1.2rem;color:#2f5671}
+    .scene-sub{color:var(--muted);font-size:.95rem}
+    .progress-dots{display:flex;gap:8px;flex-wrap:wrap}
+    .progress-dot{
+      width:12px;height:12px;border-radius:50%;background:#d8e5df;box-shadow:inset 0 0 0 2px rgba(255,255,255,.7);
+    }
+    .progress-dot.done{background:#5cc39d}
+    .progress-dot.active{background:#ffd166;transform:scale(1.2)}
+    .prompt-board{
+      display:grid;grid-template-columns:minmax(0,.9fr) auto minmax(0,1.1fr);gap:14px;align-items:center;
+      position:relative;z-index:1;
+    }
+    .main-card,.clue-card{
+      border-radius:24px;border:1px solid #e2e9f1;background:linear-gradient(180deg,#ffffff 0%,#f9fcff 100%);padding:16px;
+    }
+    .main-card{
+      min-height:250px;display:grid;place-items:center;text-align:center;gap:10px;
+    }
+    .main-card .emoji{font-size:5rem;line-height:1}
+    .main-card .label{font-family:'Fredoka One',cursive;font-size:1.08rem;color:#2f5671}
+    .main-card .mini{color:#748596;font-size:.84rem;font-weight:800}
+    .match-arrow{
+      font-family:'Fredoka One',cursive;font-size:2rem;color:#74bd9d;text-align:center;
+    }
+    .clue-card{
+      min-height:250px;display:grid;align-content:center;gap:12px;text-align:center;
+    }
+    .clue-chip{
+      display:inline-flex;justify-self:center;align-items:center;padding:8px 12px;border-radius:999px;
+      background:#fff4df;color:#9b6f18;font-weight:800;font-size:.82rem;
+    }
+    .clue-card strong{font-family:'Fredoka One',cursive;color:#345978;font-size:1.08rem}
+    .clue-card span{color:var(--muted);line-height:1.6}
+    .choices-grid{
+      display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;position:relative;z-index:1;
+    }
+    .choice-card{
+      min-height:210px;border:2px solid #dce6f2;border-radius:24px;background:linear-gradient(180deg,#ffffff 0%,#f9fcff 100%);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:16px;cursor:pointer;
+      transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease, background .16s ease;text-align:center;position:relative;overflow:hidden;
+    }
+    .choice-card:hover{transform:translateY(-2px);box-shadow:0 14px 24px rgba(37,64,90,.10)}
+    .choice-card::before{
+      content:'';position:absolute;top:-24px;right:-24px;width:84px;height:84px;border-radius:50%;background:rgba(229,243,255,.76);
+    }
+    .choice-card .emoji{font-size:4.3rem;line-height:1;position:relative;z-index:1}
+    .choice-card .label{font-family:'Fredoka One',cursive;font-size:1rem;color:#2f5671;position:relative;z-index:1}
+    .choice-card .mini{color:#758595;font-size:.82rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;position:relative;z-index:1}
+    .choice-card.correct{
+      border-color:#2dba87;background:linear-gradient(180deg,#effcf6 0%,#f8fffb 100%);box-shadow:0 0 0 4px rgba(45,186,135,.14);
+    }
+    .choice-card.wrong{
+      border-color:#e27474;background:linear-gradient(180deg,#fff4f4 0%,#fffafb 100%);box-shadow:0 0 0 4px rgba(226,116,116,.12);
+    }
+    .choice-card.disabled{cursor:default}
+    .feedback-bar{
+      min-height:56px;border-radius:18px;background:linear-gradient(135deg,#f7fbff 0%,#fffaf1 100%);
+      border:1px solid #dfe8ef;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px 14px;
+      font-weight:800;color:#48657c;position:relative;z-index:1;
+    }
+    .feedback-bar.success{color:#237d63;background:linear-gradient(135deg,#eefcf6 0%,#f9fffc 100%)}
+    .feedback-bar.error{color:#b45a5a;background:linear-gradient(135deg,#fff4f4 0%,#fffafb 100%)}
+    .answer-strip{
+      display:none;grid-template-columns:1fr 1fr;gap:12px;position:relative;z-index:1;
+    }
+    .answer-strip.is-visible{display:grid}
+    .answer-box{
+      min-height:92px;border-radius:20px;border:1px solid #dbe8ef;background:#f5faf8;
+      display:flex;align-items:center;justify-content:center;gap:12px;padding:14px;
+    }
+    .answer-box .emoji{font-size:2.3rem;line-height:1}
+    .answer-box strong{display:block;color:#2f5671;font-size:1rem}
+    .answer-box span{display:block;color:#70808f;font-size:.86rem;margin-top:4px}
+    .next-wrap{display:flex;justify-content:center}
+    .next-btn{
+      border:none;border-radius:16px;min-height:50px;padding:12px 22px;background:linear-gradient(135deg,#39c3ad 0%,#48ceb3 100%);
+      color:#fff;font-family:'Fredoka One',cursive;font-size:.95rem;cursor:pointer;display:none;box-shadow:0 10px 18px rgba(57,195,173,.18);
+    }
+    .next-btn.is-visible{display:inline-flex;align-items:center;justify-content:center}
+    .celebrate{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+    .spark{position:absolute;font-size:1.5rem;opacity:0;animation:sparkPop .82s ease forwards}
+    @keyframes sparkPop{
+      0%{transform:translateY(16px) scale(.4);opacity:0}
+      30%{opacity:1}
+      100%{transform:translateY(-32px) scale(1.1);opacity:0}
+    }
+    .reward-card{
+      background:linear-gradient(135deg,#eefbf6 0%,#fff9ee 100%);padding:18px;display:grid;gap:12px;text-align:center;
+    }
+    .reward-card h2{font-size:1.24rem}
+    .reward-stars{font-size:2rem;letter-spacing:8px}
+    .reward-card p{color:var(--muted);line-height:1.65;max-width:680px;margin:0 auto}
+    .play-again{
+      justify-self:center;border:none;border-radius:16px;min-height:48px;padding:12px 20px;background:linear-gradient(135deg,#ffd166 0%,#ffba49 100%);
+      color:#79520f;font-family:'Fredoka One',cursive;font-size:.94rem;cursor:pointer;
+    }
+    @media (max-width:900px){
+      .mission-top,.pref-grid,.play-stats,.prompt-board,.choices-grid,.answer-strip{grid-template-columns:1fr}
+      .guide-box{min-height:160px}
+      .match-arrow{transform:rotate(90deg)}
+    }
+    @media (max-width:620px){
+      body{padding:10px}
+      .topbar,.shell{padding:14px}
+      .title-lockup h1{font-size:1.3rem}
+    }
+  </style>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <a class="home-link" href="https://fivetofifteen.com/#focus-calm-learning">🏠 Back to Focus &amp; Calm</a>
+      <div class="title-lockup">
+        <div class="title-icon" aria-hidden="true">🧠</div>
+        <div>
+          <h1>Matching Fun</h1>
+          <p>Look at the picture. Tap the one that goes with it.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="shell">
+      <section class="support-bar">
+        <h2>Choose Your View</h2>
+        <p>If the page feels busy, switch on a gentler view. These controls only change how the page looks and feels.</p>
+        <div class="pref-grid">
+          <button class="pref-toggle" type="button" data-pref-toggle="calmMode">
+            <strong>Calm Mode</strong>
+            <span>Softer visuals and a quieter page.</span>
+          </button>
+          <button class="pref-toggle" type="button" data-pref-toggle="focusMode">
+            <strong>Focus Mode</strong>
+            <span>Hide extra parts and keep the main task clear.</span>
+          </button>
+          <button class="pref-toggle" type="button" data-pref-toggle="bigText">
+            <strong>Bigger Text</strong>
+            <span>Make reading larger and easier to track.</span>
+          </button>
+          <button class="pref-toggle" type="button" data-pref-toggle="reduceMotion">
+            <strong>Reduce Motion</strong>
+            <span>Keep the page steady with less movement.</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="game-board">
+        <div class="mission-top">
+          <div class="guide-box" data-focus-hide="true">🧩</div>
+          <div class="mission-copy">
+            <h2>Find The Match</h2>
+            <p>Look at the main picture, notice the clue, then tap the picture that goes with it best.</p>
+          </div>
+        </div>
+
+        <div class="play-stats">
+          <div class="play-stat">
+            <span class="play-stat-label">Scene</span>
+            <span class="play-stat-value" id="sceneCount">1 / 5</span>
+          </div>
+          <div class="play-stat">
+            <span class="play-stat-label">Stars</span>
+            <span class="play-stat-value" id="starCount">0</span>
+          </div>
+          <div class="play-stat">
+            <span class="play-stat-label">Goal</span>
+            <span class="play-stat-value">Find Pairs</span>
+          </div>
+        </div>
+
+        <div class="play-field">
+          <div class="celebrate" id="celebrate"></div>
+
+          <div class="scene-header">
+            <div>
+              <div class="scene-badge" id="sceneBadge">🪥 Morning Pair</div>
+              <div class="scene-title" id="sceneTitle">Which picture goes with this?</div>
+              <div class="scene-sub" id="sceneSub">Tap the best matching picture.</div>
+            </div>
+            <div class="progress-dots" id="progressDots"></div>
+          </div>
+
+          <div class="prompt-board">
+            <div class="main-card">
+              <div class="emoji" id="mainEmoji">🪥</div>
+              <div class="label" id="mainLabel">Toothbrush</div>
+              <div class="mini">Main picture</div>
+            </div>
+            <div class="match-arrow">→</div>
+            <div class="clue-card">
+              <div class="clue-chip" id="clueChip">Look for pair</div>
+              <strong id="clueTitle">What goes with brushing teeth?</strong>
+              <span id="clueText">Pick the picture that fits best with the main picture.</span>
+            </div>
+          </div>
+
+          <div class="choices-grid" id="choicesGrid"></div>
+
+          <div class="feedback-bar" id="feedbackBar">Tap the picture that goes with the main card.</div>
+
+          <div class="answer-strip" id="answerStrip">
+            <div class="answer-box" id="answerPair"></div>
+            <div class="answer-box" id="answerWhy"></div>
+          </div>
+
+          <div class="next-wrap">
+            <button class="next-btn" id="nextBtn" type="button">Next Match</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="reward-card">
+        <h2>You Are Building Matching Power</h2>
+        <div class="reward-stars" id="rewardStars">☆ ☆ ☆ ☆ ☆</div>
+        <p>Matching helps children notice links, pairs, and what belongs together. Finish every round to light up all the stars.</p>
+        <button class="play-again" id="playAgainBtn" type="button">Play All Matches Again</button>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const rounds = [
+        {
+          badge: '🪥 Morning Pair',
+          mainEmoji: '🪥',
+          mainLabel: 'Toothbrush',
+          clueTitle: 'What goes with brushing teeth?',
+          clueText: 'Pick the thing used together with the toothbrush.',
+          answer: { emoji: '🦷', label: 'Toothpaste', why: 'Toothbrush and toothpaste go together.' },
+          options: [
+            { emoji: '🦷', label: 'Toothpaste', good: true },
+            { emoji: '🍎', label: 'Apple', good: false },
+            { emoji: '⚽', label: 'Ball', good: false }
+          ]
+        },
+        {
+          badge: '🌧️ Rain Pair',
+          mainEmoji: '🌧️',
+          mainLabel: 'Rain Cloud',
+          clueTitle: 'What helps in rainy weather?',
+          clueText: 'Pick the picture that goes best with rain.',
+          answer: { emoji: '☂️', label: 'Umbrella', why: 'Rain and umbrella go together.' },
+          options: [
+            { emoji: '☂️', label: 'Umbrella', good: true },
+            { emoji: '🕶️', label: 'Sunglasses', good: false },
+            { emoji: '☕', label: 'Cup', good: false }
+          ]
+        },
+        {
+          badge: '✏️ School Pair',
+          mainEmoji: '✏️',
+          mainLabel: 'Pencil',
+          clueTitle: 'What goes with writing?',
+          clueText: 'Pick the picture that matches the pencil best.',
+          answer: { emoji: '📓', label: 'Notebook', why: 'Pencil and notebook go together for writing.' },
+          options: [
+            { emoji: '🐟', label: 'Fish', good: false },
+            { emoji: '📓', label: 'Notebook', good: true },
+            { emoji: '🍌', label: 'Banana', good: false }
+          ]
+        },
+        {
+          badge: '🧦 Getting Ready',
+          mainEmoji: '🧦',
+          mainLabel: 'Sock',
+          clueTitle: 'What does the sock go with?',
+          clueText: 'Pick the picture that makes the best pair.',
+          answer: { emoji: '👟', label: 'Shoe', why: 'Sock and shoe go together.' },
+          options: [
+            { emoji: '🍴', label: 'Fork', good: false },
+            { emoji: '👟', label: 'Shoe', good: true },
+            { emoji: '🍃', label: 'Leaf', good: false }
+          ]
+        },
+        {
+          badge: '🐝 Garden Pair',
+          mainEmoji: '🐝',
+          mainLabel: 'Bee',
+          clueTitle: 'What does the bee visit?',
+          clueText: 'Pick the picture that goes best with the bee.',
+          answer: { emoji: '🌼', label: 'Flower', why: 'Bee and flower go together in the garden.' },
+          options: [
+            { emoji: '🚂', label: 'Train', good: false },
+            { emoji: '🎂', label: 'Cake', good: false },
+            { emoji: '🌼', label: 'Flower', good: true }
+          ]
+        }
+      ];
+
+      const sceneCount = document.getElementById('sceneCount');
+      const starCount = document.getElementById('starCount');
+      const sceneBadge = document.getElementById('sceneBadge');
+      const sceneTitle = document.getElementById('sceneTitle');
+      const sceneSub = document.getElementById('sceneSub');
+      const mainEmoji = document.getElementById('mainEmoji');
+      const mainLabel = document.getElementById('mainLabel');
+      const clueTitle = document.getElementById('clueTitle');
+      const clueText = document.getElementById('clueText');
+      const choicesGrid = document.getElementById('choicesGrid');
+      const feedbackBar = document.getElementById('feedbackBar');
+      const answerStrip = document.getElementById('answerStrip');
+      const answerPair = document.getElementById('answerPair');
+      const answerWhy = document.getElementById('answerWhy');
+      const progressDots = document.getElementById('progressDots');
+      const nextBtn = document.getElementById('nextBtn');
+      const celebrate = document.getElementById('celebrate');
+      const rewardStars = document.getElementById('rewardStars');
+      const playAgainBtn = document.getElementById('playAgainBtn');
+
+      let currentRound = 0;
+      let stars = 0;
+      let locked = false;
+
+      function shuffle(list) {
+        const copy = list.slice();
+        for (let i = copy.length - 1; i > 0; i -= 1) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const temp = copy[i];
+          copy[i] = copy[j];
+          copy[j] = temp;
+        }
+        return copy;
+      }
+
+      function updateReward() {
+        const filled = Array.from({ length: rounds.length }, function (_, index) {
+          return index < stars ? '★' : '☆';
+        });
+        rewardStars.textContent = filled.join(' ');
+        starCount.textContent = String(stars);
+      }
+
+      function renderProgress() {
+        progressDots.innerHTML = '';
+        rounds.forEach(function (_, index) {
+          const dot = document.createElement('div');
+          dot.className = 'progress-dot';
+          if (index < currentRound) dot.classList.add('done');
+          if (index === currentRound) dot.classList.add('active');
+          progressDots.appendChild(dot);
+        });
+      }
+
+      function createSparkBurst() {
+        celebrate.innerHTML = '';
+        ['✨', '⭐', '🌟', '💫', '✨', '⭐'].forEach(function (icon, index) {
+          const spark = document.createElement('div');
+          spark.className = 'spark';
+          spark.textContent = icon;
+          spark.style.left = (14 + index * 13) + '%';
+          spark.style.top = (30 + (index % 2) * 18) + '%';
+          spark.style.animationDelay = (index * 0.04) + 's';
+          celebrate.appendChild(spark);
+        });
+        window.setTimeout(function () {
+          celebrate.innerHTML = '';
+        }, 900);
+      }
+
+      function renderAnswers(round) {
+        answerPair.innerHTML =
+          '<div class="emoji">' + round.answer.emoji + '</div>' +
+          '<div><strong>' + round.answer.label + '</strong><span>Best match</span></div>';
+        answerWhy.innerHTML =
+          '<div class="emoji">💡</div>' +
+          '<div><strong>Why?</strong><span>' + round.answer.why + '</span></div>';
+      }
+
+      function renderRound() {
+        const round = rounds[currentRound];
+        locked = false;
+        choicesGrid.innerHTML = '';
+        sceneCount.textContent = (currentRound + 1) + ' / ' + rounds.length;
+        sceneBadge.textContent = round.badge;
+        sceneTitle.textContent = 'Which picture goes with this?';
+        sceneSub.textContent = 'Tap the best matching picture.';
+        mainEmoji.textContent = round.mainEmoji;
+        mainLabel.textContent = round.mainLabel;
+        clueTitle.textContent = round.clueTitle;
+        clueText.textContent = round.clueText;
+        feedbackBar.textContent = 'Tap the picture that goes with the main card.';
+        feedbackBar.className = 'feedback-bar';
+        answerStrip.className = 'answer-strip';
+        nextBtn.className = 'next-btn';
+
+        const choices = shuffle(round.options.map(function (option) {
+          return { emoji: option.emoji, label: option.label, good: option.good };
+        }));
+
+        choices.forEach(function (choice) {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'choice-card';
+          button.innerHTML =
+            '<div class="mini">Tap one</div>' +
+            '<div class="emoji">' + choice.emoji + '</div>' +
+            '<div class="label">' + choice.label + '</div>';
+          button.addEventListener('click', function () {
+            if (locked) return;
+            locked = true;
+
+            Array.from(choicesGrid.querySelectorAll('.choice-card')).forEach(function (item) {
+              item.classList.add('disabled');
+            });
+
+            if (choice.good) {
+              button.classList.add('correct');
+              if (stars < currentRound + 1) {
+                stars += 1;
+              }
+              updateReward();
+              feedbackBar.textContent = 'Yes. That picture matches.';
+              feedbackBar.className = 'feedback-bar success';
+              createSparkBurst();
+            } else {
+              button.classList.add('wrong');
+              const correctButton = Array.from(choicesGrid.querySelectorAll('.choice-card')).find(function (item) {
+                return item !== button && item.querySelector('.label').textContent === round.answer.label;
+              });
+              if (correctButton) correctButton.classList.add('correct');
+              feedbackBar.textContent = 'Try again next round. The other picture matches better.';
+              feedbackBar.className = 'feedback-bar error';
+            }
+
+            renderAnswers(round);
+            answerStrip.className = 'answer-strip is-visible';
+            nextBtn.className = 'next-btn is-visible';
+          });
+          choicesGrid.appendChild(button);
+        });
+
+        renderProgress();
+      }
+
+      function goNext() {
+        if (currentRound < rounds.length - 1) {
+          currentRound += 1;
+          renderRound();
+          return;
+        }
+
+        feedbackBar.textContent = 'All done. You finished every matching round.';
+        feedbackBar.className = 'feedback-bar success';
+        nextBtn.className = 'next-btn';
+        sceneTitle.textContent = 'Great matching work!';
+        sceneSub.textContent = 'You found the pictures that belong together.';
+      }
+
+      nextBtn.addEventListener('click', goNext);
+      playAgainBtn.addEventListener('click', function () {
+        currentRound = 0;
+        stars = 0;
+        updateReward();
+        renderRound();
+      });
+
+      updateReward();
+      renderRound();
+
+      if (window.setupFocusCalmGuide) {
+        window.setupFocusCalmGuide({
+          mascot: '🧩',
+          heading: 'Matching Helper Here',
+          gameText: 'This is a calm learning game. It helps children see which pictures belong together as a pair.',
+          steps: [
+            'Look at the main picture on the screen.',
+            'Read the clue card carefully.',
+            'Tap the picture that matches best.',
+            'Check the result.',
+            'Press Next to play the next round.'
+          ],
+          helpMascot: '🧩'
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multiplication Tables Hub | FiveToFifteen</title>
+  <meta name="description" content="One hub page for all multiplication-table stories from 1 to 10." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <script src="slim-topbar.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <style>
+    :root {
+      --ink: #24324a;
+      --soft: #64748b;
+      --line: #e7eaf3;
+      --shadow: 0 14px 30px rgba(43, 58, 94, 0.1);
+      --mint: #39c3ad;
+    }
+    * { box-sizing: border-box; }
+    html { font-size: 17px; }
+    body {
+      margin: 0;
+      font-family: 'Nunito', sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #fffdfa 0%, #f7f6f3 100%);
+      min-height: 100vh;
+    }
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 112px 20px 40px;
+    }
+    .hero {
+      background: linear-gradient(135deg, #edfff7 0%, #edfaff 55%, #fff4df 100%);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      margin: 0;
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(1.6rem, 3.2vw, 2.2rem);
+      color: #2c3f67;
+    }
+    .hero p {
+      margin: 10px 0 0;
+      color: var(--soft);
+      font-size: 1rem;
+      line-height: 1.65;
+      max-width: 760px;
+    }
+    .hero-chip-row {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .hero-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid #dce4f4;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #415376;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      text-decoration: none;
+      color: inherit;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 24px rgba(43, 58, 94, 0.08);
+      transition: transform .18s ease, box-shadow .18s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 30px rgba(43, 58, 94, 0.12);
+    }
+    .card-cover {
+      min-height: 106px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.6rem;
+      background: linear-gradient(135deg, #eafff4 0%, #d6f2e0 55%, #fff0cb 100%);
+      border-bottom: 1px solid #e5edf9;
+    }
+    .card-body {
+      padding: 14px 14px 12px;
+      display: grid;
+      gap: 6px;
+      flex: 1;
+    }
+    .card-number {
+      font-size: 0.78rem;
+      font-weight: 900;
+      color: #2f9e44;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .card-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.1rem;
+      color: #1f3156;
+    }
+    .card-desc {
+      font-size: 0.92rem;
+      color: var(--soft);
+      line-height: 1.55;
+    }
+    .card-footer {
+      border-top: 1px solid #edf1f8;
+      padding: 12px 14px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-meta {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #66758f;
+    }
+    .card-btn {
+      border-radius: 12px;
+      padding: 8px 12px;
+      background: linear-gradient(135deg, var(--mint) 0%, #4fd5bc 100%);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    @media (max-width: 700px) {
+      main { padding-top: 98px; }
+      .hero { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <h1>✖️ Multiplication Tables Hub</h1>
+      <p>Choose any table from 1 to 10. Each story includes table reading, practice rounds, mixed quiz, and certificate flow.</p>
+      <div class="hero-chip-row">
+        <span class="hero-chip">10 table stories</span>
+        <span class="hero-chip">Ages 5–8</span>
+        <span class="hero-chip">Simple to confident</span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <a class="card" href="multiplication-table-1-kids.html"><div class="card-cover">1️⃣</div><div class="card-body"><div class="card-number">Table 1</div><div class="card-title">Multiply with 1!</div><div class="card-desc">Start with the basics and read each fact clearly.</div></div><div class="card-footer"><span class="card-meta">Easy start</span><span class="card-btn">Open →</span></div></a>
+      <a class="card" href="multiplication-table-2-kids.html"><div class="card-cover">2️⃣</div><div class="card-body"><div class="card-number">Table 2</div><div class="card-title">Multiply with 2!</div><div class="card-desc">Build confidence with simple ×2 patterns.</div></div><div class="card-footer"><span class="card-meta">Pattern play</span><span class="card-btn">Open →</span></div></a>
+      <a class="card" href="multiplication-table-3-kids.html"><div class="card-cover">3️⃣</div><div class="card-body"><div class="card-number">Table 3</div><div class="card-title">Multiply with 3!</div><div class="card-desc">Practise ×3 with guided examples and quiz.</div></div><div class="card-footer"><span class="card-meta">Guided practice</span><span class="card-btn">Open →</span></div></a>
+      <a class="card" href="multiplication-table-4-kids.html"><div class="card-cover">4️⃣</div><div class="card-body"><div class="card-number">Table 4</div><div class="card-title">Multiply with 4!</div><div class="card-desc">Strengthen speed with ×4 facts and checks.</div></div><div class="card-footer"><span class="card-meta">Confidence build</span><span class="card-btn">Open →</span></div></a>
+      <a class="card" href="multiplication-table-5-kids.html"><div class="card-cover">5️⃣</div><div class="card-body"><div class="card-number">Table 5</div><div class="card-title">Multiply with 5!</div><div class="card-desc">Learn skip-count style facts and patterns.</div></div><div class="card-footer"><span class="card-meta">Mid-step</span><span class="card-btn">Open →</span></div></a>
+      <a class="card" href="multiplication-table-6-kids.html"><div class="card-cover">6️⃣</div><div class="card-body"><div class="card-number">Table 6</div><div class="card-title">Multiply with 6!</div><div class="card-desc">Move from simple to mixed-order challenges.</div></div><div class="card-footer"><span class="card-meta">Mixed order</span><span class="card-btn">Open →</span></div></a>
+      <a class="card" href="multiplication-table-7-kids.html"><div class="card-cover">7️⃣</div><div class="card-body"><div class="card-number">Table 7</div><div class="card-title">Multiply with 7!</div><div class="card-desc">Practise carefully with full-table reading support.</div></div><div class="card-footer"><span class="card-meta">Focus mode</span><span class="card-btn">Open →</span></div></a>
+      <a class="card" href="multiplication-table-8-kids.html"><div class="card-cover">8️⃣</div><div class="card-body"><div class="card-number">Table 8</div><div class="card-title">Multiply with 8!</div><div class="card-desc">Get stronger with guided questions and review.</div></div><div class="card-footer"><span class="card-meta">Skill boost</span><span class="card-btn">Open →</span></div></a>
+      <a class="card" href="multiplication-table-9-kids.html"><div class="card-cover">9️⃣</div><div class="card-body"><div class="card-number">Table 9</div><div class="card-title">Multiply with 9!</div><div class="card-desc">Challenge memory with pattern spotting and quiz.</div></div><div class="card-footer"><span class="card-meta">Challenge</span><span class="card-btn">Open →</span></div></a>
+      <a class="card" href="multiplication-table-10-kids.html"><div class="card-cover">🔟</div><div class="card-body"><div class="card-number">Table 10</div><div class="card-title">Multiply with 10!</div><div class="card-desc">Finish with ×10 mastery and final certificate quiz.</div></div><div class="card-footer"><span class="card-meta">Final step</span><span class="card-btn">Open →</span></div></a>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,94 @@
+html.pref-big-text {
+  font-size: 18.5px !important;
+}
+
+html.pref-reduce-motion *,
+html.pref-reduce-motion *::before,
+html.pref-reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+html.pref-calm body {
+  filter: saturate(0.9);
+}
+
+html.pref-calm .hero-panel,
+html.pref-calm .nav-card,
+html.pref-calm .section-block,
+html.pref-calm .comment-shell,
+html.pref-calm .story-card,
+html.pref-calm .topic-helper-panel,
+html.pref-calm .app,
+html.pref-calm .overlay-card,
+html.pref-calm .support-panel {
+  box-shadow: 0 10px 20px rgba(38, 51, 82, 0.08) !important;
+}
+
+html.pref-calm .hero-art,
+html.pref-calm .star,
+html.pref-calm .topic-helper-character,
+html.pref-calm [data-calm-dim="true"] {
+  opacity: 0.65 !important;
+}
+
+html.pref-focus .hero-art,
+html.pref-focus .star,
+html.pref-focus .wave,
+html.pref-focus .topic-helper,
+html.pref-focus [data-focus-hide="true"] {
+  display: none !important;
+}
+
+html.pref-focus .hero-shell,
+html.pref-focus .layout-shell {
+  gap: 18px !important;
+}
+
+html.pref-focus .hero-panel,
+html.pref-focus .support-panel,
+html.pref-focus .section-block,
+html.pref-focus .app {
+  border-width: 2px !important;
+}
+
+.pref-toggle {
+  border: 1px solid #dbe3f4;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  color: #30456b;
+  min-height: 54px;
+  padding: 12px 14px;
+  font: 800 0.92rem 'Nunito', sans-serif;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+}
+
+.pref-toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(48, 69, 107, 0.08);
+}
+
+.pref-toggle.is-active {
+  border-color: #39c3ad;
+  background: linear-gradient(135deg, #eafbf6 0%, #f2fbff 100%);
+  box-shadow: 0 12px 22px rgba(57, 195, 173, 0.14);
+}
+
+.pref-toggle strong {
+  display: block;
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.96rem;
+  font-weight: 400;
+  margin-bottom: 3px;
+}
+
+.pref-toggle span {
+  display: block;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #61718e;
+}

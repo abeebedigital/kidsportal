@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-label="Cartoon storm over village where magical kindness garden shelters everyone">
+  <defs>
+    <linearGradient id="stormSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2b3558"/>
+      <stop offset="100%" stop-color="#5d6d9b"/>
+    </linearGradient>
+    <linearGradient id="rainField" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4f8cc3"/>
+      <stop offset="100%" stop-color="#2d5f90"/>
+    </linearGradient>
+    <radialGradient id="safeGlow" cx="52%" cy="56%" r="35%">
+      <stop offset="0%" stop-color="#ffe87a" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#ffe87a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="700" fill="url(#stormSky)"/>
+
+  <g fill="#cfd9ee" opacity="0.95">
+    <ellipse cx="220" cy="140" rx="130" ry="52"/>
+    <ellipse cx="324" cy="126" rx="145" ry="58"/>
+    <ellipse cx="438" cy="146" rx="120" ry="50"/>
+    <ellipse cx="780" cy="124" rx="135" ry="54"/>
+    <ellipse cx="890" cy="114" rx="150" ry="60"/>
+    <ellipse cx="1010" cy="136" rx="118" ry="48"/>
+  </g>
+
+  <g stroke="#a9c9f6" stroke-width="4" stroke-linecap="round" opacity="0.65">
+    <line x1="120" y1="220" x2="110" y2="258"/>
+    <line x1="240" y1="230" x2="228" y2="274"/>
+    <line x1="360" y1="220" x2="348" y2="264"/>
+    <line x1="520" y1="235" x2="508" y2="278"/>
+    <line x1="680" y1="226" x2="668" y2="270"/>
+    <line x1="820" y1="234" x2="808" y2="279"/>
+    <line x1="980" y1="222" x2="968" y2="268"/>
+    <line x1="1090" y1="236" x2="1078" y2="282"/>
+  </g>
+
+  <rect y="410" width="1200" height="290" fill="url(#rainField)"/>
+  <path d="M0 474 C170 438 330 512 520 478 C700 448 862 520 1040 486 C1120 470 1168 492 1200 486 L1200 700 L0 700 Z" fill="#2b5a3f"/>
+  <rect width="1200" height="700" fill="url(#safeGlow)"/>
+
+  <g transform="translate(160 356)">
+    <rect x="0" y="86" width="154" height="110" rx="10" fill="#f8e2b9"/>
+    <polygon points="-10,88 77,30 164,88" fill="#cf5e59"/>
+    <rect x="28" y="120" width="30" height="26" rx="4" fill="#8bc2ff"/>
+    <rect x="70" y="120" width="30" height="26" rx="4" fill="#8bc2ff"/>
+    <rect x="112" y="120" width="22" height="76" rx="4" fill="#88624a"/>
+  </g>
+
+  <g transform="translate(930 370)">
+    <rect x="0" y="78" width="140" height="100" rx="10" fill="#f6ddb3"/>
+    <polygon points="-8,80 70,26 148,80" fill="#d36c55"/>
+    <rect x="22" y="108" width="26" height="22" rx="4" fill="#8bc2ff"/>
+    <rect x="56" y="108" width="26" height="22" rx="4" fill="#8bc2ff"/>
+    <rect x="96" y="108" width="20" height="70" rx="4" fill="#88624a"/>
+  </g>
+
+  <g transform="translate(490 290)">
+    <rect x="82" y="124" width="20" height="180" rx="9" fill="#6d452a"/>
+    <circle cx="92" cy="102" r="94" fill="#78df5f"/>
+    <circle cx="34" cy="128" r="56" fill="#90ef72"/>
+    <circle cx="150" cy="132" r="56" fill="#90ef72"/>
+    <circle cx="72" cy="86" r="16" fill="#ffd86c"/>
+    <circle cx="112" cy="90" r="16" fill="#ffd86c"/>
+    <path d="M74 128 C90 102 122 108 136 128 C116 146 94 146 74 128 Z" fill="#ff87be"/>
+    <circle cx="92" cy="102" r="128" fill="#ffe87a" opacity="0.2"/>
+  </g>
+
+  <g transform="translate(458 470)">
+    <circle cx="0" cy="0" r="22" fill="#ffd8b1"/>
+    <rect x="-16" y="22" width="32" height="46" rx="12" fill="#4d96ff"/>
+  </g>
+  <g transform="translate(508 470)">
+    <circle cx="0" cy="0" r="22" fill="#ffd8b1"/>
+    <rect x="-16" y="22" width="32" height="46" rx="12" fill="#6bcb77"/>
+  </g>
+  <g transform="translate(560 470)">
+    <circle cx="0" cy="0" r="22" fill="#ffd8b1"/>
+    <rect x="-16" y="22" width="32" height="46" rx="12" fill="#ff9f1c"/>
+  </g>
+
+  <text x="600" y="638" text-anchor="middle" font-family="Nunito, sans-serif" font-size="38" font-weight="800" fill="#f7f5df">Leo's kindness garden protected the village</text>
+</svg>

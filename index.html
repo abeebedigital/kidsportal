@@ -1,0 +1,2416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FiveToFifteen — Kids Learning App</title>
+  <meta name="description" content="FiveToFifteen is a kids learning app with interactive storybooks, competitive prep, exam sessions, weekly competitions, and certificates for ages 5-15." />
+  <meta name="theme-color" content="#5b2fb3" />
+  <link rel="alternate" type="application/rss+xml" title="FiveToFifteen RSS Feed" href="https://fivetofifteen.com/rss.xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="accessibility-modes.css" />
+  <link rel="stylesheet" href="index.css" />
+  <script src="analytics.js" defer></script>
+  <script src="accessibility-preferences.js" defer></script>
+  <script src="selective-search-index.js" defer></script>
+  <script src="index.js" defer></script>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+  <div class="mini-topbar" id="miniTopbar">
+    <a class="mini-topbar-brand" href="#header" aria-label="Back to top">
+      <img class="mini-topbar-logo" src="fivetofifteen-logo.svg" alt="FiveToFifteen logo" />
+    </a>
+    <button
+      class="mini-topbar-menu-btn"
+      id="miniTopbarMenuBtn"
+      type="button"
+      aria-label="Open navigation menu"
+      aria-expanded="false"
+      aria-controls="miniTopbarLinks"
+    >
+      <span class="mini-topbar-menu-icon" aria-hidden="true"></span>
+      <span>Menu</span>
+    </button>
+    <nav class="mini-topbar-links flat-nav" id="miniTopbarLinks" aria-label="Primary navigation">
+      <div class="top-menu-group">
+        <a class="mini-topbar-link nav-link flat-nav-link top-main-link" href="#header">Home</a>
+        <div class="top-submenu">
+          <a class="top-submenu-link" href="index.html">Home Library</a>
+          <a class="top-submenu-link" href="news.html">News</a>
+          <a class="top-submenu-link" href="ideas.html">Ideas</a>
+        </div>
+      </div>
+      <div class="top-menu-group">
+        <a class="mini-topbar-link nav-link flat-nav-link top-main-link" href="#story-collection">Stories</a>
+        <div class="top-submenu">
+          <a class="top-submenu-link" href="index.html#story-collection">Story Collection</a>
+          <a class="top-submenu-link" href="index.html#math-is-fun">Math is Fun</a>
+          <a class="top-submenu-link" href="addition-tables-hub.html">Addition Tables</a>
+          <a class="top-submenu-link" href="multiplication-tables-hub.html">Multiplication Tables</a>
+          <a class="top-submenu-link" href="index.html#space-science">Space & Science</a>
+          <a class="top-submenu-link" href="index.html#chemistry-lab">Chemistry Lab</a>
+          <a class="top-submenu-link" href="index.html#world-history">World & History</a>
+        </div>
+      </div>
+      <div class="top-menu-group">
+        <a class="mini-topbar-link nav-link flat-nav-link top-main-link" href="#worksheets">Worksheets</a>
+        <div class="top-submenu">
+          <a class="top-submenu-link" href="worksheets.html">Worksheets Hub</a>
+          <a class="top-submenu-link" href="alphabet-worksheets.html">Alphabet Worksheets A-Z</a>
+          <a class="top-submenu-link" href="addition-table-worksheets.html">Addition Table Worksheets</a>
+          <a class="top-submenu-link" href="multiplication-worksheets.html">Multiplication Worksheets</a>
+          <a class="top-submenu-link" href="worksheet-multiplication-table-practice.html">Table Practice 1 to 12</a>
+          <a class="top-submenu-link" href="worksheet-multiplication-skip-counting.html">Skip Counting</a>
+          <a class="top-submenu-link" href="worksheet-multiplication-repeated-addition.html">Repeated Addition to Multiplication</a>
+          <a class="top-submenu-link" href="worksheet-multiplication-missing-factor.html">Missing Factor</a>
+          <a class="top-submenu-link" href="worksheet-multiplication-word-problems.html">Multiplication Word Problems</a>
+          <a class="top-submenu-link" href="worksheet-multiplication-table-maze.html">Table Maze</a>
+          <a class="top-submenu-link" href="worksheet-multiplication-mixed-challenge.html">Mixed Times-Table Challenge</a>
+          <a class="top-submenu-link" href="clock-and-time-worksheets.html">Clock and Time Worksheets</a>
+          <a class="top-submenu-link" href="worksheet-clock-draw-hands.html">Draw Hands on the Clock</a>
+          <a class="top-submenu-link" href="worksheet-clock-write-time.html">Write the Time</a>
+          <a class="top-submenu-link" href="worksheet-clock-match-analog-digital.html">Match Analog to Digital</a>
+          <a class="top-submenu-link" href="worksheet-clock-morning-afternoon.html">Morning Afternoon Sorting</a>
+          <a class="top-submenu-link" href="worksheet-clock-elapsed-time.html">Elapsed Time Basics</a>
+          <a class="top-submenu-link" href="worksheet-clock-daily-routine.html">Daily Routine Timeline</a>
+          <a class="top-submenu-link" href="worksheet-addition-complete-table.html">Complete the Table</a>
+          <a class="top-submenu-link" href="worksheet-addition-color-answers.html">Color the Answers</a>
+          <a class="top-submenu-link" href="worksheet-addition-cut-match.html">Cut and Match</a>
+          <a class="top-submenu-link" href="worksheet-addition-multiple-choice.html">Multiple Choice Facts</a>
+          <a class="top-submenu-link" href="worksheet-addition-speed-practice.html">Speed Practice Sheet</a>
+          <a class="top-submenu-link" href="worksheet-addition-mixed-revision.html">Mixed Revision Sheet</a>
+          <a class="top-submenu-link" href="worksheet-addition-final-test.html">Final Test Sheet</a>
+          <a class="top-submenu-link" href="worksheet-addition-facts.html">Addition Facts</a>
+          <a class="top-submenu-link" href="worksheet-two-number-addition-practice.html">Two & Three Number Addition Workout</a>
+          <a class="top-submenu-link" href="worksheet-subtraction-facts.html">Subtraction Facts</a>
+          <a class="top-submenu-link" href="worksheet-number-bonds.html">Number Bonds</a>
+          <a class="top-submenu-link" href="worksheet-count-and-circle.html">Count and Circle</a>
+          <a class="top-submenu-link" href="worksheet-before-after-between.html">Before After Between</a>
+          <a class="top-submenu-link" href="worksheet-missing-number.html">Missing Number</a>
+          <a class="top-submenu-link" href="worksheet-compare-bigger-smaller.html">Compare Bigger Smaller</a>
+        </div>
+      </div>
+      <div class="top-menu-group">
+        <a class="mini-topbar-link nav-link flat-nav-link top-main-link" href="#games">Games</a>
+        <div class="top-submenu">
+          <a class="top-submenu-link" href="index.html#games">Games Hub</a>
+          <a class="top-submenu-link" href="game-addition-bubble-pop.html">Addition Bubble Pop</a>
+          <a class="top-submenu-link" href="game-multiplication-meteor.html">Multiplication Meteor</a>
+          <a class="top-submenu-link" href="game-clock-match-rush.html">Clock Match Rush</a>
+          <a class="top-submenu-link" href="game-grammar-fix-it-lab.html">Grammar Fix-it Lab</a>
+        </div>
+      </div>
+      <div class="top-menu-group">
+        <a class="mini-topbar-link nav-link flat-nav-link top-main-link" href="#focus-calm-learning">Focus & Calm</a>
+        <div class="top-submenu">
+          <a class="top-submenu-link" href="index.html#focus-calm-learning">Focus & Calm Hub</a>
+          <a class="top-submenu-link" href="first-then-routine-kids.html">Routine Adventure</a>
+          <a class="top-submenu-link" href="feelings-and-faces-kids.html">Feelings and Faces</a>
+          <a class="top-submenu-link" href="sorting-fun-kids.html">Sorting Fun</a>
+          <a class="top-submenu-link" href="matching-fun-kids.html">Matching Fun</a>
+        </div>
+      </div>
+      <div class="top-menu-group">
+        <a class="mini-topbar-link nav-link flat-nav-link top-main-link" href="#challenge-prep">Exam Paths</a>
+        <div class="top-submenu">
+          <a class="top-submenu-link" href="index.html#challenge-prep">Competitive Prep</a>
+          <a class="top-submenu-link" href="index.html#micro-topics">Micro-Topics</a>
+          <a class="top-submenu-link" href="index.html#exam-sessions">Exam Sessions</a>
+          <a class="top-submenu-link" href="index.html#selective-exam">Selective Exam</a>
+        </div>
+      </div>
+      <div class="mini-topbar-age" role="group" aria-label="Filter by age range">
+        <button class="learning-map-toggle learning-map-toggle-menu" id="learningMapMenuToggle" type="button" data-learning-map-toggle aria-controls="learningMapPanel" aria-expanded="false">
+          <span class="learning-map-toggle-icon" aria-hidden="true">📈</span>
+          <span>My Learning Map</span>
+          <span class="learning-map-toggle-badge" id="learningMapMenuToggleBadge" data-learning-map-toggle-badge aria-hidden="true">0</span>
+        </button>
+        <button class="age-filter-chip is-active" type="button" data-age-filter="all" aria-pressed="true">All ages</button>
+        <button class="age-filter-chip" type="button" data-age-filter="4-6" aria-pressed="false">Ages 4-6</button>
+        <button class="age-filter-chip" type="button" data-age-filter="7-9" aria-pressed="false">Ages 7-9</button>
+        <button class="age-filter-chip" type="button" data-age-filter="10-12" aria-pressed="false">Ages 10-12</button>
+        <button class="age-filter-chip" type="button" data-age-filter="13-15" aria-pressed="false">Ages 13-15</button>
+      </div>
+    </nav>
+    <div class="mini-topbar-search" role="search" aria-label="Search the learning library">
+      <label class="sr-only" for="librarySearchInput">Search the library</label>
+      <span class="search-input-icon" aria-hidden="true">🔍</span>
+      <input
+        id="librarySearchInput"
+        class="search-input"
+        type="search"
+        placeholder="Search stories, worksheets, games, prep..."
+        autocomplete="off"
+      />
+      <button id="librarySearchClear" class="search-clear-btn" type="button">Clear</button>
+      <div id="searchLinkPopup" class="search-link-popup" hidden></div>
+    </div>
+  </div>
+
+  <!-- ── HEADER ── -->
+  <header id="header">
+    <div class="hero-shell hero-shell-redesign">
+      <div class="hero-copy-wrap hero-copy-wrap-redesign">
+        <div class="hero-badge">Built for ages 5-15</div>
+        <div class="hero-brand">
+          <img class="hero-logo" src="fivetofifteen-logo.svg" alt="FiveToFifteen Kids Learning App logo" />
+          <h1 class="sr-only">FiveToFifteen Kids Learning App</h1>
+        </div>
+        <h2 class="hero-heading">Learning that feels like an adventure</h2>
+        <p class="tagline">Stories, games, and exam prep that build reading, writing, maths and more with no sign-up needed.</p>
+        <div class="hero-actions">
+          <a class="hero-cta" href="#story-collection">Start exploring</a>
+          <a class="hero-secondary" href="#weekly-competition">Weekly competition</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><strong>27</strong><span>Storybooks</span></div>
+          <div class="hero-stat"><strong>21</strong><span>Micro-topics</span></div>
+          <div class="hero-stat"><strong>10</strong><span>Exam sessions</span></div>
+          <div class="hero-stat"><strong>4</strong><span>Mini games</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Wave SVG divider -->
+  <svg class="wave" viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#FFF8F0"/>
+  </svg>
+
+  <!-- ── MAIN ── -->
+  <main>
+    <div class="layout-shell">
+      <div class="content-pane">
+        <div class="home-age-filter" role="group" aria-label="Filter by age range">
+          <div class="home-age-filter-head">
+            <span class="age-filter-label">Age group</span>
+            <button class="learning-map-toggle" id="learningMapToggle" type="button" data-learning-map-toggle aria-controls="learningMapPanel" aria-expanded="false">
+              <span class="learning-map-toggle-icon" aria-hidden="true">📈</span>
+              <span>My Learning Map</span>
+              <span class="learning-map-toggle-badge" id="learningMapToggleBadge" data-learning-map-toggle-badge aria-hidden="true">0</span>
+            </button>
+          </div>
+          <div class="age-filter-chips">
+            <button class="age-filter-chip is-active" type="button" data-age-filter="all" aria-pressed="true">All ages</button>
+            <button class="age-filter-chip" type="button" data-age-filter="4-6" aria-pressed="false">Ages 4-6</button>
+            <button class="age-filter-chip" type="button" data-age-filter="7-9" aria-pressed="false">Ages 7-9</button>
+            <button class="age-filter-chip" type="button" data-age-filter="10-12" aria-pressed="false">Ages 10-12</button>
+            <button class="age-filter-chip" type="button" data-age-filter="13-15" aria-pressed="false">Ages 13-15</button>
+          </div>
+        </div>
+        <div class="learning-map-panel is-collapsed" id="learningMapPanel" data-calm-dim="true">
+          <div class="learning-map-head">
+            <div>
+              <h2>My Learning Map ✨</h2>
+              <p>Track progress on this device with stars, streaks, and unlockable badges.</p>
+            </div>
+            <div class="learning-map-streak" id="learningMapStreak">🔥 0 day streak</div>
+          </div>
+          <div class="learning-map-streak-goal">
+            <div class="learning-map-streak-track" aria-label="3 day streak progress">
+              <div class="learning-map-streak-fill" id="learningMapStreakFill"></div>
+            </div>
+            <div class="learning-map-streak-label" id="learningMapStreakLabel">0 / 3 day goal</div>
+          </div>
+
+          <div class="learning-map-stats">
+            <div class="learning-map-stat">
+              <strong id="learningMapCompleted">0</strong>
+              <span>Adventures Completed</span>
+            </div>
+            <div class="learning-map-stat">
+              <strong id="learningMapBadges">0 / 6</strong>
+              <span>Badges Unlocked</span>
+            </div>
+          </div>
+
+          <div class="learning-map-stars" id="learningMapStars" aria-label="Progress stars"></div>
+
+          <div class="learning-map-badges" id="learningMapBadgeGrid" aria-label="Badge progress"></div>
+
+          <a class="learning-map-next" id="learningMapNext" href="#story-collection">
+            <span class="learning-map-next-kicker">🚀 Up next for you</span>
+            <strong id="learningMapNextTitle">Start your first adventure</strong>
+            <span class="learning-map-next-cta">Go!</span>
+          </a>
+        </div>
+        <p id="librarySearchStatus" class="search-status search-status-inline">Type to find pages by title, tags, and description.</p>
+
+        <div class="home-curated home-curated-games">
+          <div class="home-curated-head">
+            <h2>Quick games</h2>
+            <a href="#games">See all 4 →</a>
+          </div>
+          <div class="quick-games-grid">
+            <a class="quick-game-card" href="game-addition-bubble-pop.html"><span>🎈</span><strong>Bubble Pop</strong><small>Fast addition facts</small></a>
+            <a class="quick-game-card" href="game-multiplication-meteor.html"><span>☄️</span><strong>Meteor</strong><small>Times tables race</small></a>
+            <a class="quick-game-card" href="game-clock-match-rush.html"><span>⏰</span><strong>Clock Rush</strong><small>Read clock faces</small></a>
+            <a class="quick-game-card" href="game-grammar-fix-it-lab.html"><span>🧪</span><strong>Fix-it Lab</strong><small>Grammar editing</small></a>
+          </div>
+        </div>
+
+    <section class="section-block section-story" id="story-collection">
+    <h2 class="section-title">📖 Story Collection</h2>
+    <p class="section-intro">Big adventures for curious kids, designed to make early learning feel playful, memorable, and worth revisiting.</p>
+    <div class="section-meta">
+      <span class="section-pill">39 Storybooks</span>
+      <span class="section-pill">Stories, Math, Time, Addition Tables, Multiplication Tables, Space, Earth, Chemistry, History, Weather</span>
+      <span class="section-pill">Ages 5-10</span>
+    </div>
+
+    <div class="story-grid">
+
+      <div class="story-subsection story-subsection-stories" id="story-adventures">
+        <div class="story-subsection-icon">📚</div>
+        <div>
+          <h3>Stories</h3>
+          <p>Heartwarming adventures and life lessons that help children grow brave, kind, patient, and strong.</p>
+        </div>
+      </div>
+
+      <a class="story-card" href="hard-work-success-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #1d3557 0%, #457b9d 55%, #ffd166 100%);">
+          🌟
+          <span class="badge">Motivation · Growth</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Story #27</div>
+          <div class="card-title">How Hard Work Leads to Success!</div>
+          <div class="card-desc">
+            Follow Mira’s kite-festival story to learn why practise, patience, trying again, and not giving up can turn effort into success.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 6–10</span>
+            <span class="tag tag-science">Life Skills</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🌟 Interactive motivation story</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="little-star-afraid-to-shine-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #121a3a 0%, #2f4f86 56%, #ffd970 100%);">
+          ✨
+          <span class="badge">General Story · Confidence</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">New Story</div>
+          <div class="card-title">The Little Star Who Was Afraid to Shine</div>
+          <div class="card-desc">
+            A tiny star hides behind clouds because she feels too small to matter, until a lost sailor finds his way home by her light.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 5–10</span>
+            <span class="tag tag-science">Life Skills</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">✨ Moral story about self-belief</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="boy-planted-kindness-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #1e4f3d 0%, #2f7a57 56%, #8fd38a 100%);">
+          🌱
+          <span class="badge">General Story · Kindness</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">New Story</div>
+          <div class="card-title">The Boy Who Planted Kindness</div>
+          <div class="card-desc">
+            Every time Leo does something kind, a magical seed grows in his garden. When a storm hits the village, his garden saves everyone.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 5–10</span>
+            <span class="tag tag-science">Life Skills</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🌱 Moral story about kindness</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+
+      <!-- Generated Moral Stories Start -->
+      <a class="story-card" href="cloud-refused-to-rain-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg,#274472 0%,#41729f 52%,#6f9ceb 100%);">
+          ☁️
+          <span class="badge">General Story · Sharing</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Story #3</div>
+          <div class="card-title">The Cloud Who Refused to Rain</div>
+          <div class="card-desc">
+            Cloudy refuses to rain because she loves being big and fluffy, until she learns that sharing brings real joy.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 5–11</span>
+            <span class="tag tag-science">Life Skills</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">☁️ Moral story about sharing</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="two-brothers-magic-bridge-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg,#3a2d5a 0%,#5f4b8b 52%,#9a8bd4 100%);">
+          🌉
+          <span class="badge">General Story · Forgiveness</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Story #4</div>
+          <div class="card-title">Two Brothers and the Magic Bridge</div>
+          <div class="card-desc">
+            Two brothers keep arguing until a magical bridge appears that only works when they speak kindly.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 5–11</span>
+            <span class="tag tag-science">Life Skills</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🌉 Moral story about forgiveness</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="tortoise-ran-fastest-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg,#2f4f4f 0%,#3f7d5f 52%,#78b86b 100%);">
+          🐢
+          <span class="badge">General Story · Discipline</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Story #5</div>
+          <div class="card-title">The Tortoise Who Ran the Fastest</div>
+          <div class="card-desc">
+            Shelly the tortoise trains quietly every day for a year while others laugh, then shocks everyone on race day.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 5–11</span>
+            <span class="tag tag-science">Life Skills</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🐢 Moral story about hard work</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="girl-listened-to-ocean-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg,#173d5d 0%,#266e9c 52%,#6ab7d6 100%);">
+          🌊
+          <span class="badge">General Story · Belonging</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Story #6</div>
+          <div class="card-title">The Girl Who Listened to the Ocean</div>
+          <div class="card-desc">
+            Mia visits the sea feeling lonely, and the ocean teaches her that even broken waves belong to something beautiful.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 5–11</span>
+            <span class="tag tag-science">Life Skills</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🌊 Moral story about belonging</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="prince-traded-crown-for-broom-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg,#4f2a2a 0%,#7b3b3b 52%,#c58a4b 100%);">
+          👑
+          <span class="badge">General Story · Gratitude</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Story #7</div>
+          <div class="card-title">The Prince Who Traded His Crown for a Broom</div>
+          <div class="card-desc">
+            A prince meets a joyful street sweeper and learns that gratitude and kindness create true richness.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 5–11</span>
+            <span class="tag tag-science">Life Skills</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">👑 Moral story about gratitude</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="elephant-never-forgot-friend-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg,#2e4632 0%,#4f7a52 52%,#84b987 100%);">
+          🐘
+          <span class="badge">General Story · Friendship</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Story #8</div>
+          <div class="card-title">The Elephant Who Never Forgot a Friend</div>
+          <div class="card-desc">
+            Big Ella remembers every friend and every trail, and later uses that loyalty to save the jungle from floods.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 5–11</span>
+            <span class="tag tag-science">Life Skills</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🐘 Moral story about loyal friendship</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="lantern-lit-for-honest-hearts-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg,#3e2a4f 0%,#5d3f78 52%,#9b74cc 100%);">
+          🏮
+          <span class="badge">General Story · Honesty</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Story #9</div>
+          <div class="card-title">The Lantern That Only Lit for Honest Hearts</div>
+          <div class="card-desc">
+            A magical lantern glows only for truth, and shines brightest when Rohan bravely admits his mistake.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 5–11</span>
+            <span class="tag tag-science">Life Skills</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🏮 Moral story about honesty</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="dragon-scared-of-fire-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg,#3e1f1f 0%,#6a2f2f 52%,#b24e3c 100%);">
+          🐉
+          <span class="badge">General Story · Self-Discovery</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Story #10</div>
+          <div class="card-title">The Dragon Who Was Scared of Fire</div>
+          <div class="card-desc">
+            Ember cannot breathe fire and is teased, but her cool breath becomes the village's rescue during wildfire.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 5–11</span>
+            <span class="tag tag-science">Life Skills</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🐉 Moral story about unique gifts</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="mia-rainbow-kitchen-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg,#6b3fa8 0%,#a663d4 52%,#f8c25d 100%);">
+          🌈
+          <span class="badge">General Story · Healthy Habits</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Story #11</div>
+          <div class="card-title">Mia and the Rainbow Kitchen</div>
+          <div class="card-desc">
+            A long magical food adventure where Mia meets Rainbow Friends and learns how fruits, vegetables, grains, and good habits make her strong and joyful.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 5–10</span>
+            <span class="tag tag-science">Life Skills</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🌈 Long-form nutrition story</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="last-seed-vault-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg,#1b3f39 0%,#2f6c62 52%,#7ec7ae 100%);">
+          🌱
+          <span class="badge">General Story · Science Adventure</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Story #12</div>
+          <div class="card-title">The Last Seed Vault</div>
+          <div class="card-desc">
+            Zara, Finn, and Priya follow a secret map into Harrow Forest to save Vault 7 and protect food diversity for the future.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 10–15</span>
+            <span class="tag tag-science">Science</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🧭 Adventure on food & nature</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="bridge-builders-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg,#2f4d67 0%,#4c6f8e 52%,#9f7d5c 100%);">
+          🌉
+          <span class="badge">General Story · Leadership</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Story #13</div>
+          <div class="card-title">The Bridge Builders</div>
+          <div class="card-desc">
+            Five different students are pushed into one impossible project, and discover that leadership is helping everyone’s strengths work together.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 10–15</span>
+            <span class="tag tag-science">Leadership</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🤝 Teamwork & problem-solving</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+      <!-- Generated Moral Stories End -->
+
+      <div class="story-subsection story-subsection-math" id="math-is-fun">
+        <div class="story-subsection-icon">➕</div>
+        <div>
+          <h3>Math is Fun</h3>
+          <p>Start here for number adventures and measurement stories that make maths feel bright, playful, and easy to revisit.</p>
+        </div>
+      </div>
+
+      <!-- Story 01: Math Magic Storybook -->
+      <a class="story-card" href="01_math_magic_storybook.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);">
+          🌟
+          <span class="badge">Math · Adventure</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Story #01</div>
+          <div class="card-title">The Magic Number Forest</div>
+          <div class="card-desc">
+            Join Mia and her owl friend Pip on a magical journey through the Number Forest,
+            where solving math puzzles is the key to saving the day!
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-math">Math</span>
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 5–9</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🎒 Interactive storybook</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="measuring-length.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #ffe29a 0%, #ffb347 100%);">
+          📏
+          <span class="badge">Math · Measurement</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Bonus Story</div>
+          <div class="card-title">How Long Is It?</div>
+          <div class="card-desc">
+            Learn how to measure with a ruler, compare object lengths, and practise cm and mm skills through an interactive storybook adventure.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-math">Math</span>
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 6–10</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">📏 Interactive measurement story</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="clock-and-time-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #dbeafe 0%, #93c5fd 48%, #fde68a 100%);">
+          ⏰
+          <span class="badge">Math · Time</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Story #28</div>
+          <div class="card-title">Tick Tock Time!</div>
+          <div class="card-desc">
+            Meet Tiko the Time Bird and learn clock faces, hour and minute hands, o&apos;clock, half past, quarter past, and quarter to.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-math">Math</span>
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 5–9</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">⏰ Interactive time story</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="two-number-addition-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #e8fff4 0%, #cbf4ff 45%, #fff0c6 100%);">
+          ➕
+          <span class="badge">Math · Addition Strategies</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Story #30</div>
+          <div class="card-title">Two Number Addition Adventure</div>
+          <div class="card-desc">
+            Learn key 2-digit addition methods: count on, make 10, tens and ones, near doubles, compensation, and column carrying.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-math">Math</span>
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 6–10</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🧠 Methods + interactive practice</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="three-digit-addition-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #eef7ff 0%, #d9ebff 45%, #fff4cf 100%);">
+          💯
+          <span class="badge">Math · 3-Digit Addition</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Story #31</div>
+          <div class="card-title">Three-Digit Addition Adventure</div>
+          <div class="card-desc">
+            A separate story for 3-digit addition with place-value columns, carrying practice, checking strategies, final quiz, and certificate.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-math">Math</span>
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 7–11</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">💯 Dedicated 3-digit story path</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <div class="story-subsection story-subsection-addition" id="addition-tables">
+        <div class="story-subsection-icon">🔢</div>
+        <div>
+          <h3>Addition Tables</h3>
+          <p>Jump into the addition-table storybooks from 1 to 10, with full tables, animated reading, ordered practice, mixed practice, and certificates.</p>
+        </div>
+      </div>
+
+      <a class="story-card" href="addition-tables-hub.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #eff7ff 0%, #c6e4ff 55%, #ffe5a5 100%);">
+          🔢
+          <span class="badge">Math · Addition Hub</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Addition Hub</div>
+          <div class="card-title">Addition Tables 1 to 10</div>
+          <div class="card-desc">
+            Open one clean hub page for all addition-table stories. Pick any table from 1 to 10 and jump straight into learning and quiz practice.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-math">Math</span>
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 5–8</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🧭 10 addition table stories in one place</span>
+          <span class="read-btn">Open Hub →</span>
+        </div>
+      </a>
+
+      <div class="story-subsection story-subsection-multiply" id="multiplication-tables">
+        <div class="story-subsection-icon">✖️</div>
+        <div>
+          <h3>Multiplication Tables</h3>
+          <p>Step into multiplication storybooks with full tables, animated fact reading, ordered practice, mixed practice, and happy certificates.</p>
+        </div>
+      </div>
+
+      <a class="story-card" href="multiplication-tables-hub.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #ecfff8 0%, #cff2df 55%, #ffeec1 100%);">
+          ✖️
+          <span class="badge">Math · Multiplication Hub</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Multiplication Hub</div>
+          <div class="card-title">Multiplication Tables 1 to 10</div>
+          <div class="card-desc">
+            Open one clean hub page for all multiplication-table stories. Pick any table from 1 to 10 and jump directly into practice and quiz.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-math">Math</span>
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 5–8</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🧭 10 multiplication table stories in one place</span>
+          <span class="read-btn">Open Hub →</span>
+        </div>
+      </a>
+
+      <div class="story-subsection story-subsection-science" id="space-science">
+        <div class="story-subsection-icon">🚀</div>
+        <div>
+          <h3>Space & Science</h3>
+          <p>Blast into space, dig through Earth, and follow the weather with storybooks that turn science into an adventure.</p>
+        </div>
+      </div>
+
+      <!-- Story 02: Solar System -->
+      <a class="story-card" href="solar-system-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #030712 0%, #1e3a5f 100%);">
+          🚀
+          <span class="badge">Science · Space</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Story #02</div>
+          <div class="card-title">My Trip to the Solar System!</div>
+          <div class="card-desc">
+            Blast off on an epic journey through the Solar System! Visit every planet,
+            discover amazing facts, and become a junior space explorer!
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-science">Science</span>
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 5–10</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🪐 Interactive adventure</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="rocket-adventure-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #061a40 0%, #1f57d6 55%, #8ee7ff 100%);">
+          🚀
+          <span class="badge">Science · Rockets</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Bonus Story</div>
+          <div class="card-title">Rocket Ready!</div>
+          <div class="card-desc">
+            Learn what rockets do, how thrust helps them lift off, what stages are, and why rockets carry astronauts, satellites, and cargo.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-science">Science</span>
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 5–9</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🚀 Interactive rocket story</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <!-- Story 04: Earth's Layers -->
+      <a class="story-card" href="earths-layers-kids.html">
+        <div class="card-cover" style="background: linear-gradient(160deg, #1a1a2e 0%, #2c1810 60%, #4a1a0a 100%);">
+          🌎
+          <span class="badge">Science · Earth</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Story #04</div>
+          <div class="card-title">Journey to the Centre of the Earth!</div>
+          <div class="card-desc">
+            Dig deep with Rocky the Mole and discover what's inside our planet!
+            Explore the Crust, Mantle, Outer Core, and Inner Core on this underground adventure!
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-science">Science</span>
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 5–8</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">⛏️ Interactive adventure</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="how-rain-happens-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #dff4ff 0%, #73c9ff 100%);">
+          🌧️
+          <span class="badge">Science · Weather</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Story #06</div>
+          <div class="card-title">How Rain Happens!</div>
+          <div class="card-desc">
+            Follow Raina the Rain Cloud to learn how the Sun warms water, clouds form, and rain falls back to Earth in the water cycle.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-science">Science</span>
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 6–10</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🌦️ Interactive weather story</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="solar-clock-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #fff7cc 0%, #ffd166 48%, #7cc6ff 100%);">
+          ☀️
+          <span class="badge">Science · Time</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Story #29</div>
+          <div class="card-title">The Solar Clock Story!</div>
+          <div class="card-desc">
+            Learn what a solar clock is, how sunlight makes a moving shadow, and how people long ago used sundials to tell the time of day.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-science">Science</span>
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 6–10</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">☀️ Interactive history and science story</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <div class="story-subsection story-subsection-chemistry" id="chemistry-lab">
+        <div class="story-subsection-icon">🧪</div>
+        <div>
+          <h3>Chemistry Lab Stories</h3>
+          <p>Year-wise chemistry adventures from Foundation to Year 6 with materials, states of matter, particles, and real-life science thinking.</p>
+        </div>
+      </div>
+
+      <a class="story-card" href="chemistry-foundation-materials-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #fff2bf 0%, #ffdca8 48%, #c9ecff 100%);">
+          🧸
+          <span class="badge">Chemistry · Foundation</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Chem Story #32</div>
+          <div class="card-title">Milo's Material Playground</div>
+          <div class="card-desc">
+            Explore everyday materials and discover hard/soft, rough/smooth, and shiny/dull properties with fun sorting missions.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-science">Chemistry</span>
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 4–6</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🧪 Foundation chemistry adventure</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="chemistry-year-1-materials-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #def6ff 0%, #cde7ff 50%, #ffe7b9 100%);">
+          🧩
+          <span class="badge">Chemistry · Year 1</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Chem Story #33</div>
+          <div class="card-title">The Material Match Mission</div>
+          <div class="card-desc">
+            Learn how properties of materials match real purposes, from windows and raincoats to classroom tools.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-science">Chemistry</span>
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 5–7</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🧪 Year 1 chemistry mission</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="chemistry-year-2-changes-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #e6ffe5 0%, #ccf5e7 48%, #dce7ff 100%);">
+          ✂️
+          <span class="badge">Chemistry · Year 2</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Chem Story #34</div>
+          <div class="card-title">Bend, Stretch, Cut, Mix!</div>
+          <div class="card-desc">
+            Discover physical changes and mixing materials through maker-style experiments kids can describe and classify.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-science">Chemistry</span>
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 6–8</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🧪 Year 2 change makers</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="chemistry-year-3-states-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #e5f4ff 0%, #c4dcff 48%, #ffe9c3 100%);">
+          🌡️
+          <span class="badge">Chemistry · Year 3</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Chem Story #35</div>
+          <div class="card-title">Solid, Liquid, Gas Express</div>
+          <div class="card-desc">
+            Travel through states of matter and see how heating and cooling can change what materials do.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-science">Chemistry</span>
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 7–9</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🧪 Year 3 state explorers</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="chemistry-year-4-state-changes-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #f2e6ff 0%, #ddd2ff 48%, #d5f2ff 100%);">
+          💧
+          <span class="badge">Chemistry · Year 4</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Chem Story #36</div>
+          <div class="card-title">The State Change Station</div>
+          <div class="card-desc">
+            Understand melting, freezing, evaporation, and condensation while comparing reversible and irreversible changes.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-science">Chemistry</span>
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 8–10</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🧪 Year 4 state-change lab</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="chemistry-year-5-particles-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #e8f3ff 0%, #d3e9ff 48%, #e9fff1 100%);">
+          ⚛️
+          <span class="badge">Chemistry · Year 5</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Chem Story #37</div>
+          <div class="card-title">Particle Detective Academy</div>
+          <div class="card-desc">
+            Zoom into matter at particle level and explain how solids, liquids, and gases behave differently.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-science">Chemistry</span>
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 9–11</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🧪 Year 5 particle mission</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="chemistry-year-6-matter-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #ffe4ea 0%, #ffd4df 48%, #ffeecf 100%);">
+          🧪
+          <span class="badge">Chemistry · Year 6</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Chem Story #38</div>
+          <div class="card-title">Matter Mystery Investigators</div>
+          <div class="card-desc">
+            Separate physical and chemical changes and learn conservation of matter with detective-style chemistry puzzles.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-science">Chemistry</span>
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 10–12</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🧪 Year 6 chemistry investigations</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <div class="story-subsection story-subsection-history" id="world-history">
+        <div class="story-subsection-icon">🌍</div>
+        <div>
+          <h3>World & History</h3>
+          <p>Travel across the world to discover famous places, curious buildings, and amazing human stories from the past.</p>
+        </div>
+      </div>
+
+      <!-- Story 03: 7 Wonders of the World -->
+      <a class="story-card" href="7-wonders-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);">
+          🌍
+          <span class="badge">History · World</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Story #03</div>
+          <div class="card-title">The 7 Wonders of the World!</div>
+          <div class="card-desc">
+            Travel the globe with Ava the Explorer and discover the 7 most amazing
+            places humans have ever built! From the Great Wall to the Taj Mahal!
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-science">History</span>
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 5–8</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🌍 Interactive adventure</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="pisa-tower-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #ffe2a8 0%, #f7b267 100%);">
+          🏛️
+          <span class="badge">History · Italy</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Story #05</div>
+          <div class="card-title">The Leaning Tower of Pisa!</div>
+          <div class="card-desc">
+            Travel to Italy and discover why the Leaning Tower of Pisa tilts, what it was built for, and why this wobbly wonder is loved around the world.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-science">History</span>
+            <span class="tag tag-story">Story</span>
+            <span class="tag tag-age">Ages 6–10</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🏛️ Interactive history story</span>
+          <span class="read-btn">Read Now →</span>
+        </div>
+      </a>
+
+    </div>
+    </section>
+
+    <section class="section-block section-worksheets" id="worksheets">
+    <hr class="section-divider">
+    <h2 class="section-title">🧾 Worksheets</h2>
+    <p class="section-intro">
+      Clean printable practice pages for quick revision at home or in class. Start with early maths facts and number confidence.
+    </p>
+    <div class="section-meta">
+      <span class="section-pill">9 Live Worksheet Paths</span>
+      <span class="section-pill">Early Maths + Alphabets</span>
+      <span class="section-pill">Printable + Mobile Friendly</span>
+    </div>
+
+    <div class="story-grid">
+      <a class="story-card" href="alphabet-worksheets.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #eef7ff 0%, #e2f3ff 40%, #fff5d9 100%);">
+          🔤
+          <span class="badge">Worksheet Hub · Alphabet</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">A–Z</div>
+          <div class="card-title">Alphabet Worksheets A-Z</div>
+          <div class="card-desc">
+            Open individual printable sheets for every alphabet letter with tracing, find-the-letter tasks, and simple phonics practice.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-worksheet">Worksheet</span>
+            <span class="tag tag-story">Alphabet</span>
+            <span class="tag tag-age">Ages 4–7</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🔤 A to Z printable set</span>
+          <span class="read-btn">Open →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="worksheets.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #fff6da 0%, #ffe7aa 48%, #dff8f2 100%);">
+          🧾
+          <span class="badge">Worksheet Hub</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Worksheets</div>
+          <div class="card-title">Printable Worksheet Hub</div>
+          <div class="card-desc">
+            Open the full worksheet menu to browse all early maths printables in one place.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-worksheet">Worksheet</span>
+            <span class="tag tag-math">Math</span>
+            <span class="tag tag-age">Ages 5–8</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🖨️ Open printable menu</span>
+          <span class="read-btn">Open →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="worksheet-addition-facts.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #eafff8 0%, #d7f8ea 46%, #fff5d8 100%);">
+          ➕
+          <span class="badge">Worksheet · Addition</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Worksheet #01</div>
+          <div class="card-title">Addition Facts</div>
+          <div class="card-desc">
+            Practise small addition facts with write-in questions, circle-the-answer boxes, and one mini challenge.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-worksheet">Worksheet</span>
+            <span class="tag tag-math">Math</span>
+            <span class="tag tag-age">Ages 5–8</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">➕ Quick facts practice</span>
+          <span class="read-btn">Open →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="worksheet-two-number-addition-practice.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #e9fff7 0%, #d8efff 48%, #fff6d9 100%);">
+          🧮
+          <span class="badge">Worksheet · Addition</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Worksheet #07</div>
+          <div class="card-title">Two and Three Number Addition Workout</div>
+          <div class="card-desc">
+            Print a full workout sheet with warm-up facts, make-10, tens and ones, carrying sums, 3-digit addition, and word problems.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-worksheet">Worksheet</span>
+            <span class="tag tag-math">Math</span>
+            <span class="tag tag-age">Ages 6–10</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🖨️ Full addition practice set</span>
+          <span class="read-btn">Open →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="worksheet-subtraction-facts.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #fff3f0 0%, #ffe0d7 48%, #fff9dd 100%);">
+          ➖
+          <span class="badge">Worksheet · Subtraction</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Worksheet #02</div>
+          <div class="card-title">Subtraction Facts</div>
+          <div class="card-desc">
+            Build confidence with take-away facts, simple number sentences, and a short word problem.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-worksheet">Worksheet</span>
+            <span class="tag tag-math">Math</span>
+            <span class="tag tag-age">Ages 5–8</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">➖ Take-away practice</span>
+          <span class="read-btn">Open →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="worksheet-number-bonds.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #eef4ff 0%, #dfe8ff 45%, #fff4d8 100%);">
+          🔗
+          <span class="badge">Worksheet · Number Bonds</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Worksheet #03</div>
+          <div class="card-title">Number Bonds</div>
+          <div class="card-desc">
+            Learn the part-part-whole idea with number pairs that make 5, 10, and more.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-worksheet">Worksheet</span>
+            <span class="tag tag-math">Math</span>
+            <span class="tag tag-age">Ages 5–8</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🔗 Bond building</span>
+          <span class="read-btn">Open →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="worksheet-count-and-circle.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #fff9df 0%, #ffefb3 48%, #f3fbff 100%);">
+          🔵
+          <span class="badge">Worksheet · Counting</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Worksheet #04</div>
+          <div class="card-title">Count and Circle</div>
+          <div class="card-desc">
+            Count picture groups carefully and circle the correct answer from the choices.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-worksheet">Worksheet</span>
+            <span class="tag tag-math">Math</span>
+            <span class="tag tag-age">Ages 5–7</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🔵 Count each group</span>
+          <span class="read-btn">Open →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="worksheet-before-after-between.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #ecfff6 0%, #daf7ea 48%, #eef4ff 100%);">
+          ↔️
+          <span class="badge">Worksheet · Number Order</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Worksheet #05</div>
+          <div class="card-title">Before, After, Between</div>
+          <div class="card-desc">
+            Use number order to fill what comes before, after, and in between.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-worksheet">Worksheet</span>
+            <span class="tag tag-math">Math</span>
+            <span class="tag tag-age">Ages 5–8</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">↔️ Number order practice</span>
+          <span class="read-btn">Open →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="worksheet-missing-number.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #f4edff 0%, #e3d8ff 48%, #fff3de 100%);">
+          ❓
+          <span class="badge">Worksheet · Missing Number</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Worksheet #06</div>
+          <div class="card-title">Missing Number</div>
+          <div class="card-desc">
+            Find hidden numbers in patterns, number order lines, and simple addition or subtraction facts.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-worksheet">Worksheet</span>
+            <span class="tag tag-math">Math</span>
+            <span class="tag tag-age">Ages 5–8</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">❓ Fill the gap</span>
+          <span class="read-btn">Open →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="worksheet-compare-bigger-smaller.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #fff1e8 0%, #ffe0cf 48%, #eef7ff 100%);">
+          ⚖️
+          <span class="badge">Worksheet · Comparing</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Worksheet #07</div>
+          <div class="card-title">Compare Bigger / Smaller</div>
+          <div class="card-desc">
+            Compare two numbers and decide which is bigger, smaller, or equal.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-worksheet">Worksheet</span>
+            <span class="tag tag-math">Math</span>
+            <span class="tag tag-age">Ages 5–8</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">⚖️ Compare numbers</span>
+          <span class="read-btn">Open →</span>
+        </div>
+      </a>
+    </div>
+    </section>
+
+    <section class="section-block section-focus" id="focus-calm-learning">
+    <hr class="section-divider">
+    <h2 class="section-title">🌿 Focus &amp; Calm Learning</h2>
+    <p class="section-intro">
+      Gentle, visual lessons that help children follow routines, build confidence, and learn through small clear steps.
+      Start here for calm everyday-learning pages that feel simple, friendly, and easy to follow.
+    </p>
+    <div class="section-meta">
+      <span class="section-pill">4 Live Pages</span>
+      <span class="section-pill">Step-by-Step Learning</span>
+      <span class="section-pill">Calm, Visual, Friendly</span>
+    </div>
+
+    <div class="story-grid">
+      <a class="story-card" href="first-then-routine-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #dff7ef 0%, #9adfca 48%, #ffe8ad 100%);">
+          🌿
+          <span class="badge">Focus &amp; Calm · Routine</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Focus #01</div>
+          <div class="card-title">First, Then Routine Adventure</div>
+          <div class="card-desc">
+            Help a child work through everyday routines like getting ready, snack time, homework, and painting with simple first-and-next choices.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-focus">Focus &amp; Calm</span>
+            <span class="tag tag-story">Step by Step</span>
+            <span class="tag tag-age">Ages 5-10</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🌿 Gentle routine adventure</span>
+          <span class="read-btn">Open →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="feelings-and-faces-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #eef6ff 0%, #d9e9ff 52%, #fff4d9 100%);">
+          😊
+          <span class="badge">Focus &amp; Calm · Feelings</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Focus #02</div>
+          <div class="card-title">Feelings and Faces</div>
+          <div class="card-desc">
+            Match faces to scenes like party time, thunder, dropped ice cream, quiet reading, and proud tower-building with calm clue cards.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-focus">Focus &amp; Calm</span>
+            <span class="tag tag-story">Visual Matching</span>
+            <span class="tag tag-age">Ages 5-10</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">😊 Feelings matching game</span>
+          <span class="read-btn">Open →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="sorting-fun-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #fff4de 0%, #ffe1b2 52%, #e7f9f3 100%);">
+          🟨
+          <span class="badge">Focus &amp; Calm · Sorting</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Focus #03</div>
+          <div class="card-title">Sorting Fun</div>
+          <div class="card-desc">
+            Tap picture cards and sort them into simple baskets by color, type, place, and use with one clear rule at a time.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-focus">Focus &amp; Calm</span>
+            <span class="tag tag-story">Sorting Game</span>
+            <span class="tag tag-age">Ages 5-10</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🟨 Sorting baskets game</span>
+          <span class="read-btn">Open →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="matching-fun-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #efeaff 0%, #d9e9ff 48%, #fff3cf 100%);">
+          🧠
+          <span class="badge">Focus &amp; Calm · Matching</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Focus #04</div>
+          <div class="card-title">Matching Fun</div>
+          <div class="card-desc">
+            Match calm picture pairs like toothbrush and toothpaste, rain and umbrella, pencil and notebook, sock and shoe, and bee and flower.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-focus">Focus &amp; Calm</span>
+            <span class="tag tag-story">Matching Game</span>
+            <span class="tag tag-age">Ages 5-10</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🧠 Picture pairs game</span>
+          <span class="read-btn">Open →</span>
+        </div>
+      </a>
+    </div>
+    </section>
+
+    <section class="section-block section-games" id="games">
+    <hr class="section-divider">
+    <h2 class="section-title">🎮 Games</h2>
+    <p class="section-intro">
+      Quick mini games that turn practice into play. Tap, think, and learn while chasing your best score.
+    </p>
+    <div class="section-meta">
+      <span class="section-pill">4 Live Games</span>
+      <span class="section-pill">Math, Time, Grammar</span>
+      <span class="section-pill">Mobile + Laptop Friendly</span>
+    </div>
+
+    <div class="story-grid">
+      <a class="story-card" href="game-addition-bubble-pop.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #1f4b99 0%, #4d96ff 45%, #ffd166 100%);">
+          🎈
+          <span class="badge">Game · Addition</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Game #01</div>
+          <div class="card-title">Addition Bubble Pop</div>
+          <div class="card-desc">
+            Pop the bubble with the correct answer before the timer ends. Build speed and confidence with quick addition facts.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-game">Game</span>
+            <span class="tag tag-math">Math</span>
+            <span class="tag tag-age">Ages 5–10</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🎈 60-second mini challenge</span>
+          <span class="read-btn">Play Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="game-multiplication-meteor.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #0f3460 0%, #4d96ff 45%, #ffb36c 100%);">
+          ☄️
+          <span class="badge">Game · Multiplication</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Game #02</div>
+          <div class="card-title">Multiplication Meteor</div>
+          <div class="card-desc">
+            Tap the meteor with the right multiplication answer before it escapes. Build fast recall of times tables.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-game">Game</span>
+            <span class="tag tag-math">Math</span>
+            <span class="tag tag-age">Ages 7–12</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">☄️ Falling-answer action game</span>
+          <span class="read-btn">Play Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="game-clock-match-rush.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #1b4965 0%, #4d96ff 45%, #ffd166 100%);">
+          ⏰
+          <span class="badge">Game · Time</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Game #03</div>
+          <div class="card-title">Clock Match Rush</div>
+          <div class="card-desc">
+            Match analog clocks to digital time quickly. Train your eye to read hour and minute hands with confidence.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-game">Game</span>
+            <span class="tag tag-math">Math</span>
+            <span class="tag tag-age">Ages 6–11</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">⏰ Fast matching challenge</span>
+          <span class="read-btn">Play Now →</span>
+        </div>
+      </a>
+
+      <a class="story-card" href="game-grammar-fix-it-lab.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #b42342 0%, #ff7f96 55%, #ffc2cc 100%);">
+          🧪
+          <span class="badge">Game · Grammar</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Game #04</div>
+          <div class="card-title">Grammar Fix-it Lab</div>
+          <div class="card-desc">
+            Fix sentence errors in capitals, punctuation, and grammar. Quick rounds to build editing confidence.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-game">Game</span>
+            <span class="tag tag-writing">Grammar</span>
+            <span class="tag tag-age">Ages 8–13</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🧪 Sentence correction challenge</span>
+          <span class="read-btn">Play Now →</span>
+        </div>
+      </a>
+    </div>
+    </section>
+
+    <!-- ── PREP SECTION ── -->
+    <section class="section-block section-challenge" id="challenge-prep">
+    <hr class="section-divider">
+    <h2 class="section-title">🎯 Competitive Prep — Learn & Play!</h2>
+    <p class="section-intro">
+      Fun story adventures that help kids build skills in reading, writing, spelling, and numeracy!
+      Each topic has stories, puzzles, quizzes, and a certificate to earn! 🏆
+    </p>
+    <div class="section-meta">
+      <span class="section-pill">12 Main Topics</span>
+      <span class="section-pill">Reading, Writing, Spelling, Grammar, Numeracy</span>
+      <span class="section-pill">Certificate Pages Included</span>
+    </div>
+
+    <div class="story-grid">
+
+      <!-- R1: Reading — Comprehension Quest -->
+      <a class="story-card" href="np-reading-comprehension-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #1a237e 0%, #283593 100%);">
+          📖
+          <span class="badge">Reading · Comprehension</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Prep #R1</div>
+          <div class="card-title">The Comprehension Quest!</div>
+          <div class="card-desc">
+            Join Lexie the Bookworm to find main ideas, understand characters,
+            and read between the lines! Become a super reader!
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-challenge">Prep</span>
+            <span class="tag tag-reading">Reading</span>
+            <span class="tag tag-age">Year 3–5</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">📖 Interactive storybook</span>
+          <span class="read-btn">Start Now →</span>
+        </div>
+      </a>
+
+      <!-- R2: Reading — Analytical Reader -->
+      <a class="story-card" href="np-reading-analytical-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%);">
+          🔍
+          <span class="badge">Reading · Analysis</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Prep #R2</div>
+          <div class="card-title">The Analytical Reader!</div>
+          <div class="card-desc">
+            Discover cause & effect, spot facts vs opinions, learn vocabulary
+            in context, and master different text types!
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-challenge">Prep</span>
+            <span class="tag tag-reading">Reading</span>
+            <span class="tag tag-age">Year 3–5</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🔍 Interactive storybook</span>
+          <span class="read-btn">Start Now →</span>
+        </div>
+      </a>
+
+      <!-- W1: Writing — Narrative Adventure -->
+      <a class="story-card" href="np-writing-narrative-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 100%);">
+          ✏️
+          <span class="badge">Writing · Narrative</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Prep #W1</div>
+          <div class="card-title">The Narrative Adventure!</div>
+          <div class="card-desc">
+            Travel with Grammarly the Parrot and learn to write amazing stories!
+            Master characters, settings, plot structure, and dialogue!
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-challenge">Prep</span>
+            <span class="tag tag-writing">Writing</span>
+            <span class="tag tag-age">Year 3–5</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">✏️ Interactive storybook</span>
+          <span class="read-btn">Start Now →</span>
+        </div>
+      </a>
+
+      <!-- W2: Writing — Persuasive Power -->
+      <a class="story-card" href="np-writing-persuasive-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #6a1b9a 0%, #ab47bc 100%);">
+          💬
+          <span class="badge">Writing · Persuasive</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Prep #W2</div>
+          <div class="card-title">The Persuasive Parrot!</div>
+          <div class="card-desc">
+            Learn to convince and persuade! Build arguments with reasons and evidence,
+            master paragraphs, and choose powerful words!
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-challenge">Prep</span>
+            <span class="tag tag-writing">Writing</span>
+            <span class="tag tag-age">Year 3–5</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">💬 Interactive storybook</span>
+          <span class="read-btn">Start Now →</span>
+        </div>
+      </a>
+
+      <!-- S1: Spelling — Spelling Quest -->
+      <a class="story-card" href="np-spelling-words-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #004d40 0%, #00796b 100%);">
+          🔤
+          <span class="badge">Spelling · Words</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Prep #S1</div>
+          <div class="card-title">Spelly's Spelling Quest!</div>
+          <div class="card-desc">
+            Help Spelly the Wizard master phonics, spelling rules, homophones,
+            and tricky words! Each correct spell unlocks magical powers!
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-challenge">Prep</span>
+            <span class="tag tag-spelling">Spelling</span>
+            <span class="tag tag-age">Year 3–5</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🔤 Interactive storybook</span>
+          <span class="read-btn">Start Now →</span>
+        </div>
+      </a>
+
+      <!-- S2: Grammar & Punctuation -->
+      <a class="story-card" href="np-grammar-punctuation-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #1b5e20 0%, #388e3c 100%);">
+          📝
+          <span class="badge">Grammar · Punctuation</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Prep #S2</div>
+          <div class="card-title">The Grammar Galaxy!</div>
+          <div class="card-desc">
+            Explore the Grammar Galaxy! Learn parts of speech, tenses,
+            sentence types, and punctuation on this cosmic language adventure!
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-challenge">Prep</span>
+            <span class="tag tag-spelling">Grammar</span>
+            <span class="tag tag-age">Year 3–5</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">📝 Interactive storybook</span>
+          <span class="read-btn">Start Now →</span>
+        </div>
+      </a>
+
+      <!-- N1: Numeracy — Number Operations -->
+      <a class="story-card" href="np-numeracy-operations-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #e65100 0%, #f57c00 100%);">
+          🔢
+          <span class="badge">Numeracy · Operations</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Prep #N1</div>
+          <div class="card-title">The Number Dojo!</div>
+          <div class="card-desc">
+            Train with Numi the Ninja to master addition, subtraction,
+            multiplication, division, and number problem-solving skills!
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-challenge">Prep</span>
+            <span class="tag tag-numeracy">Numeracy</span>
+            <span class="tag tag-age">Year 3–5</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🔢 Interactive storybook</span>
+          <span class="read-btn">Start Now →</span>
+        </div>
+      </a>
+
+      <!-- N2: Numeracy — Place Value -->
+      <a class="story-card" href="np-numeracy-place-value-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #8d4e00 0%, #f57c00 100%);">
+          🏯
+          <span class="badge">Numeracy · Place Value</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Prep #N2</div>
+          <div class="card-title">The Place Value Dojo!</div>
+          <div class="card-desc">
+            Learn ones, tens, hundreds, and thousands, expand numbers into parts,
+            and compare 4-digit numbers like a number ninja!
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-challenge">Prep</span>
+            <span class="tag tag-numeracy">Numeracy</span>
+            <span class="tag tag-age">Year 3–5</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🏯 Interactive storybook</span>
+          <span class="read-btn">Start Now →</span>
+        </div>
+      </a>
+
+      <!-- N2: Numeracy — Shapes & Measurement -->
+      <a class="story-card" href="np-numeracy-shapes-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #bf360c 0%, #ff6e40 100%);">
+          📐
+          <span class="badge">Numeracy · Shapes</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Prep #N3</div>
+          <div class="card-title">The Shape Explorer!</div>
+          <div class="card-desc">
+            Explore 2D and 3D shapes, geometry clues, and measurement ideas.
+            Solve puzzles, discover properties, and earn your Shape Explorer badge!
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-challenge">Prep</span>
+            <span class="tag tag-numeracy">Numeracy</span>
+            <span class="tag tag-age">Year 3–5</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">📐 Interactive storybook</span>
+          <span class="read-btn">Start Now →</span>
+        </div>
+      </a>
+
+      <!-- R3: Reading — Text Types -->
+      <a class="story-card" href="np-reading-texttypes-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #1a237e 0%, #3949ab 100%);">
+          📰
+          <span class="badge">Reading · Text Types</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Prep #R3</div>
+          <div class="card-title">The Text Type Tracker!</div>
+          <div class="card-desc">
+            Discover narratives, informative texts, and persuasive writing!
+            Learn to spot author's purpose, text features, and compare texts!
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-challenge">Prep</span>
+            <span class="tag tag-reading">Reading</span>
+            <span class="tag tag-age">Year 3–5</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">📰 Interactive storybook</span>
+          <span class="read-btn">Start Now →</span>
+        </div>
+      </a>
+
+      <!-- W3: Writing — Editing -->
+      <a class="story-card" href="np-writing-editing-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #4a148c 0%, #9c27b0 100%);">
+          ✂️
+          <span class="badge">Writing · Editing</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Prep #W3</div>
+          <div class="card-title">The Editing Express!</div>
+          <div class="card-desc">
+            All aboard the Editing Express! Learn to build powerful sentences,
+            proofread like a pro, and connect ideas with cohesion magic!
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-challenge">Prep</span>
+            <span class="tag tag-writing">Writing</span>
+            <span class="tag tag-age">Year 3–5</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">✂️ Interactive storybook</span>
+          <span class="read-btn">Start Now →</span>
+        </div>
+      </a>
+
+      <!-- N4: Numeracy — Fractions & Money -->
+      <a class="story-card" href="np-numeracy-fractions-money-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #00796b 0%, #26a69a 100%);">
+          💰
+          <span class="badge">Numeracy · Fractions</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Prep #N4</div>
+          <div class="card-title">The Fraction & Money Market!</div>
+          <div class="card-desc">
+            Learn unit fractions on a number line, compare 1/2, 1/4, and 1/8,
+            and calculate change in real shopping adventures!
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-challenge">Prep</span>
+            <span class="tag tag-numeracy">Numeracy</span>
+            <span class="tag tag-age">Year 3–5</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">💰 Interactive storybook</span>
+          <span class="read-btn">Start Now →</span>
+        </div>
+      </a>
+
+      <!-- N3: Numeracy — Data & Probability -->
+      <a class="story-card" href="np-numeracy-data-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #b71c1c 0%, #e53935 100%);">
+          📊
+          <span class="badge">Numeracy · Data</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Prep #N5</div>
+          <div class="card-title">The Data Detective!</div>
+          <div class="card-desc">
+            Crack the case with data! Read graphs, build tables, explore
+            probability, measure mass and volume, and navigate with directions!
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-challenge">Prep</span>
+            <span class="tag tag-numeracy">Numeracy</span>
+            <span class="tag tag-age">Year 3–5</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">📊 Interactive storybook</span>
+          <span class="read-btn">Start Now →</span>
+        </div>
+      </a>
+
+    </div>
+    </section>
+
+    <section class="section-block section-competition" id="weekly-competition">
+    <hr class="section-divider">
+    <h2 class="section-title">🏆 Weekly Competition</h2>
+    <p class="section-intro">
+      This is the live weekly competition mode. Each round runs for 7 days, gives children
+      25 questions and 1 hour, records their name, score, and completion time, and declares a winner
+      using score first and speed as the tie-breaker.
+    </p>
+    <div class="section-meta">
+      <span class="section-pill">2 Rounds</span>
+      <span class="section-pill">60 Minute Timer</span>
+      <span class="section-pill">Winner Certificate</span>
+      <span class="section-pill">Week 2 Started 6 Apr 2026</span>
+    </div>
+
+    <div class="story-grid">
+      <a class="story-card" href="np-competition-week-01.html" data-competition-card data-competition-start="2026-04-01T00:00:00+11:00" data-competition-end="2026-04-07T23:59:59+10:00">
+        <div class="card-cover" style="background: linear-gradient(135deg, #6a040f 0%, #d00000 100%);">🏆<span class="badge">Competition · Week 1</span></div>
+        <div class="card-body"><div class="card-number">Cup #01</div><div class="competition-status is-pending" data-competition-status>⏳ Checking status</div><div class="card-title">The Weekly Skills Cup</div><div class="card-desc">A 25-question, 60-minute mixed competition with leaderboard, winner tracking, and downloadable winner certificate.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-story">Competition</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info" data-competition-meta>🏁 1-hour competition</span><span class="read-btn" data-competition-cta>Enter →</span></div>
+      </a>
+      <a class="story-card" href="competition-week-02.html" data-competition-card data-competition-start="2026-04-06T00:00:00+10:00" data-competition-end="2026-04-14T23:59:59+10:00">
+        <div class="card-cover" style="background: linear-gradient(135deg, #7b2cbf 0%, #c77dff 100%);">🥇<span class="badge">Competition · Week 2</span></div>
+        <div class="card-body"><div class="card-number">Cup #02</div><div class="competition-status is-pending" data-competition-status>⏳ Checking status</div><div class="card-title">The Weekly Skills Cup</div><div class="card-desc">A fresh 25-question mixed competition for April 6, 2026 to April 14, 2026, with a new question set, leaderboard, and winner certificate.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-story">Competition</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info" data-competition-meta>🏁 New weekly round</span><span class="read-btn" data-competition-cta>Enter →</span></div>
+      </a>
+    </div>
+    </section>
+
+    <section class="section-block section-exams" id="exam-sessions">
+    <hr class="section-divider">
+    <h2 class="section-title">📝 Exam Sessions</h2>
+    <p class="section-intro">
+      Ready for full mixed-topic practice? These 10 exam sessions combine reading, writing,
+      conventions of language, and numeracy into themed mini tests with instant scoring and certificates.
+    </p>
+    <div class="section-meta">
+      <span class="section-pill">10 Sessions</span>
+      <span class="section-pill">10 Questions Each</span>
+      <span class="section-pill">Instant Scoring</span>
+    </div>
+
+    <div class="story-grid">
+
+      <a class="story-card" href="np-exam-session-01.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #6a040f 0%, #c62828 100%);">📝<span class="badge">Exam · Session 01</span></div>
+        <div class="card-body"><div class="card-number">Exam #01</div><div class="card-title">The Adventure Warm-Up</div><div class="card-desc">A balanced starter exam with 10 mixed challenge questions across all major domains.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-story">Exam</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">📝 10-question session</span><span class="read-btn">Start →</span></div>
+      </a>
+
+      <a class="story-card" href="np-exam-session-02.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #7f0000 0%, #d32f2f 100%);">📚<span class="badge">Exam · Session 02</span></div>
+        <div class="card-body"><div class="card-number">Exam #02</div><div class="card-title">The Reading & Language Run</div><div class="card-desc">Extra focus on reading, grammar, punctuation, and spelling with numeracy and writing mixed in.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-story">Exam</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">📚 10-question session</span><span class="read-btn">Start →</span></div>
+      </a>
+
+      <a class="story-card" href="np-exam-session-03.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #8d1b00 0%, #ef6c00 100%);">🔢<span class="badge">Exam · Session 03</span></div>
+        <div class="card-body"><div class="card-number">Exam #03</div><div class="card-title">The Number Ninja Trial</div><div class="card-desc">A numeracy-heavy session covering place value, operations, fractions, money, shape, and data.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-story">Exam</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">🔢 10-question session</span><span class="read-btn">Start →</span></div>
+      </a>
+
+      <a class="story-card" href="np-exam-session-04.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #4a148c 0%, #8e24aa 100%);">✏️<span class="badge">Exam · Session 04</span></div>
+        <div class="card-body"><div class="card-number">Exam #04</div><div class="card-title">The Storycraft Sprint</div><div class="card-desc">A writing-rich exam session mixing narrative craft, editing, reading clues, and language control.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-story">Exam</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">✏️ 10-question session</span><span class="read-btn">Start →</span></div>
+      </a>
+
+      <a class="story-card" href="np-exam-session-05.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #1b5e20 0%, #388e3c 100%);">🔤<span class="badge">Exam · Session 05</span></div>
+        <div class="card-body"><div class="card-number">Exam #05</div><div class="card-title">The Conventions Challenge</div><div class="card-desc">Strong focus on grammar, punctuation, and spelling, with reading, writing, and numeracy support items.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-story">Exam</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">🔤 10-question session</span><span class="read-btn">Start →</span></div>
+      </a>
+
+      <a class="story-card" href="np-exam-session-06.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #00695c 0%, #00897b 100%);">🧭<span class="badge">Exam · Session 06</span></div>
+        <div class="card-body"><div class="card-number">Exam #06</div><div class="card-title">The Skills Safari</div><div class="card-desc">A balanced all-round practice session that touches every major skill area in one run.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-story">Exam</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">🧭 10-question session</span><span class="read-btn">Start →</span></div>
+      </a>
+
+      <a class="story-card" href="np-exam-session-07.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%);">🔍<span class="badge">Exam · Session 07</span></div>
+        <div class="card-body"><div class="card-number">Exam #07</div><div class="card-title">The Inference Quest</div><div class="card-desc">A deeper reasoning session with reading inference, tense, spelling, numeracy, and story tension tasks.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-story">Exam</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">🔍 10-question session</span><span class="read-btn">Start →</span></div>
+      </a>
+
+      <a class="story-card" href="np-exam-session-08.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #7b1fa2 0%, #ab47bc 100%);">📣<span class="badge">Exam · Session 08</span></div>
+        <div class="card-body"><div class="card-number">Exam #08</div><div class="card-title">The Persuasion Parade</div><div class="card-desc">A mixed session with persuasive writing, grammar, punctuation, reading purpose, and numeracy fluency.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-story">Exam</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">📣 10-question session</span><span class="read-btn">Start →</span></div>
+      </a>
+
+      <a class="story-card" href="np-exam-session-09.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #b71c1c 0%, #e53935 100%);">🏆<span class="badge">Exam · Session 09</span></div>
+        <div class="card-body"><div class="card-number">Exam #09</div><div class="card-title">The Mixed Mastery Mock</div><div class="card-desc">A mock-style exam session that checks steady performance across the full range of skills.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-story">Exam</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">🏆 10-question session</span><span class="read-btn">Start →</span></div>
+      </a>
+
+      <a class="story-card" href="np-exam-session-10.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #4e342e 0%, #c62828 100%);">⭐<span class="badge">Exam · Session 10</span></div>
+        <div class="card-body"><div class="card-number">Exam #10</div><div class="card-title">The Grand Challenge</div><div class="card-desc">The final mixed-session exam with strong reading, conventions, numeracy, and writing question variety.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-story">Exam</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">⭐ 10-question session</span><span class="read-btn">Start →</span></div>
+      </a>
+
+    </div>
+    </section>
+
+    <section class="section-block section-selective" id="selective-exam">
+    <hr class="section-divider">
+    <h2 class="section-title">🎓 Selective School Exam</h2>
+    <p class="section-intro">
+      Start with the merged syllabus and introduction, then open the hub, then move into the topic paths.
+      This area is set up to keep selective-school preparation clear, simple, and easy to follow.
+    </p>
+    <div class="section-meta">
+      <span class="section-pill">Selective Prep Hub</span>
+      <span class="section-pill">Syllabus + Introduction</span>
+      <span class="section-pill">Topic Paths Below</span>
+    </div>
+
+    <div class="story-grid">
+      <a class="story-card" href="selective-exam-introduction.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #0f766e 0%, #0ea5e9 100%);">📋<span class="badge">Selective · Syllabus</span></div>
+        <div class="card-body"><div class="card-number">Selective #00</div><div class="card-title">Selective Syllabus &amp; Introduction</div><div class="card-desc">The merged starting page. It explains the four exam areas, the timings, and the simple-to-hard preparation flow.</div><div class="card-tags"><span class="tag tag-challenge">Selective</span><span class="tag tag-story">Start Here</span><span class="tag tag-age">Year 6</span></div></div>
+        <div class="card-footer"><span class="pages-info">📋 Start here</span><span class="read-btn">Open →</span></div>
+      </a>
+
+      <a class="story-card" href="selective-school-exam.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);">🎓<span class="badge">Selective · Hub</span></div>
+        <div class="card-body"><div class="card-number">Selective #01</div><div class="card-title">Selective School Prep Hub</div><div class="card-desc">Open the route-map hub to jump into maths, thinking, reading, writing, and the practice path.</div><div class="card-tags"><span class="tag tag-challenge">Selective</span><span class="tag tag-story">Hub</span><span class="tag tag-age">Year 4–6</span></div></div>
+        <div class="card-footer"><span class="pages-info">🎯 Overview and practice plan</span><span class="read-btn">Open Hub →</span></div>
+      </a>
+
+      <a class="story-card" href="selective-school-exam.html#selective-thinking">
+        <div class="card-cover" style="background: linear-gradient(135deg, #155e75 0%, #0ea5e9 100%);">🧠<span class="badge">Selective · Thinking</span></div>
+        <div class="card-body"><div class="card-number">Selective #02</div><div class="card-title">Thinking Skills Path</div><div class="card-desc">Build vocabulary, logic, word relationships, and fast pattern recognition for selective-style reasoning tasks.</div><div class="card-tags"><span class="tag tag-challenge">Selective</span><span class="tag tag-reading">Reasoning</span><span class="tag tag-age">Year 4–6</span></div></div>
+        <div class="card-footer"><span class="pages-info">🧠 Skill roadmap</span><span class="read-btn">Explore →</span></div>
+      </a>
+
+      <a class="story-card" href="selective-school-exam.html#selective-maths">
+        <div class="card-cover" style="background: linear-gradient(135deg, #92400e 0%, #f59e0b 100%);">➗<span class="badge">Selective · Maths</span></div>
+        <div class="card-body"><div class="card-number">Selective #03</div><div class="card-title">Mathematical Reasoning Path</div><div class="card-desc">Strengthen multi-step number reasoning, problem solving, and time-pressured maths thinking for selective-style questions.</div><div class="card-tags"><span class="tag tag-challenge">Selective</span><span class="tag tag-numeracy">Maths</span><span class="tag tag-age">Year 4–6</span></div></div>
+        <div class="card-footer"><span class="pages-info">➗ Skill roadmap</span><span class="read-btn">Explore →</span></div>
+      </a>
+
+      <a class="story-card" href="selective-school-exam.html#selective-reading">
+        <div class="card-cover" style="background: linear-gradient(135deg, #0f4c81 0%, #0284c7 100%);">📘<span class="badge">Selective · Reading</span></div>
+        <div class="card-body"><div class="card-number">Selective #04</div><div class="card-title">Reading Path</div><div class="card-desc">Practise inference, vocabulary in context, and synthesis so students can interpret difficult texts with confidence.</div><div class="card-tags"><span class="tag tag-challenge">Selective</span><span class="tag tag-reading">Reading</span><span class="tag tag-age">Year 4–6</span></div></div>
+        <div class="card-footer"><span class="pages-info">📘 Skill roadmap</span><span class="read-btn">Explore →</span></div>
+      </a>
+
+      <a class="story-card" href="selective-school-exam.html#selective-writing">
+        <div class="card-cover" style="background: linear-gradient(135deg, #9d174d 0%, #ec4899 100%);">✍️<span class="badge">Selective · Writing</span></div>
+        <div class="card-body"><div class="card-number">Selective #05</div><div class="card-title">Writing Path</div><div class="card-desc">Build ideas, structure, and language control across key writing types and the selective marking criteria.</div><div class="card-tags"><span class="tag tag-challenge">Selective</span><span class="tag tag-writing">Writing</span><span class="tag tag-age">Year 4–6</span></div></div>
+        <div class="card-footer"><span class="pages-info">✍️ Skill roadmap</span><span class="read-btn">Explore →</span></div>
+      </a>
+    </div>
+
+    </section>
+
+    <section class="section-block section-micro" id="micro-topics">
+    <hr class="section-divider">
+    <h2 class="section-title">🧩 Micro-Topic Library</h2>
+    <p class="section-intro">
+      Need one skill at a time? These focused mini storybooks split the syllabus into dedicated topics
+      so each reading, writing, spelling, grammar, punctuation, and numeracy skill has its own page.
+    </p>
+    <div class="section-meta">
+      <span class="section-pill">21 Micro-Topics</span>
+      <span class="section-pill">One Skill Per Page</span>
+      <span class="section-pill">Focused Revision</span>
+    </div>
+
+    <div class="story-grid">
+
+      <a class="story-card" href="np-reading-text-features-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #1a237e 0%, #3949ab 100%);">🏷️<span class="badge">Reading · Features</span></div>
+        <div class="card-body"><div class="card-number">Micro #R1</div><div class="card-title">Text Feature Trackers</div><div class="card-desc">Focus on headings, captions, diagrams, and how they help readers understand reports and information texts.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-reading">Reading</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">🏷️ Focused skill page</span><span class="read-btn">Open →</span></div>
+      </a>
+
+      <a class="story-card" href="np-reading-main-purpose-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%);">🎯<span class="badge">Reading · Purpose</span></div>
+        <div class="card-body"><div class="card-number">Micro #R2</div><div class="card-title">Author Purpose Detectives</div><div class="card-desc">Work out whether a text is trying to inform, persuade, or entertain and explain the writer’s main purpose.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-reading">Reading</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">🎯 Focused skill page</span><span class="read-btn">Open →</span></div>
+      </a>
+
+      <a class="story-card" href="np-writing-character-setting-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 100%);">🎭<span class="badge">Writing · Narrative</span></div>
+        <div class="card-body"><div class="card-number">Micro #W1</div><div class="card-title">Character & Setting Creators</div><div class="card-desc">Build vivid characters and settings with strong descriptive details that help readers picture the story.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-writing">Writing</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">🎭 Focused skill page</span><span class="read-btn">Open →</span></div>
+      </a>
+
+      <a class="story-card" href="np-writing-complication-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #6a1b9a 0%, #ab47bc 100%);">🔥<span class="badge">Writing · Plot</span></div>
+        <div class="card-body"><div class="card-number">Micro #W2</div><div class="card-title">Complication Creators</div><div class="card-desc">Learn how to create tension, problems, and exciting story obstacles that drive a narrative forward.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-writing">Writing</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">🔥 Focused skill page</span><span class="read-btn">Open →</span></div>
+      </a>
+
+      <a class="story-card" href="np-writing-persuasive-devices-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #5e35b1 0%, #8e24aa 100%);">📣<span class="badge">Writing · Persuasive</span></div>
+        <div class="card-body"><div class="card-number">Micro #W3</div><div class="card-title">Persuasive Device Detectives</div><div class="card-desc">Use strong words, emotive language, and direct appeals to make persuasive writing more powerful.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-writing">Writing</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">📣 Focused skill page</span><span class="read-btn">Open →</span></div>
+      </a>
+
+      <a class="story-card" href="np-writing-logical-sequencing-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #7b1fa2 0%, #ce93d8 100%);">🧭<span class="badge">Writing · Structure</span></div>
+        <div class="card-body"><div class="card-number">Micro #W4</div><div class="card-title">Logical Sequencing Leaders</div><div class="card-desc">Organise persuasive ideas in a sensible order from introduction to body reasons to conclusion.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-writing">Writing</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">🧭 Focused skill page</span><span class="read-btn">Open →</span></div>
+      </a>
+
+      <a class="story-card" href="np-grammar-parts-of-speech-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #1b5e20 0%, #388e3c 100%);">🧱<span class="badge">Grammar · Words</span></div>
+        <div class="card-body"><div class="card-number">Micro #G1</div><div class="card-title">Parts of Speech Builders</div><div class="card-desc">Identify nouns, verbs, adjectives, and adverbs as the building blocks of clear sentences.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-spelling">Grammar</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">🧱 Focused skill page</span><span class="read-btn">Open →</span></div>
+      </a>
+
+      <a class="story-card" href="np-grammar-tense-consistency-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%);">⏰<span class="badge">Grammar · Tense</span></div>
+        <div class="card-body"><div class="card-number">Micro #G2</div><div class="card-title">Tense Consistency Timekeepers</div><div class="card-desc">Check that writing stays correctly in the same tense and fix sentences that switch by mistake.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-spelling">Grammar</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">⏰ Focused skill page</span><span class="read-btn">Open →</span></div>
+      </a>
+
+      <a class="story-card" href="np-punctuation-sentence-boundaries-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #33691e 0%, #689f38 100%);">🔠<span class="badge">Punctuation · Boundaries</span></div>
+        <div class="card-body"><div class="card-number">Micro #P1</div><div class="card-title">Sentence Boundary Detectives</div><div class="card-desc">Master capitals and full stops so readers can clearly see where one sentence ends and the next begins.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-spelling">Punctuation</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">🔠 Focused skill page</span><span class="read-btn">Open →</span></div>
+      </a>
+
+      <a class="story-card" href="np-punctuation-quotation-marks-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #2e7d32 0%, #81c784 100%);">💬<span class="badge">Punctuation · Speech</span></div>
+        <div class="card-body"><div class="card-number">Micro #P2</div><div class="card-title">Quotation Mark Detectives</div><div class="card-desc">Track who is speaking and learn where quotation marks and speech punctuation belong.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-spelling">Punctuation</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">💬 Focused skill page</span><span class="read-btn">Open →</span></div>
+      </a>
+
+      <a class="story-card" href="np-spelling-error-identification-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #004d40 0%, #00796b 100%);">🔎<span class="badge">Spelling · Errors</span></div>
+        <div class="card-body"><div class="card-number">Micro #S1</div><div class="card-title">Spelling Error Spotters</div><div class="card-desc">Find the misspelled word in a sentence and choose the correct spelling using meaning and patterns.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-spelling">Spelling</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">🔎 Focused skill page</span><span class="read-btn">Open →</span></div>
+      </a>
+
+      <a class="story-card" href="np-spelling-homophones-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #00695c 0%, #26a69a 100%);">🔤<span class="badge">Spelling · Homophones</span></div>
+        <div class="card-body"><div class="card-number">Micro #S2</div><div class="card-title">Homophone Heroes</div><div class="card-desc">Choose the right word from pairs like there, their, and they’re by using the meaning of the sentence.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-spelling">Spelling</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">🔤 Focused skill page</span><span class="read-btn">Open →</span></div>
+      </a>
+
+      <a class="story-card" href="np-numeracy-place-value-recognising-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #8d4e00 0%, #f57c00 100%);">🏯<span class="badge">Numeracy · Place Value</span></div>
+        <div class="card-body"><div class="card-number">Micro #N1</div><div class="card-title">Place Value Detectives</div><div class="card-desc">Recognise the value of digits in the ones, tens, hundreds, and thousands places.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-numeracy">Numeracy</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">🏯 Focused skill page</span><span class="read-btn">Open →</span></div>
+      </a>
+
+      <a class="story-card" href="np-numeracy-place-value-expanding-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #a05a00 0%, #ff9800 100%);">🧩<span class="badge">Numeracy · Expanded Form</span></div>
+        <div class="card-body"><div class="card-number">Micro #N2</div><div class="card-title">Expanded Form Builders</div><div class="card-desc">Break numbers into thousands, hundreds, tens, and ones and build them back up again.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-numeracy">Numeracy</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">🧩 Focused skill page</span><span class="read-btn">Open →</span></div>
+      </a>
+
+      <a class="story-card" href="np-numeracy-place-value-comparing-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #bf360c 0%, #ff7043 100%);">🐊<span class="badge">Numeracy · Comparing</span></div>
+        <div class="card-body"><div class="card-number">Micro #N3</div><div class="card-title">Number Comparison Champions</div><div class="card-desc">Compare and order 4-digit numbers using the biggest place first and the correct symbols.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-numeracy">Numeracy</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">🐊 Focused skill page</span><span class="read-btn">Open →</span></div>
+      </a>
+
+      <a class="story-card" href="np-numeracy-addition-strategies-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #ef6c00 0%, #ffa726 100%);">➕<span class="badge">Numeracy · Addition</span></div>
+        <div class="card-body"><div class="card-number">Micro #N4</div><div class="card-title">Addition Strategy Heroes</div><div class="card-desc">Practise mental addition shortcuts like bridging to 10, splitting numbers, and compensation.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-numeracy">Numeracy</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">➕ Focused skill page</span><span class="read-btn">Open →</span></div>
+      </a>
+
+      <a class="story-card" href="np-numeracy-subtraction-renaming-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #f57c00 0%, #ffb74d 100%);">➖<span class="badge">Numeracy · Subtraction</span></div>
+        <div class="card-body"><div class="card-number">Micro #N5</div><div class="card-title">Subtraction Renaming Rangers</div><div class="card-desc">Learn trading and renaming step by step when the top digit is too small.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-numeracy">Numeracy</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">➖ Focused skill page</span><span class="read-btn">Open →</span></div>
+      </a>
+
+      <a class="story-card" href="np-numeracy-multiplication-arrays-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #e65100 0%, #ff8a65 100%);">✖️<span class="badge">Numeracy · Multiplication</span></div>
+        <div class="card-body"><div class="card-number">Micro #N6</div><div class="card-title">Array Multiplication Masters</div><div class="card-desc">See multiplication as equal groups, rows, and arrays instead of just memorised facts.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-numeracy">Numeracy</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">✖️ Focused skill page</span><span class="read-btn">Open →</span></div>
+      </a>
+
+      <a class="story-card" href="np-numeracy-division-sharing-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #f4511e 0%, #ffab91 100%);">➗<span class="badge">Numeracy · Division</span></div>
+        <div class="card-body"><div class="card-number">Micro #N7</div><div class="card-title">Division Sharing Stars</div><div class="card-desc">Learn division as equal sharing and grouping using times tables and practical examples.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-numeracy">Numeracy</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">➗ Focused skill page</span><span class="read-btn">Open →</span></div>
+      </a>
+
+      <a class="story-card" href="np-numeracy-unit-fractions-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #00796b 0%, #26a69a 100%);">🍕<span class="badge">Numeracy · Fractions</span></div>
+        <div class="card-body"><div class="card-number">Micro #N8</div><div class="card-title">Unit Fraction Explorers</div><div class="card-desc">Place 1/2, 1/4, and 1/8 correctly on a number line and compare their sizes.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-numeracy">Numeracy</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">🍕 Focused skill page</span><span class="read-btn">Open →</span></div>
+      </a>
+
+      <a class="story-card" href="np-numeracy-money-change-kids.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #00897b 0%, #4db6ac 100%);">💰<span class="badge">Numeracy · Money</span></div>
+        <div class="card-body"><div class="card-number">Micro #N9</div><div class="card-title">Money Change Champions</div><div class="card-desc">Find change accurately using subtraction and count-up strategies with dollars and cents.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-numeracy">Numeracy</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info">💰 Focused skill page</span><span class="read-btn">Open →</span></div>
+      </a>
+
+    </div>
+    </section>
+
+    <section class="section-block section-comments" id="comments">
+    <hr class="section-divider">
+    <h2 class="section-title">💬 Comments Corner</h2>
+    <p class="section-intro">
+      Families and learners can leave a short note about what they enjoyed, what helped most,
+      or which topic they would love to see next.
+    </p>
+
+    <div class="comment-shell">
+      <div class="comment-grid">
+        <div class="comment-panel">
+          <h3>Tell Us What You Think!</h3>
+          <p class="comment-help">
+            Your feedback helps us make more amazing books and practice pages.
+            Choose whether you are sending a suggestion or a correction, then share your message.
+            To help block spam, solve the quick captcha before submitting.
+            Comments are submitted to a Google Sheet through a Google Apps Script web app.
+          </p>
+
+          <form class="comment-form" id="commentForm">
+            <div>
+              <label for="commentName">Name</label>
+              <input class="comment-input" id="commentName" maxlength="40" placeholder="Your name or nickname" />
+            </div>
+
+            <fieldset class="comment-type">
+              <legend>Feedback Type</legend>
+              <div class="comment-type-grid">
+                <label class="comment-type-option">
+                  <input type="radio" name="commentType" value="Suggestion" checked />
+                  <span class="comment-type-copy">
+                    <strong>Suggestion</strong>
+                    <span>Share an idea to improve a topic, story, or page.</span>
+                  </span>
+                </label>
+                <label class="comment-type-option">
+                  <input type="radio" name="commentType" value="Correction" />
+                  <span class="comment-type-copy">
+                    <strong>Correction</strong>
+                    <span>Let us know if something is wrong or needs fixing.</span>
+                  </span>
+                </label>
+              </div>
+            </fieldset>
+
+            <div>
+              <label for="commentMessage">Comment</label>
+              <textarea class="comment-textarea" id="commentMessage" maxlength="400" placeholder="What did you enjoy, want to improve, or want us to correct?"></textarea>
+              <div class="comment-note">Please keep your message kind, clear, and helpful.</div>
+            </div>
+
+            <div class="captcha-box">
+              <div class="captcha-question" id="captchaQuestion">Loading captcha...</div>
+              <div class="captcha-row">
+                <input class="comment-input" id="captchaAnswer" inputmode="numeric" placeholder="Type your answer" />
+                <button class="comment-refresh" type="button" id="refreshCaptcha">New Captcha</button>
+              </div>
+            </div>
+
+            <div class="comment-actions">
+              <button class="comment-submit" type="submit">Post My Comment ✉️</button>
+            </div>
+
+            <div class="comment-status" id="commentStatus"></div>
+          </form>
+        </div>
+
+        <div class="comment-panel">
+          <h3>Private Feedback</h3>
+          <p class="comment-help">
+            Comments are saved privately for review and are not shown on this page.
+          </p>
+        </div>
+      </div>
+    </div>
+    </section>
+      </div>
+    </div>
+
+  </main>
+
+  <div class="pip-guide" id="pipGuide" data-minimized="false">
+    <button class="pip-guide-bubble" id="pipGuideBubble" type="button" aria-label="Open Pip the Owl guide">🦉</button>
+    <div class="pip-guide-panel">
+      <div class="pip-guide-head">
+        <div>
+          <p class="pip-guide-title">Hi! I&apos;m Pip the Owl 🦉</p>
+          <p class="pip-guide-copy">How old are you? I&apos;ll help you pick the best starting path.</p>
+        </div>
+        <button id="pipGuideMinimize" class="pip-guide-min-btn" type="button" aria-label="Minimize Pip guide">−</button>
+      </div>
+      <div class="pip-guide-routes" role="group" aria-label="Choose age group">
+        <button class="pip-route-btn" type="button" data-pip-route="young">Ages 5–7 · Start with stories</button>
+        <button class="pip-route-btn" type="button" data-pip-route="middle">Ages 8–10 · Practise challenges</button>
+        <button class="pip-route-btn" type="button" data-pip-route="senior">Ages 11–15 · Exam paths</button>
+      </div>
+      <div class="pip-guide-tip" id="pipGuideTip">Tip: Start small, finish one page, then come back for the next star.</div>
+    </div>
+  </div>
+
+  <div class="topic-helper is-minimized" id="topicHelper" data-minimized="true">
+    <button class="topic-helper-character" id="topicHelperCharacter" type="button" aria-label="Open topic helper">🦉</button>
+    <div class="topic-helper-panel">
+      <div class="topic-helper-head">
+        <div>
+          <p class="topic-helper-title">Want a new topic?</p>
+          <p class="topic-helper-copy">Tell us, and we will add it to the library.</p>
+        </div>
+        <button id="topicHelperMinimize" class="topic-helper-icon-btn" type="button" aria-label="Minimize topic helper">−</button>
+      </div>
+      <div class="topic-helper-row">
+        <input
+          id="topicSuggestionInput"
+          class="topic-helper-input"
+          type="text"
+          maxlength="120"
+          placeholder="Example: Fractions with pizza story"
+          aria-label="Type a new topic suggestion"
+        />
+        <button id="topicSuggestionBtn" class="topic-helper-btn" type="button">Go to Feedback</button>
+      </div>
+    </div>
+    <div class="topic-helper-mini" aria-hidden="false">
+      <button id="topicHelperFeedbackMini" class="topic-helper-btn topic-helper-mini-btn" type="button">Feedback</button>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-shell">
+      <div>
+        <div class="footer-title">FiveToFifteen</div>
+        <p class="footer-copy">
+          A growing library of storybooks, competitive prep pages, competitions, and mini skill adventures built to make learning feel bright, safe, and exciting.
+        </p>
+        <div class="share-box">
+          <input class="share-url" id="shareUrl" value="https://fivetofifteen.com/" readonly />
+          <button class="share-btn" id="copyShareBtn" type="button">Copy Link</button>
+        </div>
+      </div>
+      <div>
+        <div class="footer-title">Quick Links</div>
+        <div class="footer-links">
+          <a href="#story-collection">Stories</a>
+          <a href="#worksheets">Worksheets</a>
+          <a href="#games">Games</a>
+          <a href="#focus-calm-learning">Focus &amp; Calm</a>
+          <a href="#challenge-prep">Competitive Prep</a>
+          <a href="#micro-topics">Micro-Topics</a>
+          <a href="#exam-sessions">Exam Sessions</a>
+          <a href="#selective-exam">Selective Exam</a>
+          <a href="#weekly-competition">Competition</a>
+        </div>
+        <a class="footer-rss-link" href="https://fivetofifteen.com/feed.xml" target="_blank" rel="noopener noreferrer" aria-label="Open the FiveToFifteen RSS feed">📡 RSS Feed</a>
+      </div>
+      <div>
+        <div class="footer-title">Why Parents Love It</div>
+        <div class="footer-trust">
+          <div class="trust-pill">📚 Rich learning library</div>
+          <div class="trust-pill">📴 No sign-up</div>
+          <div class="trust-pill">🏠 Practice anytime</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-tagline">Made with <span>♥</span> for curious little minds 🌈</div>
+  </footer>
+
+</body>
+</html>

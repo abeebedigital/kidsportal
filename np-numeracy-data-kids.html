@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Data Detective! 📊</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+    /* global-font-boost */
+    html{font-size:17px;}
+    @media (max-width:500px){html{font-size:16px;}}
+
+:root{
+  --coral:#ff6b6b;--mint:#6bcb77;--blue:#4d96ff;--purple:#c77dff;
+  --orange:#ff9f1c;--yellow:#ffd93d;--dark:#2c3e50;
+  --card-bg:#fffef5;--warm-bg:#fff8f0;
+  --data:#b71c1c;--data-light:#ffebee;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--warm-bg);min-height:100vh;overflow-x:hidden;}
+.cloud{position:fixed;opacity:.06;font-size:60px;z-index:0;animation:drift linear infinite;pointer-events:none;}
+@keyframes drift{from{transform:translateX(-100px)}to{transform:translateX(calc(100vw + 100px))}}
+#app{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:12px;}
+.home-link{display:inline-flex;align-items:center;gap:6px;background:var(--mint);color:white;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;text-decoration:none;transition:all .2s;margin-bottom:10px;}
+.home-link:hover{transform:scale(1.05);background:#4db860;}
+.tts-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.tts-btn{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#f39c12,#e67e22);color:white;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.tts-btn:hover{transform:scale(1.05);}
+.tts-btn.speaking{background:linear-gradient(135deg,#e74c3c,#c0392b);animation:pulse 1s ease infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(231,76,60,.4)}50%{box-shadow:0 0 0 8px rgba(231,76,60,0)}}
+.tts-stop{background:linear-gradient(135deg,#95a5a6,#7f8c8d);color:white;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.progress-strip{background:white;border-radius:12px;padding:8px 16px;display:flex;align-items:center;gap:10px;margin-bottom:8px;border:2px solid var(--data-light);box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.progress-bar{flex:1;height:7px;background:var(--data-light);border-radius:4px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--data),#e53935,var(--orange));border-radius:4px;transition:width .5s ease;}
+.progress-label{font-family:'Fredoka One',cursive;font-size:12px;color:#999;white-space:nowrap;}
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:white;border-radius:16px;margin-bottom:10px;border:2px solid var(--data-light);box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.nav-btn{background:#e53935;color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:8px 22px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.nav-btn:hover{transform:scale(1.06);box-shadow:0 4px 12px rgba(229,57,53,.3);}
+.nav-btn:disabled{background:#ddd;cursor:not-allowed;transform:none;box-shadow:none;color:#999;}
+.page-dots{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;max-width:300px;}
+.dot{width:9px;height:9px;border-radius:50%;background:#ddd;cursor:pointer;transition:all .2s;}
+.dot.active{background:var(--data);transform:scale(1.3);box-shadow:0 0 6px rgba(183,28,28,.5);}
+.dot.visited{background:rgba(183,28,28,.3);}
+.page{display:none;animation:pageIn .5s ease;}
+.page.active{display:block;}
+@keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.cover{background:linear-gradient(160deg,#1a1a2e 0%,#2d0a0a 40%,#4a1010 100%);border-radius:22px;border:2px solid rgba(229,57,53,.3);padding:50px 30px;text-align:center;position:relative;overflow:hidden;min-height:540px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.cover-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(229,57,53,.15) 0%,transparent 70%);pointer-events:none;}
+.cover-icons{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:20px 0;position:relative;z-index:2;}
+.cover-icon{font-size:36px;animation:iconBounce var(--wb,3s) ease-in-out infinite var(--wd,0s);}
+@keyframes iconBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.cover-title{font-family:'Fredoka One',cursive;font-size:38px;color:var(--yellow);position:relative;z-index:2;line-height:1.15;margin-bottom:8px;text-shadow:0 4px 20px rgba(0,0,0,.4);}
+.cover-sub{font-family:'Fredoka One',cursive;font-size:20px;color:#ffcdd2;position:relative;z-index:2;margin-bottom:6px;}
+.cover-tagline{font-size:13px;color:rgba(255,255,255,.6);position:relative;z-index:2;margin-top:16px;font-style:italic;}
+.hero-anim{font-size:52px;animation:heroFloat 3s ease-in-out infinite;position:relative;z-index:2;}
+@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-12px) rotate(5deg)}}
+.cover svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
+.story-page{background:var(--card-bg);border-radius:22px;padding:26px;min-height:540px;border:3px solid var(--data-light);position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.page-corner{position:absolute;top:14px;right:16px;font-family:'Fredoka One',cursive;font-size:16px;color:#b0bec5;}
+.story-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.chapter-badge{font-family:'Fredoka One',cursive;font-size:12px;padding:4px 13px;border-radius:16px;white-space:nowrap;color:white;}
+.story-title{font-family:'Fredoka One',cursive;font-size:22px;color:var(--dark);}
+.story-body{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+.story-text{font-size:15px;line-height:1.85;color:#444;}
+.story-text p{margin-bottom:10px;}
+.hw{font-weight:800;color:#b71c1c;}
+.hw2{font-weight:800;color:#1565c0;}
+.hw3{font-weight:800;color:#2e7d32;}
+.story-art{border-radius:16px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:8px;border:2px dashed #cfd8dc;background:linear-gradient(135deg,#fff5f5,#f0faf0);}
+.wonder-label{font-family:'Fredoka One',cursive;font-size:13px;color:#999;margin-top:4px;}
+.wonder-facts{background:rgba(0,0,0,.03);border-radius:12px;padding:10px 14px;width:100%;border:1px solid rgba(0,0,0,.06);}
+.fact-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:13px;color:#555;}
+.fact-row:last-child{border-bottom:none;}
+.fact-icon{font-size:16px;min-width:22px;}
+.quiz-bubble{background:linear-gradient(135deg,#ffebee,#fce4ec);border:2px solid #e53935;border-radius:18px;padding:18px;margin-top:16px;}
+.quiz-title{font-family:'Fredoka One',cursive;font-size:17px;color:var(--data);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.q-opt{background:white;border:2px solid #cfd8dc;border-radius:12px;padding:10px 14px;font-size:14px;color:var(--dark);cursor:pointer;transition:all .2s;text-align:left;font-family:'Nunito',sans-serif;font-weight:600;}
+.q-opt:hover{background:#ffebee;border-color:#e53935;transform:translateY(-2px);}
+.q-opt.correct{background:#d4edda;border-color:#27ae60;color:#155724;}
+.q-opt.wrong{background:#f8d7da;border-color:#c0392b;color:#721c24;}
+.quiz-feedback{font-family:'Fredoka One',cursive;font-size:16px;margin-top:10px;min-height:24px;text-align:center;}
+.fun-fact{background:#e3f2fd;border:2px solid var(--blue);border-radius:14px;padding:14px 16px;margin-top:14px;}
+.fun-fact-title{font-family:'Fredoka One',cursive;font-size:15px;color:#0d47a1;margin-bottom:6px;}
+.fun-fact-text{font-size:13px;color:#444;line-height:1.6;}
+.tip-box{background:#fff3e0;border:2px solid var(--orange);border-radius:14px;padding:14px 16px;margin-top:14px;}
+.tip-box-title{font-family:'Fredoka One',cursive;font-size:15px;color:#e65100;margin-bottom:6px;}
+.tip-box-text{font-size:13px;color:#444;line-height:1.6;}
+.spell-table{width:100%;border-collapse:separate;border-spacing:0;border:2px solid #ef9a9a;border-radius:12px;overflow:hidden;margin:10px 0;}
+.spell-table th{background:var(--data);color:white;font-family:'Fredoka One',cursive;font-size:13px;padding:10px 12px;text-align:left;}
+.spell-table td{padding:8px 12px;font-size:14px;color:#444;border-bottom:1px solid #ffebee;}
+.spell-table tr:last-child td{border-bottom:none;}
+.spell-table tr:nth-child(even) td{background:#fff5f5;}
+.memory-card{background:#ffebee;border:2px solid #e53935;border-radius:14px;padding:14px;margin-top:14px;}
+.mem-row{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:14px;cursor:pointer;transition:background .2s;border-radius:8px;padding-left:8px;}
+.mem-row:hover{background:rgba(183,28,28,.07);}
+.mem-letter{font-family:'Fredoka One',cursive;font-size:18px;color:var(--coral);min-width:24px;}
+.mem-word{color:var(--data);min-width:110px;font-weight:700;}
+.mem-tip{color:#ccc;}
+/* FINAL QUIZ */
+.quiz-page{background:var(--card-bg);border-radius:22px;padding:26px;min-height:540px;border:3px solid #e53935;box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.quiz-progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.q-counter{font-family:'Fredoka One',cursive;font-size:13px;color:#999;}
+.q-score-badge{font-family:'Fredoka One',cursive;font-size:14px;background:#ffebee;border:2px solid #e53935;padding:4px 14px;border-radius:20px;color:var(--data);}
+.quiz-question-card{background:white;border-radius:16px;padding:20px;margin-bottom:16px;border:2px solid #ffebee;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.quiz-q-text{font-family:'Fredoka One',cursive;font-size:19px;color:var(--dark);line-height:1.4;margin-bottom:4px;}
+.quiz-q-emoji{font-size:40px;margin-bottom:10px;}
+.quiz-q-passage{background:#f5f5f5;border-radius:10px;padding:12px;font-size:13px;line-height:1.7;margin-bottom:12px;color:#444;}
+.fquiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.fq-opt{background:white;border:2px solid #cfd8dc;border-radius:14px;padding:12px 16px;font-size:15px;color:var(--dark);cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif;font-weight:700;}
+.fq-opt:hover:not(.locked){background:#ffebee;border-color:#e53935;transform:translateY(-2px);}
+.fq-opt.correct{background:#d4edda;border-color:#27ae60;color:#155724;}
+.fq-opt.wrong{background:#f8d7da;border-color:#c0392b;color:#721c24;}
+.fq-opt.locked{cursor:not-allowed;opacity:.7;}
+.q-result-msg{font-family:'Fredoka One',cursive;font-size:16px;text-align:center;min-height:28px;margin-top:8px;}
+.next-q-btn{display:block;margin:12px auto 0;background:linear-gradient(135deg,#e53935,#ff8a80);color:white;border:none;font-family:'Fredoka One',cursive;font-size:16px;padding:10px 28px;border-radius:22px;cursor:pointer;transition:all .2s;}
+.next-q-btn:hover{transform:scale(1.05);}
+.result-screen{text-align:center;padding:20px 10px;}
+.result-trophy{font-size:80px;margin-bottom:12px;animation:bounce 1s ease infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+.result-title{font-family:'Fredoka One',cursive;font-size:28px;margin-bottom:10px;}
+.result-score{font-family:'Fredoka One',cursive;font-size:48px;color:var(--yellow);}
+.result-msg{font-size:16px;color:#888;margin:12px 0 20px;line-height:1.7;}
+.retry-btn{background:linear-gradient(135deg,#e74c3c,#ff6b6b);color:white;border:none;font-family:'Fredoka One',cursive;font-size:18px;padding:12px 32px;border-radius:24px;cursor:pointer;transition:all .2s;margin:8px;}
+.retry-btn:hover{transform:scale(1.06);}
+.proceed-btn{background:linear-gradient(135deg,#27ae60,#2ecc71);color:white;border:none;font-family:'Fredoka One',cursive;font-size:18px;padding:12px 32px;border-radius:24px;cursor:pointer;transition:all .2s;margin:8px;}
+.proceed-btn:hover{transform:scale(1.06);}
+.cert-page{background:var(--card-bg);border-radius:22px;padding:24px;min-height:540px;border:3px solid var(--yellow);box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.cert-controls{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+.cert-name-input{font-family:'Nunito',sans-serif;font-size:16px;padding:10px 16px;border:2px solid var(--yellow);border-radius:12px;outline:none;flex:1;min-width:180px;color:#333;}
+.cert-name-input:focus{border-color:#e53935;}
+.cert-dl-btn{background:#e53935;color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:24px;cursor:pointer;transition:transform .15s;white-space:nowrap;}
+.cert-dl-btn:hover{transform:scale(1.05);}
+.cert-print-btn{background:#1565c0;color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:24px;cursor:pointer;transition:transform .15s;}
+.cert-print-btn:hover{transform:scale(1.05);}
+.cert-wrap{background:white;border-radius:16px;padding:6px;border:3px solid var(--yellow);box-shadow:0 4px 20px rgba(0,0,0,.08);}
+canvas#cert{width:100%;border-radius:12px;display:block;}
+.cert-hint{font-size:12px;color:#aaa;margin-top:8px;text-align:center;}
+@media(max-width:580px){
+  .story-body{grid-template-columns:1fr;}
+  .cover-title{font-size:26px;}
+  .fquiz-options,.quiz-options{grid-template-columns:1fr;}
+  .cert-controls{flex-direction:column;}
+  .spell-table{font-size:12px;}
+}
+</style>
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="natural-read-aloud.js" defer></script>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+<div id="clouds"></div>
+<div id="app"><div class="tts-bar">
+  <button class="tts-btn" id="ttsBtn" onclick="toggleTTS()">🔊 Read Aloud</button>
+  <button class="tts-stop" id="ttsStop" onclick="stopTTS()" style="display:none;">⏹ Stop</button>
+</div>
+<div class="progress-strip">
+  <span class="progress-label">📊 Data...</span>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <span class="progress-label" id="progressText">Page 1 of 14</span>
+</div>
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Back</button>
+  <div class="page-dots" id="pageDots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+</div>
+
+<!-- PAGE 0: COVER -->
+<div class="page active" data-page="0">
+  <div class="cover">
+    <svg viewBox="0 0 820 540" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="40" r="2" fill="white" opacity=".6"/><circle cx="120" cy="80" r="1.5" fill="white" opacity=".5"/>
+      <circle cx="200" cy="25" r="2.5" fill="white" opacity=".7"/><circle cx="300" cy="60" r="1.5" fill="white" opacity=".6"/>
+      <circle cx="400" cy="30" r="2" fill="white" opacity=".5"/><circle cx="600" cy="45" r="2" fill="white" opacity=".6"/>
+      <circle cx="700" cy="20" r="2.5" fill="white" opacity=".5"/>
+    </svg>
+    <div class="cover-glow"></div>
+    <div class="hero-anim">🔍</div>
+    <div class="cover-title">The Data<br>Detective!</div>
+    <div class="cover-sub">A Statistics & Probability Adventure!</div>
+    <div class="cover-icons">
+      <span class="cover-icon" style="--wb:3s;--wd:0s">📊</span>
+      <span class="cover-icon" style="--wb:3.5s;--wd:0.3s">📈</span>
+      <span class="cover-icon" style="--wb:4s;--wd:0.6s">🎲</span>
+      <span class="cover-icon" style="--wb:3.2s;--wd:0.9s">⚖️</span>
+      <span class="cover-icon" style="--wb:3.8s;--wd:1.2s">🧭</span>
+    </div>
+    <p class="cover-tagline">Master graphs, data, probability, measurement & directions! · Year 3–5</p>
+  </div>
+</div>
+
+<!-- PAGE 1: MEET DETECTIVE DASH -->
+<div class="page" data-page="1">
+  <div class="story-page">
+    <div class="page-corner">p.1</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#e53935;">Welcome!</span><h2 class="story-title">Meet Detective Dash! 🔍</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Well, well, well! A new recruit! 👋</p>
+        <p>I'm <span class="hw">Detective Dash</span>, and I solve mysteries using DATA! 📊</p>
+        <p>You see, the world is FULL of information — numbers, graphs, charts, and patterns. A good detective knows how to <span class="hw2">collect</span>, <span class="hw3">organise</span>, and <span class="hw">read</span> data!</p>
+        <p>Today we'll crack SIX big cases:</p>
+        <p>📊 <span class="hw2">Case 1:</span> Reading Graphs & Tables</p>
+        <p>📈 <span class="hw3">Case 2:</span> Collecting & Organising Data</p>
+        <p>🎲 <span class="hw">Case 3:</span> Chance & Probability</p>
+        <p>⚖️ <span class="hw2">Case 4:</span> Mass & Volume</p>
+        <p>🧭 <span class="hw3">Case 5:</span> Position & Direction</p>
+        <p>🌡️ <span class="hw">Case 6:</span> Temperature</p>
+        <p>Ready to join the Data Squad? Let's investigate! 🕵️</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:70px;">🔍</div>
+        <div class="wonder-label">Detective Dash</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">📊</span> Expert at reading graphs</div>
+          <div class="fact-row"><span class="fact-icon">🎲</span> Probability master</div>
+          <div class="fact-row"><span class="fact-icon">⚖️</span> Weighs the evidence</div>
+          <div class="fact-row"><span class="fact-icon">🧭</span> Always knows the way!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2: PICTURE GRAPHS & BAR GRAPHS -->
+<div class="page" data-page="2">
+  <div class="story-page">
+    <div class="page-corner">p.2</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#e53935;">Case 1</span><h2 class="story-title">📊 Picture Graphs & Bar Graphs!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Graphs are pictures that show us data! They help us <span class="hw">compare</span> things quickly! 📊</p>
+        <p><span class="hw2">Picture Graph (Pictograph)</span> uses little pictures to show amounts:</p>
+        <p>🍎🍎🍎 = 3 apples</p>
+        <p>🍌🍌🍌🍌🍌 = 5 bananas</p>
+        <p>Sometimes one picture = 2 or more! If 🍎 = 2 apples, then 🍎🍎🍎 = <span class="hw">6 apples</span>!</p>
+        <p><span class="hw3">Bar Graph</span> uses bars (rectangles) to show amounts. Taller bar = bigger number!</p>
+        <p>Reading a bar graph:</p>
+        <p>1️⃣ Read the <span class="hw2">title</span> — what is the graph about?</p>
+        <p>2️⃣ Read the <span class="hw">labels</span> — what do the axes show?</p>
+        <p>3️⃣ Read the <span class="hw3">scale</span> — what does each line mean?</p>
+        <p>4️⃣ Compare the <span class="hw2">bars</span> — which is tallest/shortest?</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">📊</div>
+        <div class="wonder-label">Favourite Fruits Survey</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🍎</span> Apples: ████████ 8</div>
+          <div class="fact-row"><span class="fact-icon">🍌</span> Bananas: ██████ 6</div>
+          <div class="fact-row"><span class="fact-icon">🍊</span> Oranges: ████ 4</div>
+          <div class="fact-row"><span class="fact-icon">🍇</span> Grapes: ██████████ 10</div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">In the fruit survey above, which fruit is MOST popular?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅰️ Apples</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅱️ Bananas</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅲 Oranges</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb1')">🅳 Grapes</button>
+      </div>
+      <div class="quiz-feedback" id="fb1"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3: TABLES & LINE GRAPHS -->
+<div class="page" data-page="3">
+  <div class="story-page">
+    <div class="page-corner">p.3</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#e53935;">Case 1</span><h2 class="story-title">📈 Tables & Line Graphs!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>A <span class="hw">table</span> organises data in rows and columns. It's like a neat grid! 📋</p>
+        <p>Tables have <span class="hw2">headings</span> at the top of each column to tell you what the data means.</p>
+        <p>A <span class="hw3">line graph</span> connects dots with a line to show how something CHANGES over time! 📈</p>
+        <p>Line graphs are great for showing:</p>
+        <p>🔹 Temperature over a week</p>
+        <p>🔹 How tall a plant grows each day</p>
+        <p>🔹 How many books you read each month</p>
+        <p>If the line goes UP ↗️ = the amount is <span class="hw">increasing</span></p>
+        <p>If the line goes DOWN ↘️ = the amount is <span class="hw2">decreasing</span></p>
+        <p>If the line stays FLAT → = the amount <span class="hw3">stayed the same</span></p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">📈</div>
+        <div class="wonder-label">Reading Tracker (Books)</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">📅</span> Jan: 3 books</div>
+          <div class="fact-row"><span class="fact-icon">📅</span> Feb: 5 books ↗️</div>
+          <div class="fact-row"><span class="fact-icon">📅</span> Mar: 5 books →</div>
+          <div class="fact-row"><span class="fact-icon">📅</span> Apr: 8 books ↗️</div>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <div class="tip-box-title">💡 Dash's Tip!</div>
+      <div class="tip-box-text">In challenge questions, always read the TITLE and LABELS first! They tell you what the graph is about. Then look at the numbers carefully — sometimes the scale counts by 2s, 5s, or even 10s! 🔢</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4: COLLECTING & ORGANISING DATA -->
+<div class="page" data-page="4">
+  <div class="story-page">
+    <div class="page-corner">p.4</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#1565c0;">Case 2</span><h2 class="story-title">📋 Collecting & Organising Data!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Good detectives need to <span class="hw">collect evidence</span>! In maths, we collect DATA through surveys and experiments! 📋</p>
+        <p><span class="hw2">Tally Marks</span> help us count quickly:</p>
+        <p>| = 1, || = 2, ||| = 3, |||| = 4</p>
+        <p><span class="hw3">𝍸</span> (four lines with a diagonal) = 5!</p>
+        <p>This makes counting by 5s really easy! 🖐️</p>
+        <p>Steps to collect data:</p>
+        <p>1️⃣ Ask a <span class="hw">question</span> (What's your favourite colour?)</p>
+        <p>2️⃣ <span class="hw2">Survey</span> people and record answers</p>
+        <p>3️⃣ Use <span class="hw3">tally marks</span> to count</p>
+        <p>4️⃣ Put the data in a <span class="hw">table</span></p>
+        <p>5️⃣ Create a <span class="hw2">graph</span> to show it</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">📋</div>
+        <div class="wonder-label">Favourite Colour Survey</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🔴</span> Red: |||| || = 7</div>
+          <div class="fact-row"><span class="fact-icon">🔵</span> Blue: |||| |||| = 10</div>
+          <div class="fact-row"><span class="fact-icon">🟢</span> Green: |||| = 5</div>
+          <div class="fact-row"><span class="fact-icon">🟡</span> Yellow: ||| = 3</div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">In the colour survey, how many MORE people chose blue than green?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅰️ 3</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb2')">🅱️ 5</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅲 7</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅳 10</button>
+      </div>
+      <div class="quiz-feedback" id="fb2"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 5: CHANCE & PROBABILITY INTRO -->
+<div class="page" data-page="5">
+  <div class="story-page">
+    <div class="page-corner">p.5</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#2e7d32;">Case 3</span><h2 class="story-title">🎲 Chance & Probability!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p><span class="hw">Chance</span> is about how LIKELY something is to happen! 🎲</p>
+        <p>We use special words to describe chance:</p>
+        <p>⬛ <span class="hw2">Impossible</span> — it will NEVER happen (rolling a 7 on a normal dice)</p>
+        <p>🟥 <span class="hw">Unlikely</span> — it probably WON'T happen (snow in summer in Sydney)</p>
+        <p>🟨 <span class="hw3">Even chance</span> — it MIGHT or MIGHT NOT happen (flipping heads on a coin)</p>
+        <p>🟩 <span class="hw2">Likely</span> — it will PROBABLY happen (the sun rising tomorrow)</p>
+        <p>🟦 <span class="hw">Certain</span> — it will DEFINITELY happen (Monday comes after Sunday)</p>
+        <p>Think of it like a scale from <span class="hw2">impossible</span> to <span class="hw3">certain</span>!</p>
+        <p>A <span class="hw">fair</span> game gives everyone an equal chance. If one person has a better chance, it's <span class="hw2">unfair</span>! 🎯</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🎲</div>
+        <div class="wonder-label">The Chance Scale</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">⬛</span> Impossible (0% chance)</div>
+          <div class="fact-row"><span class="fact-icon">🟥</span> Unlikely (low chance)</div>
+          <div class="fact-row"><span class="fact-icon">🟨</span> Even chance (50/50)</div>
+          <div class="fact-row"><span class="fact-icon">🟩</span> Likely (high chance)</div>
+          <div class="fact-row"><span class="fact-icon">🟦</span> Certain (100% chance)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 6: PROBABILITY WITH SPINNERS & DICE -->
+<div class="page" data-page="6">
+  <div class="story-page">
+    <div class="page-corner">p.6</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#2e7d32;">Case 3</span><h2 class="story-title">🎯 Spinners, Dice & Coins!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Let's investigate probability with real experiments! 🔬</p>
+        <p><span class="hw2">Coin flip:</span> 🪙 Heads or tails? There are 2 options, so each has an <span class="hw">even chance</span> (1 out of 2).</p>
+        <p><span class="hw3">Dice roll:</span> 🎲 There are 6 faces, so the chance of rolling any number is <span class="hw">1 out of 6</span>.</p>
+        <p>What's the chance of rolling an EVEN number (2, 4, or 6)? That's <span class="hw2">3 out of 6</span> = even chance!</p>
+        <p><span class="hw">Spinners:</span> If a spinner has 4 equal sections (red, blue, green, yellow), the chance of landing on each colour is <span class="hw3">1 out of 4</span>.</p>
+        <p>But if 3 sections are red and 1 is blue? Red is <span class="hw2">more likely</span> (3 out of 4)! 🎯</p>
+        <p>The <span class="hw">more sections</span> of one colour, the <span class="hw3">more likely</span> it is to land there!</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🎯</div>
+        <div class="wonder-label">Probability Maths</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🪙</span> Coin: 1 out of 2 (50%)</div>
+          <div class="fact-row"><span class="fact-icon">🎲</span> Dice: 1 out of 6</div>
+          <div class="fact-row"><span class="fact-icon">🎨</span> 4-colour spinner: 1 out of 4</div>
+          <div class="fact-row"><span class="fact-icon">💡</span> More sections = more likely!</div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">A bag has 3 red balls and 1 blue ball. Which colour are you MORE LIKELY to pull out?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb3')">🅰️ Red</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅱️ Blue</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅲 Equal chance</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅳 Impossible to tell</button>
+      </div>
+      <div class="quiz-feedback" id="fb3"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 7: MASS — GRAMS & KILOGRAMS -->
+<div class="page" data-page="7">
+  <div class="story-page">
+    <div class="page-corner">p.7</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--orange);">Case 4</span><h2 class="story-title">⚖️ Mass — Grams & Kilograms!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p><span class="hw">Mass</span> is how heavy something is! We measure it in <span class="hw2">grams (g)</span> and <span class="hw3">kilograms (kg)</span>. ⚖️</p>
+        <p><span class="hw2">Grams (g)</span> = for LIGHT things:</p>
+        <p>🔹 A paperclip ≈ 1 g</p>
+        <p>🔹 An apple ≈ 150 g</p>
+        <p>🔹 A slice of bread ≈ 30 g</p>
+        <p><span class="hw3">Kilograms (kg)</span> = for HEAVY things:</p>
+        <p>🔹 A bag of sugar = 1 kg</p>
+        <p>🔹 A cat ≈ 4 kg</p>
+        <p>🔹 A child ≈ 25–35 kg</p>
+        <p>The magic number: <span class="hw">1 kg = 1000 g</span> (just like 1 kilometre = 1000 metres!)</p>
+        <p>To convert: 2 kg = 2 × 1000 = <span class="hw2">2000 g</span></p>
+        <p>And: 3500 g = 3500 ÷ 1000 = <span class="hw3">3.5 kg</span></p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">⚖️</div>
+        <div class="wonder-label">Mass Units</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🪶</span> Light things → grams (g)</div>
+          <div class="fact-row"><span class="fact-icon">🏋️</span> Heavy things → kilograms (kg)</div>
+          <div class="fact-row"><span class="fact-icon">🔄</span> 1 kg = 1000 g</div>
+          <div class="fact-row"><span class="fact-icon">💡</span> "kilo" means 1000!</div>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <div class="tip-box-title">💡 Dash's Tip!</div>
+      <div class="tip-box-text">Remember: "kilo" ALWAYS means 1000! Kilogram = 1000 grams. Kilometre = 1000 metres. Kilolitre = 1000 litres. Once you know "kilo = 1000", you can convert anything! 💪</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 8: VOLUME & CAPACITY -->
+<div class="page" data-page="8">
+  <div class="story-page">
+    <div class="page-corner">p.8</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--orange);">Case 4</span><h2 class="story-title">🥤 Volume & Capacity — Litres!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p><span class="hw">Capacity</span> is how much liquid a container can hold! We measure it in <span class="hw2">millilitres (mL)</span> and <span class="hw3">litres (L)</span>. 🥤</p>
+        <p><span class="hw2">Millilitres (mL)</span> = for SMALL amounts:</p>
+        <p>🔹 A teaspoon ≈ 5 mL</p>
+        <p>🔹 A juice box ≈ 250 mL</p>
+        <p>🔹 A can of soft drink = 375 mL</p>
+        <p><span class="hw3">Litres (L)</span> = for BIG amounts:</p>
+        <p>🔹 A bottle of milk = 1 L</p>
+        <p>🔹 A bucket ≈ 10 L</p>
+        <p>🔹 A bath ≈ 150 L</p>
+        <p>The magic number: <span class="hw">1 L = 1000 mL</span></p>
+        <p>To convert: 2 L = <span class="hw2">2000 mL</span></p>
+        <p>And: 1500 mL = <span class="hw3">1.5 L</span></p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🥤</div>
+        <div class="wonder-label">Capacity Units</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">💧</span> Small amounts → mL</div>
+          <div class="fact-row"><span class="fact-icon">🪣</span> Big amounts → L</div>
+          <div class="fact-row"><span class="fact-icon">🔄</span> 1 L = 1000 mL</div>
+          <div class="fact-row"><span class="fact-icon">🥛</span> 1 milk bottle = 1 L</div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">Which would you measure in LITRES (not millilitres)?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅰️ A teaspoon of honey</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅱️ A cup of tea</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb4')">🅲 A swimming pool</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅳 An eyedrop</button>
+      </div>
+      <div class="quiz-feedback" id="fb4"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 9: POSITION & DIRECTION -->
+<div class="page" data-page="9">
+  <div class="story-page">
+    <div class="page-corner">p.9</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--purple);">Case 5</span><h2 class="story-title">🧭 Position & Direction!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>A detective always knows WHERE things are! Let's learn about <span class="hw">position</span> and <span class="hw2">direction</span>! 🧭</p>
+        <p><span class="hw3">Position words:</span></p>
+        <p>🔹 Left, right, above, below</p>
+        <p>🔹 Between, next to, behind, in front of</p>
+        <p>🔹 Inside, outside, beside, opposite</p>
+        <p><span class="hw">Compass Directions:</span></p>
+        <p>⬆️ <span class="hw2">North (N)</span> — up on a map</p>
+        <p>⬇️ <span class="hw3">South (S)</span> — down on a map</p>
+        <p>➡️ <span class="hw">East (E)</span> — right on a map</p>
+        <p>⬅️ <span class="hw2">West (W)</span> — left on a map</p>
+        <p>Memory trick: <span class="hw3">"Never Eat Soggy Weetbix!"</span> — N, E, S, W going clockwise! 🥣</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🧭</div>
+        <div class="wonder-label">Compass Rose</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">⬆️</span> North = Up on map</div>
+          <div class="fact-row"><span class="fact-icon">➡️</span> East = Right on map</div>
+          <div class="fact-row"><span class="fact-icon">⬇️</span> South = Down on map</div>
+          <div class="fact-row"><span class="fact-icon">⬅️</span> West = Left on map</div>
+        </div>
+      </div>
+    </div>
+    <div class="fun-fact">
+      <div class="fun-fact-title">📖 Fun Fact!</div>
+      <div class="fun-fact-text">In Australia, the sun rises in the EAST and sets in the WEST — just like everywhere else! But because we're in the Southern Hemisphere, the sun is towards the NORTH (not south like in Europe)! 🌏☀️</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 10: GRID REFERENCES & TURNS -->
+<div class="page" data-page="10">
+  <div class="story-page">
+    <div class="page-corner">p.10</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--purple);">Case 5</span><h2 class="story-title">📍 Grid References & Turns!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p><span class="hw">Grid references</span> tell us the exact position on a grid — like coordinates on a treasure map! 🗺️</p>
+        <p>We write them as (column, row) — always go <span class="hw2">ACROSS first</span>, then <span class="hw3">UP</span>!</p>
+        <p>Example: (3, 2) means go 3 across and 2 up!</p>
+        <p>Memory trick: <span class="hw">"Along the corridor, then up the stairs!"</span> 🏠</p>
+        <p>Now let's learn about <span class="hw2">Turns</span>:</p>
+        <p>🔹 <span class="hw3">Quarter turn</span> = 90° (like a corner)</p>
+        <p>🔹 <span class="hw">Half turn</span> = 180° (facing the opposite way)</p>
+        <p>🔹 <span class="hw2">Three-quarter turn</span> = 270°</p>
+        <p>🔹 <span class="hw3">Full turn</span> = 360° (back to where you started!)</p>
+        <p>Turns can go <span class="hw">clockwise</span> ↻ (same as clock hands) or <span class="hw2">anticlockwise</span> ↺ (opposite)!</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">📍</div>
+        <div class="wonder-label">Turns & Degrees</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">↱</span> Quarter turn = 90°</div>
+          <div class="fact-row"><span class="fact-icon">↶</span> Half turn = 180°</div>
+          <div class="fact-row"><span class="fact-icon">↺</span> Three-quarter = 270°</div>
+          <div class="fact-row"><span class="fact-icon">🔄</span> Full turn = 360°</div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">You're facing North. You make a quarter turn clockwise. Which direction are you now facing?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb5')">🅰️ South</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb5')">🅱️ East</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb5')">🅲 West</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb5')">🅳 North</button>
+      </div>
+      <div class="quiz-feedback" id="fb5"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 11: REVIEW MNEMONIC -->
+<div class="page" data-page="11">
+  <div class="story-page">
+    <div class="page-corner">p.11</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#e53935;">Review</span><h2 class="story-title">🧠 Remember All 6 Data Cases!</h2></div>
+    <div class="story-text" data-tts style="margin-bottom:12px;">
+      <p>Detective Dash's memory trick to remember all 6 cases:</p>
+      <p style="text-align:center;font-family:'Fredoka One',cursive;font-size:18px;color:var(--data);margin:12px 0;">🌟 "<span class="hw">G</span>reat <span class="hw">D</span>etectives <span class="hw">C</span>rack <span class="hw">M</span>ysterious <span class="hw">D</span>irection <span class="hw">C</span>ases!" 🌟</p>
+    </div>
+    <div class="memory-card">
+      <div class="mem-row" onclick="revealMem(this,'m1','📊 Graphs — Picture graphs, bar graphs, line graphs!')">
+        <span class="mem-letter">G</span>
+        <span class="mem-word">Great</span>
+        <span class="mem-tip" id="m1">📊 ??? (tap to reveal!)</span>
+      </div>
+      <div class="mem-row" onclick="revealMem(this,'m2','📋 Data — Tally marks, tables, surveys, organising!')">
+        <span class="mem-letter">D</span>
+        <span class="mem-word">Detectives</span>
+        <span class="mem-tip" id="m2">📋 ??? (tap to reveal!)</span>
+      </div>
+      <div class="mem-row" onclick="revealMem(this,'m3','🎲 Chance — Impossible, unlikely, even, likely, certain!')">
+        <span class="mem-letter">C</span>
+        <span class="mem-word">Crack</span>
+        <span class="mem-tip" id="m3">🎲 ??? (tap to reveal!)</span>
+      </div>
+      <div class="mem-row" onclick="revealMem(this,'m4','⚖️ Mass & Volume — grams/kg, millilitres/litres, 1000!')">
+        <span class="mem-letter">M</span>
+        <span class="mem-word">Mysterious</span>
+        <span class="mem-tip" id="m4">⚖️ ??? (tap to reveal!)</span>
+      </div>
+      <div class="mem-row" onclick="revealMem(this,'m5','🧭 Direction — Compass (NESW), grid references, turns!')">
+        <span class="mem-letter">D</span>
+        <span class="mem-word">Direction</span>
+        <span class="mem-tip" id="m5">🧭 ??? (tap to reveal!)</span>
+      </div>
+      <div class="mem-row" onclick="revealMem(this,'m6','📍 Coordinates — Along the corridor, up the stairs!')">
+        <span class="mem-letter">C</span>
+        <span class="mem-word">Cases</span>
+        <span class="mem-tip" id="m6">📍 ??? (tap to reveal!)</span>
+      </div>
+    </div>
+    <div style="margin-top:14px;">
+      <div class="wonder-facts">
+        <div class="fact-row"><span class="fact-icon">📊</span> <strong>Graphs:</strong> Title → labels → scale → compare bars!</div>
+        <div class="fact-row"><span class="fact-icon">📋</span> <strong>Data:</strong> Question → survey → tally → table → graph!</div>
+        <div class="fact-row"><span class="fact-icon">🎲</span> <strong>Chance:</strong> Impossible → unlikely → even → likely → certain!</div>
+        <div class="fact-row"><span class="fact-icon">⚖️</span> <strong>Mass:</strong> 1 kg = 1000 g — "kilo means 1000!"</div>
+        <div class="fact-row"><span class="fact-icon">🥤</span> <strong>Volume:</strong> 1 L = 1000 mL</div>
+        <div class="fact-row"><span class="fact-icon">🧭</span> <strong>Direction:</strong> Never Eat Soggy Weetbix!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 12: FINAL QUIZ -->
+<div class="page" data-page="12">
+  <div class="quiz-page" id="quizPage">
+    <div id="quizActive">
+      <div class="story-header"><span class="chapter-badge" style="background:#e53935;">🏆 Final Quiz!</span><h2 class="story-title">The Data Detective Challenge!</h2></div>
+      <p style="font-size:14px;color:#666;margin-bottom:16px;">Detective Dash needs your help to crack the final case! Answer 6 questions. You need <strong>at least 5 correct</strong> to earn your certificate! 🌟</p>
+      <div class="quiz-progress-row">
+        <span class="q-counter" id="qCounter">Question 1 of 6</span>
+        <span class="q-score-badge" id="qScoreBadge">Score: 0 / 6</span>
+      </div>
+      <div class="quiz-question-card">
+        <div class="quiz-q-emoji" id="qEmoji">📊</div>
+        <div class="quiz-q-passage" id="qPassage"></div>
+        <div class="quiz-q-text" id="qText"></div>
+      </div>
+      <div class="fquiz-options" id="fquizOptions"></div>
+      <div class="q-result-msg" id="qResultMsg"></div>
+      <button class="next-q-btn" id="nextQBtn" onclick="nextQuestion()" style="display:none;">Next Question →</button>
+    </div>
+    <div id="quizPass" style="display:none;">
+      <div class="result-screen">
+        <div class="result-trophy">🏆</div>
+        <div class="result-title" style="color:#2e7d32;">CASE CLOSED! Data Detective!</div>
+        <div class="result-score" id="passScore">6 / 6</div>
+        <div class="result-msg" id="passMsg"></div>
+        <button class="proceed-btn" onclick="goToCert()">🎓 Get My Certificate! →</button>
+      </div>
+    </div>
+    <div id="quizFail" style="display:none;">
+      <div class="result-screen">
+        <div class="result-trophy">🌟</div>
+        <div class="result-title" style="color:var(--coral);">Almost Cracked It!</div>
+        <div class="result-score" id="failScore">3 / 6</div>
+        <div class="result-msg">You need at least 5 correct to earn your certificate.<br>Re-read the case files and try again! 💪</div>
+        <button class="retry-btn" onclick="restartQuiz()">🔄 Try Again!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 13: CERTIFICATE -->
+<div class="page" data-page="13">
+  <div class="cert-page">
+    <div class="page-corner">🎓</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--yellow);color:#856404;">🏆 Certificate</span><h2 class="story-title">Your Data Detective Certificate!</h2></div>
+    <div class="cert-controls">
+      <input class="cert-name-input" id="certName" placeholder="Type the child's name here..." oninput="drawCert()"/>
+      <button class="cert-dl-btn" onclick="downloadCert()">⬇ Download PNG</button>
+      <button class="cert-print-btn" onclick="printCert()">🖨 Print</button>
+    </div>
+    <div class="cert-wrap">
+      <canvas id="cert" width="900" height="630"></canvas>
+    </div>
+    <p class="cert-hint">Type the name above, then click Download or Print!</p>
+  </div>
+</div>
+
+</div>
+
+<script>
+(function(){const c=document.getElementById('clouds');const e=['☁️','⛅','📊'];for(let i=0;i<6;i++){const el=document.createElement('div');el.className='cloud';el.textContent=e[i%e.length];el.style.top=(Math.random()*80)+'%';el.style.animationDuration=(20+Math.random()*30)+'s';el.style.animationDelay=(Math.random()*20)+'s';el.style.fontSize=(40+Math.random()*30)+'px';c.appendChild(el);}})();
+
+const TOTAL=13;let currentPage=0;const pages=document.querySelectorAll('.page');
+const dotsC=document.getElementById('pageDots');for(let i=0;i<=TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.onclick=()=>goToPage(i);dotsC.appendChild(d);}
+
+function goToPage(n){if(n<0||n>TOTAL)return;if(n===13&&!quizPassed){alert('Pass the quiz first to get your certificate! 🌟');return;}stopTTS();pages[currentPage].classList.remove('active');currentPage=n;pages[currentPage].classList.add('active');document.getElementById('prevBtn').disabled=currentPage===0;document.getElementById('nextBtn').disabled=currentPage===TOTAL;document.getElementById('progressFill').style.width=Math.round(currentPage/TOTAL*100)+'%';document.getElementById('progressText').textContent='Page '+(currentPage+1)+' of '+(TOTAL+1);document.querySelectorAll('.dot').forEach((d,i)=>{d.classList.toggle('active',i===currentPage);if(i<currentPage)d.classList.add('visited');});if(currentPage===12)initQuiz();if(currentPage===13)setTimeout(drawCert,120);window.scrollTo({top:0,behavior:'smooth'});}
+function changePage(d){goToPage(currentPage+d);}
+
+let isSpeaking=false,utterance=null;
+function toggleTTS(){if(isSpeaking){stopTTS();return;}const el=pages[currentPage].querySelector('[data-tts]')||pages[currentPage].querySelector('.story-text')||pages[currentPage].querySelector('.story-page');if(!el)return;speak(el.textContent);}
+function speak(text){if(!('speechSynthesis' in window))return;stopTTS();text=text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{200D}\u{20E3}\u{E0020}-\u{E007F}]/gu,'').replace(/\s+/g,' ').trim();utterance=new SpeechSynthesisUtterance(text);utterance.rate=0.78;utterance.pitch=1.15;utterance.lang='en-AU';const v=speechSynthesis.getVoices();const pref=v.find(x=>x.name.includes('Karen'))||v.find(x=>x.name.includes('Samantha'))||v.find(x=>x.lang.startsWith('en'));if(pref)utterance.voice=pref;utterance.onstart=()=>{isSpeaking=true;document.getElementById('ttsBtn').classList.add('speaking');document.getElementById('ttsBtn').textContent='🔊 Reading...';document.getElementById('ttsStop').style.display='inline-flex';};utterance.onend=resetTTS;utterance.onerror=resetTTS;speechSynthesis.speak(utterance);}
+function stopTTS(){if('speechSynthesis' in window)speechSynthesis.cancel();resetTTS();}
+function resetTTS(){isSpeaking=false;document.getElementById('ttsBtn').classList.remove('speaking');document.getElementById('ttsBtn').textContent='🔊 Read Aloud';document.getElementById('ttsStop').style.display='none';}
+if('speechSynthesis' in window)speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
+
+function miniQuiz(btn,type,fbId){const c=btn.closest('.quiz-bubble');c.querySelectorAll('.q-opt').forEach(b=>b.style.pointerEvents='none');const fb=document.getElementById(fbId);if(type==='correct'){btn.classList.add('correct');fb.innerHTML='<span style="color:#27ae60;">🎉 Correct! Great detective work!</span>';}else{btn.classList.add('wrong');c.querySelectorAll('.q-opt').forEach(b=>{if(b.onclick&&b.onclick.toString().includes("\'correct\'"))b.classList.add('correct');});fb.innerHTML='<span style="color:#c0392b;">Not quite! The green one is correct. Keep investigating! 💪</span>';}}
+
+function revealMem(row,id,answer){document.getElementById(id).textContent=answer;document.getElementById(id).style.color='var(--data)';row.style.background='rgba(183,28,28,.05)';}
+
+const QUESTIONS=[
+  {emoji:'📊',passage:'A bar graph shows: Dogs=12, Cats=8, Fish=5, Birds=3.',q:'How many MORE people chose dogs than cats?',opts:['3','4','5','8'],ans:1},
+  {emoji:'🎲',passage:'',q:'Which event is IMPOSSIBLE?',opts:['Rolling a 3 on a dice','Flipping tails on a coin','Rolling a 7 on a normal dice','It raining tomorrow'],ans:2},
+  {emoji:'⚖️',passage:'',q:'How many grams are in 3 kilograms?',opts:['30 g','300 g','3000 g','30000 g'],ans:2},
+  {emoji:'🥤',passage:'',q:'1 litre = how many millilitres?',opts:['10 mL','100 mL','1000 mL','10000 mL'],ans:2},
+  {emoji:'🧭',passage:'',q:'"Never Eat Soggy Weetbix" helps you remember... ?',opts:['Days of the week','North, East, South, West','Months of the year','Times tables'],ans:1},
+  {emoji:'📋',passage:'A tally chart shows: Red=|||| ||| , Blue=|||| |||| . ',q:'How many people chose Red?',opts:['5','7','8','10'],ans:2}
+];
+let qIdx=0,score=0,answered=false,quizPassed=false;
+function initQuiz(){qIdx=0;score=0;answered=false;document.getElementById('quizActive').style.display='block';document.getElementById('quizPass').style.display='none';document.getElementById('quizFail').style.display='none';renderQ();}
+function renderQ(){const q=QUESTIONS[qIdx];document.getElementById('qEmoji').textContent=q.emoji;document.getElementById('qPassage').textContent=q.passage;document.getElementById('qPassage').style.display=q.passage?'block':'none';document.getElementById('qText').textContent=q.q;document.getElementById('qCounter').textContent='Question '+(qIdx+1)+' of 6';document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';document.getElementById('qResultMsg').textContent='';document.getElementById('nextQBtn').style.display='none';answered=false;const o=document.getElementById('fquizOptions');o.innerHTML='';q.opts.forEach((t,i)=>{const b=document.createElement('button');b.className='fq-opt';b.textContent=t;b.onclick=()=>answerQ(i,b);o.appendChild(b);});}
+function answerQ(i,btn){if(answered)return;answered=true;const q=QUESTIONS[qIdx];document.querySelectorAll('.fq-opt').forEach(b=>b.classList.add('locked'));const msg=document.getElementById('qResultMsg');if(i===q.ans){btn.classList.add('correct');score++;msg.innerHTML='<span style="color:#27ae60;">🎉 Correct!</span>';}else{btn.classList.add('wrong');document.querySelectorAll('.fq-opt')[q.ans].classList.add('correct');msg.innerHTML='<span style="color:#c0392b;">Not quite! Correct answer is in green. 💪</span>';}document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';document.getElementById('nextQBtn').style.display='block';document.getElementById('nextQBtn').textContent=qIdx===5?'See My Result! 🏁':'Next Question →';}
+function nextQuestion(){qIdx++;if(qIdx>=6){showResult();return;}renderQ();}
+function showResult(){document.getElementById('quizActive').style.display='none';if(score>=5){quizPassed=true;document.getElementById('quizPass').style.display='block';document.getElementById('passScore').textContent=score+' / 6';document.getElementById('passMsg').innerHTML=score===6?'PERFECT SCORE! You\'re an incredible Data Detective! 🏆🔍🎉':'Brilliant detective work! Case closed! 📊✨';}else{document.getElementById('quizFail').style.display='block';document.getElementById('failScore').textContent=score+' / 6';}}
+function restartQuiz(){initQuiz();}
+function goToCert(){goToPage(13);}
+
+const canvas=document.getElementById('cert'),ctx=canvas.getContext('2d');
+function drawStar(cx,cy,r,pts,col){ctx.save();ctx.fillStyle=col;ctx.beginPath();for(let i=0;i<pts*2;i++){const a=(i*Math.PI/pts)-Math.PI/2,rd=i%2===0?r:r*.45;i===0?ctx.moveTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a)):ctx.lineTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a));}ctx.closePath();ctx.fill();ctx.restore();}
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();}
+const qrImage=new Image();let qrReady=false;qrImage.crossOrigin='anonymous';qrImage.onload=()=>{qrReady=true;drawCert();};qrImage.src='https://quickchart.io/qr?text='+encodeURIComponent('https://fivetofifteen.com/')+'&size=180';
+
+function drawCert(){
+  const name=document.getElementById('certName').value.trim()||'Data Detective';
+  const CW=900,CH=630;ctx.clearRect(0,0,CW,CH);
+  const bg=ctx.createLinearGradient(0,0,CW,CH);bg.addColorStop(0,'#FFF8F0');bg.addColorStop(.5,'#FFF5F5');bg.addColorStop(1,'#F0F0FF');ctx.fillStyle=bg;rr(0,0,CW,CH,20);ctx.fill();
+  ctx.strokeStyle='#e53935';ctx.lineWidth=6;rr(8,8,CW-16,CH-16,16);ctx.stroke();
+  ctx.strokeStyle='#b71c1c';ctx.lineWidth=2;ctx.setLineDash([8,5]);rr(20,20,CW-40,CH-40,10);ctx.stroke();ctx.setLineDash([]);
+  [[52,52],[CW-52,52],[52,CH-52],[CW-52,CH-52]].forEach(([x,y])=>drawStar(x,y,18,5,'#e53935'));
+  const rg=ctx.createLinearGradient(CW/2-220,0,CW/2+220,0);rg.addColorStop(0,'#b71c1c');rg.addColorStop(.5,'#e53935');rg.addColorStop(1,'#b71c1c');ctx.fillStyle=rg;rr(CW/2-220,28,440,44,22);ctx.fill();
+  ctx.fillStyle='#ffd93d';ctx.font='bold 17px "Fredoka One",cursive';ctx.textAlign='center';ctx.fillText('🌟  THE DATA DETECTIVE ACADEMY  🌟',CW/2,57);
+  ctx.font='64px serif';ctx.fillText('🔍',CW/2,142);
+  ctx.fillStyle='#b71c1c';ctx.font='bold 40px "Fredoka One",cursive';ctx.fillText('Data Detective Certificate!',CW/2,196);
+  ctx.fillStyle='#888';ctx.font='17px "Nunito",sans-serif';ctx.fillText('This is to proudly certify that the brilliant detective',CW/2,232);
+  ctx.strokeStyle='#e53935';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(CW/2-240,276);ctx.lineTo(CW/2+240,276);ctx.stroke();
+  ctx.fillStyle='#b71c1c';ctx.font='bold 38px "Fredoka One",cursive';ctx.fillText(name,CW/2,270);
+  ctx.fillStyle='#444';ctx.font='17px "Nunito",sans-serif';ctx.fillText('has cracked the Data Detective case and is now an official',CW/2,310);
+  ctx.fillStyle='#b71c1c';ctx.font='bold 24px "Fredoka One",cursive';ctx.fillText('🌟 Certified Data Detective 🌟',CW/2,344);
+  ctx.fillStyle='#888';ctx.font='14px "Nunito",sans-serif';ctx.fillText('Mastered: Graphs • Data • Probability • Mass/Volume • Direction',CW/2,372);
+  const badges=[{t:'✓ Graph Expert',bg:'#ffebee',c:'#b71c1c'},{t:'✓ Data Pro',bg:'#e3f2fd',c:'#1565c0'},{t:'✓ Chance Master',bg:'#e8f5e9',c:'#2e7d32'},{t:'✓ Navigator!',bg:'#fff3e0',c:'#e65100'}];
+  const bw=168,bh=30,bg2=10,tot=badges.length*(bw+bg2)-bg2;let bx=CW/2-tot/2;
+  badges.forEach(b=>{ctx.fillStyle=b.bg;rr(bx,390,bw,bh,15);ctx.fill();ctx.fillStyle=b.c;ctx.font='bold 12px "Nunito",sans-serif';ctx.textAlign='center';ctx.fillText(b.t,bx+bw/2,409);bx+=bw+bg2;});
+  ctx.font='32px serif';ctx.fillText('📊  📈  🎲  ⚖️  🧭',CW/2,468);
+  ctx.fillStyle='#ffffff';ctx.strokeStyle='#f0dede';ctx.lineWidth=2;rr(CW-154,68,102,102,14);ctx.fill();ctx.stroke();
+  if(qrReady){ctx.drawImage(qrImage,CW-144,78,82,82);}else{ctx.fillStyle='#fff5f5';ctx.fillRect(CW-144,78,82,82);ctx.fillStyle='#b71c1c';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('QR loading...',CW-103,122);}
+  ctx.fillStyle='#b71c1c';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('Scan to visit',CW-103,185);
+  ctx.fillStyle='#9e9e9e';ctx.font='bold 12px "Nunito",sans-serif';ctx.fillText('Presented by fivetofifteen.com',CW/2,538);
+  const d=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});ctx.fillStyle='#bbb';ctx.font='12px "Nunito",sans-serif';ctx.fillText('Awarded on '+d,CW/2,562);
+  [[80,200],[CW-80,200],[80,420],[CW-80,420]].forEach(([x,y])=>drawStar(x,y,10,5,'rgba(229,57,53,.35)'));
+}
+function downloadCert(){drawCert();const a=document.createElement('a');a.download='data-detective-certificate.png';a.href=canvas.toDataURL('image/png');a.click();}
+function printCert(){drawCert();const u=canvas.toDataURL('image/png');const w=window.open('','_blank');w.document.write('<!DOCTYPE html><html><head><title>Data Detective Certificate<\/title><style>body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f5f5f5;}img{max-width:100%;box-shadow:0 4px 20px rgba(0,0,0,.15);border-radius:12px;}@media print{body{background:white;}img{box-shadow:none;width:100%;}}<\/style><\/head><body><img src="'+u+'"/><\/body><\/html>');w.document.close();w.onload=()=>{w.focus();w.print();};}
+drawCert();
+</script>
+</body>
+</html>

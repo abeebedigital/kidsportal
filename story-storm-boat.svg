@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-label="Cartoon storm sea with small boat and guiding star">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1f2f57"/>
+      <stop offset="100%" stop-color="#456ca8"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2f70af"/>
+      <stop offset="100%" stop-color="#154977"/>
+    </linearGradient>
+    <radialGradient id="guide" cx="18%" cy="22%" r="22%">
+      <stop offset="0%" stop-color="#ffe976" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#ffe976" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="700" fill="url(#sky)"/>
+  <rect width="1200" height="420" fill="url(#guide)"/>
+
+  <g fill="#dce7f8" opacity="0.92">
+    <ellipse cx="260" cy="150" rx="120" ry="52"/>
+    <ellipse cx="360" cy="137" rx="135" ry="58"/>
+    <ellipse cx="470" cy="156" rx="110" ry="46"/>
+
+    <ellipse cx="760" cy="126" rx="130" ry="54"/>
+    <ellipse cx="868" cy="116" rx="148" ry="62"/>
+    <ellipse cx="982" cy="137" rx="112" ry="48"/>
+  </g>
+
+  <g>
+    <polygon points="220,70 238,112 284,116 248,144 258,188 220,164 182,188 192,144 156,116 202,112" fill="#ffd84d"/>
+    <circle cx="220" cy="128" r="70" fill="#ffd84d" opacity="0.24"/>
+  </g>
+
+  <path d="M0 418 C170 378 290 454 450 413 C590 378 735 460 900 413 C1030 378 1120 452 1200 422 L1200 700 L0 700 Z" fill="url(#water)"/>
+
+  <path d="M0 448 C145 420 260 484 420 455 C575 427 736 500 910 456 C1045 424 1125 482 1200 464" fill="none" stroke="#7bc4ff" stroke-opacity="0.55" stroke-width="12"/>
+  <path d="M0 500 C170 468 330 554 500 516 C655 482 830 564 1000 520 C1110 490 1160 532 1200 524" fill="none" stroke="#9ad6ff" stroke-opacity="0.4" stroke-width="10"/>
+
+  <g transform="translate(655 432)">
+    <path d="M0 72 L195 72 L170 106 L26 106 Z" fill="#8b4f2e"/>
+    <path d="M42 72 Q95 42 150 72" fill="#a8663a"/>
+    <rect x="94" y="6" width="9" height="72" fill="#4d3a2c"/>
+    <polygon points="102,12 102,76 164,50" fill="#fff6e4"/>
+    <circle cx="22" cy="92" r="8" fill="#f6d8a6"/>
+    <path d="M20 85 Q30 90 36 100" stroke="#3d2e1d" stroke-width="3" fill="none"/>
+  </g>
+
+  <g fill="#ffffff" opacity="0.88">
+    <circle cx="120" cy="260" r="2.5"/>
+    <circle cx="320" cy="242" r="2"/>
+    <circle cx="560" cy="220" r="2.3"/>
+    <circle cx="840" cy="248" r="2"/>
+    <circle cx="1020" cy="238" r="2.5"/>
+  </g>
+</svg>

@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>How Hard Work Leads to Success! 🌟</title>
+<meta name="description" content="A motivational storybook for kids about hard work, practise, patience, and success."/>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+<style>
+    /* story-font-boost */
+    html{font-size:17px;}
+    @media (max-width:500px){html{font-size:16px;}}
+:root{
+  --gold:#ffd93d;
+  --orange:#ff9f1c;
+  --coral:#ff6b6b;
+  --mint:#6bcb77;
+  --blue:#4d96ff;
+  --purple:#c77dff;
+  --ink:#2d3436;
+  --warm:#fff9f2;
+  --card:#fffefb;
+  --line:#f0e6c8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Nunito',sans-serif;
+  background:
+    radial-gradient(circle at 15% 12%, rgba(255,217,61,.18) 0 120px, transparent 121px),
+    radial-gradient(circle at 84% 10%, rgba(77,150,255,.16) 0 140px, transparent 141px),
+    linear-gradient(180deg,#fffdf8 0%,#fff8f1 100%);
+  color:var(--ink);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+.floaty{position:fixed;opacity:.12;font-size:52px;z-index:0;pointer-events:none;animation:drift linear infinite}
+@keyframes drift{from{transform:translateX(-120px)}to{transform:translateX(calc(100vw + 120px))}}
+#app{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:14px}
+.home-link{
+  display:inline-flex;align-items:center;gap:6px;background:var(--mint);color:#fff;text-decoration:none;
+  padding:8px 16px;border-radius:20px;font-family:'Fredoka One',cursive;font-size:13px;margin-bottom:10px
+}
+.tts-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.tts-btn,.tts-stop{
+  border:none;border-radius:20px;padding:8px 16px;color:#fff;font-family:'Fredoka One',cursive;font-size:13px;cursor:pointer
+}
+.tts-btn{background:linear-gradient(135deg,#f39c12,#e67e22)}
+.tts-btn.speaking{background:linear-gradient(135deg,#e74c3c,#c0392b)}
+.tts-stop{background:linear-gradient(135deg,#95a5a6,#7f8c8d)}
+.progress-strip{
+  background:#fff;border-radius:14px;padding:8px 14px;display:flex;gap:10px;align-items:center;margin-bottom:8px;
+  border:2px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,.06)
+}
+.progress-bar{flex:1;height:8px;background:#f4ead4;border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--mint),var(--blue),var(--purple));transition:width .4s ease}
+.progress-label{font-family:'Fredoka One',cursive;font-size:12px;color:#8a7f73;white-space:nowrap}
+.nav-bar{
+  display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:16px;padding:10px 14px;margin-bottom:10px;
+  border:2px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,.06)
+}
+.nav-btn{
+  border:none;background:var(--coral);color:#fff;font-family:'Fredoka One',cursive;font-size:15px;padding:9px 20px;border-radius:22px;cursor:pointer
+}
+.nav-btn:disabled{background:#d9d9d9;color:#999;cursor:not-allowed}
+.page-dots{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;max-width:320px}
+.dot{width:10px;height:10px;border-radius:50%;background:#ddd;cursor:pointer;border:none}
+.dot.active{background:var(--coral);transform:scale(1.25)}
+.dot.visited{background:rgba(255,107,107,.45)}
+.page{display:none;animation:fadeIn .4s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.cover{
+  background:linear-gradient(160deg,#19253f 0%,#23466d 55%,#3d7db8 100%);
+  border-radius:24px;padding:50px 26px;min-height:560px;text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center;
+  position:relative;overflow:hidden;border:2px solid rgba(255,255,255,.14)
+}
+.cover::before,.cover::after{content:'';position:absolute;border-radius:50%;background:rgba(255,255,255,.08)}
+.cover::before{width:240px;height:240px;top:-40px;left:-50px}
+.cover::after{width:180px;height:180px;bottom:-30px;right:-40px}
+.cover-emoji{font-size:70px;animation:bob 2.4s ease-in-out infinite;margin-bottom:10px}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.cover-title{font-family:'Fredoka One',cursive;font-size:clamp(2.2rem,5vw,3.6rem);line-height:1.08;color:var(--gold);margin-bottom:10px}
+.cover-sub{font-family:'Fredoka One',cursive;font-size:1.2rem;color:#ffe6a8;margin-bottom:10px}
+.cover-tagline{max-width:650px;color:#f4f8ff;line-height:1.75;font-size:1.02rem}
+.hero-icons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:18px 0 6px}
+.hero-icon{font-size:34px;animation:popFloat 3s ease-in-out infinite var(--d,0s)}
+@keyframes popFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.story-page{
+  background:var(--card);border-radius:24px;padding:26px;min-height:560px;border:3px solid var(--line);box-shadow:0 6px 18px rgba(0,0,0,.06);
+  position:relative;overflow:hidden
+}
+.page-corner{position:absolute;top:14px;right:18px;font-family:'Fredoka One',cursive;font-size:15px;color:#ceb89a}
+.story-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.story-icon{font-size:44px}
+.story-title{font-family:'Fredoka One',cursive;font-size:2rem;color:#30486e}
+.story-sub{margin-top:4px;color:#707997;font-weight:700}
+.story-body{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.story-text{font-size:1rem;line-height:1.82;color:#414b64}
+.story-text p{margin:0 0 12px}
+.story-text strong{color:#1f5ea6}
+.story-art{
+  background:linear-gradient(180deg,#fffaf0 0%,#eef7ff 100%);border:2px dashed #e2d5bb;border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:12px
+}
+.story-art h4{font-family:'Fredoka One',cursive;color:#33507f;font-size:1.12rem}
+.tip-box,.fun-fact,.review-card,.mini-quiz{
+  border-radius:16px;padding:14px 16px
+}
+.tip-box{background:#eef7ff;border:2px solid #cfe6ff}
+.fun-fact{background:#fff4d7;border:2px solid #ffd36b}
+.review-card{background:#f4ecff;border:2px solid #d7b9ff}
+.tip-title,.fact-title,.review-title,.mini-title{font-family:'Fredoka One',cursive;font-size:1rem;margin-bottom:6px}
+.tip-title{color:#2363ac}.fact-title{color:#b06d00}.review-title{color:#7a42bb}.mini-title{color:#a23535}
+.visual-card{background:#fff;border:2px solid #e4eef9;border-radius:18px;padding:14px;text-align:center}
+.visual-big{font-size:56px;margin-bottom:8px}
+.visual-line{font-weight:900;color:#486080}
+.steps{display:grid;gap:10px}
+.step{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid #ece5d7;border-radius:14px;padding:10px 12px}
+.step-no{
+  min-width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--orange),#ffce6c);
+  color:#5d3600;font-family:'Fredoka One',cursive;font-size:13px
+}
+.mini-quiz{background:linear-gradient(135deg,#ffeef1,#f1efff);border:2px solid #e1c1d1}
+.quiz-options,.fquiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.q-opt,.fq-opt{
+  border:none;background:#fff;border:2px solid #e6ddd1;border-radius:14px;padding:12px 14px;text-align:left;
+  font-family:'Nunito',sans-serif;font-weight:800;color:#30415f;cursor:pointer
+}
+.q-opt.correct,.fq-opt.correct{background:#dff5e5;border-color:#7dd49a;color:#1f6b35}
+.q-opt.wrong,.fq-opt.wrong{background:#ffe5e5;border-color:#ef9e9e;color:#a33535}
+.q-opt.locked,.fq-opt.locked{pointer-events:none;opacity:.94}
+.quiz-feedback,.q-result-msg{min-height:26px;margin-top:10px;text-align:center;font-family:'Fredoka One',cursive}
+.memory-list{display:grid;gap:8px}
+.memory-row{display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.72);border-radius:12px;padding:8px 10px}
+.memory-letter{font-family:'Fredoka One',cursive;color:var(--coral);font-size:18px;min-width:22px}
+.quiz-page{
+  background:var(--card);border-radius:24px;padding:24px;min-height:560px;border:3px solid #dcc0ff;box-shadow:0 6px 18px rgba(0,0,0,.06)
+}
+.quiz-progress-row{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+.q-counter{font-family:'Fredoka One',cursive;font-size:13px;color:#8a7f73}
+.q-score-badge{font-family:'Fredoka One',cursive;font-size:14px;background:#f3ebff;border:2px solid #d8bcff;color:#7a42bb;padding:4px 14px;border-radius:20px}
+.quiz-question-card{background:#fff;border:2px solid #ebdfce;border-radius:18px;padding:20px}
+.quiz-q-emoji{font-size:40px;margin-bottom:8px}
+.quiz-q-text{font-family:'Fredoka One',cursive;font-size:1.35rem;color:#30486e;line-height:1.4;margin-bottom:12px}
+.next-q-btn,.retry-btn,.proceed-btn,.cert-btn{
+  display:inline-flex;align-items:center;justify-content:center;border:none;border-radius:24px;padding:11px 26px;color:#fff;font-family:'Fredoka One',cursive;cursor:pointer
+}
+.next-q-btn{background:linear-gradient(135deg,var(--coral),#ff8787);margin:12px auto 0}
+.retry-btn{background:linear-gradient(135deg,#e74c3c,#ff6b6b)}
+.proceed-btn{background:linear-gradient(135deg,#27ae60,#2ecc71)}
+.result-screen{text-align:center;padding:16px 8px}
+.result-emoji{font-size:80px;animation:bob 1.9s ease infinite;margin-bottom:8px}
+.result-title{font-family:'Fredoka One',cursive;font-size:1.9rem;margin-bottom:8px}
+.result-score{font-family:'Fredoka One',cursive;font-size:3rem;color:#ff9f1c}
+.result-msg{color:#707997;line-height:1.75;margin:12px auto 20px;max-width:560px}
+.cert-page{
+  background:var(--card);border-radius:24px;padding:24px;min-height:560px;border:3px solid #ffd36b;box-shadow:0 6px 18px rgba(0,0,0,.06)
+}
+.cert-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.cert-name{flex:1;min-width:220px;padding:12px 14px;border-radius:14px;border:2px solid #ecd28f;font-size:1rem;font-weight:800}
+.cert-btn{background:linear-gradient(135deg,var(--purple),#8f5be8)}
+.cert-btn.print{background:linear-gradient(135deg,#1565c0,#4d96ff)}
+.cert-wrap{background:#fff;border-radius:16px;padding:6px;border:3px solid #f1c40f;box-shadow:0 6px 16px rgba(0,0,0,.06)}
+#cert{width:100%;display:block;border-radius:10px}
+@media (max-width:700px){
+  .story-body{grid-template-columns:1fr}
+  .quiz-options,.fquiz-options{grid-template-columns:1fr}
+}
+</style>
+  <script src="natural-read-aloud.js" defer></script>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+<div id="floaties"></div>
+<div id="app"><div class="tts-bar">
+    <button class="tts-btn" id="ttsBtn" onclick="toggleReadAloud()">🔊 Read Aloud</button>
+    <button class="tts-stop" id="ttsStop" onclick="stopReadAloud()" style="display:none;">⏹ Stop</button>
+  </div>
+
+  <div class="progress-strip">
+    <span class="progress-label">🌟 Story Journey</span>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="progress-label" id="progressText">Page 1 of 10</span>
+  </div>
+
+  <div class="nav-bar">
+    <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Back</button>
+    <div class="page-dots" id="pageDots"></div>
+    <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+  </div>
+
+  <div class="page active">
+    <div class="cover" data-tts="Welcome to our story about hard work and success. Today we will learn why trying again, practising, and not giving up helps us grow.">
+      <div class="cover-emoji">🌟</div>
+      <div class="cover-title">How Hard Work<br>Leads to Success!</div>
+      <div class="cover-sub">A Brave Little Story About Not Giving Up</div>
+      <div class="hero-icons">
+        <span class="hero-icon" style="--d:0s">💪</span>
+        <span class="hero-icon" style="--d:.3s">🌱</span>
+        <span class="hero-icon" style="--d:.6s">📚</span>
+        <span class="hero-icon" style="--d:.9s">🪁</span>
+        <span class="hero-icon" style="--d:1.2s">🏆</span>
+      </div>
+      <p class="cover-tagline">Meet Mira and learn how practise, patience, and courage can turn small tries into big success. · For ages 6–10</p>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 2</div>
+      <div class="story-header">
+        <div class="story-icon">👋</div>
+        <div>
+          <div class="story-title">Meet Mira</div>
+          <div class="story-sub">Mira wants to fly the best kite in the school festival.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="Mira loved the school kite festival. Every year she watched bright kites dance in the sky. This year she whispered, I want my kite to fly high too. But wanting something is only the first step.">
+          <p>Mira loved the school kite festival. Every year she watched bright kites dance in the sky.</p>
+          <p>This year she whispered, <strong>“I want my kite to fly high too.”</strong></p>
+          <p>But wanting something is only the <strong>first step</strong>. To do well, Mira would need to learn, practise, and keep going even when it felt hard.</p>
+          <div class="tip-box">
+            <div class="tip-title">Big idea</div>
+            <div>Success usually starts with a dream, but it grows through <strong>hard work</strong>.</div>
+          </div>
+        </div>
+        <div class="story-art">
+          <h4>Dream First</h4>
+          <div class="visual-card">
+            <div class="visual-big">🪁</div>
+            <div class="visual-line">Dream → Practise → Improve → Shine</div>
+          </div>
+          <div class="fun-fact">
+            <div class="fact-title">Fun thought</div>
+            <div>Even the best players, artists, and inventors all began as beginners.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 3</div>
+      <div class="story-header">
+        <div class="story-icon">😕</div>
+        <div>
+          <div class="story-title">The First Try Was Wobbly</div>
+          <div class="story-sub">Mira's kite twisted, dipped, and fell down fast.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="Mira ran across the oval and pulled the string. Her kite lifted for a moment, spun sideways, and fell into the grass. She felt upset, but her grandpa smiled and said, first tries are for learning.">
+          <p>Mira ran across the oval and pulled the string.</p>
+          <p>Her kite lifted for a moment, spun sideways, and fell into the grass.</p>
+          <p>Mira felt upset. <strong>“Maybe I am not good at this,”</strong> she said.</p>
+          <p>Grandpa smiled gently. <strong>“First tries are for learning,”</strong> he said. <strong>“Not for giving up.”</strong></p>
+        </div>
+        <div class="story-art">
+          <h4>Learning Moment</h4>
+          <div class="steps">
+            <div class="step"><div class="step-no">1</div><div>Try something new.</div></div>
+            <div class="step"><div class="step-no">2</div><div>Notice what went wrong.</div></div>
+            <div class="step"><div class="step-no">3</div><div>Use that learning to improve.</div></div>
+          </div>
+          <div class="mini-quiz">
+            <div class="mini-title">Quick Check</div>
+            <div style="margin-bottom:10px">What should Mira do next?</div>
+            <div class="quiz-options" id="miniQuizOne"></div>
+            <div class="quiz-feedback" id="miniQuizOneFeedback"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 4</div>
+      <div class="story-header">
+        <div class="story-icon">📚</div>
+        <div>
+          <div class="story-title">Practise Helps the Brain Grow</div>
+          <div class="story-sub">Mira learned a tiny bit more each day.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="The next day, Mira practised again. She learned how to hold the string. Then she learned how to wait for the wind. Then she learned how to fix the tail. Small practice helped her grow stronger.">
+          <p>The next day, Mira practised again.</p>
+          <p>She learned how to hold the string. Then she learned how to wait for the wind. Then she learned how to fix the tail.</p>
+          <p>Each day, Mira grew a little better. <strong>Small practice added up.</strong></p>
+          <p>That is how hard work often looks. Not giant magic. Just many <strong>small steps</strong>.</p>
+        </div>
+        <div class="story-art">
+          <h4>Like a Growing Seed</h4>
+          <div class="visual-card">
+            <div class="visual-big">🌱➡️🌿➡️🌳</div>
+            <div class="visual-line">A seed grows little by little, not all at once.</div>
+          </div>
+          <div class="fun-fact">
+            <div class="fact-title">Remember</div>
+            <div>A child who practises 10 minutes a day can improve a lot over time.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 5</div>
+      <div class="story-header">
+        <div class="story-icon">🌧️</div>
+        <div>
+          <div class="story-title">Problems Came Anyway</div>
+          <div class="story-sub">The wind changed. The tail tore. The work got harder.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="One windy afternoon, the kite tail tore. On another day, the wind stopped. Mira felt tired and frustrated. But each problem became a lesson instead of an ending.">
+          <p>One windy afternoon, the kite tail tore.</p>
+          <p>On another day, the wind stopped. On another day, Mira tripped while running.</p>
+          <p>Mira felt tired and frustrated. But she remembered Grandpa’s words: <strong>problems are not the end</strong>. They can be lessons.</p>
+          <p>So she repaired the kite, rested, and tried again.</p>
+        </div>
+        <div class="story-art">
+          <h4>What Strong People Do</h4>
+          <div class="steps">
+            <div class="step"><div class="step-no">A</div><div>Pause and breathe.</div></div>
+            <div class="step"><div class="step-no">B</div><div>Fix what you can.</div></div>
+            <div class="step"><div class="step-no">C</div><div>Try again with new learning.</div></div>
+          </div>
+          <div class="review-card">
+            <div class="review-title">Power sentence</div>
+            <div><strong>“Not yet”</strong> is stronger than <strong>“I can’t.”</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 6</div>
+      <div class="story-header">
+        <div class="story-icon">🚀</div>
+        <div>
+          <div class="story-title">Slow Progress Is Still Progress</div>
+          <div class="story-sub">Soon the kite stayed in the air longer and longer.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="At first, Mira's kite flew for two seconds. Then five. Then ten. Then it circled above her head like a bright bird. Mira smiled. Hard work was working.">
+          <p>At first, Mira’s kite flew for <strong>two seconds</strong>.</p>
+          <p>Then <strong>five</strong>. Then <strong>ten</strong>. Then it circled above her head like a bright bird.</p>
+          <p>Mira smiled. Hard work was working. The change was not sudden. It came from <strong>many tries</strong>.</p>
+          <div class="tip-box">
+            <div class="tip-title">Important lesson</div>
+            <div>You do not need to be amazing at the start. You only need to keep improving.</div>
+          </div>
+        </div>
+        <div class="story-art">
+          <h4>Progress Ladder</h4>
+          <div class="steps">
+            <div class="step"><div class="step-no">1</div><div>Try</div></div>
+            <div class="step"><div class="step-no">2</div><div>Practise</div></div>
+            <div class="step"><div class="step-no">3</div><div>Improve</div></div>
+            <div class="step"><div class="step-no">4</div><div>Succeed</div></div>
+          </div>
+          <div class="mini-quiz">
+            <div class="mini-title">Quick Check</div>
+            <div style="margin-bottom:10px">What helped Mira most?</div>
+            <div class="quiz-options" id="miniQuizTwo"></div>
+            <div class="quiz-feedback" id="miniQuizTwoFeedback"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 7</div>
+      <div class="story-header">
+        <div class="story-icon">🏆</div>
+        <div>
+          <div class="story-title">Festival Day</div>
+          <div class="story-sub">Mira did not win by luck. She won by effort.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="On festival day, Mira held the string with calm hands. Her kite rose, danced, and stayed high in the blue sky. People clapped. Mira did not smile because it was easy. She smiled because she had earned it.">
+          <p>On festival day, Mira held the string with calm hands.</p>
+          <p>Her kite rose, danced, and stayed high in the blue sky. People clapped.</p>
+          <p>Mira did not smile because it was easy. She smiled because she had <strong>earned it</strong>.</p>
+          <p>That is what success often feels like. It is not only the prize. It is the proud feeling of knowing, <strong>“I worked for this.”</strong></p>
+        </div>
+        <div class="story-art">
+          <h4>Success = More Than Winning</h4>
+          <div class="visual-card">
+            <div class="visual-big">💪 + ⏳ + 📘 = 🌟</div>
+            <div class="visual-line">Effort + time + learning = growth</div>
+          </div>
+          <div class="fun-fact">
+            <div class="fact-title">True success</div>
+            <div>Sometimes success means winning. Sometimes it means becoming better than you were before.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="story-page">
+      <div class="page-corner">Page 8</div>
+      <div class="story-header">
+        <div class="story-icon">🧠</div>
+        <div>
+          <div class="story-title">Remember This Forever</div>
+          <div class="story-sub">Use this tiny memory trick whenever work feels hard.</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <div class="story-text" data-tts="When things feel hard, remember the word TRY. T means take the first step. R means repeat and practise. Y means tell yourself, I can do it, just not yet.">
+          <p>When things feel hard, remember the word <strong>TRY</strong>.</p>
+          <p>It can help in reading, writing, maths, sport, music, and life.</p>
+        </div>
+        <div class="story-art">
+          <h4>Memory Trick: TRY</h4>
+          <div class="memory-list">
+            <div class="memory-row"><div class="memory-letter">T</div><div><strong>Take the first step</strong> even if it feels small.</div></div>
+            <div class="memory-row"><div class="memory-letter">R</div><div><strong>Repeat and practise</strong> to get stronger.</div></div>
+            <div class="memory-row"><div class="memory-letter">Y</div><div><strong>Yet means hope</strong>: “I can’t do it yet.”</div></div>
+          </div>
+          <div class="review-card">
+            <div class="review-title">Your turn</div>
+            <div>Think of one thing you want to get better at. What small step can you take today?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="quiz-page" data-tts="Final quiz about hard work and success. Answer the questions to earn your certificate.">
+      <div class="quiz-progress-row">
+        <div class="q-counter" id="quizCounter">Question 1 of 5</div>
+        <div class="q-score-badge" id="scoreBadge">Score: 0 / 5</div>
+      </div>
+      <div id="quizActive">
+        <div class="quiz-question-card">
+          <div class="quiz-q-emoji" id="quizEmoji">🌟</div>
+          <div class="quiz-q-text" id="quizText">Question text</div>
+          <div class="fquiz-options" id="quizOptions"></div>
+          <div class="q-result-msg" id="quizFeedback"></div>
+          <button class="next-q-btn" id="nextQBtn" onclick="nextQuestion()" style="display:none;">Next Question →</button>
+        </div>
+      </div>
+      <div id="quizPass" style="display:none;">
+        <div class="result-screen">
+          <div class="result-emoji">🏆</div>
+          <div class="result-title">You Did It!</div>
+          <div class="result-score" id="passScore">5 / 5</div>
+          <div class="result-msg">You understand that hard work, patience, practise, and trying again all help success grow.</div>
+          <button class="proceed-btn" onclick="goToPage(9)">Go to Certificate 🎓</button>
+        </div>
+      </div>
+      <div id="quizFail" style="display:none;">
+        <div class="result-screen">
+          <div class="result-emoji">💛</div>
+          <div class="result-title">Keep Going!</div>
+          <div class="result-score" id="failScore">2 / 5</div>
+          <div class="result-msg">That is okay. Success grows through practise. Try the quiz again and show what you know.</div>
+          <button class="retry-btn" onclick="restartQuiz()">Try Again ↺</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="cert-page" data-tts="Certificate page. Type your name and download your hard work story certificate.">
+      <div class="story-header" style="margin-bottom:12px">
+        <div class="story-icon">🎓</div>
+        <div>
+          <div class="story-title">Your Certificate</div>
+          <div class="story-sub">Type your name and save your reward.</div>
+        </div>
+      </div>
+      <div class="cert-controls">
+        <input class="cert-name" id="certName" placeholder="Type your name here" oninput="drawCert()"/>
+        <button class="cert-btn" onclick="downloadCert()">Download PNG</button>
+        <button class="cert-btn print" onclick="printCert()">Print</button>
+      </div>
+      <div class="cert-wrap">
+        <canvas id="cert" width="900" height="630"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const wrap=document.getElementById('floaties');
+  const icons=['☁️','⭐','🌟','💪'];
+  for(let i=0;i<7;i++){
+    const el=document.createElement('div');
+    el.className='floaty';
+    el.textContent=icons[i%icons.length];
+    el.style.top=(Math.random()*84)+'%';
+    el.style.animationDuration=(20+Math.random()*22)+'s';
+    el.style.animationDelay=(Math.random()*16)+'s';
+    el.style.fontSize=(36+Math.random()*28)+'px';
+    wrap.appendChild(el);
+  }
+})();
+
+const pages=[...document.querySelectorAll('.page')];
+const prevBtn=document.getElementById('prevBtn');
+const nextBtn=document.getElementById('nextBtn');
+const progressFill=document.getElementById('progressFill');
+const progressText=document.getElementById('progressText');
+const dotsWrap=document.getElementById('pageDots');
+const TOTAL_PAGES=pages.length;
+let currentPage=0;
+let quizPassed=false;
+let speaking=false;
+
+for(let i=0;i<TOTAL_PAGES;i++){
+  const dot=document.createElement('button');
+  dot.className='dot'+(i===0?' active':'');
+  dot.onclick=()=>goToPage(i);
+  dotsWrap.appendChild(dot);
+}
+
+function updateNav(){
+  pages.forEach((p,i)=>p.classList.toggle('active',i===currentPage));
+  prevBtn.disabled=currentPage===0;
+  nextBtn.disabled=currentPage===TOTAL_PAGES-1;
+  progressFill.style.width=((currentPage)/(TOTAL_PAGES-1))*100+'%';
+  progressText.textContent='Page '+(currentPage+1)+' of '+TOTAL_PAGES;
+  [...document.querySelectorAll('.dot')].forEach((dot,i)=>{
+    dot.classList.toggle('active',i===currentPage);
+    if(i<currentPage) dot.classList.add('visited');
+  });
+}
+
+function goToPage(n){
+  if(n<0||n>=TOTAL_PAGES) return;
+  if(n===9 && !quizPassed){
+    alert('Pass the final quiz first to unlock your certificate! 🌟');
+    return;
+  }
+  stopReadAloud();
+  currentPage=n;
+  updateNav();
+  if(currentPage===8) renderQuiz();
+  if(currentPage===9) setTimeout(drawCert,100);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function changePage(d){ goToPage(currentPage+d); }
+updateNav();
+
+function getReadText(){
+  const active=pages[currentPage];
+  const source=active.querySelector('[data-tts]') || active;
+  return (source.textContent||'').replace(/\s+/g,' ').trim();
+}
+function toggleReadAloud(){
+  if(!('speechSynthesis' in window)) return;
+  if(speaking){ stopReadAloud(); return; }
+  const text=getReadText();
+  if(!text) return;
+  const utter=new SpeechSynthesisUtterance(text);
+  utter.rate=.9;
+  utter.pitch=1.05;
+  utter.lang='en-AU';
+  utter.onstart=()=>{
+    speaking=true;
+    document.getElementById('ttsBtn').classList.add('speaking');
+    document.getElementById('ttsBtn').textContent='🔊 Reading...';
+    document.getElementById('ttsStop').style.display='inline-flex';
+  };
+  utter.onend=resetTTS;
+  utter.onerror=resetTTS;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(utter);
+}
+function stopReadAloud(){
+  if('speechSynthesis' in window) window.speechSynthesis.cancel();
+  resetTTS();
+}
+function resetTTS(){
+  speaking=false;
+  document.getElementById('ttsBtn').classList.remove('speaking');
+  document.getElementById('ttsBtn').textContent='🔊 Read Aloud';
+  document.getElementById('ttsStop').style.display='none';
+}
+
+function setupMiniQuiz(targetId, feedbackId, answerIndex){
+  const opts=[
+    'Stop forever and never try again',
+    'Learn from the problem and practise again',
+    'Hide the kite and blame the wind',
+    'Wait for success without doing anything'
+  ];
+  const target=document.getElementById(targetId);
+  target.innerHTML='';
+  opts.forEach((text,i)=>{
+    const btn=document.createElement('button');
+    btn.className='q-opt';
+    btn.textContent=text;
+    btn.onclick=()=>{
+      [...target.children].forEach(b=>b.classList.add('locked'));
+      if(i===answerIndex){
+        btn.classList.add('correct');
+        document.getElementById(feedbackId).textContent='Correct! Trying again helps us grow.';
+      }else{
+        btn.classList.add('wrong');
+        target.children[answerIndex].classList.add('correct');
+        document.getElementById(feedbackId).textContent='Not quite. The strong choice is to learn and try again.';
+      }
+    };
+    target.appendChild(btn);
+  });
+}
+setupMiniQuiz('miniQuizOne','miniQuizOneFeedback',1);
+
+const miniTwoTarget=document.getElementById('miniQuizTwo');
+[
+  'Luck alone with no effort',
+  'Practise, patience, and many tries',
+  'Giving up quickly',
+  'Complaining all day'
+].forEach((text,i)=>{
+  const btn=document.createElement('button');
+  btn.className='q-opt';
+  btn.textContent=text;
+  btn.onclick=()=>{
+    [...miniTwoTarget.children].forEach(b=>b.classList.add('locked'));
+    if(i===1){
+      btn.classList.add('correct');
+      document.getElementById('miniQuizTwoFeedback').textContent='Yes! Hard work and practise helped Mira.';
+    }else{
+      btn.classList.add('wrong');
+      miniTwoTarget.children[1].classList.add('correct');
+      document.getElementById('miniQuizTwoFeedback').textContent='The best answer is practise, patience, and many tries.';
+    }
+  };
+  miniTwoTarget.appendChild(btn);
+});
+
+const QUIZ=[
+  {emoji:'💪',q:'What usually helps success grow?',opts:['Hard work and practise','Only luck','Doing nothing','Giving up early'],a:0},
+  {emoji:'😕',q:'What did Mira do after her first mistake?',opts:['She never tried again','She learned and practised more','She threw the kite away','She laughed at everyone'],a:1},
+  {emoji:'🌱',q:'What does “not yet” mean?',opts:['I will never learn','I can grow with practise','I should stop now','I do not care'],a:1},
+  {emoji:'🪁',q:'Why did Mira feel proud on festival day?',opts:['Because success was easy','Because she worked for it','Because she cheated','Because someone else did it'],a:1},
+  {emoji:'🧠',q:'What does the word TRY help us remember?',opts:['Take, Repeat, Yet','Talk, Rest, Yell','Turn, Rush, Yield','Train, Run, Yawn'],a:0}
+];
+let quizIndex=0,quizScore=0,quizLocked=false;
+
+function renderQuiz(){
+  document.getElementById('quizActive').style.display='block';
+  document.getElementById('quizPass').style.display='none';
+  document.getElementById('quizFail').style.display='none';
+  quizIndex=0; quizScore=0; quizLocked=false;
+  showQuestion();
+}
+function showQuestion(){
+  const item=QUIZ[quizIndex];
+  document.getElementById('quizCounter').textContent='Question '+(quizIndex+1)+' of '+QUIZ.length;
+  document.getElementById('scoreBadge').textContent='Score: '+quizScore+' / '+QUIZ.length;
+  document.getElementById('quizEmoji').textContent=item.emoji;
+  document.getElementById('quizText').textContent=item.q;
+  document.getElementById('quizFeedback').textContent='';
+  document.getElementById('nextQBtn').style.display='none';
+  quizLocked=false;
+  const wrap=document.getElementById('quizOptions');
+  wrap.innerHTML='';
+  item.opts.forEach((text,i)=>{
+    const btn=document.createElement('button');
+    btn.className='fq-opt';
+    btn.textContent=String.fromCharCode(65+i)+'. '+text;
+    btn.onclick=()=>answerQuiz(i,btn);
+    wrap.appendChild(btn);
+  });
+}
+function answerQuiz(i,btn){
+  if(quizLocked) return;
+  quizLocked=true;
+  const item=QUIZ[quizIndex];
+  const buttons=[...document.querySelectorAll('#quizOptions .fq-opt')];
+  buttons.forEach(b=>b.classList.add('locked'));
+  if(i===item.a){
+    quizScore++;
+    btn.classList.add('correct');
+    document.getElementById('quizFeedback').textContent='Great thinking!';
+  }else{
+    btn.classList.add('wrong');
+    buttons[item.a].classList.add('correct');
+    document.getElementById('quizFeedback').textContent='Good try. Look at the best idea and keep learning.';
+  }
+  document.getElementById('scoreBadge').textContent='Score: '+quizScore+' / '+QUIZ.length;
+  document.getElementById('nextQBtn').style.display='inline-flex';
+  document.getElementById('nextQBtn').textContent=quizIndex===QUIZ.length-1?'See My Result! 🏁':'Next Question →';
+}
+function nextQuestion(){
+  quizIndex++;
+  if(quizIndex>=QUIZ.length){ showQuizResult(); return; }
+  showQuestion();
+}
+function showQuizResult(){
+  document.getElementById('quizActive').style.display='none';
+  if(quizScore>=4){
+    quizPassed=true;
+    document.getElementById('quizPass').style.display='block';
+    document.getElementById('passScore').textContent=quizScore+' / '+QUIZ.length;
+  }else{
+    document.getElementById('quizFail').style.display='block';
+    document.getElementById('failScore').textContent=quizScore+' / '+QUIZ.length;
+  }
+}
+function restartQuiz(){ renderQuiz(); }
+
+const certCanvas=document.getElementById('cert');
+const ctx=certCanvas.getContext('2d');
+const qrImage=new Image();
+let qrReady=false;
+qrImage.crossOrigin='anonymous';
+qrImage.onload=()=>{ qrReady=true; drawCert(); };
+qrImage.src='https://quickchart.io/qr?text='+encodeURIComponent('https://fivetofifteen.com/')+'&size=180';
+
+function rr(x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y);
+  ctx.arcTo(x+w,y,x+w,y+r,r);
+  ctx.lineTo(x+w,y+h-r);
+  ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+  ctx.lineTo(x+r,y+h);
+  ctx.arcTo(x,y+h,x,y+h-r,r);
+  ctx.lineTo(x,y+r);
+  ctx.arcTo(x,y,x+r,y,r);
+  ctx.closePath();
+}
+
+function drawStar(cx,cy,r,color){
+  ctx.save();
+  ctx.fillStyle=color;
+  ctx.beginPath();
+  for(let i=0;i<10;i++){
+    const a=(Math.PI/5)*i-Math.PI/2;
+    const rad=i%2===0?r:r*0.45;
+    const x=cx+Math.cos(a)*rad;
+    const y=cy+Math.sin(a)*rad;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawCert(){
+  const name=(document.getElementById('certName').value||'Brave Learner').trim() || 'Brave Learner';
+  ctx.clearRect(0,0,900,630);
+  const bg=ctx.createLinearGradient(0,0,900,630);
+  bg.addColorStop(0,'#fffdf2');
+  bg.addColorStop(.55,'#ffffff');
+  bg.addColorStop(1,'#eef7ff');
+  ctx.fillStyle=bg;
+  rr(0,0,900,630,20);
+  ctx.fill();
+  ctx.strokeStyle='#f0b726';
+  ctx.lineWidth=6;
+  rr(8,8,884,614,18);
+  ctx.stroke();
+  ctx.strokeStyle='#4d96ff';
+  ctx.lineWidth=2;
+  ctx.setLineDash([8,5]);
+  rr(20,20,860,590,12);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  [[54,54],[846,54],[54,576],[846,576]].forEach(([x,y])=>drawStar(x,y,18,'#ffd93d'));
+  const ribbon=ctx.createLinearGradient(220,0,680,0);
+  ribbon.addColorStop(0,'#4d96ff');
+  ribbon.addColorStop(.5,'#6bcb77');
+  ribbon.addColorStop(1,'#ff9f1c');
+  ctx.fillStyle=ribbon;
+  rr(220,30,460,44,22);
+  ctx.fill();
+  ctx.fillStyle='#fffef5';
+  ctx.font='bold 17px "Fredoka One",cursive';
+  ctx.textAlign='center';
+  ctx.fillText('🌟  HARD WORK LEADS TO SUCCESS  🌟',450,58);
+  ctx.font='60px serif';
+  ctx.fillText('🏆',450,142);
+  ctx.fillStyle='#274a7d';
+  ctx.font='bold 38px "Fredoka One",cursive';
+  ctx.fillText('Hard Work Hero Certificate!',450,196);
+  ctx.fillStyle='#888';
+  ctx.font='17px "Nunito",sans-serif';
+  ctx.fillText('This is to proudly certify that',450,232);
+  ctx.strokeStyle='#4d96ff';
+  ctx.lineWidth=3;
+  ctx.beginPath();
+  ctx.moveTo(210,278);
+  ctx.lineTo(690,278);
+  ctx.stroke();
+  ctx.fillStyle='#2f7d32';
+  ctx.font='bold 38px "Fredoka One",cursive';
+  ctx.fillText(name,450,270);
+  ctx.fillStyle='#444';
+  ctx.font='17px "Nunito",sans-serif';
+  ctx.fillText('has learned that practise, patience, and brave effort help success grow.',450,314);
+  ctx.fillStyle='#ff8b1a';
+  ctx.font='bold 24px "Fredoka One",cursive';
+  ctx.fillText('💪 Brave Worker • 🌱 Patient Learner • 🌟 Success Builder',450,350);
+  const badges=[
+    {t:'✓ Tries again',bg:'#eef7ff',c:'#1565c0'},
+    {t:'✓ Keeps learning',bg:'#effcf0',c:'#2e7d32'},
+    {t:'✓ Believes in growth',bg:'#fff3df',c:'#e67e22'},
+    {t:'✓ Never gives up',bg:'#f5edff',c:'#7a4ce0'}
+  ];
+  let bx=100;
+  badges.forEach(b=>{
+    ctx.fillStyle=b.bg;
+    rr(bx,394,160,30,15);
+    ctx.fill();
+    ctx.fillStyle=b.c;
+    ctx.font='bold 12px "Nunito",sans-serif';
+    ctx.fillText(b.t,bx+80,413);
+    bx+=170;
+  });
+  ctx.font='31px serif';
+  ctx.fillText('TRY • PRACTISE • IMPROVE • SUCCEED',450,474);
+  ctx.fillStyle='#ffffff';
+  ctx.strokeStyle='#d7e2f4';
+  ctx.lineWidth=2;
+  rr(746,88,102,102,14);
+  ctx.fill();
+  ctx.stroke();
+  if(qrReady){
+    ctx.drawImage(qrImage,756,78,82,82);
+  }else{
+    ctx.fillStyle='#eef7ff';
+    ctx.fillRect(756,78,82,82);
+    ctx.fillStyle='#1d6fd6';
+    ctx.font='bold 10px "Nunito",sans-serif';
+    ctx.fillText('QR loading...',797,122);
+  }
+  ctx.fillStyle='#1d6fd6';
+  ctx.font='bold 10px "Nunito",sans-serif';
+  ctx.fillText('Scan to visit',797,185);
+  const d=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
+  ctx.fillStyle='#9e9e9e';
+  ctx.font='bold 12px "Nunito",sans-serif';
+  ctx.fillText('Presented by fivetofifteen.com',450,538);
+  ctx.fillStyle='#bbb';
+  ctx.font='12px "Nunito",sans-serif';
+  ctx.fillText('Awarded on '+d,450,562);
+}
+
+function downloadCert(){
+  drawCert();
+  const link=document.createElement('a');
+  link.download='hard-work-success-certificate.png';
+  link.href=certCanvas.toDataURL('image/png');
+  link.click();
+}
+function printCert(){
+  drawCert();
+  const dataUrl=certCanvas.toDataURL('image/png');
+  const win=window.open('','_blank');
+  const html=[
+    '<!DOCTYPE html><html><head><title>Hard Work Hero Certificate<\\/title>',
+    '<style>body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f5f5f5;}img{max-width:100%;box-shadow:0 4px 20px rgba(0,0,0,.15);border-radius:12px;}@media print{body{background:white;}img{box-shadow:none;width:100%;}}<\\/style><\\/head><body>',
+    '<img src="'+dataUrl+'"/><\\/body><\\/html>'
+  ].join('');
+  win.document.write(html);
+  win.document.close();
+  win.onload=()=>{ win.focus(); win.print(); };
+}
+drawCert();
+</script>
+</body>
+</html>

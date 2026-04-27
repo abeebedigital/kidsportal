@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Comprehension Quest! 📖</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+    /* global-font-boost */
+    html{font-size:17px;}
+    @media (max-width:500px){html{font-size:16px;}}
+
+:root{
+  --coral:#ff6b6b;--mint:#6bcb77;--blue:#4d96ff;--purple:#c77dff;
+  --orange:#ff9f1c;--yellow:#ffd93d;--dark:#2c3e50;
+  --card-bg:#fffef5;--warm-bg:#fff8f0;
+  --reading:#1a237e;--reading-light:#e8eaf6;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--warm-bg);min-height:100vh;overflow-x:hidden;}
+
+.cloud{position:fixed;opacity:.06;font-size:60px;z-index:0;animation:drift linear infinite;pointer-events:none;}
+@keyframes drift{from{transform:translateX(-100px)}to{transform:translateX(calc(100vw + 100px))}}
+
+#app{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:12px;}
+
+.home-link{display:inline-flex;align-items:center;gap:6px;background:var(--mint);color:white;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;text-decoration:none;transition:all .2s;margin-bottom:10px;}
+.home-link:hover{transform:scale(1.05);background:#4db860;}
+
+.tts-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.tts-btn{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#f39c12,#e67e22);color:white;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.tts-btn:hover{transform:scale(1.05);}
+.tts-btn.speaking{background:linear-gradient(135deg,#e74c3c,#c0392b);animation:pulse 1s ease infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(231,76,60,.4)}50%{box-shadow:0 0 0 8px rgba(231,76,60,0)}}
+.tts-stop{background:linear-gradient(135deg,#95a5a6,#7f8c8d);color:white;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s;}
+
+.progress-strip{background:white;border-radius:12px;padding:8px 16px;display:flex;align-items:center;gap:10px;margin-bottom:8px;border:2px solid #e8eaf6;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.progress-bar{flex:1;height:7px;background:#e8eaf6;border-radius:4px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--reading),var(--blue),var(--purple));border-radius:4px;transition:width .5s ease;}
+.progress-label{font-family:'Fredoka One',cursive;font-size:12px;color:#999;white-space:nowrap;}
+
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:white;border-radius:16px;margin-bottom:10px;border:2px solid #e8eaf6;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.nav-btn{background:var(--coral);color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:8px 22px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.nav-btn:hover{transform:scale(1.06);box-shadow:0 4px 12px rgba(255,107,107,.3);}
+.nav-btn:disabled{background:#ddd;cursor:not-allowed;transform:none;box-shadow:none;color:#999;}
+.page-dots{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;max-width:300px;}
+.dot{width:9px;height:9px;border-radius:50%;background:#ddd;cursor:pointer;transition:all .2s;}
+.dot.active{background:var(--reading);transform:scale(1.3);box-shadow:0 0 6px rgba(26,35,126,.5);}
+.dot.visited{background:rgba(26,35,126,.3);}
+
+.page{display:none;animation:pageIn .5s ease;}
+.page.active{display:block;}
+@keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* COVER */
+.cover{background:linear-gradient(160deg,#1a1a2e 0%,#16213e 40%,#0f3460 100%);border-radius:22px;border:2px solid rgba(77,150,255,.3);padding:50px 30px;text-align:center;position:relative;overflow:hidden;min-height:540px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.cover-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(77,150,255,.12) 0%,transparent 70%);pointer-events:none;}
+.cover-icons{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:20px 0;position:relative;z-index:2;}
+.cover-icon{font-size:36px;animation:iconBounce var(--wb,3s) ease-in-out infinite var(--wd,0s);}
+@keyframes iconBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.cover-title{font-family:'Fredoka One',cursive;font-size:38px;color:var(--yellow);position:relative;z-index:2;line-height:1.15;margin-bottom:8px;text-shadow:0 4px 20px rgba(0,0,0,.4);}
+.cover-sub{font-family:'Fredoka One',cursive;font-size:20px;color:#e0aaff;position:relative;z-index:2;margin-bottom:6px;}
+.cover-tagline{font-size:13px;color:rgba(255,255,255,.6);position:relative;z-index:2;margin-top:16px;font-style:italic;}
+.hero-anim{font-size:52px;animation:heroFloat 3s ease-in-out infinite;position:relative;z-index:2;}
+@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-12px) rotate(5deg)}}
+.cover svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
+
+/* STORY PAGES */
+.story-page{background:var(--card-bg);border-radius:22px;padding:26px;min-height:540px;border:3px solid #e8eaf6;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.page-corner{position:absolute;top:14px;right:16px;font-family:'Fredoka One',cursive;font-size:16px;color:#b0bec5;}
+.story-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.chapter-badge{font-family:'Fredoka One',cursive;font-size:12px;padding:4px 13px;border-radius:16px;white-space:nowrap;color:white;}
+.story-title{font-family:'Fredoka One',cursive;font-size:22px;color:var(--dark);}
+.story-body{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+.story-text{font-size:15px;line-height:1.85;color:#444;}
+.story-text p{margin-bottom:10px;}
+.hw{font-weight:800;color:#c62828;}
+.hw2{font-weight:800;color:#1565c0;}
+.hw3{font-weight:800;color:#2e7d32;}
+.story-art{border-radius:16px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:8px;border:2px dashed #cfd8dc;background:linear-gradient(135deg,#f5f7ff,#f0faf0);}
+
+.wonder-display{text-align:center;padding:12px;}
+.wonder-emoji{font-size:80px;display:block;margin:8px auto;}
+.wonder-label{font-family:'Fredoka One',cursive;font-size:13px;color:#999;margin-top:4px;}
+.wonder-facts{background:rgba(0,0,0,.03);border-radius:12px;padding:10px 14px;width:100%;border:1px solid rgba(0,0,0,.06);}
+.fact-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:13px;color:#555;}
+.fact-row:last-child{border-bottom:none;}
+.fact-icon{font-size:16px;min-width:22px;}
+
+/* READING PASSAGE BOX */
+.reading-passage{background:white;border:2px solid #e8eaf6;border-radius:16px;padding:18px;margin:14px 0;font-size:14px;line-height:1.8;color:#333;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.reading-passage .passage-title{font-family:'Fredoka One',cursive;font-size:16px;color:var(--reading);margin-bottom:8px;}
+
+/* QUIZ BUBBLE */
+.quiz-bubble{background:linear-gradient(135deg,#e8eaf6,#e0f7fa);border:2px solid var(--blue);border-radius:18px;padding:18px;margin-top:16px;}
+.quiz-title{font-family:'Fredoka One',cursive;font-size:17px;color:var(--reading);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.q-opt{background:white;border:2px solid #cfd8dc;border-radius:12px;padding:10px 14px;font-size:14px;color:var(--dark);cursor:pointer;transition:all .2s;text-align:left;font-family:'Nunito',sans-serif;font-weight:600;}
+.q-opt:hover{background:#e8eaf6;border-color:var(--blue);transform:translateY(-2px);}
+.q-opt.correct{background:#d4edda;border-color:#27ae60;color:#155724;}
+.q-opt.wrong{background:#f8d7da;border-color:#c0392b;color:#721c24;}
+.quiz-feedback{font-family:'Fredoka One',cursive;font-size:16px;margin-top:10px;min-height:24px;text-align:center;}
+
+.fun-fact{background:#e3f2fd;border:2px solid var(--blue);border-radius:14px;padding:14px 16px;margin-top:14px;}
+.fun-fact-title{font-family:'Fredoka One',cursive;font-size:15px;color:#0d47a1;margin-bottom:6px;}
+.fun-fact-text{font-size:13px;color:#444;line-height:1.6;}
+
+/* TIP BOX */
+.tip-box{background:#fff3e0;border:2px solid var(--orange);border-radius:14px;padding:14px 16px;margin-top:14px;}
+.tip-box-title{font-family:'Fredoka One',cursive;font-size:15px;color:#e65100;margin-bottom:6px;}
+.tip-box-text{font-size:13px;color:#444;line-height:1.6;}
+
+/* MEMORY CARD */
+.memory-card{background:#e8eaf6;border:2px solid var(--blue);border-radius:14px;padding:14px;margin-top:14px;}
+.mem-row{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:14px;cursor:pointer;transition:background .2s;border-radius:8px;padding-left:8px;}
+.mem-row:hover{background:rgba(26,35,126,.07);}
+.mem-letter{font-family:'Fredoka One',cursive;font-size:18px;color:var(--coral);min-width:24px;}
+.mem-word{color:var(--reading);min-width:110px;font-weight:700;}
+.mem-tip{color:#888;}
+
+/* FINAL QUIZ */
+.quiz-page{background:var(--card-bg);border-radius:22px;padding:26px;min-height:540px;border:3px solid var(--blue);box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.quiz-progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.q-counter{font-family:'Fredoka One',cursive;font-size:13px;color:#999;}
+.q-score-badge{font-family:'Fredoka One',cursive;font-size:14px;background:#e8eaf6;border:2px solid var(--blue);padding:4px 14px;border-radius:20px;color:var(--reading);}
+.quiz-question-card{background:white;border-radius:16px;padding:20px;margin-bottom:16px;border:2px solid #e8eaf6;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.quiz-q-text{font-family:'Fredoka One',cursive;font-size:19px;color:var(--dark);line-height:1.4;margin-bottom:4px;}
+.quiz-q-emoji{font-size:40px;margin-bottom:10px;}
+.quiz-q-passage{background:#f5f5f5;border-radius:10px;padding:12px;font-size:13px;line-height:1.7;margin-bottom:12px;color:#444;}
+.fquiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.fq-opt{background:white;border:2px solid #cfd8dc;border-radius:14px;padding:12px 16px;font-size:15px;color:var(--dark);cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif;font-weight:700;}
+.fq-opt:hover:not(.locked){background:#e8eaf6;border-color:var(--blue);transform:translateY(-2px);}
+.fq-opt.correct{background:#d4edda;border-color:#27ae60;color:#155724;}
+.fq-opt.wrong{background:#f8d7da;border-color:#c0392b;color:#721c24;}
+.fq-opt.locked{cursor:not-allowed;opacity:.7;}
+.q-result-msg{font-family:'Fredoka One',cursive;font-size:16px;text-align:center;min-height:28px;margin-top:8px;}
+.next-q-btn{display:block;margin:12px auto 0;background:linear-gradient(135deg,var(--coral),#ff8787);color:white;border:none;font-family:'Fredoka One',cursive;font-size:16px;padding:10px 28px;border-radius:22px;cursor:pointer;transition:all .2s;}
+.next-q-btn:hover{transform:scale(1.05);}
+
+.result-screen{text-align:center;padding:20px 10px;}
+.result-trophy{font-size:80px;margin-bottom:12px;animation:bounce 1s ease infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+.result-title{font-family:'Fredoka One',cursive;font-size:28px;margin-bottom:10px;}
+.result-score{font-family:'Fredoka One',cursive;font-size:48px;color:var(--yellow);}
+.result-msg{font-size:16px;color:#888;margin:12px 0 20px;line-height:1.7;}
+.retry-btn{background:linear-gradient(135deg,#e74c3c,#ff6b6b);color:white;border:none;font-family:'Fredoka One',cursive;font-size:18px;padding:12px 32px;border-radius:24px;cursor:pointer;transition:all .2s;margin:8px;}
+.retry-btn:hover{transform:scale(1.06);}
+.proceed-btn{background:linear-gradient(135deg,#27ae60,#2ecc71);color:white;border:none;font-family:'Fredoka One',cursive;font-size:18px;padding:12px 32px;border-radius:24px;cursor:pointer;transition:all .2s;margin:8px;}
+.proceed-btn:hover{transform:scale(1.06);}
+
+/* CERTIFICATE */
+.cert-page{background:var(--card-bg);border-radius:22px;padding:24px;min-height:540px;border:3px solid var(--yellow);box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.cert-controls{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+.cert-name-input{font-family:'Nunito',sans-serif;font-size:16px;padding:10px 16px;border:2px solid var(--yellow);border-radius:12px;outline:none;flex:1;min-width:180px;color:#333;}
+.cert-name-input:focus{border-color:var(--purple);}
+.cert-dl-btn{background:var(--purple);color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:24px;cursor:pointer;transition:transform .15s;white-space:nowrap;}
+.cert-dl-btn:hover{transform:scale(1.05);}
+.cert-print-btn{background:#1565c0;color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:24px;cursor:pointer;transition:transform .15s;}
+.cert-print-btn:hover{transform:scale(1.05);}
+.cert-wrap{background:white;border-radius:16px;padding:6px;border:3px solid var(--yellow);box-shadow:0 4px 20px rgba(0,0,0,.08);}
+canvas#cert{width:100%;border-radius:12px;display:block;}
+.cert-hint{font-size:12px;color:#aaa;margin-top:8px;text-align:center;}
+
+@media(max-width:580px){
+  .story-body{grid-template-columns:1fr;}
+  .cover-title{font-size:26px;}
+  .fquiz-options,.quiz-options{grid-template-columns:1fr;}
+  .cert-controls{flex-direction:column;}
+}
+</style>
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="natural-read-aloud.js" defer></script>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+<div id="clouds"></div>
+<div id="app"><div class="tts-bar">
+  <button class="tts-btn" id="ttsBtn" onclick="toggleTTS()">🔊 Read Aloud</button>
+  <button class="tts-stop" id="ttsStop" onclick="stopTTS()" style="display:none;">⏹ Stop</button>
+</div>
+
+<div class="progress-strip">
+  <span class="progress-label">📖 Reading...</span>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <span class="progress-label" id="progressText">Page 1 of 14</span>
+</div>
+
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Back</button>
+  <div class="page-dots" id="pageDots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+</div>
+
+<!-- ===== PAGE 0: COVER ===== -->
+<div class="page active" data-page="0">
+  <div class="cover">
+    <svg viewBox="0 0 820 540" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="40" r="2" fill="white" opacity=".6"/><circle cx="120" cy="80" r="1.5" fill="white" opacity=".5"/>
+      <circle cx="200" cy="25" r="2.5" fill="white" opacity=".7"/><circle cx="300" cy="60" r="1.5" fill="white" opacity=".6"/>
+      <circle cx="400" cy="30" r="2" fill="white" opacity=".5"/><circle cx="500" cy="70" r="1.5" fill="white" opacity=".4"/>
+      <circle cx="600" cy="45" r="2" fill="white" opacity=".6"/><circle cx="700" cy="20" r="2.5" fill="white" opacity=".5"/>
+    </svg>
+    <div class="cover-glow"></div>
+    <div class="hero-anim">🐛</div>
+    <div class="cover-title">The Comprehension<br>Quest!</div>
+    <div class="cover-sub">A Reading Adventure for Kids!</div>
+    <div class="cover-icons">
+      <span class="cover-icon" style="--wb:3s;--wd:0s">📖</span>
+      <span class="cover-icon" style="--wb:3.5s;--wd:0.3s">🔍</span>
+      <span class="cover-icon" style="--wb:4s;--wd:0.6s">🧩</span>
+      <span class="cover-icon" style="--wb:3.2s;--wd:0.9s">💡</span>
+      <span class="cover-icon" style="--wb:3.8s;--wd:1.2s">🌟</span>
+    </div>
+    <p class="cover-tagline">Learn to find the main idea, understand characters, and read between the lines! · Year 3–5</p>
+  </div>
+</div>
+
+<!-- ===== PAGE 1: MEET LEXIE ===== -->
+<div class="page" data-page="1">
+  <div class="story-page">
+    <div class="page-corner">p.1</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--coral);">Welcome!</span><h2 class="story-title">Meet Lexie the Bookworm! 🐛</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Hello, young reader! 👋</p>
+        <p>My name is <span class="hw">Lexie</span>, and I'm a bookworm — which means I LOVE reading! 📖</p>
+        <p>Today, I want to teach you three <span class="hw2">super-powered reading skills</span> that will help you understand ANY story or text you ever read!</p>
+        <p>These skills are like secret detective tools 🔍 — once you have them, you'll be able to find hidden clues, understand characters, and figure out what a story is REALLY about!</p>
+        <p>Ready to become a <span class="hw3">Reading Superhero</span>? Let's go! 🚀</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:70px;">🐛</div>
+        <div class="wonder-label">Lexie the Bookworm</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">📚</span> Reads 100 books a week!</div>
+          <div class="fact-row"><span class="fact-icon">🔍</span> Expert clue finder</div>
+          <div class="fact-row"><span class="fact-icon">💡</span> Loves asking questions</div>
+          <div class="fact-row"><span class="fact-icon">🌟</span> Favourite skill: Making inferences</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 2: SKILL 1 — MAIN IDEA ===== -->
+<div class="page" data-page="2">
+  <div class="story-page">
+    <div class="page-corner">p.2</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--reading);">Skill 1</span><h2 class="story-title">📌 Finding the Main Idea</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Every story or paragraph has a <span class="hw">main idea</span> — it's the most important thing the writer wants you to know!</p>
+        <p>Think of it like this: if a story were a pizza 🍕, the <span class="hw">main idea is the base</span>. Everything else — the toppings — are just <span class="hw2">details</span> that support it!</p>
+        <p>Here's how to find the main idea:</p>
+        <p>1️⃣ Ask yourself: <span class="hw3">"What is this mostly about?"</span></p>
+        <p>2️⃣ Look at the <span class="hw2">first sentence</span> — it often tells you!</p>
+        <p>3️⃣ Check if the other sentences <span class="hw">support</span> that idea.</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:60px;">🍕</div>
+        <div class="wonder-label">Main Idea = Pizza Base!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🍕</span> Main idea = the BASE</div>
+          <div class="fact-row"><span class="fact-icon">🧀</span> Details = the TOPPINGS</div>
+          <div class="fact-row"><span class="fact-icon">❓</span> Ask: "What is this mostly about?"</div>
+          <div class="fact-row"><span class="fact-icon">👀</span> Check the first sentence!</div>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <div class="tip-box-title">💡 Lexie's Tip!</div>
+      <div class="tip-box-text">If you can explain what a paragraph is about in ONE sentence, you've found the main idea! Try it: "This paragraph is mainly about ___."</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 3: MAIN IDEA PRACTICE ===== -->
+<div class="page" data-page="3">
+  <div class="story-page">
+    <div class="page-corner">p.3</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--reading);">Skill 1</span><h2 class="story-title">📌 Let's Practice — Main Idea!</h2></div>
+    <div class="reading-passage">
+      <div class="passage-title">📄 Read This Passage:</div>
+      <p>Dolphins are amazing swimmers. They can leap high out of the water and spin in the air. Dolphins use clicking sounds to talk to each other. They live together in groups called pods and help each other find food. Baby dolphins stay close to their mothers for several years.</p>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz Time!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">What is the <strong>main idea</strong> of this passage?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅰️ Dolphins can spin in the air</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb1')">🅱️ Dolphins are amazing animals</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅲 Baby dolphins stay with mum</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅳 Dolphins eat fish</button>
+      </div>
+      <div class="quiz-feedback" id="fb1"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 4: MAIN IDEA vs DETAILS ===== -->
+<div class="page" data-page="4">
+  <div class="story-page">
+    <div class="page-corner">p.4</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--reading);">Skill 1</span><h2 class="story-title">📌 Main Idea vs Details</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Now let's learn the difference between the <span class="hw">main idea</span> and <span class="hw2">supporting details</span>!</p>
+        <p><span class="hw">Main idea</span> = the BIG point (what it's mostly about)</p>
+        <p><span class="hw2">Details</span> = the small facts that help explain it</p>
+        <p>Look at this example:</p>
+        <p>🍎 <span class="hw3">Main idea:</span> "Eating fruit is good for you."</p>
+        <p>📝 <span class="hw2">Detail 1:</span> "Apples have lots of vitamins."</p>
+        <p>📝 <span class="hw2">Detail 2:</span> "Bananas give you energy."</p>
+        <p>📝 <span class="hw2">Detail 3:</span> "Oranges help you fight colds."</p>
+        <p>See? The details all support the main idea! 🎯</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🎯</div>
+        <div class="wonder-label">Main Idea in the Centre!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🎯</span> Main idea = the bullseye</div>
+          <div class="fact-row"><span class="fact-icon">📝</span> Details = the rings around it</div>
+          <div class="fact-row"><span class="fact-icon">🤔</span> Ask: "Does this fact support the big idea?"</div>
+          <div class="fact-row"><span class="fact-icon">⭐</span> Details give proof & examples</div>
+        </div>
+      </div>
+    </div>
+    <div class="fun-fact">
+      <div class="fun-fact-title">📖 Fun Fact!</div>
+      <div class="fun-fact-text">In reading challenges, many questions ask you to find the main idea of a paragraph. Now you know exactly how to do it! You're already ahead! 🌟</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 5: SKILL 2 — CHARACTERS, SETTINGS, EVENTS ===== -->
+<div class="page" data-page="5">
+  <div class="story-page">
+    <div class="page-corner">p.5</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#e67e22;">Skill 2</span><h2 class="story-title">👤 Characters, Settings & Events</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Every story has three important parts. Lexie calls them the <span class="hw">Big Three</span>! 🌟</p>
+        <p>👤 <span class="hw">Characters</span> = the people or animals IN the story (WHO)</p>
+        <p>🏡 <span class="hw2">Setting</span> = WHERE and WHEN the story happens</p>
+        <p>📅 <span class="hw3">Events</span> = WHAT HAPPENS in the story (the actions!)</p>
+        <p>When you read, always ask yourself these three questions:</p>
+        <p>1️⃣ <span class="hw">WHO</span> is in this story?</p>
+        <p>2️⃣ <span class="hw2">WHERE</span> and <span class="hw2">WHEN</span> does it happen?</p>
+        <p>3️⃣ <span class="hw3">WHAT</span> happens? (First, next, last?)</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">👤🏡📅</div>
+        <div class="wonder-label">The Big Three!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">👤</span> Characters = WHO</div>
+          <div class="fact-row"><span class="fact-icon">🏡</span> Setting = WHERE & WHEN</div>
+          <div class="fact-row"><span class="fact-icon">📅</span> Events = WHAT HAPPENS</div>
+          <div class="fact-row"><span class="fact-icon">🔢</span> Events have an ORDER!</div>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <div class="tip-box-title">💡 Lexie's Tip!</div>
+      <div class="tip-box-text">To remember events in order, use the words: FIRST, NEXT, THEN, FINALLY. These are called <strong>sequence words</strong> and they'll help you retell any story!</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 6: CHARACTERS & SETTINGS PRACTICE ===== -->
+<div class="page" data-page="6">
+  <div class="story-page">
+    <div class="page-corner">p.6</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#e67e22;">Skill 2</span><h2 class="story-title">👤 Let's Practice — Story Elements!</h2></div>
+    <div class="reading-passage">
+      <div class="passage-title">📄 Read This Short Story:</div>
+      <p>One sunny morning, a little girl named Maya found a tiny kitten hiding under a bush in the park. The kitten was shivering and looked hungry. Maya gently picked it up and wrapped it in her scarf. She carried it home and gave it a bowl of warm milk. By evening, the kitten was purring happily in Maya's lap. She decided to name it Biscuit.</p>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz Time!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">Where does this story <strong>begin</strong>?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅰️ At Maya's house</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb2')">🅱️ In the park</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅲 At school</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅳 In a shop</button>
+      </div>
+      <div class="quiz-feedback" id="fb2"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 7: SEQUENCING EVENTS ===== -->
+<div class="page" data-page="7">
+  <div class="story-page">
+    <div class="page-corner">p.7</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#e67e22;">Skill 2</span><h2 class="story-title">🔢 Sequencing — What Happened When?</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Great readers can retell a story in the <span class="hw">right order</span>. Let's practise with Maya's story about Biscuit! 🐱</p>
+        <p>Here's what happened, step by step:</p>
+        <p><span class="hw2">FIRST:</span> Maya found a kitten under a bush in the park.</p>
+        <p><span class="hw3">NEXT:</span> She picked it up and wrapped it in her scarf.</p>
+        <p><span class="hw">THEN:</span> She carried it home and gave it warm milk.</p>
+        <p><span class="hw2">FINALLY:</span> The kitten purred happily and Maya named it Biscuit.</p>
+        <p>See how each event follows the one before it? That's called <span class="hw3">sequencing</span>! 📖</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">1️⃣➡️2️⃣➡️3️⃣➡️4️⃣</div>
+        <div class="wonder-label">Events in Order!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">1️⃣</span> FIRST — what happened first?</div>
+          <div class="fact-row"><span class="fact-icon">2️⃣</span> NEXT — what came after?</div>
+          <div class="fact-row"><span class="fact-icon">3️⃣</span> THEN — what happened then?</div>
+          <div class="fact-row"><span class="fact-icon">4️⃣</span> FINALLY — how did it end?</div>
+        </div>
+      </div>
+    </div>
+    <div class="fun-fact">
+      <div class="fun-fact-title">📖 Fun Fact!</div>
+      <div class="fun-fact-text">In reading challenges, you might be asked "What happened AFTER...?" or "What happened BEFORE...?" — knowing the sequence helps you answer these perfectly! 🎯</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 8: SKILL 3 — MAKING INFERENCES ===== -->
+<div class="page" data-page="8">
+  <div class="story-page">
+    <div class="page-corner">p.8</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#2e7d32;">Skill 3</span><h2 class="story-title">🔍 Making Inferences — Reading Detective!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Now for Lexie's FAVOURITE skill — <span class="hw">making inferences</span>! 🕵️</p>
+        <p>Sometimes, the author doesn't tell you EVERYTHING directly. You have to figure things out from <span class="hw2">clues</span> in the text!</p>
+        <p>This is called <span class="hw">reading between the lines</span>. 🔍</p>
+        <p>Here's the magic formula:</p>
+        <p>📖 <span class="hw3">What the text says</span> + 🧠 <span class="hw">What you already know</span> = 💡 <span class="hw2">An inference!</span></p>
+        <p>For example: "Sam grabbed his umbrella before leaving the house."</p>
+        <p>The text doesn't SAY it's raining... but you can <span class="hw3">infer</span> it is! ☔</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🕵️</div>
+        <div class="wonder-label">Reading Detective Formula!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">📖</span> Text clues (what it says)</div>
+          <div class="fact-row"><span class="fact-icon">➕</span> PLUS</div>
+          <div class="fact-row"><span class="fact-icon">🧠</span> Your brain (what you know)</div>
+          <div class="fact-row"><span class="fact-icon">💡</span> = An INFERENCE!</div>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <div class="tip-box-title">💡 Lexie's Tip!</div>
+      <div class="tip-box-text">When a question says "How can you tell...?" or "What does this suggest...?" — they're asking you to make an inference! Use clues + your brain! 🧠✨</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 9: INFERENCE PRACTICE ===== -->
+<div class="page" data-page="9">
+  <div class="story-page">
+    <div class="page-corner">p.9</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#2e7d32;">Skill 3</span><h2 class="story-title">🔍 Let's Practice — Inferences!</h2></div>
+    <div class="reading-passage">
+      <div class="passage-title">📄 Read This Passage:</div>
+      <p>Lily stared at the maths test on her desk. Her hands felt sweaty and her stomach was doing flips. She looked around the room and saw everyone else already writing. Lily took a deep breath, picked up her pencil, and read the first question slowly.</p>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz Time!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">How was Lily probably feeling?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅰️ Happy and excited</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb3')">🅱️ Nervous and worried</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅲 Angry and upset</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅳 Bored and sleepy</button>
+      </div>
+      <div class="quiz-feedback" id="fb3"></div>
+    </div>
+    <div class="fun-fact">
+      <div class="fun-fact-title">🕵️ How Did You Know?</div>
+      <div class="fun-fact-text">The text says "sweaty hands" and "stomach doing flips" — these are <strong>clues</strong>! Combined with what you know about how people feel before tests, you can <strong>infer</strong> Lily was nervous! 🧠💡</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 10: PREDICTING ===== -->
+<div class="page" data-page="10">
+  <div class="story-page">
+    <div class="page-corner">p.10</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#2e7d32;">Skill 3</span><h2 class="story-title">🔮 Predicting — What Happens Next?</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Another awesome inference skill is <span class="hw">predicting</span>! 🔮</p>
+        <p>When you predict, you use clues from the story to <span class="hw2">guess what might happen next</span>.</p>
+        <p>Good predictions are based on <span class="hw3">evidence</span> — not just random guessing!</p>
+        <p>Let's try! Read this:</p>
+        <p><em>"Dark clouds rolled across the sky. The wind started howling and the trees bent sideways. Mum called out from the door, 'Come inside quickly!'"</em></p>
+        <p>What do you think will happen next? 🤔</p>
+        <p>You can predict that a <span class="hw">storm is about to hit</span>! The clues are: dark clouds, howling wind, and Mum calling to come inside.</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🔮</div>
+        <div class="wonder-label">Prediction Power!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">👀</span> Look for CLUES in the text</div>
+          <div class="fact-row"><span class="fact-icon">🧠</span> Think about what you know</div>
+          <div class="fact-row"><span class="fact-icon">🔮</span> Make a smart prediction</div>
+          <div class="fact-row"><span class="fact-icon">📖</span> Read on to check if you're right!</div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz Time!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">"Tom put on his boots, grabbed his fishing rod, and packed sandwiches." What is Tom probably about to do?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅰️ Go to school</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅱️ Play video games</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb4')">🅲 Go fishing</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅳 Go shopping</button>
+      </div>
+      <div class="quiz-feedback" id="fb4"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 11: REVIEW — ALL 3 SKILLS ===== -->
+<div class="page" data-page="11">
+  <div class="story-page">
+    <div class="page-corner">p.11</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--purple);">Review</span><h2 class="story-title">🧠 Remember All 3 Skills!</h2></div>
+    <div class="story-text" data-tts style="margin-bottom:14px;">
+      <p>Here's a fun trick to remember your 3 reading superpowers! Remember the sentence:</p>
+      <p style="text-align:center;font-family:'Fredoka One',cursive;font-size:18px;color:var(--coral);margin:12px 0;">🌟 "<span class="hw">M</span>y <span class="hw">C</span>lever <span class="hw">I</span>deas!" 🌟</p>
+      <p>Each first letter stands for a skill! Tap to reveal! 👇</p>
+    </div>
+    <div class="memory-card">
+      <div class="mem-row" onclick="revealMem(this,'m1','📌 Main Idea — What is it mostly about?')">
+        <span class="mem-letter">M</span>
+        <span class="mem-word">My</span>
+        <span class="mem-tip" id="m1" style="color:#ccc;">📌 ??? (tap to reveal!)</span>
+      </div>
+      <div class="mem-row" onclick="revealMem(this,'m2','👤 Characters, Settings & Events — WHO, WHERE, WHAT')">
+        <span class="mem-letter">C</span>
+        <span class="mem-word">Clever</span>
+        <span class="mem-tip" id="m2" style="color:#ccc;">👤 ??? (tap to reveal!)</span>
+      </div>
+      <div class="mem-row" onclick="revealMem(this,'m3','🔍 Inferences — Clues + Brain = Answer!')">
+        <span class="mem-letter">I</span>
+        <span class="mem-word">Ideas</span>
+        <span class="mem-tip" id="m3" style="color:#ccc;">🔍 ??? (tap to reveal!)</span>
+      </div>
+    </div>
+    <div style="margin-top:20px;">
+      <div class="wonder-facts">
+        <div class="fact-row"><span class="fact-icon">📌</span> <strong>Main Idea:</strong> What is the text mostly about?</div>
+        <div class="fact-row"><span class="fact-icon">👤</span> <strong>Characters:</strong> WHO is in it?</div>
+        <div class="fact-row"><span class="fact-icon">🏡</span> <strong>Setting:</strong> WHERE and WHEN?</div>
+        <div class="fact-row"><span class="fact-icon">📅</span> <strong>Events:</strong> WHAT happens? In what ORDER?</div>
+        <div class="fact-row"><span class="fact-icon">🔍</span> <strong>Inferences:</strong> Text clues + your brain = answer!</div>
+        <div class="fact-row"><span class="fact-icon">🔮</span> <strong>Predictions:</strong> What might happen NEXT?</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 12: FINAL QUIZ ===== -->
+<div class="page" data-page="12">
+  <div class="quiz-page" id="quizPage">
+    <div id="quizActive">
+      <div class="story-header"><span class="chapter-badge" style="background:var(--blue);">🏆 Final Quiz!</span><h2 class="story-title">The Comprehension Challenge!</h2></div>
+      <p style="font-size:14px;color:#666;margin-bottom:16px;">Lexie wants to test your new reading superpowers! Answer 6 questions. You need <strong>at least 5 correct</strong> to earn your certificate! 🌟</p>
+      <div class="quiz-progress-row">
+        <span class="q-counter" id="qCounter">Question 1 of 6</span>
+        <span class="q-score-badge" id="qScoreBadge">Score: 0 / 6</span>
+      </div>
+      <div class="quiz-question-card">
+        <div class="quiz-q-emoji" id="qEmoji">📖</div>
+        <div class="quiz-q-passage" id="qPassage"></div>
+        <div class="quiz-q-text" id="qText"></div>
+      </div>
+      <div class="fquiz-options" id="fquizOptions"></div>
+      <div class="q-result-msg" id="qResultMsg"></div>
+      <button class="next-q-btn" id="nextQBtn" onclick="nextQuestion()" style="display:none;">Next Question →</button>
+    </div>
+    <div id="quizPass" style="display:none;">
+      <div class="result-screen">
+        <div class="result-trophy">🏆</div>
+        <div class="result-title" style="color:#2e7d32;">AMAZING! Super Reader!</div>
+        <div class="result-score" id="passScore">6 / 6</div>
+        <div class="result-msg" id="passMsg"></div>
+        <button class="proceed-btn" onclick="goToCert()">🎓 Get My Certificate! →</button>
+      </div>
+    </div>
+    <div id="quizFail" style="display:none;">
+      <div class="result-screen">
+        <div class="result-trophy">🌟</div>
+        <div class="result-title" style="color:var(--coral);">Almost There!</div>
+        <div class="result-score" id="failScore">3 / 6</div>
+        <div class="result-msg">You need at least 5 correct answers to earn your certificate.<br>Don't worry — re-read the skills and try again! 💪</div>
+        <button class="retry-btn" onclick="restartQuiz()">🔄 Try Again!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 13: CERTIFICATE ===== -->
+<div class="page" data-page="13">
+  <div class="cert-page">
+    <div class="page-corner">🎓</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--yellow);color:#856404;">🏆 Certificate</span><h2 class="story-title">Your Super Reader Certificate!</h2></div>
+    <div class="cert-controls">
+      <input class="cert-name-input" id="certName" placeholder="Type the child's name here..." oninput="drawCert()"/>
+      <button class="cert-dl-btn" onclick="downloadCert()">⬇ Download PNG</button>
+      <button class="cert-print-btn" onclick="printCert()">🖨 Print</button>
+    </div>
+    <div class="cert-wrap">
+      <canvas id="cert" width="900" height="630"></canvas>
+    </div>
+    <p class="cert-hint">Type the name above, then click Download or Print!</p>
+  </div>
+</div>
+
+</div><!-- end app -->
+
+<script>
+/* CLOUDS */
+(function(){const c=document.getElementById('clouds');const e=['☁️','⛅','🌤️'];for(let i=0;i<6;i++){const el=document.createElement('div');el.className='cloud';el.textContent=e[i%e.length];el.style.top=(Math.random()*80)+'%';el.style.animationDuration=(20+Math.random()*30)+'s';el.style.animationDelay=(Math.random()*20)+'s';el.style.fontSize=(40+Math.random()*30)+'px';c.appendChild(el);}})();
+
+/* NAVIGATION */
+const TOTAL=13;
+let currentPage=0;
+const pages=document.querySelectorAll('.page');
+const dotsC=document.getElementById('pageDots');
+for(let i=0;i<=TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.onclick=()=>goToPage(i);dotsC.appendChild(d);}
+
+function goToPage(n){
+  if(n<0||n>TOTAL)return;
+  if(n===13&&!quizPassed){alert('Pass the quiz first to get your certificate! 🌟');return;}
+  stopTTS();
+  pages[currentPage].classList.remove('active');
+  currentPage=n;
+  pages[currentPage].classList.add('active');
+  document.getElementById('prevBtn').disabled=currentPage===0;
+  document.getElementById('nextBtn').disabled=currentPage===TOTAL;
+  document.getElementById('progressFill').style.width=Math.round(currentPage/TOTAL*100)+'%';
+  document.getElementById('progressText').textContent='Page '+(currentPage+1)+' of '+(TOTAL+1);
+  document.querySelectorAll('.dot').forEach((d,i)=>{d.classList.toggle('active',i===currentPage);if(i<currentPage)d.classList.add('visited');});
+  if(currentPage===12)initQuiz();
+  if(currentPage===13)setTimeout(drawCert,120);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function changePage(d){goToPage(currentPage+d);}
+
+/* TTS */
+let isSpeaking=false,utterance=null;
+function toggleTTS(){if(isSpeaking){stopTTS();return;}const el=pages[currentPage].querySelector('[data-tts]')||pages[currentPage].querySelector('.story-text')||pages[currentPage].querySelector('.story-page');if(!el)return;speak(el.textContent);}
+function speak(text){if(!('speechSynthesis' in window))return;stopTTS();text=text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{200D}\u{20E3}\u{E0020}-\u{E007F}]/gu,'').replace(/\s+/g,' ').trim();utterance=new SpeechSynthesisUtterance(text);utterance.rate=0.78;utterance.pitch=1.15;utterance.lang='en-AU';const v=speechSynthesis.getVoices();const pref=v.find(x=>x.name.includes('Karen'))||v.find(x=>x.name.includes('Samantha'))||v.find(x=>x.lang.startsWith('en'));if(pref)utterance.voice=pref;utterance.onstart=()=>{isSpeaking=true;document.getElementById('ttsBtn').classList.add('speaking');document.getElementById('ttsBtn').textContent='🔊 Reading...';document.getElementById('ttsStop').style.display='inline-flex';};utterance.onend=resetTTS;utterance.onerror=resetTTS;speechSynthesis.speak(utterance);}
+function stopTTS(){if('speechSynthesis' in window)speechSynthesis.cancel();resetTTS();}
+function resetTTS(){isSpeaking=false;document.getElementById('ttsBtn').classList.remove('speaking');document.getElementById('ttsBtn').textContent='🔊 Read Aloud';document.getElementById('ttsStop').style.display='none';}
+if('speechSynthesis' in window)speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
+
+/* MINI QUIZZES */
+function miniQuiz(btn,type,fbId){const c=btn.closest('.quiz-bubble');c.querySelectorAll('.q-opt').forEach(b=>b.style.pointerEvents='none');const fb=document.getElementById(fbId);if(type==='correct'){btn.classList.add('correct');fb.innerHTML='<span style="color:#27ae60;">🎉 Correct! Awesome job, Reader!</span>';}else{btn.classList.add('wrong');c.querySelectorAll('.q-opt').forEach(b=>{if(b.onclick&&b.onclick.toString().includes("'correct'"))b.classList.add('correct');});fb.innerHTML='<span style="color:#c0392b;">Not quite! The green one is correct. Keep reading! 💪</span>';}}
+
+/* MEMORY */
+function revealMem(row,id,answer){const el=document.getElementById(id);el.textContent=answer;el.style.color='var(--reading)';row.style.background='rgba(26,35,126,.05)';}
+
+/* FINAL QUIZ */
+const QUESTIONS=[
+  {emoji:'📖',passage:'Koalas sleep for up to 22 hours a day. They live in eucalyptus trees and eat only eucalyptus leaves. Koalas are found in Australia and are loved by people around the world.',q:'What is the main idea of this passage?',opts:['Koalas live in trees','Koalas are interesting Australian animals','Koalas sleep a lot','People love koalas'],ans:1},
+  {emoji:'👤',passage:'Early one winter morning, Jack rode his bicycle through the frosty streets to the bakery. He bought two warm bread rolls and hurried home before the snow started.',q:'What is the SETTING of this story?',opts:['A beach in summer','A bakery at night','Frosty streets on a winter morning','A park in autumn'],ans:2},
+  {emoji:'🔍',passage:'Grandma smiled and clapped her hands when she opened the gift. Her eyes were shining and she hugged everyone at the table.',q:'How was Grandma feeling? (Make an inference!)',opts:['Angry and upset','Tired and bored','Delighted and grateful','Confused and worried'],ans:2},
+  {emoji:'🔢',passage:'',q:'Which is the correct order of events in Maya\'s kitten story? 1) Named it Biscuit 2) Found kitten in park 3) Gave it warm milk 4) Wrapped it in scarf',opts:['1, 2, 3, 4','2, 4, 3, 1','3, 1, 2, 4','4, 2, 1, 3'],ans:1},
+  {emoji:'🔮',passage:'Mia packed her goggles, towel, and sunscreen into her bag. She put on her swimsuit under her clothes and grabbed a pool noodle from the garage.',q:'What is Mia probably about to do?',opts:['Go to school','Go swimming','Go camping','Go shopping'],ans:1},
+  {emoji:'📌',passage:'Recycling is important for our planet. When we recycle paper, we save trees. Recycling plastic means less rubbish in the ocean. Glass and metal can be recycled over and over again without losing quality.',q:'What is a SUPPORTING DETAIL (not the main idea)?',opts:['Recycling is important for our planet','Glass and metal can be recycled over and over','We should all recycle','The planet needs help'],ans:1}
+];
+let qIdx=0,score=0,answered=false,quizPassed=false;
+
+function initQuiz(){qIdx=0;score=0;answered=false;document.getElementById('quizActive').style.display='block';document.getElementById('quizPass').style.display='none';document.getElementById('quizFail').style.display='none';renderQ();}
+function renderQ(){const q=QUESTIONS[qIdx];document.getElementById('qEmoji').textContent=q.emoji;document.getElementById('qPassage').textContent=q.passage;document.getElementById('qPassage').style.display=q.passage?'block':'none';document.getElementById('qText').textContent=q.q;document.getElementById('qCounter').textContent='Question '+(qIdx+1)+' of 6';document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';document.getElementById('qResultMsg').textContent='';document.getElementById('nextQBtn').style.display='none';answered=false;const o=document.getElementById('fquizOptions');o.innerHTML='';q.opts.forEach((t,i)=>{const b=document.createElement('button');b.className='fq-opt';b.textContent=t;b.onclick=()=>answerQ(i,b);o.appendChild(b);});}
+function answerQ(i,btn){if(answered)return;answered=true;const q=QUESTIONS[qIdx];document.querySelectorAll('.fq-opt').forEach(b=>b.classList.add('locked'));const msg=document.getElementById('qResultMsg');if(i===q.ans){btn.classList.add('correct');score++;msg.innerHTML='<span style="color:#27ae60;">🎉 Correct!</span>';}else{btn.classList.add('wrong');document.querySelectorAll('.fq-opt')[q.ans].classList.add('correct');msg.innerHTML='<span style="color:#c0392b;">Not quite! Correct answer is in green. 💪</span>';}document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';document.getElementById('nextQBtn').style.display='block';document.getElementById('nextQBtn').textContent=qIdx===5?'See My Result! 🏁':'Next Question →';}
+function nextQuestion(){qIdx++;if(qIdx>=6){showResult();return;}renderQ();}
+function showResult(){document.getElementById('quizActive').style.display='none';if(score>=5){quizPassed=true;document.getElementById('quizPass').style.display='block';document.getElementById('passScore').textContent=score+' / 6';document.getElementById('passMsg').innerHTML=score===6?'PERFECT SCORE! You\'re an amazing reader! 🏆🌟🎉':'Wow! So close to perfect! You\'re a true Super Reader! 📖✨';}else{document.getElementById('quizFail').style.display='block';document.getElementById('failScore').textContent=score+' / 6';}}
+function restartQuiz(){initQuiz();}
+function goToCert(){goToPage(13);}
+
+/* CERTIFICATE */
+const canvas=document.getElementById('cert'),ctx=canvas.getContext('2d');
+function drawStar(cx,cy,r,pts,col){ctx.save();ctx.fillStyle=col;ctx.beginPath();for(let i=0;i<pts*2;i++){const a=(i*Math.PI/pts)-Math.PI/2,rd=i%2===0?r:r*.45;i===0?ctx.moveTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a)):ctx.lineTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a));}ctx.closePath();ctx.fill();ctx.restore();}
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();}
+const qrImage=new Image();let qrReady=false;qrImage.crossOrigin='anonymous';qrImage.onload=()=>{qrReady=true;drawCert();};qrImage.src='https://quickchart.io/qr?text='+encodeURIComponent('https://fivetofifteen.com/')+'&size=180';
+
+function drawCert(){
+  const name=document.getElementById('certName').value.trim()||'Super Reader';
+  const CW=900,CH=630;
+  ctx.clearRect(0,0,CW,CH);
+  const bg=ctx.createLinearGradient(0,0,CW,CH);bg.addColorStop(0,'#FFF8F0');bg.addColorStop(.5,'#FFFBF0');bg.addColorStop(1,'#F0F8FF');ctx.fillStyle=bg;rr(0,0,CW,CH,20);ctx.fill();
+  ctx.strokeStyle='#4d96ff';ctx.lineWidth=6;rr(8,8,CW-16,CH-16,16);ctx.stroke();
+  ctx.strokeStyle='#1a237e';ctx.lineWidth=2;ctx.setLineDash([8,5]);rr(20,20,CW-40,CH-40,10);ctx.stroke();ctx.setLineDash([]);
+  [[52,52],[CW-52,52],[52,CH-52],[CW-52,CH-52]].forEach(([x,y])=>drawStar(x,y,18,5,'#4d96ff'));
+  const rg=ctx.createLinearGradient(CW/2-220,0,CW/2+220,0);rg.addColorStop(0,'#1a237e');rg.addColorStop(.5,'#283593');rg.addColorStop(1,'#1a237e');ctx.fillStyle=rg;rr(CW/2-220,28,440,44,22);ctx.fill();
+  ctx.fillStyle='#ffd93d';ctx.font='bold 17px "Fredoka One",cursive';ctx.textAlign='center';ctx.fillText('🌟  THE COMPREHENSION QUEST  🌟',CW/2,57);
+  ctx.font='64px serif';ctx.fillText('📖',CW/2,142);
+  ctx.fillStyle='#c62828';ctx.font='bold 40px "Fredoka One",cursive';ctx.fillText('Super Reader Certificate!',CW/2,196);
+  ctx.fillStyle='#888';ctx.font='17px "Nunito",sans-serif';ctx.fillText('This is to proudly certify that the amazing reader',CW/2,232);
+  ctx.strokeStyle='#4d96ff';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(CW/2-240,276);ctx.lineTo(CW/2+240,276);ctx.stroke();
+  ctx.fillStyle='#1a237e';ctx.font='bold 38px "Fredoka One",cursive';ctx.fillText(name,CW/2,270);
+  ctx.fillStyle='#444';ctx.font='17px "Nunito",sans-serif';ctx.fillText('has completed the Comprehension Quest and is now an official',CW/2,310);
+  ctx.fillStyle='#c62828';ctx.font='bold 24px "Fredoka One",cursive';ctx.fillText('🌟 Certified Super Reader 🌟',CW/2,344);
+  ctx.fillStyle='#888';ctx.font='14px "Nunito",sans-serif';ctx.fillText('Mastered: Main Idea • Characters & Settings • Inferences & Predictions',CW/2,372);
+  const badges=[{t:'✓ Main Idea Expert',bg:'#e8eaf6',c:'#1a237e'},{t:'✓ Story Detective',bg:'#fff3e0',c:'#e65100'},{t:'✓ Inference Master',bg:'#e8f5e9',c:'#2e7d32'},{t:'✓ Super Reader!',bg:'#fce4ec',c:'#c62828'}];
+  const bw=168,bh=30,bg2=10,tot=badges.length*(bw+bg2)-bg2;let bx=CW/2-tot/2;
+  badges.forEach(b=>{ctx.fillStyle=b.bg;rr(bx,390,bw,bh,15);ctx.fill();ctx.fillStyle=b.c;ctx.font='bold 12px "Nunito",sans-serif';ctx.textAlign='center';ctx.fillText(b.t,bx+bw/2,409);bx+=bw+bg2;});
+  ctx.font='32px serif';ctx.fillText('📖  🔍  🧠  💡  🌟',CW/2,468);
+  ctx.fillStyle='#ffffff';ctx.strokeStyle='#d7e2f4';ctx.lineWidth=2;rr(CW-154,68,102,102,14);ctx.fill();ctx.stroke();
+  if(qrReady){ctx.drawImage(qrImage,CW-144,78,82,82);}else{ctx.fillStyle='#eef7ff';ctx.fillRect(CW-144,78,82,82);ctx.fillStyle='#1a237e';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('QR loading...',CW-103,122);}
+  ctx.fillStyle='#1a237e';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('Scan to visit',CW-103,185);
+  ctx.fillStyle='#9e9e9e';ctx.font='bold 12px "Nunito",sans-serif';ctx.fillText('Presented by fivetofifteen.com',CW/2,538);
+  const d=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});ctx.fillStyle='#bbb';ctx.font='12px "Nunito",sans-serif';ctx.fillText('Awarded on '+d,CW/2,562);
+  [[80,200],[CW-80,200],[80,420],[CW-80,420]].forEach(([x,y])=>drawStar(x,y,10,5,'rgba(77,150,255,.35)'));
+}
+function downloadCert(){drawCert();const a=document.createElement('a');a.download='super-reader-certificate.png';a.href=canvas.toDataURL('image/png');a.click();}
+function printCert(){drawCert();const u=canvas.toDataURL('image/png');const w=window.open('','_blank');w.document.write('<!DOCTYPE html><html><head><title>Super Reader Certificate<\/title><style>body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f5f5f5;}img{max-width:100%;box-shadow:0 4px 20px rgba(0,0,0,.15);border-radius:12px;}@media print{body{background:white;}img{box-shadow:none;width:100%;}}<\/style><\/head><body><img src="'+u+'"/><\/body><\/html>');w.document.close();w.onload=()=>{w.focus();w.print();};}
+drawCert();
+</script>
+</body>
+</html>

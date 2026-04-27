@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Geometry Shape Library</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet" />
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="slim-topbar.js" defer></script>
+  <script src="geometry-shape-data.js" defer></script>
+  <style>
+    :root{--ink:#223046;--muted:#607189;--line:#dbe6f3;--brand:#0f766e;--card:#fff}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:"Nunito",sans-serif;color:var(--ink);background:radial-gradient(1200px 420px at 0% -10%,rgba(15,118,110,.16),transparent 42%),radial-gradient(1000px 520px at 100% -16%,rgba(37,99,235,.13),transparent 45%),linear-gradient(180deg,#f6fcff,#fff8ef)}
+    .wrap{width:min(1100px,94vw);margin:22px auto 56px}
+    .hero{border:1px solid var(--line);border-radius:24px;background:linear-gradient(135deg,#ffffff 0%,#f7fbff 52%,#fff9ee 100%);box-shadow:0 14px 34px rgba(20,40,72,.11);padding:18px}
+    .chip{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;background:#e8fbf5;border:1px solid #b8e2d8;color:#0f6c59;font:900 .76rem "Nunito",sans-serif;text-transform:uppercase;letter-spacing:.35px}
+    h1{margin:10px 0 6px;font-family:"Fredoka One",cursive;font-size:clamp(1.35rem,2.7vw,2rem)}
+    .sub{margin:0;color:var(--muted);font-weight:800;line-height:1.58}
+    .nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 12px;border-radius:999px;text-decoration:none;font:900 .82rem "Nunito",sans-serif;border:1px solid #cad8ee;background:#fff;color:#2d4666}
+    .btn:hover{transform:translateY(-1px);box-shadow:0 8px 16px rgba(31,55,98,.14)}
+    .btn-primary{background:linear-gradient(135deg,#d9f6ef,#ddebff);border-color:#a7d8ca;color:#14516f}
+    .section{margin-top:14px;border:1px solid var(--line);border-radius:18px;background:var(--card);box-shadow:0 8px 20px rgba(22,45,80,.08);padding:14px}
+    .section h2{margin:0 0 10px;font-family:"Fredoka One",cursive;font-size:1.08rem}
+    .grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+    .card-link{display:block;border:1px solid #dbe7f8;border-radius:12px;background:linear-gradient(180deg,#fff,#f9fcff);padding:9px 10px;text-decoration:none;color:#1f395b;min-height:112px}
+    .card-link:hover{border-color:#b8d3f1;transform:translateY(-1px);box-shadow:0 8px 16px rgba(31,55,98,.12)}
+    .thumb{height:62px;border:1px solid #deebfb;border-radius:10px;background:linear-gradient(180deg,#f7fbff,#eef6ff);margin-bottom:7px;display:flex;align-items:center;justify-content:center}
+    .thumb svg{width:100%;height:100%}
+    .label{display:block;color:#1c5f86;font-weight:900;font-size:.68rem;text-transform:uppercase;letter-spacing:.32px;margin-bottom:4px}
+    .name{display:block;font-weight:900;line-height:1.25;font-size:.93rem}
+    .note{display:block;color:#60738f;font-size:.78rem;line-height:1.35;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    @media (max-width:1120px){.grid{grid-template-columns:repeat(4,minmax(0,1fr));}}
+    @media (max-width:980px){.grid{grid-template-columns:repeat(3,minmax(0,1fr));}}
+    @media (max-width:640px){.grid{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <span class="chip">Geometry Main Tile</span>
+      <h1>Geometry Shape Library</h1>
+      <p class="sub">All geometry subtopics are grouped here under one main geometry tile. Open any shape page to learn properties, core formulas, and a quick worked example.</p>
+      <div class="nav">
+        <a class="btn btn-primary" href="selective-school-exam.html#selective-maths">Back to Selective Maths</a>
+        <a class="btn" href="selective-maths-geometry.html">Back to Geometry Topic</a>
+      </div>
+    </header>
+
+    <section class="section">
+      <h2>2D Shapes</h2>
+      <div class="grid" id="list2d"></div>
+    </section>
+
+    <section class="section">
+      <h2>Polygons</h2>
+      <div class="grid" id="listPolygons"></div>
+    </section>
+
+    <section class="section">
+      <h2>3D Shapes</h2>
+      <div class="grid" id="list3d"></div>
+    </section>
+  </div>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      var data = window.GEOMETRY_SHAPE_DATA || {};
+      var order = window.GEOMETRY_SHAPE_ORDER || [];
+
+      function esc(value) {
+        return String(value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function card(key) {
+        var s = data[key];
+        if (!s) return '';
+        return [
+          '<a class="card-link" href="' + esc(s.file) + '">',
+          iconSvg(key, s.family),
+          '<span class="label">' + esc(s.family) + '</span>',
+          '<span class="name">' + esc(s.name) + '</span>',
+          '<span class="note">' + esc(s.overview) + '</span>',
+          '</a>'
+        ].join('');
+      }
+
+      function polygonPoints(sides, cx, cy, r, rot) {
+        var pts = [];
+        var i;
+        for (i = 0; i < sides; i += 1) {
+          var a = rot + (Math.PI * 2 * i / sides);
+          pts.push((cx + r * Math.cos(a)).toFixed(1) + ',' + (cy + r * Math.sin(a)).toFixed(1));
+        }
+        return pts.join(' ');
+      }
+
+      function wrapSvg(content) {
+        return '<div class="thumb"><svg viewBox="0 0 120 62" role="img" aria-hidden="true">' + content + '</svg></div>';
+      }
+
+      function polygonSvg(sides) {
+        return wrapSvg(
+          '<polygon points="' + polygonPoints(sides, 60, 31, 20, -Math.PI / 2) + '" fill="rgba(14,165,233,.18)" stroke="#1d4f91" stroke-width="2.6"></polygon>'
+        );
+      }
+
+      function iconSvg(key, family) {
+        if (key === 'circle') return wrapSvg('<circle cx="60" cy="31" r="19" fill="rgba(124,58,237,.16)" stroke="#7c3aed" stroke-width="2.8"></circle>');
+        if (key === 'semicircle') return wrapSvg('<path d="M30 40 A30 30 0 0 1 90 40" fill="rgba(124,58,237,.16)" stroke="#7c3aed" stroke-width="2.8"></path><line x1="30" y1="40" x2="90" y2="40" stroke="#ea580c" stroke-width="2.8"></line>');
+        if (key === 'sector') return wrapSvg('<path d="M60 42 L60 14 A28 28 0 0 1 84 31 Z" fill="rgba(14,165,233,.22)" stroke="#0f4f88" stroke-width="2.4"></path>');
+        if (key === 'square') return wrapSvg('<rect x="40" y="12" width="40" height="40" fill="rgba(14,165,233,.18)" stroke="#0f4f88" stroke-width="2.6"></rect>');
+        if (key === 'rectangle') return wrapSvg('<rect x="32" y="16" width="56" height="32" fill="rgba(14,165,233,.18)" stroke="#0f4f88" stroke-width="2.6"></rect>');
+        if (key === 'parallelogram') return wrapSvg('<polygon points="34,44 82,44 90,18 42,18" fill="rgba(14,165,233,.18)" stroke="#0f4f88" stroke-width="2.6"></polygon>');
+        if (key === 'trapezium') return wrapSvg('<polygon points="30,44 90,44 78,18 42,18" fill="rgba(14,165,233,.18)" stroke="#0f4f88" stroke-width="2.6"></polygon>');
+        if (key === 'rhombus') return wrapSvg('<polygon points="60,10 88,31 60,52 32,31" fill="rgba(14,165,233,.18)" stroke="#0f4f88" stroke-width="2.6"></polygon>');
+        if (key === 'kite') return wrapSvg('<polygon points="60,10 84,30 60,52 38,30" fill="rgba(14,165,233,.18)" stroke="#0f4f88" stroke-width="2.6"></polygon>');
+        if (key === 'right-triangle') return wrapSvg('<polygon points="34,46 34,16 88,46" fill="rgba(14,165,233,.18)" stroke="#0f4f88" stroke-width="2.6"></polygon>');
+        if (key === 'triangle-types') return wrapSvg('<polygon points="24,46 44,16 64,46" fill="rgba(14,165,233,.16)" stroke="#0f4f88" stroke-width="2.2"></polygon><polygon points="58,46 74,20 90,46" fill="rgba(124,58,237,.12)" stroke="#7c3aed" stroke-width="2.2"></polygon>');
+        if (key === 'cube' || key === 'cuboid') {
+          return wrapSvg('<rect x="34" y="20" width="34" height="28" fill="rgba(14,165,233,.16)" stroke="#0f4f88" stroke-width="2.2"></rect><rect x="48" y="12" width="34" height="28" fill="rgba(14,165,233,.08)" stroke="#0f4f88" stroke-width="2.2"></rect><line x1="34" y1="20" x2="48" y2="12" stroke="#0f4f88" stroke-width="2.2"></line><line x1="68" y1="20" x2="82" y2="12" stroke="#0f4f88" stroke-width="2.2"></line><line x1="68" y1="48" x2="82" y2="40" stroke="#0f4f88" stroke-width="2.2"></line>');
+        }
+        if (key === 'cylinder') return wrapSvg('<ellipse cx="60" cy="17" rx="18" ry="7" fill="rgba(14,165,233,.14)" stroke="#0f4f88" stroke-width="2.2"></ellipse><rect x="42" y="17" width="36" height="28" fill="rgba(14,165,233,.16)" stroke="#0f4f88" stroke-width="2.2"></rect><ellipse cx="60" cy="45" rx="18" ry="7" fill="rgba(14,165,233,.08)" stroke="#0f4f88" stroke-width="2.2"></ellipse>');
+        if (key === 'cone') return wrapSvg('<ellipse cx="60" cy="45" rx="20" ry="7" fill="rgba(14,165,233,.08)" stroke="#0f4f88" stroke-width="2.2"></ellipse><path d="M40 45 L60 12 L80 45" fill="rgba(14,165,233,.16)" stroke="#0f4f88" stroke-width="2.2"></path>');
+        if (key === 'sphere') return wrapSvg('<circle cx="60" cy="31" r="19" fill="rgba(14,165,233,.16)" stroke="#0f4f88" stroke-width="2.2"></circle><ellipse cx="60" cy="31" rx="19" ry="7.5" fill="none" stroke="#0f4f88" stroke-width="1.6"></ellipse><path d="M60 12 A19 19 0 0 1 60 50" fill="none" stroke="#0f4f88" stroke-width="1.6"></path>');
+        if (key === 'hemisphere') return wrapSvg('<path d="M32 40 A28 28 0 0 1 88 40" fill="rgba(14,165,233,.16)" stroke="#0f4f88" stroke-width="2.2"></path><line x1="32" y1="40" x2="88" y2="40" stroke="#0f4f88" stroke-width="2.2"></line>');
+        if (key === 'square-pyramid') return wrapSvg('<polygon points="60,12 84,42 36,42" fill="rgba(14,165,233,.16)" stroke="#0f4f88" stroke-width="2.2"></polygon><line x1="36" y1="42" x2="48" y2="50" stroke="#0f4f88" stroke-width="2.2"></line><line x1="84" y1="42" x2="72" y2="50" stroke="#0f4f88" stroke-width="2.2"></line><line x1="48" y1="50" x2="72" y2="50" stroke="#0f4f88" stroke-width="2.2"></line>');
+        if (key === 'triangular-prism') return wrapSvg('<polygon points="34,44 54,16 74,44" fill="rgba(14,165,233,.16)" stroke="#0f4f88" stroke-width="2.2"></polygon><polygon points="52,44 72,16 92,44" fill="rgba(14,165,233,.09)" stroke="#0f4f88" stroke-width="2.2"></polygon><line x1="34" y1="44" x2="52" y2="44" stroke="#0f4f88" stroke-width="2.2"></line><line x1="54" y1="16" x2="72" y2="16" stroke="#0f4f88" stroke-width="2.2"></line><line x1="74" y1="44" x2="92" y2="44" stroke="#0f4f88" stroke-width="2.2"></line>');
+        if (key === 'triangular-pyramid') return wrapSvg('<polygon points="60,12 86,42 34,42" fill="rgba(14,165,233,.16)" stroke="#0f4f88" stroke-width="2.2"></polygon><line x1="60" y1="12" x2="60" y2="52" stroke="#0f4f88" stroke-width="2.2"></line><line x1="34" y1="42" x2="60" y2="52" stroke="#0f4f88" stroke-width="2.2"></line><line x1="86" y1="42" x2="60" y2="52" stroke="#0f4f88" stroke-width="2.2"></line>');
+
+        var polySides = {
+          pentagon: 5,
+          hexagon: 6,
+          heptagon: 7,
+          octagon: 8,
+          nonagon: 9,
+          decagon: 10
+        };
+        if (polySides[key]) return polygonSvg(polySides[key]);
+        if (String(family || '').toLowerCase().indexOf('polygon') !== -1) return polygonSvg(6);
+
+        return wrapSvg('<rect x="34" y="16" width="52" height="30" rx="8" fill="rgba(14,165,233,.16)" stroke="#0f4f88" stroke-width="2.4"></rect>');
+      }
+
+      var twoD = [];
+      var polys = [];
+      var solids = [];
+      var seen = {};
+
+      function pushToBucket(key) {
+        if (!data[key] || seen[key]) return;
+        seen[key] = true;
+        var fam = String(data[key].family || '').toLowerCase();
+        if (fam.indexOf('3d') !== -1) {
+          solids.push(key);
+        } else if (fam.indexOf('polygon') !== -1) {
+          polys.push(key);
+        } else {
+          twoD.push(key);
+        }
+      }
+
+      order.forEach(pushToBucket);
+      Object.keys(data).forEach(pushToBucket);
+
+      document.getElementById('list2d').innerHTML = twoD.map(card).join('');
+      document.getElementById('listPolygons').innerHTML = polys.map(card).join('');
+      document.getElementById('list3d').innerHTML = solids.map(card).join('');
+    });
+  </script>
+</body>
+</html>

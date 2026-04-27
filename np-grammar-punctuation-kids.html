@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Grammar Galaxy! 🌌</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+    /* global-font-boost */
+    html{font-size:17px;}
+    @media (max-width:500px){html{font-size:16px;}}
+
+:root{
+  --coral:#ff6b6b;--mint:#6bcb77;--blue:#4d96ff;--purple:#c77dff;
+  --orange:#ff9f1c;--yellow:#ffd93d;--dark:#2c3e50;
+  --card-bg:#fffef5;--warm-bg:#f0fff4;
+  --gram:#1b5e20;--gram-light:#e8f5e9;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--warm-bg);min-height:100vh;overflow-x:hidden;}
+.cloud{position:fixed;opacity:.06;font-size:60px;z-index:0;animation:drift linear infinite;pointer-events:none;}
+@keyframes drift{from{transform:translateX(-100px)}to{transform:translateX(calc(100vw + 100px))}}
+#app{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:12px;}
+.home-link{display:inline-flex;align-items:center;gap:6px;background:var(--mint);color:white;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;text-decoration:none;transition:all .2s;margin-bottom:10px;}
+.home-link:hover{transform:scale(1.05);background:#4db860;}
+.tts-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.tts-btn{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#f39c12,#e67e22);color:white;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.tts-btn:hover{transform:scale(1.05);}
+.tts-btn.speaking{background:linear-gradient(135deg,#e74c3c,#c0392b);animation:pulse 1s ease infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(231,76,60,.4)}50%{box-shadow:0 0 0 8px rgba(231,76,60,0)}}
+.tts-stop{background:linear-gradient(135deg,#95a5a6,#7f8c8d);color:white;border:none;font-family:'Fredoka One',cursive;font-size:13px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.progress-strip{background:white;border-radius:12px;padding:8px 16px;display:flex;align-items:center;gap:10px;margin-bottom:8px;border:2px solid var(--gram-light);box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.progress-bar{flex:1;height:7px;background:var(--gram-light);border-radius:4px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gram),#66bb6a,var(--yellow));border-radius:4px;transition:width .5s ease;}
+.progress-label{font-family:'Fredoka One',cursive;font-size:12px;color:#999;white-space:nowrap;}
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:white;border-radius:16px;margin-bottom:10px;border:2px solid var(--gram-light);box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.nav-btn{background:#388e3c;color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:8px 22px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.nav-btn:hover{transform:scale(1.06);box-shadow:0 4px 12px rgba(56,142,60,.3);}
+.nav-btn:disabled{background:#ddd;cursor:not-allowed;transform:none;box-shadow:none;color:#999;}
+.page-dots{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;max-width:300px;}
+.dot{width:9px;height:9px;border-radius:50%;background:#ddd;cursor:pointer;transition:all .2s;}
+.dot.active{background:var(--gram);transform:scale(1.3);box-shadow:0 0 6px rgba(27,94,32,.5);}
+.dot.visited{background:rgba(27,94,32,.3);}
+.page{display:none;animation:pageIn .5s ease;}
+.page.active{display:block;}
+@keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.cover{background:linear-gradient(160deg,#0d1b2a 0%,#1b2a1b 40%,#1b5e20 100%);border-radius:22px;border:2px solid rgba(102,187,106,.3);padding:50px 30px;text-align:center;position:relative;overflow:hidden;min-height:540px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.cover-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(102,187,106,.15) 0%,transparent 70%);pointer-events:none;}
+.cover-icons{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:20px 0;position:relative;z-index:2;}
+.cover-icon{font-size:36px;animation:iconBounce var(--wb,3s) ease-in-out infinite var(--wd,0s);}
+@keyframes iconBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.cover-title{font-family:'Fredoka One',cursive;font-size:38px;color:var(--yellow);position:relative;z-index:2;line-height:1.15;margin-bottom:8px;text-shadow:0 4px 20px rgba(0,0,0,.4);}
+.cover-sub{font-family:'Fredoka One',cursive;font-size:20px;color:#a5d6a7;position:relative;z-index:2;margin-bottom:6px;}
+.cover-tagline{font-size:13px;color:rgba(255,255,255,.6);position:relative;z-index:2;margin-top:16px;font-style:italic;}
+.hero-anim{font-size:52px;animation:heroFloat 3s ease-in-out infinite;position:relative;z-index:2;}
+@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-12px) rotate(5deg)}}
+.cover svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
+.story-page{background:var(--card-bg);border-radius:22px;padding:26px;min-height:540px;border:3px solid var(--gram-light);position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.page-corner{position:absolute;top:14px;right:16px;font-family:'Fredoka One',cursive;font-size:16px;color:#b0bec5;}
+.story-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.chapter-badge{font-family:'Fredoka One',cursive;font-size:12px;padding:4px 13px;border-radius:16px;white-space:nowrap;color:white;}
+.story-title{font-family:'Fredoka One',cursive;font-size:22px;color:var(--dark);}
+.story-body{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+.story-text{font-size:15px;line-height:1.85;color:#444;}
+.story-text p{margin-bottom:10px;}
+.hw{font-weight:800;color:#1b5e20;}
+.hw2{font-weight:800;color:#1565c0;}
+.hw3{font-weight:800;color:#6a1b9a;}
+.story-art{border-radius:16px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:8px;border:2px dashed #cfd8dc;background:linear-gradient(135deg,#f0fff4,#f0f4ff);}
+.wonder-label{font-family:'Fredoka One',cursive;font-size:13px;color:#999;margin-top:4px;}
+.wonder-facts{background:rgba(0,0,0,.03);border-radius:12px;padding:10px 14px;width:100%;border:1px solid rgba(0,0,0,.06);}
+.fact-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:13px;color:#555;}
+.fact-row:last-child{border-bottom:none;}
+.fact-icon{font-size:16px;min-width:22px;}
+.quiz-bubble{background:linear-gradient(135deg,#e8f5e9,#e3f2fd);border:2px solid #388e3c;border-radius:18px;padding:18px;margin-top:16px;}
+.quiz-title{font-family:'Fredoka One',cursive;font-size:17px;color:var(--gram);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.q-opt{background:white;border:2px solid #cfd8dc;border-radius:12px;padding:10px 14px;font-size:14px;color:var(--dark);cursor:pointer;transition:all .2s;text-align:left;font-family:'Nunito',sans-serif;font-weight:600;}
+.q-opt:hover{background:#e8f5e9;border-color:#388e3c;transform:translateY(-2px);}
+.q-opt.correct{background:#d4edda;border-color:#27ae60;color:#155724;}
+.q-opt.wrong{background:#f8d7da;border-color:#c0392b;color:#721c24;}
+.quiz-feedback{font-family:'Fredoka One',cursive;font-size:16px;margin-top:10px;min-height:24px;text-align:center;}
+.fun-fact{background:#e3f2fd;border:2px solid var(--blue);border-radius:14px;padding:14px 16px;margin-top:14px;}
+.fun-fact-title{font-family:'Fredoka One',cursive;font-size:15px;color:#0d47a1;margin-bottom:6px;}
+.fun-fact-text{font-size:13px;color:#444;line-height:1.6;}
+.tip-box{background:#fff3e0;border:2px solid var(--orange);border-radius:14px;padding:14px 16px;margin-top:14px;}
+.tip-box-title{font-family:'Fredoka One',cursive;font-size:15px;color:#e65100;margin-bottom:6px;}
+.tip-box-text{font-size:13px;color:#444;line-height:1.6;}
+.gram-table{width:100%;border-collapse:separate;border-spacing:0;border:2px solid #a5d6a7;border-radius:12px;overflow:hidden;margin:10px 0;}
+.gram-table th{background:var(--gram);color:white;font-family:'Fredoka One',cursive;font-size:13px;padding:10px 12px;text-align:left;}
+.gram-table td{padding:8px 12px;font-size:14px;color:#444;border-bottom:1px solid #e8f5e9;}
+.gram-table tr:last-child td{border-bottom:none;}
+.gram-table tr:nth-child(even) td{background:#f0fff4;}
+.memory-card{background:#e8f5e9;border:2px solid #388e3c;border-radius:14px;padding:14px;margin-top:14px;}
+.mem-row{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:14px;cursor:pointer;transition:background .2s;border-radius:8px;padding-left:8px;}
+.mem-row:hover{background:rgba(27,94,32,.07);}
+.mem-letter{font-family:'Fredoka One',cursive;font-size:18px;color:var(--coral);min-width:24px;}
+.mem-word{color:var(--gram);min-width:110px;font-weight:700;}
+.mem-tip{color:#ccc;}
+/* FINAL QUIZ */
+.quiz-page{background:var(--card-bg);border-radius:22px;padding:26px;min-height:540px;border:3px solid #388e3c;box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.quiz-progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.q-counter{font-family:'Fredoka One',cursive;font-size:13px;color:#999;}
+.q-score-badge{font-family:'Fredoka One',cursive;font-size:14px;background:#e8f5e9;border:2px solid #388e3c;padding:4px 14px;border-radius:20px;color:var(--gram);}
+.quiz-question-card{background:white;border-radius:16px;padding:20px;margin-bottom:16px;border:2px solid #e8f5e9;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.quiz-q-text{font-family:'Fredoka One',cursive;font-size:19px;color:var(--dark);line-height:1.4;margin-bottom:4px;}
+.quiz-q-emoji{font-size:40px;margin-bottom:10px;}
+.quiz-q-passage{background:#f5f5f5;border-radius:10px;padding:12px;font-size:13px;line-height:1.7;margin-bottom:12px;color:#444;}
+.fquiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.fq-opt{background:white;border:2px solid #cfd8dc;border-radius:14px;padding:12px 16px;font-size:15px;color:var(--dark);cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif;font-weight:700;}
+.fq-opt:hover:not(.locked){background:#e8f5e9;border-color:#388e3c;transform:translateY(-2px);}
+.fq-opt.correct{background:#d4edda;border-color:#27ae60;color:#155724;}
+.fq-opt.wrong{background:#f8d7da;border-color:#c0392b;color:#721c24;}
+.fq-opt.locked{cursor:not-allowed;opacity:.7;}
+.q-result-msg{font-family:'Fredoka One',cursive;font-size:16px;text-align:center;min-height:28px;margin-top:8px;}
+.next-q-btn{display:block;margin:12px auto 0;background:linear-gradient(135deg,#388e3c,#66bb6a);color:white;border:none;font-family:'Fredoka One',cursive;font-size:16px;padding:10px 28px;border-radius:22px;cursor:pointer;transition:all .2s;}
+.next-q-btn:hover{transform:scale(1.05);}
+.result-screen{text-align:center;padding:20px 10px;}
+.result-trophy{font-size:80px;margin-bottom:12px;animation:bounce 1s ease infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+.result-title{font-family:'Fredoka One',cursive;font-size:28px;margin-bottom:10px;}
+.result-score{font-family:'Fredoka One',cursive;font-size:48px;color:var(--yellow);}
+.result-msg{font-size:16px;color:#888;margin:12px 0 20px;line-height:1.7;}
+.retry-btn{background:linear-gradient(135deg,#e74c3c,#ff6b6b);color:white;border:none;font-family:'Fredoka One',cursive;font-size:18px;padding:12px 32px;border-radius:24px;cursor:pointer;transition:all .2s;margin:8px;}
+.retry-btn:hover{transform:scale(1.06);}
+.proceed-btn{background:linear-gradient(135deg,#27ae60,#2ecc71);color:white;border:none;font-family:'Fredoka One',cursive;font-size:18px;padding:12px 32px;border-radius:24px;cursor:pointer;transition:all .2s;margin:8px;}
+.proceed-btn:hover{transform:scale(1.06);}
+.cert-page{background:var(--card-bg);border-radius:22px;padding:24px;min-height:540px;border:3px solid var(--yellow);box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.cert-controls{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+.cert-name-input{font-family:'Nunito',sans-serif;font-size:16px;padding:10px 16px;border:2px solid var(--yellow);border-radius:12px;outline:none;flex:1;min-width:180px;color:#333;}
+.cert-name-input:focus{border-color:#388e3c;}
+.cert-dl-btn{background:#388e3c;color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:24px;cursor:pointer;transition:transform .15s;white-space:nowrap;}
+.cert-dl-btn:hover{transform:scale(1.05);}
+.cert-print-btn{background:#1565c0;color:white;border:none;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:24px;cursor:pointer;transition:transform .15s;}
+.cert-print-btn:hover{transform:scale(1.05);}
+.cert-wrap{background:white;border-radius:16px;padding:6px;border:3px solid var(--yellow);box-shadow:0 4px 20px rgba(0,0,0,.08);}
+canvas#cert{width:100%;border-radius:12px;display:block;}
+.cert-hint{font-size:12px;color:#aaa;margin-top:8px;text-align:center;}
+@media(max-width:580px){
+  .story-body{grid-template-columns:1fr;}
+  .cover-title{font-size:26px;}
+  .fquiz-options,.quiz-options{grid-template-columns:1fr;}
+  .cert-controls{flex-direction:column;}
+  .gram-table{font-size:12px;}
+}
+</style>
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="natural-read-aloud.js" defer></script>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+<div id="clouds"></div>
+<div id="app"><div class="tts-bar">
+  <button class="tts-btn" id="ttsBtn" onclick="toggleTTS()">🔊 Read Aloud</button>
+  <button class="tts-stop" id="ttsStop" onclick="stopTTS()" style="display:none;">⏹ Stop</button>
+</div>
+<div class="progress-strip">
+  <span class="progress-label">🌌 Grammar...</span>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <span class="progress-label" id="progressText">Page 1 of 14</span>
+</div>
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Back</button>
+  <div class="page-dots" id="pageDots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+</div>
+
+<!-- PAGE 0: COVER -->
+<div class="page active" data-page="0">
+  <div class="cover">
+    <svg viewBox="0 0 820 540" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="40" r="2" fill="white" opacity=".6"/><circle cx="120" cy="80" r="1.5" fill="white" opacity=".5"/>
+      <circle cx="200" cy="25" r="2.5" fill="white" opacity=".7"/><circle cx="300" cy="60" r="1.5" fill="white" opacity=".6"/>
+      <circle cx="400" cy="30" r="2" fill="white" opacity=".5"/><circle cx="600" cy="45" r="2" fill="white" opacity=".6"/>
+      <circle cx="700" cy="20" r="2.5" fill="white" opacity=".5"/>
+    </svg>
+    <div class="cover-glow"></div>
+    <div class="hero-anim">🚀</div>
+    <div class="cover-title">The Grammar<br>Galaxy!</div>
+    <div class="cover-sub">A Cosmic Language Adventure!</div>
+    <div class="cover-icons">
+      <span class="cover-icon" style="--wb:3s;--wd:0s">🌌</span>
+      <span class="cover-icon" style="--wb:3.5s;--wd:0.3s">📝</span>
+      <span class="cover-icon" style="--wb:4s;--wd:0.6s">✨</span>
+      <span class="cover-icon" style="--wb:3.2s;--wd:0.9s">🪐</span>
+      <span class="cover-icon" style="--wb:3.8s;--wd:1.2s">⭐</span>
+    </div>
+    <p class="cover-tagline">Master parts of speech, tenses, sentence types, and punctuation! · Year 3–5</p>
+  </div>
+</div>
+
+<!-- PAGE 1: MEET GIGI -->
+<div class="page" data-page="1">
+  <div class="story-page">
+    <div class="page-corner">p.1</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#388e3c;">Welcome!</span><h2 class="story-title">Meet Gigi the Galaxy Guide! 🚀</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Hello, young explorer! 👋🌟</p>
+        <p>I'm <span class="hw">Gigi the Galaxy Guide</span>, and I travel through the Grammar Galaxy — a universe where words have SUPERPOWERS! 🚀</p>
+        <p>Every sentence is like a spaceship, and the words inside are the crew members. Each word has a special job!</p>
+        <p>Today you'll discover FIVE galactic grammar powers:</p>
+        <p>🪐 <span class="hw2">Parts of Speech</span> — the word crews</p>
+        <p>⏰ <span class="hw3">Tenses</span> — past, present & future</p>
+        <p>🤝 <span class="hw">Agreement</span> — subjects & verbs working together</p>
+        <p>📢 <span class="hw2">Sentence Types</span> — statements, questions & more</p>
+        <p>✏️ <span class="hw3">Punctuation</span> — the traffic signs of writing</p>
+        <p>Ready to blast off? 3... 2... 1... GO! 🚀</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:70px;">🚀</div>
+        <div class="wonder-label">Gigi the Galaxy Guide</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🌌</span> Explores the Grammar Galaxy</div>
+          <div class="fact-row"><span class="fact-icon">📝</span> Expert at sentence building</div>
+          <div class="fact-row"><span class="fact-icon">✨</span> Loves punctuation magic</div>
+          <div class="fact-row"><span class="fact-icon">🪐</span> Knows every part of speech!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2: NOUNS & VERBS -->
+<div class="page" data-page="2">
+  <div class="story-page">
+    <div class="page-corner">p.2</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--gram);">Planet 1</span><h2 class="story-title">🪐 Nouns & Verbs — The Star Duo!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Every sentence needs TWO stars: a <span class="hw">noun</span> and a <span class="hw2">verb</span>! 🌟🌟</p>
+        <p><span class="hw">Nouns</span> are NAMING words. They tell us WHO or WHAT:</p>
+        <p>🔹 <strong>Common nouns:</strong> dog, school, city, book</p>
+        <p>🔹 <strong>Proper nouns:</strong> Australia, Monday, Sarah (start with a capital!)</p>
+        <p>🔹 <strong>Collective nouns:</strong> a flock of birds, a team of players</p>
+        <p><span class="hw2">Verbs</span> are ACTION or BEING words. They tell us what happens:</p>
+        <p>🔹 <strong>Action verbs:</strong> run, jump, eat, write, sing</p>
+        <p>🔹 <strong>Being verbs:</strong> is, am, are, was, were</p>
+        <p>🔹 <strong>Helping verbs:</strong> can, will, have, should</p>
+        <p>Together they form the sentence engine: <span class="hw3">"The dog (noun) runs (verb)."</span></p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🌟🌟</div>
+        <div class="wonder-label">The Star Duo!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">📛</span> Nouns = naming words</div>
+          <div class="fact-row"><span class="fact-icon">🏃</span> Verbs = action/being words</div>
+          <div class="fact-row"><span class="fact-icon">🅰️</span> Proper nouns = Capital letter</div>
+          <div class="fact-row"><span class="fact-icon">🚂</span> Noun + Verb = sentence engine</div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">Which word is a VERB in this sentence? "The cat <em>sleeps</em> on the mat."</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅰️ cat</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb1')">🅱️ sleeps</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅲 mat</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb1')">🅳 the</button>
+      </div>
+      <div class="quiz-feedback" id="fb1"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3: ADJECTIVES & ADVERBS -->
+<div class="page" data-page="3">
+  <div class="story-page">
+    <div class="page-corner">p.3</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--gram);">Planet 1</span><h2 class="story-title">🎨 Adjectives & Adverbs — The Decorators!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p><span class="hw">Adjectives</span> describe NOUNS — they add colour to your writing! 🎨</p>
+        <p>🔹 The <strong>big</strong>, <strong>fluffy</strong> dog sat on the <strong>red</strong> mat.</p>
+        <p>🔹 She ate a <strong>delicious</strong>, <strong>warm</strong> pie.</p>
+        <p>Ask: "What kind? Which one? How many?" → that's an adjective!</p>
+        <p><span class="hw2">Adverbs</span> describe VERBS — they tell us HOW, WHEN, or WHERE! ⚡</p>
+        <p>🔹 HOW: She ran <strong>quickly</strong>. He spoke <strong>softly</strong>.</p>
+        <p>🔹 WHEN: I'll go <strong>tomorrow</strong>. She arrived <strong>early</strong>.</p>
+        <p>🔹 WHERE: Look <strong>outside</strong>. Come <strong>here</strong>.</p>
+        <p><span class="hw3">Tip:</span> Many adverbs end in <strong>-ly</strong> (slow → slowly, happy → happily) but not all!</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🎨⚡</div>
+        <div class="wonder-label">Decorators of Language!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">🎨</span> Adjectives → describe nouns</div>
+          <div class="fact-row"><span class="fact-icon">⚡</span> Adverbs → describe verbs</div>
+          <div class="fact-row"><span class="fact-icon">❓</span> "What kind?" = adjective</div>
+          <div class="fact-row"><span class="fact-icon">❓</span> "How?" = adverb</div>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <div class="tip-box-title">💡 Gigi's Tip!</div>
+      <div class="tip-box-text">In challenge questions, you might be asked to identify parts of speech in a sentence. Remember: adjectives go with NOUNS, adverbs go with VERBS. "The <strong>tall</strong> girl ran <strong>quickly</strong>." → tall = adjective, quickly = adverb! 🏃‍♀️</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4: PRONOUNS, PREPOSITIONS & CONJUNCTIONS -->
+<div class="page" data-page="4">
+  <div class="story-page">
+    <div class="page-corner">p.4</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#1565c0;">Planet 2</span><h2 class="story-title">🔗 Pronouns, Prepositions & Conjunctions!</h2></div>
+    <div class="story-text" data-tts style="margin-bottom:10px;">
+      <p>Three more crew members for our Grammar Galaxy spaceship! 🚀</p>
+    </div>
+    <table class="gram-table">
+      <tr><th>Part of Speech</th><th>Job</th><th>Examples</th></tr>
+      <tr><td><strong>Pronouns 🔄</strong></td><td>Replace nouns to avoid repetition</td><td>I, he, she, they, we, it, me, him, her, them</td></tr>
+      <tr><td><strong>Prepositions 📍</strong></td><td>Show position, time, or direction</td><td>in, on, under, behind, between, through, during, before, after</td></tr>
+      <tr><td><strong>Conjunctions 🔗</strong></td><td>Join words or sentences together</td><td>and, but, or, so, because, when, although, if</td></tr>
+    </table>
+    <div class="story-text" data-tts style="margin-top:10px;">
+      <p>🔹 <strong>Pronoun example:</strong> "Sarah loves books. <span class="hw2">She</span> reads every day." (She = Sarah)</p>
+      <p>🔹 <strong>Preposition example:</strong> "The cat sat <span class="hw">under</span> the table."</p>
+      <p>🔹 <strong>Conjunction example:</strong> "I like pizza <span class="hw3">and</span> pasta, <span class="hw3">but</span> I don't like olives."</p>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">What part of speech is "behind" in: "The ball rolled behind the couch."?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅰️ Noun</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅱️ Adjective</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb2')">🅲 Preposition</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb2')">🅳 Conjunction</button>
+      </div>
+      <div class="quiz-feedback" id="fb2"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 5: TENSES -->
+<div class="page" data-page="5">
+  <div class="story-page">
+    <div class="page-corner">p.5</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#e67e22;">Planet 3</span><h2 class="story-title">⏰ Tenses — Time Travel with Words!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Tenses tell us WHEN something happens! It's like time travel! ⏰🕰️</p>
+        <p><span class="hw">Past Tense</span> = already happened (yesterday, last week):</p>
+        <p>🔹 Regular: walk → walk<strong>ed</strong>, jump → jump<strong>ed</strong></p>
+        <p>🔹 Irregular: go → <strong>went</strong>, eat → <strong>ate</strong>, run → <strong>ran</strong>, see → <strong>saw</strong></p>
+        <p><span class="hw2">Present Tense</span> = happening NOW:</p>
+        <p>🔹 I <strong>walk</strong>. She <strong>walks</strong>. They <strong>play</strong>.</p>
+        <p><span class="hw3">Future Tense</span> = will happen later:</p>
+        <p>🔹 I <strong>will go</strong>. She <strong>will eat</strong>. We <strong>will play</strong>.</p>
+        <p><span class="hw">Past Continuous</span> = was happening (in the middle of):</p>
+        <p>🔹 I <strong>was running</strong>. They <strong>were singing</strong>.</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">⏰</div>
+        <div class="wonder-label">Time Travel!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">⬅️</span> Past: walked, went, ate</div>
+          <div class="fact-row"><span class="fact-icon">⏺️</span> Present: walk, walks, play</div>
+          <div class="fact-row"><span class="fact-icon">➡️</span> Future: will walk, will play</div>
+          <div class="fact-row"><span class="fact-icon">🔄</span> Past continuous: was walking</div>
+        </div>
+      </div>
+    </div>
+    <div class="fun-fact">
+      <div class="fun-fact-title">📖 Fun Fact!</div>
+      <div class="fun-fact-text">English has over 200 irregular past tense verbs! The trickiest ones to remember: <strong>go → went</strong>, <strong>buy → bought</strong>, <strong>think → thought</strong>, <strong>catch → caught</strong>, <strong>teach → taught</strong>. They don't follow the "-ed" rule! 🤯</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 6: IRREGULAR PAST TENSE -->
+<div class="page" data-page="6">
+  <div class="story-page">
+    <div class="page-corner">p.6</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#e67e22;">Planet 3</span><h2 class="story-title">🦖 Irregular Past Tense — The Rebels!</h2></div>
+    <div class="story-text" data-tts style="margin-bottom:10px;">
+      <p>These verbs are REBELS — they don't follow the "-ed" rule! You have to learn them by heart! 🧠</p>
+    </div>
+    <table class="gram-table">
+      <tr><th>Present</th><th>Past</th><th>Present</th><th>Past</th></tr>
+      <tr><td>go</td><td><strong>went</strong></td><td>come</td><td><strong>came</strong></td></tr>
+      <tr><td>see</td><td><strong>saw</strong></td><td>eat</td><td><strong>ate</strong></td></tr>
+      <tr><td>run</td><td><strong>ran</strong></td><td>swim</td><td><strong>swam</strong></td></tr>
+      <tr><td>write</td><td><strong>wrote</strong></td><td>sing</td><td><strong>sang</strong></td></tr>
+      <tr><td>fly</td><td><strong>flew</strong></td><td>drink</td><td><strong>drank</strong></td></tr>
+      <tr><td>buy</td><td><strong>bought</strong></td><td>think</td><td><strong>thought</strong></td></tr>
+      <tr><td>catch</td><td><strong>caught</strong></td><td>teach</td><td><strong>taught</strong></td></tr>
+    </table>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">What is the past tense of "swim"?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅰️ swimmed</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb3')">🅱️ swam</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅲 swum</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb3')">🅳 swimed</button>
+      </div>
+      <div class="quiz-feedback" id="fb3"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 7: SUBJECT-VERB AGREEMENT -->
+<div class="page" data-page="7">
+  <div class="story-page">
+    <div class="page-corner">p.7</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#6a1b9a;">Planet 4</span><h2 class="story-title">🤝 Subject-Verb Agreement!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>The subject and verb must AGREE — they must match! 🤝</p>
+        <p><span class="hw">Rule:</span> Singular subject → singular verb. Plural subject → plural verb.</p>
+        <p>🔹 The dog <strong>runs</strong>. (1 dog = singular)</p>
+        <p>🔹 The dogs <strong>run</strong>. (many dogs = plural)</p>
+        <p>🔹 She <strong>is</strong> happy. / They <strong>are</strong> happy.</p>
+        <p>🔹 He <strong>was</strong> tired. / We <strong>were</strong> tired.</p>
+        <p><span class="hw2">Tricky cases:</span></p>
+        <p>🔹 Everyone <strong>is</strong> here. (everyone = singular!)</p>
+        <p>🔹 Nobody <strong>knows</strong> the answer. (nobody = singular!)</p>
+        <p>🔹 Each of the students <strong>has</strong> a book. (each = singular!)</p>
+        <p><span class="hw3">Remember:</span> "Everyone", "nobody", and "each" are always SINGULAR — even though they sound like they mean many people! 🤯</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🤝</div>
+        <div class="wonder-label">Matching Partners!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">1️⃣</span> 1 subject → runs, is, was</div>
+          <div class="fact-row"><span class="fact-icon">👥</span> Many subjects → run, are, were</div>
+          <div class="fact-row"><span class="fact-icon">⚠️</span> everyone = singular!</div>
+          <div class="fact-row"><span class="fact-icon">⚠️</span> nobody, each = singular!</div>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <div class="tip-box-title">💡 Gigi's Tip!</div>
+      <div class="tip-box-text">Challenge questions love testing subject-verb agreement with tricky subjects! If you see "everyone", "nobody", "somebody", or "each" — use the SINGULAR verb (is, was, has, runs). They may SOUND plural but they're not! 🎯</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 8: SENTENCE TYPES -->
+<div class="page" data-page="8">
+  <div class="story-page">
+    <div class="page-corner">p.8</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#c62828;">Planet 5</span><h2 class="story-title">📢 Four Types of Sentences!</h2></div>
+    <div class="story-text" data-tts style="margin-bottom:10px;">
+      <p>There are FOUR types of sentences, and each one has a different job! 📢</p>
+    </div>
+    <table class="gram-table">
+      <tr><th>Type</th><th>Job</th><th>Ends With</th><th>Example</th></tr>
+      <tr><td><strong>Statement</strong> (declarative)</td><td>Tells us something</td><td>Full stop <strong>.</strong></td><td>The sky is blue.</td></tr>
+      <tr><td><strong>Question</strong> (interrogative)</td><td>Asks something</td><td>Question mark <strong>?</strong></td><td>Is the sky blue?</td></tr>
+      <tr><td><strong>Exclamation</strong> (exclamatory)</td><td>Shows strong feeling</td><td>Exclamation mark <strong>!</strong></td><td>What a beautiful sky!</td></tr>
+      <tr><td><strong>Command</strong> (imperative)</td><td>Tells someone to do something</td><td><strong>.</strong> or <strong>!</strong></td><td>Look at the sky.</td></tr>
+    </table>
+    <div class="story-text" data-tts style="margin-top:12px;">
+      <p>🔹 <span class="hw">Statements</span> are the most common — they share information.</p>
+      <p>🔹 <span class="hw2">Questions</span> start with who, what, where, when, why, how, is, are, do, did, can, will.</p>
+      <p>🔹 <span class="hw3">Exclamations</span> often start with "What a..." or "How..."</p>
+      <p>🔹 <span class="hw">Commands</span> start with a VERB (Go! Sit down. Please open your books.)</p>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">What type of sentence is: "Close the door quietly."?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅰️ Statement</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅱️ Question</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb4')">🅲 Exclamation</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb4')">🅳 Command</button>
+      </div>
+      <div class="quiz-feedback" id="fb4"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 9: PUNCTUATION — BASICS -->
+<div class="page" data-page="9">
+  <div class="story-page">
+    <div class="page-corner">p.9</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#ad1457;">Planet 6</span><h2 class="story-title">✏️ Punctuation — The Traffic Signs!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p>Punctuation marks are like <span class="hw">traffic signs</span> for reading — they tell us when to stop, pause, or get excited! 🚦</p>
+        <p><span class="hw2">Full Stop (.)</span> → STOP. End of a sentence.</p>
+        <p>🔹 The dog sat on the mat<strong>.</strong></p>
+        <p><span class="hw3">Question Mark (?)</span> → A question is being asked!</p>
+        <p>🔹 Where is the dog<strong>?</strong></p>
+        <p><span class="hw">Exclamation Mark (!)</span> → Strong feeling or surprise!</p>
+        <p>🔹 Watch out<strong>!</strong> That was amazing<strong>!</strong></p>
+        <p><span class="hw2">Capital Letters</span> → Start of a sentence, proper nouns, and "I".</p>
+        <p>🔹 <strong>M</strong>y friend <strong>S</strong>arah and <strong>I</strong> went to <strong>S</strong>ydney on <strong>M</strong>onday<strong>.</strong></p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">🚦✏️</div>
+        <div class="wonder-label">Traffic Signs of Writing!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">⏹️</span> Full stop = STOP</div>
+          <div class="fact-row"><span class="fact-icon">❓</span> Question mark = asking</div>
+          <div class="fact-row"><span class="fact-icon">❗</span> Exclamation = strong feeling</div>
+          <div class="fact-row"><span class="fact-icon">🔠</span> Capitals = start + names + I</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 10: COMMAS & APOSTROPHES -->
+<div class="page" data-page="10">
+  <div class="story-page">
+    <div class="page-corner">p.10</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#ad1457;">Planet 6</span><h2 class="story-title">✨ Commas & Apostrophes — Superpowers!</h2></div>
+    <div class="story-text" data-tts style="margin-bottom:10px;">
+      <p>These two tiny marks have BIG superpowers! ✨</p>
+    </div>
+    <table class="gram-table">
+      <tr><th>Mark</th><th>Superpower</th><th>Examples</th></tr>
+      <tr><td><strong>Comma in lists ,</strong></td><td>Separates items in a list</td><td>I bought apples<strong>,</strong> bananas<strong>,</strong> and oranges.</td></tr>
+      <tr><td><strong>Comma after openers</strong></td><td>Pause after time words</td><td><strong>First,</strong> we ate lunch. <strong>Next,</strong> we played.</td></tr>
+      <tr><td><strong>Apostrophe for contractions '</strong></td><td>Squeezes two words into one</td><td>don't (do not), can't (cannot), it's (it is)</td></tr>
+      <tr><td><strong>Apostrophe for possession '</strong></td><td>Shows who owns something</td><td>the dog<strong>'s</strong> bone, Sarah<strong>'s</strong> bag</td></tr>
+    </table>
+    <div class="story-text" data-tts style="margin-top:12px;">
+      <p><span class="hw">⚠️ Watch out:</span> <strong>its</strong> vs <strong>it's</strong> is the TRICKIEST!</p>
+      <p>🔹 <strong>it's</strong> = "it is" (contraction): <em>It's raining.</em></p>
+      <p>🔹 <strong>its</strong> = belongs to "it" (possession): <em>The dog wagged its tail.</em></p>
+      <p><span class="hw2">Memory trick:</span> If you can replace it with "it is" → use <strong>it's</strong>. Otherwise → <strong>its</strong>!</p>
+    </div>
+    <div class="fun-fact">
+      <div class="fun-fact-title">📖 Skills Alert!</div>
+      <div class="fun-fact-text">Challenge questions love testing apostrophes! Remember: contractions (can't, don't, it's) use apostrophes where letters are MISSING. Possession (the cat's toy) uses an apostrophe before the S to show who OWNS it! 🎯</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 11: SPEECH MARKS -->
+<div class="page" data-page="11">
+  <div class="story-page">
+    <div class="page-corner">p.11</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#ad1457;">Planet 6</span><h2 class="story-title">💬 Speech Marks — Talking on Paper!</h2></div>
+    <div class="story-body">
+      <div class="story-text" data-tts>
+        <p><span class="hw">Speech marks</span> (quotation marks) show us the EXACT words someone says! 💬</p>
+        <p>The rules:</p>
+        <p>1️⃣ Put speech marks around the spoken words:</p>
+        <p>🔹 <strong>"Hello!"</strong> said the boy.</p>
+        <p>2️⃣ Punctuation goes INSIDE the speech marks:</p>
+        <p>🔹 "Where are you going<strong>?</strong>" asked Mum.</p>
+        <p>3️⃣ Use a comma before or after the speech:</p>
+        <p>🔹 The teacher said<strong>,</strong> "Please sit down."</p>
+        <p>🔹 "I love maths<strong>,</strong>" said Liam.</p>
+        <p>4️⃣ New speaker = new line!</p>
+        <p>🔹 "I'm hungry," said Tom.</p>
+        <p>🔹 "Me too!" replied Sarah.</p>
+      </div>
+      <div class="story-art">
+        <div style="font-size:50px;">💬</div>
+        <div class="wonder-label">Talking on Paper!</div>
+        <div class="wonder-facts">
+          <div class="fact-row"><span class="fact-icon">✅</span> "..." around spoken words</div>
+          <div class="fact-row"><span class="fact-icon">✅</span> Punctuation INSIDE marks</div>
+          <div class="fact-row"><span class="fact-icon">✅</span> Comma before/after speech</div>
+          <div class="fact-row"><span class="fact-icon">✅</span> New speaker = new line</div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-bubble">
+      <div class="quiz-title">🧠 Quick Quiz!</div>
+      <p style="font-size:14px;color:#555;margin-bottom:10px;">Which sentence has the speech marks in the RIGHT place?</p>
+      <div class="quiz-options">
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb5')">🅰️ "She said I love cake."</button>
+        <button class="q-opt" onclick="miniQuiz(this,'correct','fb5')">🅱️ She said, "I love cake."</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb5')">🅲 She said, I "love cake."</button>
+        <button class="q-opt" onclick="miniQuiz(this,'wrong','fb5')">🅳 She "said, I love cake."</button>
+      </div>
+      <div class="quiz-feedback" id="fb5"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 12: REVIEW — MNEMONIC -->
+<div class="page" data-page="12">
+  <div class="story-page">
+    <div class="page-corner">p.12</div>
+    <div class="story-header"><span class="chapter-badge" style="background:#388e3c;">Review</span><h2 class="story-title">🧠 Remember All 5 Grammar Powers!</h2></div>
+    <div class="story-text" data-tts style="margin-bottom:12px;">
+      <p>Gigi's memory trick to remember your 5 galactic grammar powers:</p>
+      <p style="text-align:center;font-family:'Fredoka One',cursive;font-size:18px;color:var(--gram);margin:12px 0;">🌟 "<span class="hw">P</span>lanets <span class="hw">T</span>ravel <span class="hw">A</span>round <span class="hw">S</span>tars <span class="hw">P</span>eacefully!" 🌟</p>
+    </div>
+    <div class="memory-card">
+      <div class="mem-row" onclick="revealMem(this,'m1','🪐 Parts of Speech — nouns, verbs, adjectives, adverbs, pronouns, prepositions, conjunctions!')">
+        <span class="mem-letter">P</span>
+        <span class="mem-word">Planets</span>
+        <span class="mem-tip" id="m1">🪐 ??? (tap to reveal!)</span>
+      </div>
+      <div class="mem-row" onclick="revealMem(this,'m2','⏰ Tenses — past, present, future, past continuous!')">
+        <span class="mem-letter">T</span>
+        <span class="mem-word">Travel</span>
+        <span class="mem-tip" id="m2">⏰ ??? (tap to reveal!)</span>
+      </div>
+      <div class="mem-row" onclick="revealMem(this,'m3','🤝 Agreement — singular subject = singular verb!')">
+        <span class="mem-letter">A</span>
+        <span class="mem-word">Around</span>
+        <span class="mem-tip" id="m3">🤝 ??? (tap to reveal!)</span>
+      </div>
+      <div class="mem-row" onclick="revealMem(this,'m4','📢 Sentence Types — statement, question, exclamation, command!')">
+        <span class="mem-letter">S</span>
+        <span class="mem-word">Stars</span>
+        <span class="mem-tip" id="m4">📢 ??? (tap to reveal!)</span>
+      </div>
+      <div class="mem-row" onclick="revealMem(this,'m5','✏️ Punctuation — full stops, commas, apostrophes, speech marks!')">
+        <span class="mem-letter">P</span>
+        <span class="mem-word">Peacefully</span>
+        <span class="mem-tip" id="m5">✏️ ??? (tap to reveal!)</span>
+      </div>
+    </div>
+    <div style="margin-top:14px;">
+      <div class="wonder-facts">
+        <div class="fact-row"><span class="fact-icon">🪐</span> <strong>Parts of Speech:</strong> Nouns, verbs, adjectives, adverbs & more!</div>
+        <div class="fact-row"><span class="fact-icon">⏰</span> <strong>Tenses:</strong> Past, present, future & irregular verbs!</div>
+        <div class="fact-row"><span class="fact-icon">🤝</span> <strong>Agreement:</strong> Subjects & verbs must match!</div>
+        <div class="fact-row"><span class="fact-icon">📢</span> <strong>Sentences:</strong> Statements, questions, exclamations, commands!</div>
+        <div class="fact-row"><span class="fact-icon">✏️</span> <strong>Punctuation:</strong> Traffic signs of writing!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 13: FINAL QUIZ -->
+<div class="page" data-page="13">
+  <div class="quiz-page" id="quizPage">
+    <div id="quizActive">
+      <div class="story-header"><span class="chapter-badge" style="background:#388e3c;">🏆 Final Quiz!</span><h2 class="story-title">The Grammar Galaxy Challenge!</h2></div>
+      <p style="font-size:14px;color:#666;margin-bottom:16px;">Gigi wants to test your grammar powers! Answer 6 questions. You need <strong>at least 5 correct</strong> to earn your certificate! 🌟</p>
+      <div class="quiz-progress-row">
+        <span class="q-counter" id="qCounter">Question 1 of 6</span>
+        <span class="q-score-badge" id="qScoreBadge">Score: 0 / 6</span>
+      </div>
+      <div class="quiz-question-card">
+        <div class="quiz-q-emoji" id="qEmoji">🌌</div>
+        <div class="quiz-q-passage" id="qPassage"></div>
+        <div class="quiz-q-text" id="qText"></div>
+      </div>
+      <div class="fquiz-options" id="fquizOptions"></div>
+      <div class="q-result-msg" id="qResultMsg"></div>
+      <button class="next-q-btn" id="nextQBtn" onclick="nextQuestion()" style="display:none;">Next Question →</button>
+    </div>
+    <div id="quizPass" style="display:none;">
+      <div class="result-screen">
+        <div class="result-trophy">🏆</div>
+        <div class="result-title" style="color:#2e7d32;">AMAZING! Grammar Galaxy Master!</div>
+        <div class="result-score" id="passScore">6 / 6</div>
+        <div class="result-msg" id="passMsg"></div>
+        <button class="proceed-btn" onclick="goToCert()">🎓 Get My Certificate! →</button>
+      </div>
+    </div>
+    <div id="quizFail" style="display:none;">
+      <div class="result-screen">
+        <div class="result-trophy">🌟</div>
+        <div class="result-title" style="color:var(--coral);">Almost There!</div>
+        <div class="result-score" id="failScore">3 / 6</div>
+        <div class="result-msg">You need at least 5 correct to earn your certificate.<br>Re-read the grammar lessons and try again! 💪</div>
+        <button class="retry-btn" onclick="restartQuiz()">🔄 Try Again!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 14: CERTIFICATE -->
+<div class="page" data-page="14">
+  <div class="cert-page">
+    <div class="page-corner">🎓</div>
+    <div class="story-header"><span class="chapter-badge" style="background:var(--yellow);color:#856404;">🏆 Certificate</span><h2 class="story-title">Your Grammar Galaxy Certificate!</h2></div>
+    <div class="cert-controls">
+      <input class="cert-name-input" id="certName" placeholder="Type the child's name here..." oninput="drawCert()"/>
+      <button class="cert-dl-btn" onclick="downloadCert()">⬇ Download PNG</button>
+      <button class="cert-print-btn" onclick="printCert()">🖨 Print</button>
+    </div>
+    <div class="cert-wrap">
+      <canvas id="cert" width="900" height="630"></canvas>
+    </div>
+    <p class="cert-hint">Type the name above, then click Download or Print!</p>
+  </div>
+</div>
+
+</div>
+
+<script>
+(function(){const c=document.getElementById('clouds');const e=['☁️','⛅','✨'];for(let i=0;i<6;i++){const el=document.createElement('div');el.className='cloud';el.textContent=e[i%e.length];el.style.top=(Math.random()*80)+'%';el.style.animationDuration=(20+Math.random()*30)+'s';el.style.animationDelay=(Math.random()*20)+'s';el.style.fontSize=(40+Math.random()*30)+'px';c.appendChild(el);}})();
+
+const TOTAL=14;let currentPage=0;const pages=document.querySelectorAll('.page');
+const dotsC=document.getElementById('pageDots');for(let i=0;i<=TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.onclick=()=>goToPage(i);dotsC.appendChild(d);}
+
+function goToPage(n){if(n<0||n>TOTAL)return;if(n===14&&!quizPassed){alert('Pass the quiz first to get your certificate! 🌟');return;}stopTTS();pages[currentPage].classList.remove('active');currentPage=n;pages[currentPage].classList.add('active');document.getElementById('prevBtn').disabled=currentPage===0;document.getElementById('nextBtn').disabled=currentPage===TOTAL;document.getElementById('progressFill').style.width=Math.round(currentPage/TOTAL*100)+'%';document.getElementById('progressText').textContent='Page '+(currentPage+1)+' of '+(TOTAL+1);document.querySelectorAll('.dot').forEach((d,i)=>{d.classList.toggle('active',i===currentPage);if(i<currentPage)d.classList.add('visited');});if(currentPage===13)initQuiz();if(currentPage===14)setTimeout(drawCert,120);window.scrollTo({top:0,behavior:'smooth'});}
+function changePage(d){goToPage(currentPage+d);}
+
+let isSpeaking=false,utterance=null;
+function toggleTTS(){if(isSpeaking){stopTTS();return;}const el=pages[currentPage].querySelector('[data-tts]')||pages[currentPage].querySelector('.story-text')||pages[currentPage].querySelector('.story-page');if(!el)return;speak(el.textContent);}
+function speak(text){if(!('speechSynthesis' in window))return;stopTTS();text=text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{200D}\u{20E3}\u{E0020}-\u{E007F}]/gu,'').replace(/\s+/g,' ').trim();utterance=new SpeechSynthesisUtterance(text);utterance.rate=0.78;utterance.pitch=1.15;utterance.lang='en-AU';const v=speechSynthesis.getVoices();const pref=v.find(x=>x.name.includes('Karen'))||v.find(x=>x.name.includes('Samantha'))||v.find(x=>x.lang.startsWith('en'));if(pref)utterance.voice=pref;utterance.onstart=()=>{isSpeaking=true;document.getElementById('ttsBtn').classList.add('speaking');document.getElementById('ttsBtn').textContent='🔊 Reading...';document.getElementById('ttsStop').style.display='inline-flex';};utterance.onend=resetTTS;utterance.onerror=resetTTS;speechSynthesis.speak(utterance);}
+function stopTTS(){if('speechSynthesis' in window)speechSynthesis.cancel();resetTTS();}
+function resetTTS(){isSpeaking=false;document.getElementById('ttsBtn').classList.remove('speaking');document.getElementById('ttsBtn').textContent='🔊 Read Aloud';document.getElementById('ttsStop').style.display='none';}
+if('speechSynthesis' in window)speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
+
+function miniQuiz(btn,type,fbId){const c=btn.closest('.quiz-bubble');c.querySelectorAll('.q-opt').forEach(b=>b.style.pointerEvents='none');const fb=document.getElementById(fbId);if(type==='correct'){btn.classList.add('correct');fb.innerHTML='<span style="color:#27ae60;">🎉 Correct! Great grammar skills!</span>';}else{btn.classList.add('wrong');c.querySelectorAll('.q-opt').forEach(b=>{if(b.onclick&&b.onclick.toString().includes("\'correct\'"))b.classList.add('correct');});fb.innerHTML='<span style="color:#c0392b;">Not quite! The green one is correct. Keep learning! 💪</span>';}}
+
+function revealMem(row,id,answer){document.getElementById(id).textContent=answer;document.getElementById(id).style.color='var(--gram)';row.style.background='rgba(27,94,32,.05)';}
+
+const QUESTIONS=[
+  {emoji:'🪐',passage:'',q:'Which word is a NOUN in: "The happy children played in the park."?',opts:['happy','played','children','in'],ans:2},
+  {emoji:'⏰',passage:'',q:'What is the past tense of "go"?',opts:['goed','gone','going','went'],ans:3},
+  {emoji:'🤝',passage:'',q:'Which sentence has correct subject-verb agreement?',opts:['The dogs runs fast.','Everyone are happy.','She was tired.','They was playing.'],ans:2},
+  {emoji:'📢',passage:'',q:'What type of sentence is: "What an incredible sunset!"?',opts:['Statement','Question','Exclamation','Command'],ans:2},
+  {emoji:'✏️',passage:'',q:'Which sentence uses the apostrophe correctly?',opts:['The cat licked it\'s paw.','The cat licked its paw.','The cats\' licked its paw.','The cat licked its\' paw.'],ans:1},
+  {emoji:'💬',passage:'',q:'Which sentence uses speech marks correctly?',opts:['"Hello, said the girl."','Hello, "said the girl."','"Hello," said the girl.','Hello, said "the girl."'],ans:2}
+];
+let qIdx=0,score=0,answered=false,quizPassed=false;
+function initQuiz(){qIdx=0;score=0;answered=false;document.getElementById('quizActive').style.display='block';document.getElementById('quizPass').style.display='none';document.getElementById('quizFail').style.display='none';renderQ();}
+function renderQ(){const q=QUESTIONS[qIdx];document.getElementById('qEmoji').textContent=q.emoji;document.getElementById('qPassage').textContent=q.passage;document.getElementById('qPassage').style.display=q.passage?'block':'none';document.getElementById('qText').textContent=q.q;document.getElementById('qCounter').textContent='Question '+(qIdx+1)+' of 6';document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';document.getElementById('qResultMsg').textContent='';document.getElementById('nextQBtn').style.display='none';answered=false;const o=document.getElementById('fquizOptions');o.innerHTML='';q.opts.forEach((t,i)=>{const b=document.createElement('button');b.className='fq-opt';b.textContent=t;b.onclick=()=>answerQ(i,b);o.appendChild(b);});}
+function answerQ(i,btn){if(answered)return;answered=true;const q=QUESTIONS[qIdx];document.querySelectorAll('.fq-opt').forEach(b=>b.classList.add('locked'));const msg=document.getElementById('qResultMsg');if(i===q.ans){btn.classList.add('correct');score++;msg.innerHTML='<span style="color:#27ae60;">🎉 Correct!</span>';}else{btn.classList.add('wrong');document.querySelectorAll('.fq-opt')[q.ans].classList.add('correct');msg.innerHTML='<span style="color:#c0392b;">Not quite! Correct answer is in green. 💪</span>';}document.getElementById('qScoreBadge').textContent='Score: '+score+' / 6';document.getElementById('nextQBtn').style.display='block';document.getElementById('nextQBtn').textContent=qIdx===5?'See My Result! 🏁':'Next Question →';}
+function nextQuestion(){qIdx++;if(qIdx>=6){showResult();return;}renderQ();}
+function showResult(){document.getElementById('quizActive').style.display='none';if(score>=5){quizPassed=true;document.getElementById('quizPass').style.display='block';document.getElementById('passScore').textContent=score+' / 6';document.getElementById('passMsg').innerHTML=score===6?'PERFECT SCORE! You\'re a true Grammar Galaxy Master! 🏆🌟🎉':'Brilliant grammar! You really know your stuff! 🚀✨';}else{document.getElementById('quizFail').style.display='block';document.getElementById('failScore').textContent=score+' / 6';}}
+function restartQuiz(){initQuiz();}
+function goToCert(){goToPage(14);}
+
+const canvas=document.getElementById('cert'),ctx=canvas.getContext('2d');
+const qrImage=new Image();
+let qrReady=false;
+qrImage.crossOrigin='anonymous';
+qrImage.onload=()=>{qrReady=true;drawCert();};
+qrImage.src='https://quickchart.io/qr?text='+encodeURIComponent('https://fivetofifteen.com/')+'&size=180';
+function drawStar(cx,cy,r,pts,col){ctx.save();ctx.fillStyle=col;ctx.beginPath();for(let i=0;i<pts*2;i++){const a=(i*Math.PI/pts)-Math.PI/2,rd=i%2===0?r:r*.45;i===0?ctx.moveTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a)):ctx.lineTo(cx+rd*Math.cos(a),cy+rd*Math.sin(a));}ctx.closePath();ctx.fill();ctx.restore();}
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();}
+
+function drawCert(){
+  const name=document.getElementById('certName').value.trim()||'Grammar Explorer';
+  const CW=900,CH=630;ctx.clearRect(0,0,CW,CH);
+  const bg=ctx.createLinearGradient(0,0,CW,CH);bg.addColorStop(0,'#F0FFF4');bg.addColorStop(.5,'#E8F5E9');bg.addColorStop(1,'#F0F4FF');ctx.fillStyle=bg;rr(0,0,CW,CH,20);ctx.fill();
+  ctx.strokeStyle='#388e3c';ctx.lineWidth=6;rr(8,8,CW-16,CH-16,16);ctx.stroke();
+  ctx.strokeStyle='#1b5e20';ctx.lineWidth=2;ctx.setLineDash([8,5]);rr(20,20,CW-40,CH-40,10);ctx.stroke();ctx.setLineDash([]);
+  [[52,52],[CW-52,52],[52,CH-52],[CW-52,CH-52]].forEach(([x,y])=>drawStar(x,y,18,5,'#66bb6a'));
+  const rg=ctx.createLinearGradient(CW/2-220,0,CW/2+220,0);rg.addColorStop(0,'#1b5e20');rg.addColorStop(.5,'#2e7d32');rg.addColorStop(1,'#1b5e20');ctx.fillStyle=rg;rr(CW/2-220,28,440,44,22);ctx.fill();
+  ctx.fillStyle='#ffd93d';ctx.font='bold 17px "Fredoka One",cursive';ctx.textAlign='center';ctx.fillText('🌌  THE GRAMMAR GALAXY  🌌',CW/2,57);
+  ctx.font='64px serif';ctx.fillText('🚀',CW/2,142);
+  ctx.fillStyle='#1b5e20';ctx.font='bold 40px "Fredoka One",cursive';ctx.fillText('Grammar Galaxy Certificate!',CW/2,196);
+  ctx.fillStyle='#888';ctx.font='17px "Nunito",sans-serif';ctx.fillText('This is to proudly certify that the stellar explorer',CW/2,232);
+  ctx.strokeStyle='#388e3c';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(CW/2-240,276);ctx.lineTo(CW/2+240,276);ctx.stroke();
+  ctx.fillStyle='#1b5e20';ctx.font='bold 38px "Fredoka One",cursive';ctx.fillText(name,CW/2,270);
+  ctx.fillStyle='#444';ctx.font='17px "Nunito",sans-serif';ctx.fillText('has explored the Grammar Galaxy and is now an official',CW/2,310);
+  ctx.fillStyle='#1b5e20';ctx.font='bold 24px "Fredoka One",cursive';ctx.fillText('🌟 Grammar Galaxy Master 🌟',CW/2,344);
+  ctx.fillStyle='#888';ctx.font='14px "Nunito",sans-serif';ctx.fillText('Mastered: Parts of Speech • Tenses • Agreement • Sentences • Punctuation',CW/2,372);
+  const badges=[{t:'✓ Parts of Speech',bg:'#e8f5e9',c:'#1b5e20'},{t:'✓ Tenses Pro',bg:'#fff3e0',c:'#e65100'},{t:'✓ Punctuation Star',bg:'#fce4ec',c:'#ad1457'},{t:'✓ Galaxy Master!',bg:'#e3f2fd',c:'#1565c0'}];
+  const bw=168,bh=30,bg2=10,tot=badges.length*(bw+bg2)-bg2;let bx=CW/2-tot/2;
+  badges.forEach(b=>{ctx.fillStyle=b.bg;rr(bx,390,bw,bh,15);ctx.fill();ctx.fillStyle=b.c;ctx.font='bold 12px "Nunito",sans-serif';ctx.textAlign='center';ctx.fillText(b.t,bx+bw/2,409);bx+=bw+bg2;});
+  ctx.font='32px serif';ctx.fillText('🌌  🚀  📝  ✨  ⭐',CW/2,468);
+  ctx.fillStyle='#ffffff';ctx.strokeStyle='#cfd8dc';ctx.lineWidth=2;rr(CW-154,68,102,102,14);ctx.fill();ctx.stroke();
+  if(qrReady){
+    ctx.drawImage(qrImage,CW-144,78,82,82);
+  }else{
+    ctx.fillStyle='#e8f5e9';ctx.fillRect(CW-144,78,82,82);
+    ctx.fillStyle='#1b5e20';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('QR loading...',CW-103,122);
+  }
+  ctx.fillStyle='#1b5e20';ctx.font='bold 10px "Nunito",sans-serif';ctx.fillText('Scan to visit',CW-103,185);
+  ctx.fillStyle='#9e9e9e';ctx.font='bold 12px "Nunito",sans-serif';ctx.fillText('Presented by fivetofifteen.com',CW/2,538);
+  const d=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});ctx.fillStyle='#bbb';ctx.font='12px "Nunito",sans-serif';ctx.fillText('Awarded on '+d,CW/2,570);
+  [[80,200],[CW-80,200],[80,420],[CW-80,420]].forEach(([x,y])=>drawStar(x,y,10,5,'rgba(102,187,106,.35)'));
+}
+function downloadCert(){drawCert();const a=document.createElement('a');a.download='grammar-galaxy-certificate.png';a.href=canvas.toDataURL('image/png');a.click();}
+function printCert(){drawCert();const u=canvas.toDataURL('image/png');const w=window.open('','_blank');w.document.write('<!DOCTYPE html><html><head><title>Grammar Galaxy Certificate<\/title><style>body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f5f5f5;}img{max-width:100%;box-shadow:0 4px 20px rgba(0,0,0,.15);border-radius:12px;}@media print{body{background:white;}img{box-shadow:none;width:100%;}}<\/style><\/head><body><img src="'+u+'"/><\/body><\/html>');w.document.close();w.onload=()=>{w.focus();w.print();};}
+drawCert();
+</script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ideas | FiveToFifteen</title>
+  <meta name="description" content="Ideas, future plans, topic suggestions, and content directions for FiveToFifteen." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <style>
+    html{font-size:17px}
+    @media (max-width:500px){html{font-size:16px}}
+    :root{
+      --ink:#25314c;
+      --muted:#66758f;
+      --line:#e7eaf4;
+      --shadow:0 18px 36px rgba(55,73,109,.12);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Nunito',sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 16% 16%,rgba(255,236,179,.46) 0 120px,transparent 121px),
+        radial-gradient(circle at 84% 18%,rgba(220,213,250,.42) 0 130px,transparent 131px),
+        linear-gradient(180deg,#fffdfa 0%,#f7f8ff 100%);
+      min-height:100vh;
+    }
+    .shell{max-width:1080px;margin:0 auto;padding:22px 20px 72px}
+    .top-link{
+      display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+      min-height:42px;padding:10px 16px;border-radius:999px;
+      background:#fff;border:1px solid var(--line);color:#5b6780;font-weight:900;
+      box-shadow:0 10px 22px rgba(55,73,109,.08)
+    }
+    .hero{
+      margin-top:14px;
+      background:linear-gradient(135deg,#ffb347 0%,#ff8f70 42%,#7e7cf2 100%);
+      color:#fff;border-radius:34px;padding:34px 28px;position:relative;overflow:hidden;
+      box-shadow:var(--shadow);
+    }
+    .hero::after{
+      content:'';
+      position:absolute;right:-34px;bottom:-26px;width:170px;height:170px;border-radius:50%;
+      background:rgba(255,255,255,.12);
+    }
+    .hero-badge{
+      display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;
+      background:rgba(255,255,255,.16);font-weight:900;font-size:.82rem;margin-bottom:14px;
+    }
+    h1{font-family:'Fredoka One',cursive;font-size:clamp(2rem,5vw,3.3rem);line-height:1.08;margin-bottom:12px}
+    .hero p{max-width:720px;line-height:1.75;color:rgba(255,255,255,.93)}
+    .section{
+      margin-top:22px;background:#fff;border:1px solid var(--line);border-radius:30px;padding:26px;
+      box-shadow:var(--shadow);
+    }
+    .section-title{font-family:'Fredoka One',cursive;font-size:1.55rem;color:#33466f;margin-bottom:10px}
+    .section-copy{color:var(--muted);line-height:1.75}
+    .idea-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:18px}
+    .idea-card{
+      background:linear-gradient(180deg,#fff 0%,#fcfdff 100%);border:1px solid var(--line);border-radius:22px;padding:18px;
+      display:grid;gap:10px;
+    }
+    .idea-icon{
+      width:52px;height:52px;border-radius:18px;display:inline-flex;align-items:center;justify-content:center;
+      font-size:1.6rem;background:linear-gradient(135deg,#fff0cc 0%,#ffe2d5 100%);
+      box-shadow:0 10px 20px rgba(255,159,28,.14);
+    }
+    .idea-card h2{font-family:'Fredoka One',cursive;font-size:1.12rem;color:var(--ink)}
+    .idea-card p{color:var(--muted);line-height:1.7}
+    .roadmap{display:grid;gap:14px;margin-top:18px}
+    .roadmap-item{
+      display:grid;grid-template-columns:54px minmax(0,1fr);gap:14px;align-items:start;
+      background:linear-gradient(180deg,#fff 0%,#fcfdff 100%);border:1px solid var(--line);border-radius:22px;padding:16px;
+    }
+    .roadmap-step{
+      width:54px;height:54px;border-radius:18px;display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,#7e7cf2 0%,#57c9c4 100%);color:#fff;font-family:'Fredoka One',cursive;font-size:1.2rem;
+    }
+    .roadmap-item strong{display:block;font-size:1.02rem;color:var(--ink);margin-bottom:6px}
+    .roadmap-item span{display:block;color:var(--muted);line-height:1.7}
+    .pill-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;
+      background:#f5f3ff;border:1px solid #e2dbff;color:#6e58c5;font-weight:800;
+    }
+    @media (max-width:900px){.idea-grid{grid-template-columns:1fr}.roadmap-item{grid-template-columns:1fr}}
+  </style>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+  <div class="shell"><section class="hero">
+      <div class="hero-badge">💡 Growing Ideas</div>
+      <h1>A Home For Future Plans And Bright Ideas</h1>
+      <p>This page is a simple place to keep new concepts, upcoming topics, content experiments, feature plans, and fun directions for the library. It is intentionally generic now, so you can shape it later without needing a redesign.</p>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Idea Buckets</h2>
+      <p class="section-copy">These are easy categories you can use later when you want to note what should be built next.</p>
+      <div class="idea-grid">
+        <article class="idea-card">
+          <div class="idea-icon">📚</div>
+          <h2>Story Ideas</h2>
+          <p>New story topics, life-skill stories, science explainers, history adventures, and simple maths stories can live here.</p>
+        </article>
+        <article class="idea-card">
+          <div class="idea-icon">🎮</div>
+          <h2>Game Ideas</h2>
+          <p>Quick learning games, matching games, memory challenges, and visual mini-games can be collected here before building.</p>
+        </article>
+        <article class="idea-card">
+          <div class="idea-icon">🧠</div>
+          <h2>Study Path Ideas</h2>
+          <p>Future exam paths, gentle practice flows, skill ladders, and family-friendly learning sequences can be mapped here.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Simple Example Roadmap</h2>
+      <p class="section-copy">These are placeholder roadmap cards so the page already has structure and purpose.</p>
+      <div class="roadmap">
+        <article class="roadmap-item">
+          <div class="roadmap-step">1</div>
+          <div>
+            <strong>Collect ideas from families</strong>
+            <span>Use feedback, topic requests, and repeated questions to decide what should be built next.</span>
+          </div>
+        </article>
+        <article class="roadmap-item">
+          <div class="roadmap-step">2</div>
+          <div>
+            <strong>Choose what fits the library best</strong>
+            <span>Pick ideas that are useful, age-friendly, visually clear, and easy to keep consistent with the rest of the site.</span>
+          </div>
+        </article>
+        <article class="roadmap-item">
+          <div class="roadmap-step">3</div>
+          <div>
+            <strong>Turn them into real pages</strong>
+            <span>Stories, games, topic lessons, printables, competitions, or guided paths can all grow from this page later.</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Quick Placeholder Topics</h2>
+      <p class="section-copy">A lightweight place to park future content themes.</p>
+      <div class="pill-row">
+        <span class="pill">🌦️ Weather stories</span>
+        <span class="pill">🧮 Maths mini-games</span>
+        <span class="pill">🗺️ World facts</span>
+        <span class="pill">🧠 Thinking skills</span>
+        <span class="pill">✍️ Writing prompts</span>
+        <span class="pill">🎨 Visual practice</span>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

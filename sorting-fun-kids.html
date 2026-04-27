@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sorting Fun</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="accessibility-modes.css" />
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="accessibility-preferences.js" defer></script>
+  <script src="focus-calm-guide.js"></script>
+  <style>
+    :root{
+      --ink:#28415f;
+      --muted:#64758a;
+      --paper:#fffef9;
+      --line:#e3ebf2;
+      --mint:#73d1b3;
+      --mint-dark:#2d8f73;
+      --sky:#e5f3ff;
+      --sun:#ffe3a5;
+      --rose:#ffd7df;
+      --lav:#efe8ff;
+    }
+    html{font-size:17px}
+    @media (max-width:500px){html{font-size:16px}}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Nunito',sans-serif;
+      color:var(--ink);
+      min-height:100vh;
+      background:
+        radial-gradient(circle at 12% 9%, rgba(229,243,255,.96) 0, transparent 24%),
+        radial-gradient(circle at 88% 10%, rgba(255,227,165,.62) 0, transparent 25%),
+        linear-gradient(180deg,#f8fffd 0%,#fffaf2 100%);
+      padding:16px;
+    }
+    .page{
+      max-width:1100px;
+      margin:0 auto;
+      background:var(--paper);
+      border:1px solid var(--line);
+      border-radius:28px;
+      overflow:hidden;
+      box-shadow:0 18px 34px rgba(37,64,90,.09);
+    }
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      padding:16px 18px;
+      border-bottom:1px solid var(--line);
+      background:linear-gradient(135deg,#eefbf6 0%,#f7fbff 48%,#fff7ea 100%);
+    }
+    .home-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-height:44px;
+      padding:10px 16px;
+      border-radius:999px;
+      text-decoration:none;
+      font-weight:800;
+      color:#fff;
+      background:linear-gradient(135deg,#39c3ad 0%,#48ceb3 100%);
+    }
+    .title-lockup{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .title-icon{
+      width:52px;
+      height:52px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,#fff4de 0%,#dff6ee 100%);
+      font-size:1.7rem;
+    }
+    .title-lockup h1{
+      font-family:'Fredoka One',cursive;
+      font-size:1.6rem;
+      color:#2e5670;
+      line-height:1.15;
+    }
+    .title-lockup p{
+      color:var(--muted);
+      font-size:.94rem;
+      margin-top:4px;
+    }
+    .shell{
+      padding:20px;
+      display:grid;
+      gap:18px;
+    }
+    .support-bar,
+    .game-board,
+    .reward-card{
+      border:1px solid var(--line);
+      border-radius:26px;
+      box-shadow:0 10px 22px rgba(37,64,90,.06);
+    }
+    .support-bar{
+      background:linear-gradient(135deg,#fbfffd 0%,#f7fbff 55%,#fffaf2 100%);
+      padding:18px;
+    }
+    .support-bar h2,
+    .mission-copy h2,
+    .reward-card h2{
+      font-family:'Fredoka One',cursive;
+      color:#2e5670;
+    }
+    .support-bar h2{
+      font-size:1.18rem;
+      margin-bottom:8px;
+    }
+    .support-bar p{
+      color:var(--muted);
+      line-height:1.65;
+      margin-bottom:14px;
+    }
+    .pref-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+    }
+    .game-board{
+      background:linear-gradient(135deg,#fffdfa 0%,#f6fbff 50%,#fff9ef 100%);
+      padding:20px;
+      display:grid;
+      gap:16px;
+    }
+    .mission-top{
+      display:grid;
+      grid-template-columns:128px minmax(0,1fr);
+      gap:16px;
+      align-items:center;
+    }
+    .guide-box{
+      min-height:126px;
+      border-radius:26px;
+      display:grid;
+      place-items:center;
+      font-size:4rem;
+      border:1px solid #e2e9f1;
+      background:
+        radial-gradient(circle at 28% 24%, rgba(255,255,255,.82) 0, transparent 18%),
+        linear-gradient(180deg,#eef7ff 0%,#fff0bf 100%);
+      position:relative;
+      overflow:hidden;
+    }
+    .guide-box::after{
+      content:'';
+      position:absolute;
+      bottom:-10px;
+      width:72px;
+      height:28px;
+      border-radius:50%;
+      background:rgba(255,255,255,.45);
+      filter:blur(6px);
+    }
+    .mission-copy h2{
+      font-size:1.45rem;
+      margin-bottom:8px;
+    }
+    .mission-copy p{
+      color:var(--muted);
+      line-height:1.7;
+    }
+    .play-stats{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+    }
+    .play-stat{
+      border-radius:18px;
+      border:1px solid #dde7ef;
+      background:#fff;
+      padding:12px;
+      text-align:center;
+    }
+    .play-stat-label{
+      display:block;
+      font-size:.74rem;
+      text-transform:uppercase;
+      letter-spacing:.6px;
+      font-weight:800;
+      color:#7b8794;
+    }
+    .play-stat-value{
+      display:block;
+      margin-top:4px;
+      font-family:'Fredoka One',cursive;
+      font-size:1.14rem;
+      color:#2f5671;
+    }
+    .play-field{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:18px;
+      box-shadow:0 10px 20px rgba(37,64,90,.05);
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      gap:14px;
+    }
+    .play-field::before{
+      content:'';
+      position:absolute;
+      right:-24px;
+      bottom:-24px;
+      width:180px;
+      height:180px;
+      background:radial-gradient(circle, rgba(239,232,255,.72) 0%, transparent 70%);
+      pointer-events:none;
+    }
+    .scene-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      position:relative;
+      z-index:1;
+    }
+    .scene-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#eef8ff;
+      border:1px solid #dce8f4;
+      color:#4b6981;
+      font-weight:800;
+      font-size:.86rem;
+    }
+    .scene-title{
+      font-family:'Fredoka One',cursive;
+      font-size:1.2rem;
+      color:#2f5671;
+    }
+    .scene-sub{
+      color:var(--muted);
+      font-size:.95rem;
+    }
+    .progress-dots{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .progress-dot{
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      background:#d8e5df;
+      box-shadow:inset 0 0 0 2px rgba(255,255,255,.7);
+    }
+    .progress-dot.done{background:#5cc39d}
+    .progress-dot.active{background:#ffd166;transform:scale(1.2)}
+    .rule-card{
+      border-radius:22px;
+      border:1px solid #e2e9f1;
+      background:linear-gradient(135deg,#f9fcff 0%,#fff9ef 100%);
+      padding:16px;
+      display:grid;
+      gap:12px;
+      position:relative;
+      z-index:1;
+    }
+    .rule-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .rule-chip{
+      display:inline-flex;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#fff4df;
+      color:#9b6f18;
+      font-weight:800;
+      font-size:.82rem;
+    }
+    .rule-mini{
+      color:#77889a;
+      font-size:.82rem;
+      font-weight:800;
+    }
+    .rule-main{
+      display:grid;
+      gap:8px;
+      text-align:center;
+    }
+    .rule-main strong{
+      font-family:'Fredoka One',cursive;
+      color:#345978;
+      font-size:1.15rem;
+    }
+    .rule-main span{
+      color:var(--muted);
+      line-height:1.6;
+    }
+    .items-grid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:14px;
+      position:relative;
+      z-index:1;
+    }
+    .item-card{
+      min-height:170px;
+      border:2px solid #dce6f2;
+      border-radius:24px;
+      background:linear-gradient(180deg,#ffffff 0%,#f9fcff 100%);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:16px;
+      cursor:pointer;
+      transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease, background .16s ease, opacity .16s ease;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .item-card:hover{
+      transform:translateY(-2px);
+      box-shadow:0 14px 24px rgba(37,64,90,.10);
+    }
+    .item-card::before{
+      content:'';
+      position:absolute;
+      top:-24px;
+      right:-24px;
+      width:84px;
+      height:84px;
+      border-radius:50%;
+      background:rgba(229,243,255,.76);
+    }
+    .item-card.selected{
+      border-color:#4d96ff;
+      box-shadow:0 0 0 4px rgba(77,150,255,.14);
+      background:linear-gradient(180deg,#f2f8ff 0%,#ffffff 100%);
+    }
+    .item-card.done{
+      opacity:.25;
+      pointer-events:none;
+      transform:none;
+    }
+    .item-emoji{
+      font-size:3.2rem;
+      line-height:1;
+      position:relative;
+      z-index:1;
+    }
+    .item-label{
+      font-family:'Fredoka One',cursive;
+      font-size:.98rem;
+      color:#2f5671;
+      position:relative;
+      z-index:1;
+    }
+    .item-hint{
+      color:#758595;
+      font-size:.8rem;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.5px;
+      position:relative;
+      z-index:1;
+    }
+    .baskets{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:14px;
+      position:relative;
+      z-index:1;
+    }
+    .basket{
+      min-height:220px;
+      border:2px dashed #d4e3ee;
+      border-radius:24px;
+      background:linear-gradient(180deg,#fbfdff 0%,#fffdfa 100%);
+      padding:14px;
+      display:grid;
+      grid-template-rows:auto auto 1fr;
+      gap:10px;
+      cursor:pointer;
+      transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+    }
+    .basket:hover{
+      transform:translateY(-2px);
+      box-shadow:0 14px 24px rgba(37,64,90,.10);
+    }
+    .basket.selected{
+      border-color:#4d96ff;
+      box-shadow:0 0 0 4px rgba(77,150,255,.14);
+    }
+    .basket.good{
+      border-color:#2dba87;
+      background:linear-gradient(180deg,#effcf6 0%,#f8fffb 100%);
+    }
+    .basket.wrong{
+      border-color:#e27474;
+      background:linear-gradient(180deg,#fff4f4 0%,#fffafb 100%);
+    }
+    .basket-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .basket-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#eef8ff;
+      border:1px solid #dce8f4;
+      color:#4b6981;
+      font-weight:800;
+      font-size:.84rem;
+    }
+    .basket-desc{
+      color:#6f8193;
+      font-size:.84rem;
+      font-weight:800;
+    }
+    .basket-drop{
+      border-radius:20px;
+      border:1px solid #e3eaf1;
+      background:#fff;
+      min-height:118px;
+      padding:10px;
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
+      align-content:start;
+    }
+    .drop-item{
+      min-height:44px;
+      border-radius:16px;
+      border:1px solid #e3eaf1;
+      background:#f8fbff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      padding:8px;
+      color:#47647c;
+      font-weight:800;
+      font-size:.84rem;
+    }
+    .feedback-bar{
+      min-height:56px;
+      border-radius:18px;
+      background:linear-gradient(135deg,#f7fbff 0%,#fffaf1 100%);
+      border:1px solid #dfe8ef;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:12px 14px;
+      font-weight:800;
+      color:#48657c;
+      position:relative;
+      z-index:1;
+    }
+    .feedback-bar.success{
+      color:#237d63;
+      background:linear-gradient(135deg,#eefcf6 0%,#f9fffc 100%);
+    }
+    .feedback-bar.error{
+      color:#b45a5a;
+      background:linear-gradient(135deg,#fff4f4 0%,#fffafb 100%);
+    }
+    .hint-strip{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+      position:relative;
+      z-index:1;
+    }
+    .hint-card{
+      border-radius:18px;
+      border:1px solid #e2e9f1;
+      background:#fff;
+      padding:12px;
+      color:#617588;
+      font-weight:800;
+      min-height:60px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+    }
+    .next-wrap{
+      display:flex;
+      justify-content:center;
+    }
+    .next-btn{
+      border:none;
+      border-radius:16px;
+      min-height:50px;
+      padding:12px 22px;
+      background:linear-gradient(135deg,#39c3ad 0%,#48ceb3 100%);
+      color:#fff;
+      font-family:'Fredoka One',cursive;
+      font-size:.95rem;
+      cursor:pointer;
+      display:none;
+      box-shadow:0 10px 18px rgba(57,195,173,.18);
+    }
+    .next-btn.is-visible{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .celebrate{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+    }
+    .spark{
+      position:absolute;
+      font-size:1.5rem;
+      opacity:0;
+      animation:sparkPop .82s ease forwards;
+    }
+    @keyframes sparkPop{
+      0%{transform:translateY(16px) scale(.4);opacity:0}
+      30%{opacity:1}
+      100%{transform:translateY(-32px) scale(1.1);opacity:0}
+    }
+    .reward-card{
+      background:linear-gradient(135deg,#eefbf6 0%,#fff9ee 100%);
+      padding:18px;
+      display:grid;
+      gap:12px;
+      text-align:center;
+    }
+    .reward-card h2{font-size:1.24rem}
+    .reward-stars{
+      font-size:2rem;
+      letter-spacing:8px;
+    }
+    .reward-card p{
+      color:var(--muted);
+      line-height:1.65;
+      max-width:680px;
+      margin:0 auto;
+    }
+    .play-again{
+      justify-self:center;
+      border:none;
+      border-radius:16px;
+      min-height:48px;
+      padding:12px 20px;
+      background:linear-gradient(135deg,#ffd166 0%,#ffba49 100%);
+      color:#79520f;
+      font-family:'Fredoka One',cursive;
+      font-size:.94rem;
+      cursor:pointer;
+    }
+    @media (max-width:900px){
+      .mission-top,
+      .items-grid,
+      .baskets,
+      .pref-grid,
+      .hint-strip,
+      .play-stats{
+        grid-template-columns:1fr;
+      }
+      .guide-box{min-height:160px}
+    }
+    @media (max-width:620px){
+      body{padding:10px}
+      .topbar,.shell{padding:14px}
+      .title-lockup h1{font-size:1.3rem}
+    }
+  </style>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <a class="home-link" href="https://fivetofifteen.com/#focus-calm-learning">🏠 Back to Focus &amp; Calm</a>
+      <div class="title-lockup">
+        <div class="title-icon" aria-hidden="true">🟨</div>
+        <div>
+          <h1>Sorting Fun</h1>
+          <p>Tap an item, then tap the basket where it belongs.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="shell">
+      <section class="support-bar">
+        <h2>Choose Your View</h2>
+        <p>If the page feels busy, switch on a gentler view. These controls only change how the page looks and feels.</p>
+        <div class="pref-grid">
+          <button class="pref-toggle" type="button" data-pref-toggle="calmMode">
+            <strong>Calm Mode</strong>
+            <span>Softer visuals and a quieter page.</span>
+          </button>
+          <button class="pref-toggle" type="button" data-pref-toggle="focusMode">
+            <strong>Focus Mode</strong>
+            <span>Hide extra parts and keep the main task clear.</span>
+          </button>
+          <button class="pref-toggle" type="button" data-pref-toggle="bigText">
+            <strong>Bigger Text</strong>
+            <span>Make reading larger and easier to track.</span>
+          </button>
+          <button class="pref-toggle" type="button" data-pref-toggle="reduceMotion">
+            <strong>Reduce Motion</strong>
+            <span>Keep the page steady with less movement.</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="game-board">
+        <div class="mission-top">
+          <div class="guide-box" data-focus-hide="true">🧺</div>
+          <div class="mission-copy">
+            <h2>Sort Into The Right Group</h2>
+            <p>Pick one picture card. Then tap the basket that matches the sorting rule for that card.</p>
+          </div>
+        </div>
+
+        <div class="play-stats">
+          <div class="play-stat">
+            <span class="play-stat-label">Scene</span>
+            <span class="play-stat-value" id="sceneCount">1 / 4</span>
+          </div>
+          <div class="play-stat">
+            <span class="play-stat-label">Stars</span>
+            <span class="play-stat-value" id="starCount">0</span>
+          </div>
+          <div class="play-stat">
+            <span class="play-stat-label">Goal</span>
+            <span class="play-stat-value">Sort All 4</span>
+          </div>
+        </div>
+
+        <div class="play-field">
+          <div class="celebrate" id="celebrate"></div>
+
+          <div class="scene-header">
+            <div>
+              <div class="scene-badge" id="sceneBadge">🟡 Color Sort</div>
+              <div class="scene-title" id="sceneTitle">Sort the picture cards</div>
+              <div class="scene-sub" id="sceneSub">Choose a card, then choose a basket.</div>
+            </div>
+            <div class="progress-dots" id="progressDots"></div>
+          </div>
+
+          <div class="rule-card">
+            <div class="rule-top">
+              <div class="rule-chip" id="ruleChip">One rule</div>
+              <div class="rule-mini" id="ruleMini">Tap item, then basket</div>
+            </div>
+            <div class="rule-main">
+              <strong id="ruleTitle">Sort by color</strong>
+              <span id="ruleText">Yellow things go in one basket. Blue things go in the other basket.</span>
+            </div>
+          </div>
+
+          <div class="items-grid" id="itemsGrid"></div>
+
+          <div class="baskets" id="baskets"></div>
+
+          <div class="hint-strip">
+            <div class="hint-card" id="hintLeft">Tap one picture card first.</div>
+            <div class="hint-card" id="hintRight">Then tap the basket where it belongs.</div>
+          </div>
+
+          <div class="feedback-bar" id="feedbackBar">Tap a picture card to begin sorting.</div>
+
+          <div class="next-wrap">
+            <button class="next-btn" id="nextBtn" type="button">Next Sort</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="reward-card">
+        <h2>You Are Building Sorting Power</h2>
+        <div class="reward-stars" id="rewardStars">☆ ☆ ☆ ☆</div>
+        <p>Sorting helps children notice what is the same and what is different. Finish every round to light up all the stars.</p>
+        <button class="play-again" id="playAgainBtn" type="button">Play All Sorts Again</button>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const rounds = [
+        {
+          badge: '🟡 Color Sort',
+          chip: 'Look at color',
+          mini: 'Yellow or blue',
+          title: 'Sort by color',
+          text: 'Yellow things go in one basket. Blue things go in the other basket.',
+          hints: ['Look at the color of the picture.', 'Yellow and blue each have their own basket.'],
+          baskets: [
+            { key: 'yellow', emoji: '🟨', label: 'Yellow', desc: 'Sunny color' },
+            { key: 'blue', emoji: '🟦', label: 'Blue', desc: 'Sky color' }
+          ],
+          items: [
+            { emoji: '🌞', label: 'Sun', group: 'yellow' },
+            { emoji: '🍌', label: 'Banana', group: 'yellow' },
+            { emoji: '🐟', label: 'Fish', group: 'blue' },
+            { emoji: '💧', label: 'Drop', group: 'blue' }
+          ]
+        },
+        {
+          badge: '🍎 Group Sort',
+          chip: 'Look at type',
+          mini: 'Food or toy',
+          title: 'Sort by type',
+          text: 'Food goes in one basket. Toys go in the other basket.',
+          hints: ['Ask: can you eat it?', 'If not, maybe it is a toy.'],
+          baskets: [
+            { key: 'food', emoji: '🍎', label: 'Food', desc: 'Things to eat' },
+            { key: 'toy', emoji: '🧸', label: 'Toy', desc: 'Things to play with' }
+          ],
+          items: [
+            { emoji: '🍎', label: 'Apple', group: 'food' },
+            { emoji: '🥪', label: 'Sandwich', group: 'food' },
+            { emoji: '🪀', label: 'Yo-yo', group: 'toy' },
+            { emoji: '🧩', label: 'Puzzle', group: 'toy' }
+          ]
+        },
+        {
+          badge: '☁️ Place Sort',
+          chip: 'Look at where',
+          mini: 'Sky or water',
+          title: 'Sort by place',
+          text: 'Some things belong in the sky. Some things belong in the water.',
+          hints: ['Think about where the picture usually is.', 'Sky and water are different places.'],
+          baskets: [
+            { key: 'sky', emoji: '☁️', label: 'Sky', desc: 'Up high' },
+            { key: 'water', emoji: '🌊', label: 'Water', desc: 'Splash place' }
+          ],
+          items: [
+            { emoji: '☁️', label: 'Cloud', group: 'sky' },
+            { emoji: '🕊️', label: 'Bird', group: 'sky' },
+            { emoji: '🐠', label: 'Fish', group: 'water' },
+            { emoji: '🦀', label: 'Crab', group: 'water' }
+          ]
+        },
+        {
+          badge: '📚 School Sort',
+          chip: 'Look at use',
+          mini: 'Bag or lunch',
+          title: 'Sort by use',
+          text: 'School things go in the bag. Snack things go in the lunch box.',
+          hints: ['Would you use it for learning or for eating?', 'The picture tells you where it belongs.'],
+          baskets: [
+            { key: 'school', emoji: '🎒', label: 'School Bag', desc: 'Learn things' },
+            { key: 'snack', emoji: '🍱', label: 'Lunch Box', desc: 'Eat things' }
+          ],
+          items: [
+            { emoji: '📘', label: 'Book', group: 'school' },
+            { emoji: '✏️', label: 'Pencil', group: 'school' },
+            { emoji: '🍊', label: 'Orange', group: 'snack' },
+            { emoji: '🧃', label: 'Juice', group: 'snack' }
+          ]
+        }
+      ];
+
+      const sceneCount = document.getElementById('sceneCount');
+      const starCount = document.getElementById('starCount');
+      const sceneBadge = document.getElementById('sceneBadge');
+      const sceneTitle = document.getElementById('sceneTitle');
+      const sceneSub = document.getElementById('sceneSub');
+      const ruleChip = document.getElementById('ruleChip');
+      const ruleMini = document.getElementById('ruleMini');
+      const ruleTitle = document.getElementById('ruleTitle');
+      const ruleText = document.getElementById('ruleText');
+      const itemsGrid = document.getElementById('itemsGrid');
+      const baskets = document.getElementById('baskets');
+      const hintLeft = document.getElementById('hintLeft');
+      const hintRight = document.getElementById('hintRight');
+      const feedbackBar = document.getElementById('feedbackBar');
+      const progressDots = document.getElementById('progressDots');
+      const nextBtn = document.getElementById('nextBtn');
+      const celebrate = document.getElementById('celebrate');
+      const rewardStars = document.getElementById('rewardStars');
+      const playAgainBtn = document.getElementById('playAgainBtn');
+
+      let currentRound = 0;
+      let stars = 0;
+      let selectedItemIndex = -1;
+      let placedMap = {};
+
+      function updateReward() {
+        const filled = Array.from({ length: rounds.length }, function (_, index) {
+          return index < stars ? '★' : '☆';
+        });
+        rewardStars.textContent = filled.join(' ');
+        starCount.textContent = String(stars);
+      }
+
+      function renderProgress() {
+        progressDots.innerHTML = '';
+        rounds.forEach(function (_, index) {
+          const dot = document.createElement('div');
+          dot.className = 'progress-dot';
+          if (index < currentRound) dot.classList.add('done');
+          if (index === currentRound) dot.classList.add('active');
+          progressDots.appendChild(dot);
+        });
+      }
+
+      function createSparkBurst() {
+        celebrate.innerHTML = '';
+        ['✨', '⭐', '🌟', '💫', '✨', '⭐'].forEach(function (icon, index) {
+          const spark = document.createElement('div');
+          spark.className = 'spark';
+          spark.textContent = icon;
+          spark.style.left = (14 + index * 13) + '%';
+          spark.style.top = (30 + (index % 2) * 18) + '%';
+          spark.style.animationDelay = (index * 0.04) + 's';
+          celebrate.appendChild(spark);
+        });
+        window.setTimeout(function () {
+          celebrate.innerHTML = '';
+        }, 900);
+      }
+
+      function isRoundComplete(round) {
+        return round.items.every(function (_, index) {
+          return Boolean(placedMap[index]);
+        });
+      }
+
+      function renderItems(round) {
+        itemsGrid.innerHTML = '';
+        round.items.forEach(function (item, index) {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'item-card';
+          if (selectedItemIndex === index) button.classList.add('selected');
+          if (placedMap[index]) button.classList.add('done');
+          button.innerHTML =
+            '<div class="item-hint">Tap me</div>' +
+            '<div class="item-emoji">' + item.emoji + '</div>' +
+            '<div class="item-label">' + item.label + '</div>';
+          button.addEventListener('click', function () {
+            if (placedMap[index]) return;
+            selectedItemIndex = index;
+            feedbackBar.textContent = item.label + ' is ready. Now tap a basket.';
+            feedbackBar.className = 'feedback-bar';
+            renderItems(round);
+          });
+          itemsGrid.appendChild(button);
+        });
+      }
+
+      function renderBaskets(round) {
+        baskets.innerHTML = '';
+        round.baskets.forEach(function (basket) {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'basket';
+          const drop = document.createElement('div');
+          drop.className = 'basket-drop';
+
+          round.items.forEach(function (item, index) {
+            if (placedMap[index] === basket.key) {
+              const chip = document.createElement('div');
+              chip.className = 'drop-item';
+              chip.innerHTML = '<span>' + item.emoji + '</span><span>' + item.label + '</span>';
+              drop.appendChild(chip);
+            }
+          });
+
+          button.innerHTML =
+            '<div class="basket-top">' +
+              '<div class="basket-badge"><span>' + basket.emoji + '</span><span>' + basket.label + '</span></div>' +
+              '<div class="basket-desc">' + basket.desc + '</div>' +
+            '</div>';
+          button.appendChild(drop);
+
+          button.addEventListener('click', function () {
+            if (selectedItemIndex === -1) {
+              feedbackBar.textContent = 'Pick a picture card first.';
+              feedbackBar.className = 'feedback-bar error';
+              return;
+            }
+
+            const item = round.items[selectedItemIndex];
+            if (item.group === basket.key) {
+              placedMap[selectedItemIndex] = basket.key;
+              selectedItemIndex = -1;
+              button.classList.add('good');
+              feedbackBar.textContent = 'Yes. That picture belongs there.';
+              feedbackBar.className = 'feedback-bar success';
+              createSparkBurst();
+            } else {
+              button.classList.add('wrong');
+              feedbackBar.textContent = 'Try again. That picture belongs in the other basket.';
+              feedbackBar.className = 'feedback-bar error';
+              window.setTimeout(function () {
+                button.classList.remove('wrong');
+              }, 420);
+            }
+
+            renderItems(round);
+            renderBaskets(round);
+
+            if (isRoundComplete(round)) {
+              if (stars < currentRound + 1) {
+                stars += 1;
+                updateReward();
+              }
+              feedbackBar.textContent = 'Great sorting. You finished this round.';
+              feedbackBar.className = 'feedback-bar success';
+              nextBtn.className = 'next-btn is-visible';
+            }
+          });
+
+          baskets.appendChild(button);
+        });
+      }
+
+      function renderRound() {
+        const round = rounds[currentRound];
+        selectedItemIndex = -1;
+        placedMap = {};
+
+        sceneCount.textContent = (currentRound + 1) + ' / ' + rounds.length;
+        sceneBadge.textContent = round.badge;
+        sceneTitle.textContent = 'Sort the picture cards';
+        sceneSub.textContent = 'Choose a card, then choose a basket.';
+        ruleChip.textContent = round.chip;
+        ruleMini.textContent = round.mini;
+        ruleTitle.textContent = round.title;
+        ruleText.textContent = round.text;
+        hintLeft.textContent = round.hints[0];
+        hintRight.textContent = round.hints[1];
+        feedbackBar.textContent = 'Tap a picture card to begin sorting.';
+        feedbackBar.className = 'feedback-bar';
+        nextBtn.className = 'next-btn';
+
+        renderItems(round);
+        renderBaskets(round);
+        renderProgress();
+      }
+
+      function goNext() {
+        if (currentRound < rounds.length - 1) {
+          currentRound += 1;
+          renderRound();
+          return;
+        }
+
+        feedbackBar.textContent = 'All done. You finished every sorting round.';
+        feedbackBar.className = 'feedback-bar success';
+        nextBtn.className = 'next-btn';
+        sceneTitle.textContent = 'Great sorting work!';
+        sceneSub.textContent = 'You used color, place, type, and use to sort each group.';
+      }
+
+      nextBtn.addEventListener('click', goNext);
+      playAgainBtn.addEventListener('click', function () {
+        currentRound = 0;
+        stars = 0;
+        updateReward();
+        renderRound();
+      });
+
+      updateReward();
+      renderRound();
+
+      if (window.setupFocusCalmGuide) {
+        window.setupFocusCalmGuide({
+          mascot: '🧺',
+          heading: 'Sorting Helper Here',
+          gameText: 'This is a calm learning game. It helps children sort pictures into the right group using one simple rule at a time.',
+          steps: [
+            'Read the sorting rule at the top.',
+            'Tap one picture card you want to sort.',
+            'Tap the basket where that picture belongs.',
+            'Check the result.',
+            'Press Next to play the next sort.'
+          ],
+          helpMascot: '🧺'
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200" role="img" aria-label="Original watercolor paper texture">
+  <defs>
+    <linearGradient id="paperBase" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f2ecdf"/>
+      <stop offset="50%" stop-color="#e8dfcf"/>
+      <stop offset="100%" stop-color="#ddd2bf"/>
+    </linearGradient>
+
+    <radialGradient id="washA" cx="20%" cy="18%" r="48%">
+      <stop offset="0%" stop-color="#f9efe0" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#f9efe0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="washB" cx="82%" cy="25%" r="42%">
+      <stop offset="0%" stop-color="#c8d9e6" stop-opacity="0.42"/>
+      <stop offset="100%" stop-color="#c8d9e6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="washC" cx="36%" cy="76%" r="45%">
+      <stop offset="0%" stop-color="#e4cdb5" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#e4cdb5" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="washD" cx="76%" cy="78%" r="50%">
+      <stop offset="0%" stop-color="#d2c2e0" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#d2c2e0" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="paperGrain" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="2" seed="28" result="noise"/>
+      <feColorMatrix in="noise" type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 0.055"/>
+      </feComponentTransfer>
+    </filter>
+
+    <filter id="softEdges" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="1200" fill="url(#paperBase)"/>
+
+  <g>
+    <path d="M80 240 C260 120, 430 170, 530 280 C630 390, 560 520, 400 560 C240 600, 60 500, 40 370 C20 300, 25 270, 80 240 Z" fill="#f5dfc7" opacity="0.35" filter="url(#softEdges)"/>
+    <path d="M980 130 C1180 80, 1420 150, 1490 300 C1540 420, 1450 550, 1270 590 C1130 620, 980 570, 890 470 C790 360, 830 180, 980 130 Z" fill="#c8d8ea" opacity="0.28" filter="url(#softEdges)"/>
+    <path d="M180 760 C350 650, 540 700, 620 840 C710 980, 640 1120, 470 1160 C320 1190, 120 1120, 70 980 C35 890, 60 820, 180 760 Z" fill="#e8cdb3" opacity="0.3" filter="url(#softEdges)"/>
+    <path d="M980 760 C1160 650, 1390 700, 1510 870 C1600 1010, 1550 1150, 1380 1180 C1220 1210, 1000 1150, 900 1010 C820 900, 840 820, 980 760 Z" fill="#d8c7e7" opacity="0.22" filter="url(#softEdges)"/>
+  </g>
+
+  <rect width="1600" height="1200" fill="url(#washA)"/>
+  <rect width="1600" height="1200" fill="url(#washB)"/>
+  <rect width="1600" height="1200" fill="url(#washC)"/>
+  <rect width="1600" height="1200" fill="url(#washD)"/>
+
+  <g opacity="0.08" stroke="#b79f86" stroke-width="1.1" fill="none">
+    <path d="M40 180 Q280 120 510 180"/>
+    <path d="M210 400 Q430 340 670 410"/>
+    <path d="M920 350 Q1170 280 1480 370"/>
+    <path d="M120 960 Q380 900 680 980"/>
+    <path d="M860 960 Q1120 880 1500 1010"/>
+  </g>
+
+  <rect width="1600" height="1200" filter="url(#paperGrain)"/>
+</svg>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-label="Team receives Greenfield Bridge Challenge">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d6e3ea"/>
+      <stop offset="100%" stop-color="#c5d2dd"/>
+    </linearGradient>
+    <filter id="grain" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2" seed="5"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="table" tableValues="0 0.03"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="1400" height="900" fill="url(#bg)"/>
+  <rect x="0" y="650" width="1400" height="250" fill="#a88569"/>
+  <rect x="80" y="130" width="860" height="420" rx="24" fill="#f7f3ea" stroke="#c9bca7" stroke-width="6"/>
+  <text x="510" y="202" text-anchor="middle" font-family="Georgia, serif" font-size="52" fill="#3f5c73">Greenfield Bridge Challenge</text>
+  <text x="510" y="254" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="#6b6b6b">Design + Build a Bridge that holds 10kg</text>
+  <line x1="190" y1="300" x2="830" y2="300" stroke="#d4cec2" stroke-width="4"/>
+  <text x="210" y="350" font-family="Georgia, serif" font-size="30" fill="#4f5e6a">Team: Kai • Sofia • Rohan • Maya • Jake</text>
+  <text x="210" y="398" font-family="Georgia, serif" font-size="30" fill="#4f5e6a">4 weeks • 1 model bridge • Regional Expo</text>
+
+  <g transform="translate(980 640)">
+    <ellipse cx="0" cy="92" rx="30" ry="10" fill="#657889" opacity="0.25"/>
+    <ellipse cx="0" cy="-4" rx="18" ry="22" fill="#d8b39e"/>
+    <path d="M-20 -10 Q0 -38 20 -10" fill="#2f2f35"/>
+    <path d="M-20 16 Q0 8 20 16 L18 50 Q0 58 -18 50 Z" fill="#5c7759"/>
+    <path d="M-12 54 L-4 54 L-4 84 L-12 84 Z" fill="#42596f"/><path d="M4 54 L12 54 L12 84 L4 84 Z" fill="#42596f"/>
+  </g>
+  <g transform="translate(1080 634)">
+    <ellipse cx="0" cy="96" rx="30" ry="10" fill="#657889" opacity="0.25"/>
+    <circle cx="0" cy="-24" r="20" fill="#2f2524"/>
+    <circle cx="11" cy="-40" r="8" fill="#f1d85b"/>
+    <ellipse cx="0" cy="-4" rx="18" ry="22" fill="#9a6648"/>
+    <path d="M-20 16 Q0 8 20 16 L18 50 Q0 58 -18 50 Z" fill="#e38734"/>
+    <path d="M-12 54 L-4 54 L-4 84 L-12 84 Z" fill="#42596f"/><path d="M4 54 L12 54 L12 84 L4 84 Z" fill="#42596f"/>
+  </g>
+  <g transform="translate(1180 642)">
+    <ellipse cx="0" cy="90" rx="30" ry="10" fill="#657889" opacity="0.25"/>
+    <ellipse cx="0" cy="-4" rx="18" ry="22" fill="#b77d5b"/>
+    <path d="M-20 -10 Q0 -36 20 -10" fill="#2e2b2b"/>
+    <circle cx="-7" cy="-4" r="6" fill="none" stroke="#54616c" stroke-width="2"/>
+    <circle cx="7" cy="-4" r="6" fill="none" stroke="#54616c" stroke-width="2"/>
+    <path d="M-20 16 Q0 8 20 16 L18 50 Q0 58 -18 50 Z" fill="#ccd7e2"/>
+    <path d="M-12 54 L-4 54 L-4 84 L-12 84 Z" fill="#3f556d"/><path d="M4 54 L12 54 L12 84 L4 84 Z" fill="#3f556d"/>
+  </g>
+  <g transform="translate(1270 640)">
+    <ellipse cx="0" cy="92" rx="30" ry="10" fill="#657889" opacity="0.25"/>
+    <ellipse cx="0" cy="-4" rx="18" ry="22" fill="#deb49a"/>
+    <rect x="-20" y="-18" width="40" height="12" rx="4" fill="#2c2f38"/>
+    <path d="M-20 16 Q0 8 20 16 L18 50 Q0 58 -18 50 Z" fill="#bc8f9c"/>
+    <path d="M-12 54 L-4 54 L-4 84 L-12 84 Z" fill="#526981"/><path d="M4 54 L12 54 L12 84 L4 84 Z" fill="#526981"/>
+  </g>
+  <g transform="translate(1360 636)">
+    <ellipse cx="0" cy="96" rx="30" ry="10" fill="#657889" opacity="0.25"/>
+    <ellipse cx="0" cy="-4" rx="20" ry="24" fill="#c99373"/>
+    <path d="M-24 -8 Q0 -42 24 -8" fill="#2e2a2a"/>
+    <path d="M-24 16 Q0 8 24 16 L22 54 Q0 64 -22 54 Z" fill="#656a73"/>
+    <path d="M-12 58 L-3 58 L-3 90 L-12 90 Z" fill="#2f3339"/><path d="M3 58 L12 58 L12 90 L3 90 Z" fill="#2f3339"/>
+  </g>
+
+  <text x="700" y="92" text-anchor="middle" font-family="Georgia, serif" font-size="52" fill="#2f485c">Five Strangers, One Impossible Task</text>
+  <rect width="1400" height="900" filter="url(#grain)"/>
+</svg>

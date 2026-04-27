@@ -1,0 +1,1115 @@
+:root{
+  --worksheet-ink:#24324a;
+  --worksheet-muted:#64748b;
+  --worksheet-line:#d9e3f3;
+  --worksheet-mint:#39c3ad;
+  --worksheet-gold:#ffd869;
+  --worksheet-orange:#ff9f5b;
+  --worksheet-paper:#fffefb;
+  --worksheet-sky:#f7fbff;
+  --worksheet-pink:#fff3f0;
+}
+
+*{box-sizing:border-box}
+html{font-size:17px}
+body{
+  margin:0;
+  font-family:'Nunito',sans-serif;
+  color:var(--worksheet-ink);
+  background:linear-gradient(180deg,#fffdf8 0%,#f7fafc 100%);
+  padding:24px 16px 48px;
+}
+
+.worksheet-page{
+  max-width:920px;
+  margin:0 auto;
+}
+
+.worksheet-actions{
+  display:flex;
+  justify-content:flex-end;
+  margin:0 auto 16px;
+}
+
+.worksheet-print-btn,
+.worksheet-link-btn{
+  border:none;
+  border-radius:999px;
+  min-height:44px;
+  padding:11px 18px;
+  background:linear-gradient(135deg,#ff9f5b 0%,#ff7f50 100%);
+  color:#fff;
+  font:900 .92rem 'Nunito',sans-serif;
+  cursor:pointer;
+  box-shadow:0 12px 24px rgba(255,127,80,.22);
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+
+.worksheet-sheet{
+  background:var(--worksheet-paper);
+  border:2px solid #f1e7d6;
+  border-radius:28px;
+  box-shadow:0 18px 42px rgba(63,72,95,.1);
+  overflow:hidden;
+}
+
+.worksheet-header{
+  padding:24px 28px 18px;
+  background:
+    radial-gradient(circle at top right, rgba(57,195,173,.18), transparent 180px),
+    radial-gradient(circle at top left, rgba(255,216,105,.18), transparent 180px),
+    linear-gradient(180deg,#fffefc 0%,#fff8ef 100%);
+  border-bottom:2px dashed #eedcc2;
+}
+
+.worksheet-brand-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:16px;
+}
+
+.worksheet-brand-mark{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.worksheet-brand-mark img{
+  width:82px;
+  height:auto;
+  display:block;
+}
+
+.worksheet-brand-copy{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+
+.worksheet-brand-copy strong{
+  font-family:'Fredoka',cursive;
+  font-size:1.2rem;
+  color:#234768;
+}
+
+.worksheet-brand-copy span{
+  color:var(--worksheet-muted);
+  font-weight:800;
+  font-size:.86rem;
+}
+
+.worksheet-chip{
+  padding:9px 14px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#39c3ad 0%,#48ceb3 100%);
+  color:#fff;
+  font-weight:900;
+  font-size:.88rem;
+  white-space:nowrap;
+}
+
+.worksheet-title{
+  font-family:'Fredoka',cursive;
+  font-size:2rem;
+  line-height:1.1;
+  margin:0 0 8px;
+  color:#20324e;
+}
+
+.worksheet-subtitle{
+  margin:0;
+  color:var(--worksheet-muted);
+  font-size:1rem;
+  line-height:1.6;
+  max-width:720px;
+}
+
+.worksheet-meta-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  padding:20px 28px;
+  border-bottom:1px solid #f2eadc;
+  background:#fffdfa;
+}
+
+.worksheet-meta-card{
+  border:1px solid #eee5d8;
+  border-radius:18px;
+  padding:14px 16px;
+  background:#fff;
+}
+
+.worksheet-meta-label{
+  display:block;
+  font-size:.8rem;
+  font-weight:900;
+  color:#b07d3c;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  margin-bottom:6px;
+}
+
+.worksheet-meta-line{
+  min-height:22px;
+  border-bottom:2px dashed #dce7f8;
+}
+
+.worksheet-section{
+  padding:24px 28px 8px;
+}
+
+.worksheet-section h2{
+  margin:0 0 14px;
+  font-family:'Fredoka',cursive;
+  font-size:1.35rem;
+  color:#27415f;
+}
+
+.worksheet-box{
+  padding:16px 18px;
+  background:var(--worksheet-sky);
+  border:1px solid #dbe7fa;
+  border-radius:20px;
+  line-height:1.75;
+}
+
+.worksheet-box strong{
+  color:#214d73;
+}
+
+.worksheet-grid-two{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+  margin-top:12px;
+}
+
+.worksheet-card{
+  background:#fff;
+  border:1px solid var(--worksheet-line);
+  border-radius:22px;
+  padding:18px;
+}
+
+.worksheet-card h3{
+  margin:0 0 10px;
+  font-family:'Fredoka',cursive;
+  font-size:1.05rem;
+  color:#2d4f73;
+}
+
+.worksheet-list{
+  display:grid;
+  gap:12px;
+}
+
+.worksheet-question{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:12px 14px;
+  border-radius:16px;
+  background:#fcfdff;
+  border:1px solid #e5edf8;
+  font-weight:800;
+}
+
+.worksheet-answer-line{
+  width:90px;
+  flex-shrink:0;
+  border-bottom:2px solid #8ab1de;
+  height:18px;
+}
+
+.worksheet-answer-line-short{
+  width:48px;
+}
+
+.worksheet-choice-row{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-top:8px;
+}
+
+.worksheet-choice{
+  min-height:52px;
+  border:2px solid #eadfcd;
+  border-radius:16px;
+  display:grid;
+  place-items:center;
+  font-weight:900;
+  background:#fffef8;
+}
+
+.worksheet-fact-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+  margin-top:16px;
+}
+
+.worksheet-fact-card{
+  background:linear-gradient(180deg,#fff 0%,#fff8ee 100%);
+  border:1px solid #f0e0cb;
+  border-radius:20px;
+  padding:16px 18px;
+}
+
+.worksheet-fact-card h3{
+  margin:0 0 10px;
+  font-family:'Fredoka',cursive;
+  font-size:1.05rem;
+  color:#a65b1e;
+}
+
+.worksheet-sum-list{
+  display:grid;
+  gap:8px;
+  font-size:1rem;
+  font-weight:800;
+}
+
+.worksheet-challenge{
+  margin:18px 0 8px;
+  padding:16px 18px;
+  border-radius:22px;
+  background:linear-gradient(135deg,#fff3f0 0%,#fffbea 100%);
+  border:1px solid #f4d8c8;
+}
+
+.worksheet-challenge p{
+  margin:0;
+  line-height:1.75;
+  font-weight:700;
+}
+
+.worksheet-footer{
+  padding:18px 28px 28px;
+  color:var(--worksheet-muted);
+  font-size:.92rem;
+}
+
+.worksheet-hub-hero{
+  padding:28px;
+  background:linear-gradient(135deg,#fffef8 0%,#f7fbff 60%,#fff6ef 100%);
+  border:2px solid #efe5d8;
+  border-radius:30px;
+  box-shadow:0 18px 42px rgba(63,72,95,.08);
+}
+
+.worksheet-hub-title{
+  margin:0 0 10px;
+  font-family:'Fredoka',cursive;
+  font-size:2rem;
+}
+
+.worksheet-hub-copy{
+  margin:0;
+  color:var(--worksheet-muted);
+  line-height:1.75;
+  max-width:760px;
+}
+
+.worksheet-hub-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+  margin-top:22px;
+}
+
+.worksheet-hub-card{
+  display:block;
+  text-decoration:none;
+  color:inherit;
+  background:#fff;
+  border:1px solid #ebe6f4;
+  border-radius:24px;
+  padding:20px;
+  box-shadow:0 14px 30px rgba(56,64,92,.08);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+
+.worksheet-hub-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 18px 34px rgba(56,64,92,.12);
+}
+
+.worksheet-hub-icon{
+  width:62px;
+  height:62px;
+  border-radius:18px;
+  display:grid;
+  place-items:center;
+  font-size:1.8rem;
+  margin-bottom:14px;
+  background:linear-gradient(135deg,#e8fbf6 0%,#fff8e8 100%);
+}
+
+.worksheet-hub-card h3{
+  margin:0 0 8px;
+  font-family:'Fredoka',cursive;
+  font-size:1.15rem;
+  color:#24324a;
+}
+
+.worksheet-hub-card p{
+  margin:0;
+  color:var(--worksheet-muted);
+  line-height:1.65;
+}
+
+.worksheet-mini-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  margin-top:14px;
+}
+
+.worksheet-mini-box{
+  border:1px solid #e6edf7;
+  border-radius:18px;
+  background:#fff;
+  padding:14px 10px;
+  text-align:center;
+  font-weight:900;
+}
+
+.worksheet-emoji-row{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-top:10px;
+}
+
+.worksheet-emoji-box{
+  border:1px dashed #d7e3f7;
+  border-radius:20px;
+  background:#fff;
+  padding:16px 12px;
+  text-align:center;
+}
+
+.worksheet-emoji-box .big{
+  font-size:2rem;
+  display:block;
+  margin-bottom:8px;
+}
+
+.worksheet-print-page{
+  padding:24px 28px 26px;
+  border-top:1px dashed #efe2cf;
+  background:#fffefb;
+  page-break-after:always;
+  break-after:page;
+}
+
+.worksheet-print-page:last-child{
+  page-break-after:auto;
+  break-after:auto;
+}
+
+.worksheet-page-kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  min-height:34px;
+  padding:8px 14px;
+  border-radius:999px;
+  background:#eef7ff;
+  color:#2b5a84;
+  font-size:.84rem;
+  font-weight:900;
+  margin-bottom:14px;
+}
+
+.alphabet-hero{
+  display:grid;
+  grid-template-columns:160px minmax(0,1fr);
+  gap:18px;
+  align-items:center;
+}
+
+.alphabet-letter-box{
+  min-height:160px;
+  border-radius:28px;
+  background:linear-gradient(135deg,#fff3d9 0%,#ffe5a9 100%);
+  color:#8a5400;
+  display:grid;
+  place-items:center;
+  font-family:'Fredoka',cursive;
+  font-size:5rem;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.55);
+}
+
+.alphabet-hero-copy h2,
+.alphabet-worksheet-title{
+  margin:0 0 10px;
+  font-family:'Fredoka',cursive;
+  color:#253750;
+}
+
+.alphabet-hero-copy p,
+.alphabet-help{
+  margin:0;
+  color:var(--worksheet-muted);
+  line-height:1.75;
+}
+
+.alphabet-trace-grid{
+  display:grid;
+  gap:12px;
+  margin-top:14px;
+}
+
+.alphabet-stroke-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+  margin-top:16px;
+  margin-bottom:10px;
+}
+
+.alphabet-stroke-card{
+  background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
+  border:1px solid #dfe8f7;
+  border-radius:24px;
+  padding:16px;
+}
+
+.alphabet-stroke-card h3{
+  margin:0 0 10px;
+  font-family:'Fredoka',cursive;
+  font-size:1.02rem;
+  color:#28425f;
+}
+
+.alphabet-stroke-card p{
+  margin:10px 0 0;
+  color:var(--worksheet-muted);
+  line-height:1.65;
+  font-size:.95rem;
+}
+
+.alphabet-stroke-svg{
+  width:100%;
+  height:auto;
+  display:block;
+  background:
+    linear-gradient(180deg, transparent 31%, rgba(171,197,231,.22) 32%, transparent 33%, transparent 64%, rgba(171,197,231,.22) 65%, transparent 66%);
+  border-radius:18px;
+}
+
+.stroke-num{
+  fill:#fff;
+  stroke:#ff9f5b;
+  stroke-width:2;
+}
+
+.stroke-num-text{
+  font-family:'Fredoka',cursive;
+  font-size:16px;
+  fill:#a85312;
+  text-anchor:middle;
+  dominant-baseline:middle;
+}
+
+.alphabet-trace-row{
+  border:1px dashed #dbe6f6;
+  border-radius:18px;
+  background:#fff;
+  padding:18px 20px;
+  font-family:'Fredoka',cursive;
+  font-size:2.4rem;
+  line-height:1.45;
+  color:#bdccd8;
+  letter-spacing:.22em;
+  min-height:96px;
+  display:flex;
+  align-items:center;
+}
+
+.alphabet-picture-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  margin-top:14px;
+}
+
+.alphabet-picture-card{
+  background:#fff;
+  border:1px solid #e6edf7;
+  border-radius:22px;
+  padding:18px 12px;
+  text-align:center;
+}
+
+.alphabet-picture-card .emoji{
+  font-size:2.35rem;
+  display:block;
+  margin-bottom:10px;
+}
+
+.alphabet-picture-card strong{
+  display:block;
+  font-family:'Fredoka',cursive;
+  color:#254261;
+  margin-bottom:4px;
+}
+
+.alphabet-choice-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  margin-top:12px;
+}
+
+.alphabet-choice-box{
+  min-height:64px;
+  border-radius:20px;
+  border:2px solid #e4eaf6;
+  background:#fff;
+  display:grid;
+  place-items:center;
+  font-family:'Fredoka',cursive;
+  font-size:1.8rem;
+  color:#324864;
+}
+
+.alphabet-line-grid{
+  display:grid;
+  gap:12px;
+  margin-top:12px;
+}
+
+.alphabet-line-card{
+  padding:14px 16px;
+  border-radius:18px;
+  border:1px solid #e6edf7;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  font-weight:800;
+}
+
+.alphabet-line-answer{
+  width:120px;
+  min-width:120px;
+  border-bottom:2px solid #8ab1de;
+  height:18px;
+}
+
+.alphabet-word-bank{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:12px;
+}
+
+.alphabet-word-pill{
+  padding:9px 12px;
+  border-radius:999px;
+  background:#fff8e8;
+  border:1px solid #f1dfbf;
+  font-weight:900;
+  color:#94601a;
+}
+
+.alphabet-final-box{
+  padding:18px;
+  border-radius:24px;
+  background:linear-gradient(135deg,#fff3f0 0%,#fffbea 100%);
+  border:1px solid #f1daca;
+}
+
+.alphabet-final-box p{
+  margin:0 0 10px;
+  line-height:1.75;
+}
+
+.worksheet-table-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+  margin-top:14px;
+}
+
+.worksheet-table-card{
+  background:#fff;
+  border:1px solid #e7edf8;
+  border-radius:22px;
+  padding:16px;
+}
+
+.worksheet-table-card h3{
+  margin:0 0 10px;
+  font-family:'Fredoka',cursive;
+  font-size:1.02rem;
+  color:#294564;
+}
+
+.worksheet-mini-table{
+  width:100%;
+  border-collapse:collapse;
+  font-weight:800;
+  text-align:center;
+}
+
+.worksheet-mini-table th,
+.worksheet-mini-table td{
+  border:1px solid #dfe7f6;
+  padding:10px 8px;
+  min-width:52px;
+}
+
+.worksheet-mini-table th{
+  background:#f7fbff;
+  color:#52627a;
+}
+
+.worksheet-blank{
+  display:inline-block;
+  width:48px;
+  height:22px;
+  border-bottom:2px solid #8ab1de;
+}
+
+.worksheet-color-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+  margin-top:14px;
+}
+
+.worksheet-color-bubble{
+  min-height:82px;
+  border-radius:24px;
+  border:2px dashed #d8e4f6;
+  background:#fff;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  padding:10px;
+  font-family:'Fredoka',cursive;
+  color:#294564;
+}
+
+.worksheet-cut-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  margin-top:14px;
+}
+
+.worksheet-cut-card{
+  min-height:96px;
+  border:2px dashed #b9cbe8;
+  border-radius:22px;
+  background:#fff;
+  padding:14px;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  font-weight:900;
+}
+
+.worksheet-match-area{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+  margin-top:16px;
+}
+
+.worksheet-match-box{
+  min-height:160px;
+  border:2px dashed #f0d8b8;
+  border-radius:24px;
+  background:#fffdf8;
+  padding:16px;
+}
+
+.worksheet-speed-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  margin-top:14px;
+}
+
+.worksheet-speed-card{
+  background:#fff;
+  border:1px solid #e6edf7;
+  border-radius:20px;
+  padding:14px;
+}
+
+.worksheet-speed-card h3{
+  margin:0 0 10px;
+  font-family:'Fredoka',cursive;
+  font-size:.98rem;
+  color:#35506f;
+}
+
+.worksheet-check-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+  margin-top:14px;
+}
+
+.worksheet-check-card{
+  border:1px solid #e4ebf8;
+  border-radius:20px;
+  background:#fff;
+  padding:16px;
+}
+
+.worksheet-answer-box{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin-top:14px;
+}
+
+.worksheet-answer-item{
+  border:1px dashed #d6e0f1;
+  border-radius:16px;
+  padding:12px;
+  background:#fcfdff;
+  font-weight:800;
+}
+
+.worksheet-clock-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+  margin-top:16px;
+}
+
+.worksheet-clock-card{
+  background:#fff;
+  border:1px solid #e4ebf8;
+  border-radius:24px;
+  padding:16px;
+  text-align:center;
+}
+
+.worksheet-clock-label{
+  margin-top:12px;
+  font-family:'Fredoka',cursive;
+  color:#2b4765;
+  font-size:1rem;
+}
+
+.worksheet-clock-write{
+  margin-top:10px;
+  min-height:26px;
+  border-bottom:2px solid #8ab1de;
+}
+
+.worksheet-clock-face{
+  --hour-rot:0deg;
+  --minute-rot:0deg;
+  position:relative;
+  width:170px;
+  height:170px;
+  margin:0 auto;
+  border:6px solid #253b58;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at center, #253b58 0 6px, transparent 7px),
+    linear-gradient(180deg, rgba(57,195,173,.08) 0%, rgba(255,216,105,.1) 100%),
+    #fff;
+}
+
+.worksheet-clock-face.blank{
+  background:
+    radial-gradient(circle at center, #9eb3c8 0 5px, transparent 6px),
+    linear-gradient(180deg, rgba(57,195,173,.05) 0%, rgba(255,216,105,.08) 100%),
+    #fff;
+}
+
+.worksheet-clock-face::before,
+.worksheet-clock-face::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  background:#d9e3f3;
+  transform:translate(-50%,-50%);
+}
+
+.worksheet-clock-face::before{width:2px;height:138px;}
+.worksheet-clock-face::after{width:138px;height:2px;}
+
+.worksheet-clock-number{
+  position:absolute;
+  font:900 1rem 'Nunito',sans-serif;
+  color:#566b83;
+}
+
+.worksheet-clock-number.twelve{left:50%;top:10px;transform:translateX(-50%);}
+.worksheet-clock-number.three{right:14px;top:50%;transform:translateY(-50%);}
+.worksheet-clock-number.six{left:50%;bottom:10px;transform:translateX(-50%);}
+.worksheet-clock-number.nine{left:14px;top:50%;transform:translateY(-50%);}
+
+.worksheet-clock-hand{
+  position:absolute;
+  left:50%;
+  bottom:50%;
+  transform-origin:50% 100%;
+  border-radius:999px;
+}
+
+.worksheet-clock-hand.hour{
+  width:8px;
+  height:44px;
+  margin-left:-4px;
+  background:#39c3ad;
+  transform:rotate(var(--hour-rot));
+}
+
+.worksheet-clock-hand.minute{
+  width:6px;
+  height:62px;
+  margin-left:-3px;
+  background:#4b89f2;
+  transform:rotate(var(--minute-rot));
+}
+
+.worksheet-clock-face.blank .worksheet-clock-hand{
+  background:#cbd8ea;
+  opacity:.35;
+}
+
+.worksheet-digital-pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:48px;
+  min-width:130px;
+  padding:10px 18px;
+  border-radius:999px;
+  background:#fff8e8;
+  border:1px solid #f1dfbf;
+  font:900 1.05rem 'Nunito',sans-serif;
+  color:#875415;
+}
+
+.worksheet-sort-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+  margin-top:16px;
+}
+
+.worksheet-sort-card{
+  border:1px solid #e5ebf7;
+  border-radius:24px;
+  background:#fff;
+  padding:18px;
+}
+
+.worksheet-sort-card h3{
+  margin:0 0 10px;
+  font-family:'Fredoka',cursive;
+  font-size:1.04rem;
+  color:#2f4a68;
+}
+
+.worksheet-sort-pill{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-height:56px;
+  padding:12px 14px;
+  border:2px dashed #d6e2f5;
+  border-radius:18px;
+  background:#fcfdff;
+  font-weight:800;
+  margin-top:10px;
+}
+
+.worksheet-sort-emoji{
+  font-size:1.7rem;
+  line-height:1;
+}
+
+.worksheet-timeline{
+  display:grid;
+  gap:14px;
+  margin-top:16px;
+}
+
+.worksheet-timeline-row{
+  display:grid;
+  grid-template-columns:110px minmax(0,1fr);
+  gap:14px;
+  align-items:center;
+}
+
+.worksheet-time-tag{
+  min-height:48px;
+  border-radius:16px;
+  background:#eef7ff;
+  color:#2b5a84;
+  display:grid;
+  place-items:center;
+  font-weight:900;
+}
+
+.worksheet-routine-box{
+  min-height:52px;
+  border:2px dashed #d8e4f6;
+  border-radius:18px;
+  background:#fff;
+}
+
+.worksheet-times-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+  margin-top:14px;
+}
+
+.worksheet-times-card{
+  background:#fff;
+  border:1px solid #e4ebf8;
+  border-radius:22px;
+  padding:16px 14px;
+}
+
+.worksheet-times-card h3{
+  margin:0 0 10px;
+  font-family:'Fredoka',cursive;
+  font-size:1rem;
+  color:#2e4a67;
+}
+
+.worksheet-count-strip{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:8px;
+  margin-top:12px;
+}
+
+.worksheet-count-box{
+  min-height:48px;
+  border-radius:14px;
+  border:2px dashed #d7e3f7;
+  background:#fff;
+  display:grid;
+  place-items:center;
+  font-weight:900;
+}
+
+.worksheet-equation-box{
+  min-height:68px;
+  border-radius:20px;
+  border:1px solid #e5ebf8;
+  background:#fff;
+  padding:14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  font-weight:900;
+  margin-top:12px;
+}
+
+.worksheet-maze-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin-top:16px;
+}
+
+.worksheet-maze-box{
+  min-height:68px;
+  border-radius:18px;
+  border:2px solid #e4ebf8;
+  background:#fff;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  padding:10px;
+  font-weight:900;
+}
+
+.coloring-board{
+  background:#fff;
+  border:2px dashed #dfe7f6;
+  border-radius:28px;
+  padding:18px;
+  margin-top:16px;
+}
+
+.coloring-board svg{
+  width:100%;
+  height:auto;
+  display:block;
+}
+
+.coloring-tip-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  margin-top:16px;
+}
+
+.coloring-tip-card{
+  background:#fff;
+  border:1px solid #e4ebf8;
+  border-radius:20px;
+  padding:14px;
+  text-align:center;
+  font-weight:800;
+}
+
+@media print{
+  body{background:#fff;padding:0}
+  .worksheet-actions,.global-slim-topbar,.site-drawer-toggle,.page-share-wrap{display:none!important}
+  .worksheet-sheet{box-shadow:none;border:none;border-radius:0;max-width:none}
+}
+
+@media (max-width:700px){
+  body{padding:18px 12px 36px}
+  .worksheet-header,.worksheet-meta-grid,.worksheet-section,.worksheet-footer,.worksheet-hub-hero{padding-left:18px;padding-right:18px}
+  .worksheet-brand-row,.worksheet-grid-two,.worksheet-fact-grid,.worksheet-meta-grid,.worksheet-hub-grid{grid-template-columns:1fr}
+  .worksheet-brand-row{display:grid}
+  .worksheet-chip{justify-self:start}
+  .worksheet-choice-row{grid-template-columns:1fr 1fr 1fr}
+  .worksheet-title,.worksheet-hub-title{font-size:1.65rem}
+  .worksheet-mini-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .alphabet-hero{grid-template-columns:1fr}
+  .alphabet-letter-box{min-height:120px;font-size:4rem}
+  .alphabet-picture-grid{grid-template-columns:1fr}
+  .alphabet-choice-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .alphabet-line-card{align-items:flex-start;flex-direction:column}
+  .alphabet-line-answer{width:100%;min-width:0}
+  .alphabet-trace-row{font-size:2rem;min-height:84px;padding:16px 14px;letter-spacing:.16em}
+  .alphabet-stroke-grid{grid-template-columns:1fr}
+  .worksheet-table-grid,
+  .worksheet-match-area,
+  .worksheet-check-grid,
+  .worksheet-clock-grid,
+  .worksheet-sort-grid,
+  .worksheet-times-grid,
+  .coloring-tip-grid{grid-template-columns:1fr}
+  .worksheet-color-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .worksheet-cut-grid{grid-template-columns:1fr}
+  .worksheet-speed-grid{grid-template-columns:1fr}
+  .worksheet-count-strip{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .worksheet-maze-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .worksheet-timeline-row{grid-template-columns:1fr}
+  .worksheet-clock-face{width:150px;height:150px}
+}
