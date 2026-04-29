@@ -1,7 +1,7 @@
 # Codebase Context
 
 ## Overview
-
+#
 This repository is a content-heavy, framework-free learning site for `fivetofifteen.com`.
 
 - Stack: static HTML, CSS, and vanilla JavaScript
