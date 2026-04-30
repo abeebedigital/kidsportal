@@ -12,9 +12,9 @@ if (!is_array($decodedAnswers)) {
 }
 
 $stmt = $conn->prepare('
-    SELECT ue.*, eb.time_limit
+    SELECT ue.*, eb.time_limit, eb.category_id
     FROM user_exams ue
-    INNER JOIN exam_blueprints eb ON eb.id = ue.blueprint_id
+    INNER JOIN exam_sets eb ON eb.id = ue.exam_set_id
     WHERE ue.id = ? AND ue.user_id = ?
     LIMIT 1
 ');
@@ -27,6 +27,8 @@ if (!$exam) {
     set_flash('error', 'Exam not found.');
     redirect_to('user/dashboard.php');
 }
+
+require_category_subscription((int) $exam['category_id']);
 
 if ($exam['status'] === 'completed') {
     redirect_to('user/result.php?exam_id=' . (int) $exam['id']);
@@ -56,4 +58,3 @@ $updateStmt->execute();
 $updateStmt->close();
 
 redirect_to('user/result.php?exam_id=' . $examId);
-

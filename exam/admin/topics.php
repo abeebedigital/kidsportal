@@ -3,26 +3,28 @@ require_once __DIR__ . '/../includes/functions.php';
 require_admin_login();
 
 $editing = null;
+$categories = get_categories(true);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? 'create';
+    $categoryId = (int) ($_POST['category_id'] ?? 0);
     $name = trim($_POST['name'] ?? '');
 
-    if ($name === '') {
-        set_flash('error', 'Topic name is required.');
+    if ($categoryId <= 0 || $name === '') {
+        set_flash('error', 'Category and topic name are required.');
         redirect_to('admin/topics.php');
     }
 
     if ($action === 'update') {
         $topicId = (int) ($_POST['topic_id'] ?? 0);
-        $stmt = $conn->prepare('UPDATE topics SET name = ? WHERE id = ?');
-        $stmt->bind_param('si', $name, $topicId);
+        $stmt = $conn->prepare('UPDATE topics SET category_id = ?, name = ? WHERE id = ?');
+        $stmt->bind_param('isi', $categoryId, $name, $topicId);
         $stmt->execute();
         $stmt->close();
         set_flash('success', 'Topic updated successfully.');
     } else {
-        $stmt = $conn->prepare('INSERT INTO topics (name) VALUES (?)');
-        $stmt->bind_param('s', $name);
+        $stmt = $conn->prepare('INSERT INTO topics (category_id, name) VALUES (?, ?)');
+        $stmt->bind_param('is', $categoryId, $name);
         $stmt->execute();
         $stmt->close();
         set_flash('success', 'Topic added successfully.');
@@ -55,7 +57,7 @@ $topics = get_topics();
 render_header('Manage Topics', 'admin');
 ?>
 
-<div class="grid-2">
+<div class="stacked-sections">
     <section class="card">
         <h2><?php echo $editing ? 'Edit Topic' : 'Add Topic'; ?></h2>
         <p class="muted">Create the high-level subject buckets that questions will belong to.</p>
@@ -64,6 +66,17 @@ render_header('Manage Topics', 'admin');
             <?php if ($editing): ?>
                 <input type="hidden" name="topic_id" value="<?php echo (int) $editing['id']; ?>">
             <?php endif; ?>
+            <div class="form-row">
+                <label for="categoryId">Category</label>
+                <select id="categoryId" name="category_id" required>
+                    <option value="">Choose category</option>
+                    <?php foreach ($categories as $category): ?>
+                        <option value="<?php echo (int) $category['id']; ?>" <?php echo (int) ($editing['category_id'] ?? 0) === (int) $category['id'] ? 'selected' : ''; ?>>
+                            <?php echo e($category['name']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
             <div class="form-row">
                 <label for="topicName">Topic Name</label>
                 <input id="topicName" type="text" name="name" value="<?php echo e($editing['name'] ?? ''); ?>" placeholder="Example: Fractions" required>
@@ -85,6 +98,7 @@ render_header('Manage Topics', 'admin');
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Category</th>
                         <th>Topic</th>
                         <th>Created</th>
                         <th>Actions</th>
@@ -93,12 +107,13 @@ render_header('Manage Topics', 'admin');
                 <tbody>
                     <?php if (!$topics): ?>
                         <tr>
-                            <td colspan="4">No topics yet.</td>
+                            <td colspan="5">No topics yet.</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($topics as $topic): ?>
                             <tr>
                                 <td><?php echo (int) $topic['id']; ?></td>
+                                <td><?php echo e($topic['category_name']); ?></td>
                                 <td><?php echo e($topic['name']); ?></td>
                                 <td><?php echo e($topic['created_at']); ?></td>
                                 <td>

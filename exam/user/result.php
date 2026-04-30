@@ -6,9 +6,9 @@ $user = current_user();
 $examId = (int) ($_GET['exam_id'] ?? 0);
 
 $stmt = $conn->prepare('
-    SELECT ue.*, eb.title AS blueprint_title, eb.time_limit
+    SELECT ue.*, eb.title AS exam_set_title, eb.time_limit, eb.category_id
     FROM user_exams ue
-    INNER JOIN exam_blueprints eb ON eb.id = ue.blueprint_id
+    INNER JOIN exam_sets eb ON eb.id = ue.exam_set_id
     WHERE ue.id = ? AND ue.user_id = ?
     LIMIT 1
 ');
@@ -21,6 +21,8 @@ if (!$exam) {
     set_flash('error', 'Result not found.');
     redirect_to('user/dashboard.php');
 }
+
+require_category_subscription((int) $exam['category_id']);
 
 if ($exam['status'] !== 'completed') {
     redirect_to('user/exam.php?exam_id=' . (int) $exam['id']);
@@ -63,7 +65,7 @@ render_header('Result', 'user');
 
 <section class="summary-box card">
     <div class="status-row">
-        <span class="pill pill-info"><?php echo e($exam['blueprint_title']); ?></span>
+        <span class="pill pill-info"><?php echo e($exam['exam_set_title']); ?></span>
         <span class="pill pill-success">Completed</span>
     </div>
     <h2>Your Score: <?php echo (int) $exam['score']; ?> / <?php echo $totalQuestions; ?></h2>
