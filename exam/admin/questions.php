@@ -73,9 +73,10 @@ $currentPage = min($currentPage, $totalPages);
 $offset = ($currentPage - 1) * $questionsPerPage;
 
 $questionStmt = $conn->prepare('
-    SELECT q.*, COALESCE(t.name, "Unassigned") AS topic_name
+    SELECT q.*, COALESCE(t.name, "Unassigned") AS topic_name, COALESCE(c.name, "Unassigned") AS category_name
     FROM questions q
     LEFT JOIN topics t ON t.id = q.topic_id
+    LEFT JOIN exam_categories c ON c.id = t.category_id
     ORDER BY q.id DESC
     LIMIT ? OFFSET ?
 ');
@@ -163,6 +164,7 @@ render_header('Manage Questions', 'admin');
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Category</th>
                         <th>Topic</th>
                         <th>Question</th>
                         <th>Correct</th>
@@ -172,12 +174,13 @@ render_header('Manage Questions', 'admin');
                 <tbody>
                     <?php if (!$questionRows): ?>
                         <tr>
-                            <td colspan="5">No questions yet.</td>
+                            <td colspan="6">No questions yet.</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($questionRows as $row): ?>
                             <tr>
                                 <td><?php echo (int) $row['id']; ?></td>
+                                <td><?php echo e($row['category_name']); ?></td>
                                 <td><?php echo e($row['topic_name']); ?></td>
                                 <td><?php echo e($row['question']); ?></td>
                                 <td><span class="pill pill-info"><?php echo e($row['correct_answer']); ?></span></td>

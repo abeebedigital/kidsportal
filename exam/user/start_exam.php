@@ -1,35 +1,36 @@
 <?php
 require_once __DIR__ . '/../includes/functions.php';
 require_login();
-require_subscription();
 
 $user = current_user();
-$blueprintId = (int) ($_GET['blueprint_id'] ?? 0);
+$examSetId = (int) ($_GET['exam_set_id'] ?? 0);
 
-if ($blueprintId <= 0) {
-    set_flash('error', 'Invalid blueprint selected.');
+if ($examSetId <= 0) {
+    set_flash('error', 'Invalid Exam Set selected.');
     redirect_to('user/dashboard.php');
 }
 
-$stmt = $conn->prepare('SELECT * FROM exam_blueprints WHERE id = ? LIMIT 1');
-$stmt->bind_param('i', $blueprintId);
+$stmt = $conn->prepare('SELECT * FROM exam_sets WHERE id = ? LIMIT 1');
+$stmt->bind_param('i', $examSetId);
 $stmt->execute();
-$blueprint = $stmt->get_result()->fetch_assoc();
+$examSet = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
-if (!$blueprint) {
-    set_flash('error', 'Blueprint not found.');
+if (!$examSet) {
+    set_flash('error', 'Exam Set not found.');
     redirect_to('user/dashboard.php');
 }
+
+require_category_subscription((int) $examSet['category_id']);
 
 $existingStmt = $conn->prepare('
     SELECT *
     FROM user_exams
-    WHERE user_id = ? AND blueprint_id = ?
+    WHERE user_id = ? AND exam_set_id = ?
     ORDER BY id DESC
     LIMIT 1
 ');
-$existingStmt->bind_param('ii', $user['id'], $blueprintId);
+$existingStmt->bind_param('ii', $user['id'], $examSetId);
 $existingStmt->execute();
 $existingExam = $existingStmt->get_result()->fetch_assoc();
 $existingStmt->close();
@@ -41,9 +42,16 @@ if ($existingExam) {
     redirect_to('user/exam.php?exam_id=' . (int) $existingExam['id']);
 }
 
-$distribution = json_decode($blueprint['topic_distribution'], true) ?: [];
+$distribution = json_decode($examSet['topic_distribution'], true) ?: [];
 $questionIds = [];
-$questionPicker = $conn->prepare('SELECT id FROM questions WHERE topic_id = ? ORDER BY RAND() LIMIT ?');
+$questionPicker = $conn->prepare('
+    SELECT q.id
+    FROM questions q
+    INNER JOIN topics t ON t.id = q.topic_id
+    WHERE q.topic_id = ? AND t.category_id = ?
+    ORDER BY RAND()
+    LIMIT ?
+');
 
 foreach ($distribution as $topicId => $count) {
     $topicId = (int) $topicId;
@@ -52,12 +60,13 @@ foreach ($distribution as $topicId => $count) {
         continue;
     }
 
-    $questionPicker->bind_param('ii', $topicId, $count);
+    $categoryId = (int) $examSet['category_id'];
+    $questionPicker->bind_param('iii', $topicId, $categoryId, $count);
     $questionPicker->execute();
     $rows = $questionPicker->get_result()->fetch_all(MYSQLI_ASSOC);
 
     if (count($rows) < $count) {
-        set_flash('error', 'Not enough questions are available for one or more topics in this blueprint.');
+        set_flash('error', 'Not enough questions are available for one or more topics in this Exam Set.');
         redirect_to('user/dashboard.php');
     }
 
@@ -68,7 +77,7 @@ foreach ($distribution as $topicId => $count) {
 $questionPicker->close();
 
 if (!$questionIds) {
-    set_flash('error', 'This blueprint does not contain any usable questions.');
+    set_flash('error', 'This Exam Set does not contain any usable questions.');
     redirect_to('user/dashboard.php');
 }
 
@@ -76,13 +85,13 @@ shuffle($questionIds);
 $questionIdText = implode(',', $questionIds);
 $status = 'in_progress';
 $answers = json_encode(new stdClass());
-$examTimeLimit = (int) $blueprint['time_limit'];
+$examTimeLimit = (int) $examSet['time_limit'];
 
 $insertStmt = $conn->prepare('
-    INSERT INTO user_exams (user_id, blueprint_id, time_limit, question_ids, answers, status)
+    INSERT INTO user_exams (user_id, exam_set_id, time_limit, question_ids, answers, status)
     VALUES (?, ?, ?, ?, ?, ?)
 ');
-$insertStmt->bind_param('iiisss', $user['id'], $blueprintId, $examTimeLimit, $questionIdText, $answers, $status);
+$insertStmt->bind_param('iiisss', $user['id'], $examSetId, $examTimeLimit, $questionIdText, $answers, $status);
 $insertStmt->execute();
 $examId = $conn->insert_id;
 $insertStmt->close();

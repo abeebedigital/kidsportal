@@ -1,16 +1,26 @@
 <?php
+$appConfig = require __DIR__ . '/config.php';
 require_once __DIR__ . '/auth.php';
+
+function app_config($key, $default = null)
+{
+    global $appConfig;
+    return $appConfig[$key] ?? $default;
+}
+
+function join_url_path($base, $path = '')
+{
+    return rtrim((string) $base, '/') . '/' . ltrim((string) $path, '/');
+}
 
 function base_url($path = '')
 {
-    $base = '/kids_pjt/kids/exam/';
-    return $base . ltrim($path, '/');
+    return join_url_path(app_config('exam_base_url', '/kids_pjt_main/kids/exam/'), $path);
 }
 
 function kids_root_url($path = '')
 {
-    $base = '/kids_pjt/kids/';
-    return $base . ltrim($path, '/');
+    return join_url_path(app_config('kids_base_url', '/kids_pjt_main/kids/'), $path);
 }
 
 function e($value)
@@ -57,10 +67,12 @@ function render_header($title, $section = 'user')
 
         if ($isAdminLoggedIn) {
             $navLinks = [
+            ['label' => 'Dashboard', 'href' => base_url('admin/dashboard.php')],
+            ['label' => 'Categories', 'href' => base_url('admin/categories.php')],
+            ['label' => 'Plans', 'href' => base_url('admin/subscription_plans.php')],
             ['label' => 'Topics', 'href' => base_url('admin/topics.php')],
             ['label' => 'Questions', 'href' => base_url('admin/questions.php')],
-            ['label' => 'Bulk Upload', 'href' => base_url('admin/questions_upload.php')],
-            ['label' => 'Blueprints', 'href' => base_url('admin/blueprints.php')],
+            ['label' => 'Exam Sets', 'href' => base_url('admin/exam_sets.php')],
             ['label' => 'Users', 'href' => base_url('admin/users.php')]
         ];
         } else {
@@ -71,7 +83,7 @@ function render_header($title, $section = 'user')
         //     ['label' => 'Topics', 'href' => base_url('admin/topics.php')],
         //     ['label' => 'Questions', 'href' => base_url('admin/questions.php')],
         //     ['label' => 'Bulk Upload', 'href' => base_url('admin/questions_upload.php')],
-        //     ['label' => 'Blueprints', 'href' => base_url('admin/blueprints.php')],
+        //     ['label' => 'Exam Sets', 'href' => base_url('admin/exam_sets.php')],
         //     ['label' => 'Users', 'href' => base_url('admin/users.php')],
         //     //['label' => 'User Area', 'href' => base_url('user/dashboard.php')],
         //     //['label' => 'Admin Login', 'href' => base_url('admin/login.php')]
@@ -81,6 +93,7 @@ function render_header($title, $section = 'user')
 
         if ($isLoggedIn) {
             $navLinks[] = ['label' => 'Dashboard', 'href' => base_url('user/dashboard.php')];
+            $navLinks[] = ['label' => 'Subscription', 'href' => base_url('user/subscribe.php')];
         } else {
             $navLinks[] = ['label' => 'Login', 'href' => base_url('user/login.php')];
             $navLinks[] = ['label' => 'Register', 'href' => base_url('user/register.php')];
@@ -118,7 +131,7 @@ function render_header($title, $section = 'user')
                 <?php endforeach; ?>
                 <?php if ($section === 'admin' && $isAdminLoggedIn): ?>
                     <a class="top-nav-link top-nav-link-soft" href="<?php echo e(base_url('admin/login.php?action=logout')); ?>">Admin Logout</a>
-                <?php elseif ($isLoggedIn): ?>
+                <?php elseif ($section !== 'admin' && $isLoggedIn): ?>
                     <a class="top-nav-link top-nav-link-soft" href="<?php echo e(base_url('user/login.php?action=logout')); ?>">Logout</a>
                 <?php endif; ?>
             </nav>
@@ -131,7 +144,21 @@ function render_header($title, $section = 'user')
                 <p>Bright, simple, and fast exam management with the same friendly visual language as the main FiveToFifteen site.</p>
             </div>
             <div class="hero-meta-card">
-                <?php if ($isLoggedIn): ?>
+                <?php if ($section === 'admin' && $isAdminLoggedIn): ?>
+                    <strong><?php echo e($admin['name']); ?></strong>
+                    <span><?php echo e($admin['email']); ?></span>
+                    <span class="pill pill-info">Admin Session</span>
+                <?php elseif ($section === 'admin'): ?>
+                    <strong>Admin Area</strong>
+                    <span>Secure management access</span>
+                    <span class="pill pill-info">Admin Login</span>
+                <?php elseif ($isLoggedIn): ?>
+                    <?php
+                    $headerSubscriptions = [];
+                    if (function_exists('get_user_active_subscriptions')) {
+                        $headerSubscriptions = get_user_active_subscriptions((int) $user['id']);
+                    }
+                    ?>
                     <strong><?php echo e($user['name']); ?></strong>
                     <span><?php echo e($user['email']); ?></span>
                     <div class="status-row">
@@ -142,14 +169,19 @@ function render_header($title, $section = 'user')
                             <?php echo (int) $user['is_subscribed'] === 1 ? 'Subscribed' : 'Not Subscribed'; ?>
                         </span>
                     </div>
-                <?php elseif ($section === 'admin' && $isAdminLoggedIn): ?>
-                    <strong><?php echo e($admin['name']); ?></strong>
-                    <span><?php echo e($admin['email']); ?></span>
-                    <span class="pill pill-info">Admin Session</span>
+                    <?php if ($headerSubscriptions): ?>
+                        <div class="subscription-mini-list">
+                            <?php foreach ($headerSubscriptions as $subscription): ?>
+                                <span class="pill pill-info">
+                                    <?php echo e($subscription['category_name']); ?>: <?php echo e($subscription['plan_name']); ?>
+                                </span>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
                 <?php else: ?>
-                    <strong><?php echo $section === 'admin' ? 'Admin Login' : 'Demo Login'; ?></strong>
-                    <span><?php echo $section === 'admin' ? 'admin@kids.com' : 'demo@kids.com'; ?></span>
-                    <span class="pill pill-success">Password: <?php echo $section === 'admin' ? 'admin123' : 'demo123'; ?></span>
+                    <strong>Demo Login</strong>
+                    <span>demo@kids.com</span>
+                    <span class="pill pill-success">Password: demo123</span>
                 <?php endif; ?>
             </div>
         </section>
@@ -177,15 +209,196 @@ function render_footer()
 function get_topics()
 {
     global $conn;
-    $result = $conn->query('SELECT * FROM topics ORDER BY name ASC');
+    $result = $conn->query('
+        SELECT t.*, COALESCE(c.name, "Unassigned") AS category_name
+        FROM topics t
+        LEFT JOIN exam_categories c ON c.id = t.category_id
+        ORDER BY t.created_at DESC, t.id DESC
+    ');
     return $result->fetch_all(MYSQLI_ASSOC);
 }
 
-function get_blueprints()
+function get_categories($activeOnly = false)
 {
     global $conn;
-    $result = $conn->query('SELECT * FROM exam_blueprints ORDER BY created_at DESC, id DESC');
+    $sql = 'SELECT * FROM exam_categories';
+    if ($activeOnly) {
+        $sql .= ' WHERE is_active = 1';
+    }
+    $sql .= ' ORDER BY created_at DESC, id DESC';
+    $result = $conn->query($sql);
     return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+function get_categories_with_exam_set_counts($activeOnly = false)
+{
+    global $conn;
+    $sql = '
+        SELECT c.*, COALESCE(exam_set_totals.exam_set_count, 0) AS exam_set_count
+        FROM exam_categories c
+        LEFT JOIN (
+            SELECT category_id, COUNT(*) AS exam_set_count
+            FROM exam_sets
+            GROUP BY category_id
+        ) exam_set_totals ON exam_set_totals.category_id = c.id
+    ';
+    if ($activeOnly) {
+        $sql .= ' WHERE c.is_active = 1';
+    }
+    $sql .= ' ORDER BY c.created_at DESC, c.id DESC';
+    $result = $conn->query($sql);
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+function get_subscription_plans($activeOnly = false)
+{
+    global $conn;
+    $sql = '
+        SELECT p.*, c.name AS category_name
+        FROM subscription_plans p
+        INNER JOIN exam_categories c ON c.id = p.category_id
+    ';
+    if ($activeOnly) {
+        $sql .= ' WHERE p.is_active = 1 AND c.is_active = 1';
+    }
+    $sql .= ' ORDER BY p.created_at DESC, p.id DESC';
+    $result = $conn->query($sql);
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+function get_exam_sets()
+{
+    global $conn;
+    $result = $conn->query('
+        SELECT eb.*, COALESCE(c.name, "Unassigned") AS category_name
+        FROM exam_sets eb
+        LEFT JOIN exam_categories c ON c.id = eb.category_id
+        ORDER BY eb.created_at DESC, eb.id DESC
+    ');
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+function get_category_by_id($categoryId, $activeOnly = false)
+{
+    global $conn;
+    $sql = 'SELECT * FROM exam_categories WHERE id = ?';
+    if ($activeOnly) {
+        $sql .= ' AND is_active = 1';
+    }
+    $sql .= ' LIMIT 1';
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $categoryId);
+    $stmt->execute();
+    $category = $stmt->get_result()->fetch_assoc() ?: null;
+    $stmt->close();
+    return $category;
+}
+
+function get_exam_sets_by_category($categoryId)
+{
+    global $conn;
+    $stmt = $conn->prepare('
+        SELECT eb.*, COALESCE(c.name, "Unassigned") AS category_name
+        FROM exam_sets eb
+        INNER JOIN exam_categories c ON c.id = eb.category_id
+        WHERE eb.category_id = ? AND c.is_active = 1
+        ORDER BY eb.created_at DESC, eb.id DESC
+    ');
+    $stmt->bind_param('i', $categoryId);
+    $stmt->execute();
+    $rows = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    return $rows;
+}
+
+function get_user_active_category_ids($userId)
+{
+    global $conn;
+    $stmt = $conn->prepare("
+        SELECT DISTINCT category_id
+        FROM user_category_subscriptions
+        WHERE user_id = ? AND status = 'active' AND expires_at > NOW()
+    ");
+    $stmt->bind_param('i', $userId);
+    $stmt->execute();
+    $rows = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+
+    return array_values(array_map(static function ($row) {
+        return (int) $row['category_id'];
+    }, $rows));
+}
+
+function get_user_active_subscriptions($userId)
+{
+    global $conn;
+    $stmt = $conn->prepare("
+        SELECT s.*, p.name AS plan_name, c.name AS category_name
+        FROM user_category_subscriptions s
+        INNER JOIN subscription_plans p ON p.id = s.plan_id
+        INNER JOIN exam_categories c ON c.id = s.category_id
+        WHERE s.user_id = ? AND s.status = 'active' AND s.expires_at > NOW()
+        ORDER BY s.expires_at ASC
+    ");
+    $stmt->bind_param('i', $userId);
+    $stmt->execute();
+    $rows = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    return $rows;
+}
+
+function user_has_category_subscription($userId, $categoryId)
+{
+    global $conn;
+    if ($categoryId <= 0) {
+        return false;
+    }
+
+    $stmt = $conn->prepare("
+        SELECT id
+        FROM user_category_subscriptions
+        WHERE user_id = ? AND category_id = ? AND status = 'active' AND expires_at > NOW()
+        LIMIT 1
+    ");
+    $stmt->bind_param('ii', $userId, $categoryId);
+    $stmt->execute();
+    $hasSubscription = (bool) $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+    return $hasSubscription;
+}
+
+function sync_user_subscription_flag($userId)
+{
+    global $conn;
+    $hasAny = count(get_user_active_category_ids((int) $userId)) > 0 ? 1 : 0;
+    $stmt = $conn->prepare('UPDATE users SET is_subscribed = ? WHERE id = ?');
+    $stmt->bind_param('ii', $hasAny, $userId);
+    $stmt->execute();
+    $stmt->close();
+}
+
+function get_available_exam_sets_for_user($userId)
+{
+    global $conn;
+    $categoryIds = get_user_active_category_ids((int) $userId);
+    if (!$categoryIds) {
+        return [];
+    }
+
+    $placeholders = in_clause_placeholders($categoryIds);
+    $types = str_repeat('i', count($categoryIds));
+    $stmt = $conn->prepare("
+        SELECT eb.*, COALESCE(c.name, 'Unassigned') AS category_name
+        FROM exam_sets eb
+        INNER JOIN exam_categories c ON c.id = eb.category_id
+        WHERE eb.category_id IN ($placeholders) AND c.is_active = 1
+        ORDER BY eb.created_at DESC, eb.id DESC
+    ");
+    bind_dynamic_params($stmt, $types, $categoryIds);
+    $stmt->execute();
+    $rows = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    return $rows;
 }
 
 function question_ids_from_text($value)
@@ -546,10 +759,10 @@ function latest_user_exam_map($userId)
         SELECT ue.*
         FROM user_exams ue
         INNER JOIN (
-            SELECT blueprint_id, MAX(id) AS latest_id
+            SELECT exam_set_id, MAX(id) AS latest_id
             FROM user_exams
             WHERE user_id = ?
-            GROUP BY blueprint_id
+            GROUP BY exam_set_id
         ) latest ON latest.latest_id = ue.id
         ORDER BY ue.id DESC
     ');
@@ -560,7 +773,7 @@ function latest_user_exam_map($userId)
 
     $map = [];
     foreach ($rows as $row) {
-        $map[(int) $row['blueprint_id']] = $row;
+        $map[(int) $row['exam_set_id']] = $row;
     }
     return $map;
 }

@@ -8,15 +8,15 @@ $examId = (int) ($_GET['exam_id'] ?? 0);
 $stmt = $conn->prepare('
     SELECT
         ue.*,
-        eb.title AS blueprint_title,
-        eb.time_limit AS blueprint_time_limit,
+        eb.title AS exam_set_title,
+        eb.time_limit AS exam_set_time_limit,
         CASE
             WHEN TIMESTAMPDIFF(SECOND, ue.started_at, NOW()) >= (COALESCE(NULLIF(ue.time_limit, 0), eb.time_limit) * 60)
                 THEN 0
             ELSE ((COALESCE(NULLIF(ue.time_limit, 0), eb.time_limit) * 60) - TIMESTAMPDIFF(SECOND, ue.started_at, NOW()))
         END AS remaining_seconds
     FROM user_exams ue
-    INNER JOIN exam_blueprints eb ON eb.id = ue.blueprint_id
+    INNER JOIN exam_sets eb ON eb.id = ue.exam_set_id
     WHERE ue.id = ? AND ue.user_id = ?
     LIMIT 1
 ');
@@ -47,7 +47,7 @@ if (!is_array($initialAnswers)) {
     $initialAnswers = [];
 }
 
-$effectiveTimeLimit = (int) $exam['time_limit'] > 0 ? (int) $exam['time_limit'] : (int) $exam['blueprint_time_limit'];
+$effectiveTimeLimit = (int) $exam['time_limit'] > 0 ? (int) $exam['time_limit'] : (int) $exam['exam_set_time_limit'];
 $remainingSeconds = max(0, (int) $exam['remaining_seconds']);
 
 render_header('Exam Runner', 'user');
@@ -61,7 +61,7 @@ render_header('Exam Runner', 'user');
         <section class="exam-main">
             <div class="question-nav">
                 <div class="status-row">
-                    <span class="pill pill-info"><?php echo e($exam['blueprint_title']); ?></span>
+                    <span class="pill pill-info"><?php echo e($exam['exam_set_title']); ?></span>
                     <span class="pill pill-warning"><?php echo count($questions); ?> questions</span>
                     <span class="pill pill-success"><?php echo $effectiveTimeLimit; ?> mins</span>
                 </div>

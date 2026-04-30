@@ -99,3 +99,13 @@ function require_subscription()
         exit;
     }
 }
+
+function require_category_subscription($categoryId)
+{
+    $user = current_user();
+    if (!$user || !user_has_category_subscription((int) $user['id'], (int) $categoryId)) {
+        $_SESSION['flash_error'] = 'Your subscription does not include this exam category.';
+        header('Location: ' . base_url('user/dashboard.php'));
+        exit;
+    }
+}
