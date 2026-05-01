@@ -77,12 +77,104 @@
         q("🎭", "", "Which sentence best creates a problem in a story?", ["The sun was bright.", "Lena heard the key snap inside the lock.", "The dog had brown fur.", "They walked to school."], 1, "writing"),
         q("📣", "", "Which sentence sounds most persuasive?", ["I like our library.", "Our library is an essential space where every child can learn and dream.", "Libraries have books.", "Some people visit libraries."], 1, "writing")
       ]
+    },
+    "weekly-competition-2026-04-29": {
+      key: "weekly-competition-2026-04-29",
+      weekLabel: "Week 3 Competition",
+      title: "The Weekly Skills Cup",
+      subtitle: "25 new mixed challenge questions in 60 minutes",
+      weekStart: "2026-04-29T00:00:00+10:00",
+      weekEnd: "2026-12-31T23:59:59+10:00",
+      minutes: 60,
+      passingScore: 18,
+      questions: [
+        q("📖", "Mila folded the permission slip twice and tucked it under her workbook before class began.", "What can you infer about Mila?", ["She wants to keep it safe", "She forgot to bring it", "She cannot read it", "She plans to throw it away"], 0, "reading"),
+        q("🔎", "Title: How Frogs Grow. Subheadings: Eggs, Tadpoles, Froglets.", "What type of text is this most likely to be?", ["An information report", "A recipe", "A comic dialogue", "A play script"], 0, "reading"),
+        q("📖", "Noah reread the final clue and grinned as he ran to the old oak tree.", "What is Noah most likely feeling?", ["Confused", "Excited and confident", "Sleepy", "Angry"], 1, "reading"),
+        q("🖼️", "Caption: The koala uses strong claws to climb tall eucalyptus trees.", "How does this caption help the reader?", ["It explains the image with extra facts", "It gives a chapter summary", "It tells who is speaking", "It fixes punctuation"], 0, "reading"),
+        q("🎯", "Bring a reusable lunch box to reduce rubbish in our school bins.", "The main purpose of this sentence is to...", ["entertain the reader", "retell a holiday", "persuade action", "describe a dream"], 2, "reading"),
+        q("📖", "The hall lights dimmed, and everyone turned toward the stage curtain.", "What is most likely about to happen?", ["A performance will begin", "A lunch break starts", "A maths test is handed out", "A fire drill begins"], 0, "reading"),
+        q("🏷️", "A diagram shows labels for beak, wing, and tail feathers.", "Which text feature is being used?", ["Rhyme", "Labels", "Speech marks", "Index"], 1, "reading"),
+        q("🧱", "", "Which word is a noun?", ["quickly", "bright", "backpack", "jumped"], 2, "grammar"),
+        q("⏰", "", "Which sentence keeps the same tense?", ["I finished my snack and walk outside.", "I finish my snack and walked outside.", "I finished my snack and walked outside.", "I finishing my snack and walked outside."], 2, "grammar"),
+        q("🧱", "", "Which word is an adjective?", ["carefully", "rocket", "sparkly", "write"], 2, "grammar"),
+        q("🔠", "", "Which sentence has correct capitals and full stop?", ["our class planted beans.", "Our class planted beans.", "Our Class planted beans.", "our class planted beans"], 1, "punctuation"),
+        q("💬", "", "Which sentence uses quotation marks correctly?", ["\"I found the map,\" whispered Ben.", "\"I found the map, whispered Ben.\"", "I found the map,\" whispered Ben.", "\"I found\" the map, whispered Ben."], 0, "punctuation"),
+        q("🔤", "", "Choose the correct word: ____ pencil case is on the desk.", ["There", "Their", "They're", "Thare"], 1, "spelling"),
+        q("🔎", "", "Which word is misspelled?", ["mountain", "because", "seperation", "teacher"], 2, "spelling"),
+        q("🔤", "", "Choose the correct word: We walked ____ the library after lunch.", ["to", "too", "two", "tu"], 0, "spelling"),
+        q("🏯", "", "What is the value of the digit 6 in 9,642?", ["6", "60", "600", "6,000"], 2, "numeracy"),
+        q("🧩", "", "Which is the expanded form of 7,380?", ["7,000 + 300 + 80", "7,000 + 30 + 8", "700 + 300 + 80", "7,000 + 3800"], 0, "numeracy"),
+        q("🐊", "", "Which number is greatest?", ["4,709", "4,790", "4,970", "4,907"], 2, "numeracy"),
+        q("➕", "", "69 + 24 =", ["83", "93", "95", "103"], 1, "numeracy"),
+        q("➖", "", "91 - 46 =", ["35", "45", "55", "44"], 1, "numeracy"),
+        q("✖️", "", "6 rows of 3 equals...", ["9", "12", "18", "24"], 2, "numeracy"),
+        q("➗", "", "Share 28 equally between 4 children.", ["6", "7", "8", "9"], 1, "numeracy"),
+        q("🍕", "", "Which fraction is the smallest?", ["1/2", "1/3", "1/5", "1/4"], 2, "numeracy"),
+        q("🎭", "", "Which sentence best introduces a story problem?", ["The park was quiet.", "Ava smiled at her sandwich.", "The bridge shook as Rohan stepped onto it.", "The bell rang at noon."], 2, "writing"),
+        q("📣", "", "Which sentence is most persuasive?", ["Recycling is nice.", "You should recycle because it helps protect animals and keeps our playground clean.", "Some bins are blue.", "People use bins."], 1, "writing")
+      ]
+    },
+    "story-maths-competition-2026-04-29": {
+      key: "story-maths-competition-2026-04-29",
+      weekLabel: "Story Maths Special",
+      title: "Maths Adventure Cup",
+      subtitle: "25 maths-only questions based on our story worlds",
+      heroBadge: "➕ Story Maths Competition",
+      preflightCopy: "This special challenge uses a full 25-question maths paper inspired by our story characters and adventures. Start the timer and solve steadily to finish within one hour.",
+      questionMixText: "Numeracy only (story-based word problems)",
+      showQuestionPreview: true,
+      weekStart: "2026-04-29T00:00:00+10:00",
+      weekEnd: "2026-12-31T23:59:59+10:00",
+      minutes: 60,
+      passingScore: 18,
+      questions: [
+        q("☁️", "In Cloudy's valley, 24 flowers needed water. Each rain burst watered 6 flowers.", "How many rain bursts were needed?", ["2", "3", "4", "5"], 2, "numeracy"),
+        q("🌈", "After the rain, 18 flowers bloomed in the morning and 27 more by evening.", "How many flowers bloomed in total?", ["35", "45", "55", "65"], 1, "numeracy"),
+        q("🐢", "In the tortoise race, Tim took 56 minutes. Ravi took 49 minutes.", "How many minutes faster was Ravi?", ["5", "6", "7", "8"], 2, "numeracy"),
+        q("🐘", "Eli the elephant remembered 8 facts each day for 5 days.", "How many facts did Eli remember?", ["13", "30", "40", "45"], 2, "numeracy"),
+        q("🪄", "On the magic bridge, there were 3 steps in each section and 9 sections.", "How many steps were there altogether?", ["18", "21", "24", "27"], 3, "numeracy"),
+        q("⭐", "Little Star practiced shining for 15 minutes each night for 4 nights.", "How many minutes did Star practice?", ["45", "50", "55", "60"], 3, "numeracy"),
+        q("🧹", "The prince cleaned 72 tiles in groups of 8.", "How many groups of 8 tiles is that?", ["7", "8", "9", "10"], 2, "numeracy"),
+        q("🌊", "Maya collected 36 shells and shared them equally with 4 friends.", "How many shells did each friend get?", ["8", "9", "10", "12"], 1, "numeracy"),
+        q("🌱", "In the seed vault, 125 seeds were in one tray and 240 in another.", "How many seeds were there in total?", ["355", "365", "375", "385"], 1, "numeracy"),
+        q("🏗️", "Bridge Builders used 7 planks on each side of the bridge. There were 2 sides.", "How many planks did they use?", ["9", "12", "14", "16"], 2, "numeracy"),
+        q("🔥", "The dragon had 48 fire crystals and used 19 to light lanterns.", "How many crystals were left?", ["27", "28", "29", "30"], 2, "numeracy"),
+        q("🍳", "In Mia's rainbow kitchen, 3 trays had 12 cupcakes each.", "How many cupcakes were baked?", ["24", "30", "36", "42"], 2, "numeracy"),
+        q("📚", "Hard Work Hero read 18 pages on Monday and 23 pages on Tuesday.", "How many pages did the hero read?", ["31", "41", "51", "61"], 1, "numeracy"),
+        q("🌧️", "Cloudy dropped 84 raindrops into 7 ponds equally.", "How many drops went into each pond?", ["10", "11", "12", "13"], 2, "numeracy"),
+        q("🏰", "The honest lanterns lit 5 streets with 9 lanterns on each street.", "How many lanterns were lit?", ["35", "40", "45", "50"], 2, "numeracy"),
+        q("🐇", "In the sharing story, 63 carrots were packed into bags of 9.", "How many bags were filled?", ["6", "7", "8", "9"], 1, "numeracy"),
+        q("🕒", "Story time started at 3:20 pm and ended at 4:05 pm.", "How long was story time?", ["35 minutes", "40 minutes", "45 minutes", "50 minutes"], 2, "numeracy"),
+        q("📏", "The bridge was 96 cm long. A second bridge was 18 cm shorter.", "How long was the second bridge?", ["68 cm", "78 cm", "88 cm", "108 cm"], 1, "numeracy"),
+        q("💰", "At the story fair, a badge costs $4. Lila bought 3 badges.", "How much did she spend?", ["$7", "$8", "$12", "$14"], 2, "numeracy"),
+        q("🍎", "There were 5 baskets with 14 apples each.", "How many apples were there?", ["59", "60", "70", "75"], 2, "numeracy"),
+        q("🧩", "Which number is greatest in the star map?", ["4,590", "4,509", "4,950", "4,905"], 2, "numeracy"),
+        q("🔢", "What is the value of digit 7 in 3,742?", ["7", "70", "700", "7,000"], 2, "numeracy"),
+        q("🍰", "A cake was cut into 8 equal slices. 3 slices were eaten.", "What fraction is left?", ["3/8", "4/8", "5/8", "6/8"], 2, "numeracy"),
+        q("🚌", "Each adventure bus holds 24 kids. 5 buses are full.", "How many kids are on the buses?", ["100", "110", "120", "130"], 2, "numeracy"),
+        q("🧠", "Ravi solved 9 puzzles on Monday, 11 on Tuesday, and 13 on Wednesday.", "How many puzzles did Ravi solve in all?", ["31", "32", "33", "34"], 2, "numeracy")
+      ]
     }
   };
 
   const competitionKey = window.COMPETITION_KEY || window.COMPETITION_KEY;
   const competition = COMPETITIONS[competitionKey];
-  if (!competition) return;
+  if (!competition) {
+    const availableKeys = Object.keys(COMPETITIONS).sort();
+    document.body.innerHTML = `
+      <div style="max-width:900px;margin:26px auto;padding:20px;font-family:Nunito,sans-serif;">
+        <div style="border:2px solid #f4cf45;background:#fffdf1;border-radius:18px;padding:18px;">
+          <h1 style="margin:0 0 10px;font-family:'Fredoka One',cursive;color:#7a4900;">Competition Setup Needed</h1>
+          <p style="margin:0 0 10px;color:#4b5563;line-height:1.6;">No question set was found for this page key. Please refresh once, then check the competition key in the page file.</p>
+          <p style="margin:0 0 8px;color:#7a4900;font-weight:800;">Requested key: ${competitionKey || "(empty)"}</p>
+          <p style="margin:0 0 6px;color:#6b7280;font-weight:800;">Available keys:</p>
+          <pre style="margin:0;background:#fff;border:1px solid #ecdab2;border-radius:12px;padding:10px;white-space:pre-wrap;">${availableKeys.join("\n")}</pre>
+        </div>
+      </div>
+    `;
+    return;
+  }
 
   const COMPETITION_API_URL = window.COMPETITION_API_URL || window.COMPETITION_API_URL || "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
   const totalQuestions = competition.questions.length;
@@ -170,6 +262,11 @@
     .result-box span{font-size:12px;font-weight:800;text-transform:uppercase;color:#8d4f39}
     .certificate-panel{margin-top:18px;padding:18px;border:2px dashed #f4cf45;border-radius:20px;background:#fffdf1}
     .certificate-panel h3{font-family:'Fredoka One',cursive;color:#8b5e00;margin-bottom:8px}
+    .question-preview{margin-top:14px;border:2px solid #f1e3db;border-radius:18px;background:#fff;padding:14px}
+    .question-preview h3{font-family:'Fredoka One',cursive;font-size:18px;color:#8d4f39;margin-bottom:8px}
+    .question-preview-list{display:grid;gap:8px}
+    .question-preview-item{border:1px solid #f1e3db;border-radius:12px;padding:10px 12px;background:#fff8f3}
+    .question-preview-item b{color:#7a42bb}
     .note{font-size:13px;color:var(--muted);margin-top:8px}
     @media(max-width:860px){
       .layout,.hero-stats,.result-grid,.options{grid-template-columns:1fr}
@@ -186,7 +283,7 @@
 
   document.body.innerHTML = `
     <div id="competitionApp"><section class="panel hero">
-        <div class="hero-badge">🏆 Weekly Competition</div>
+        <div class="hero-badge">${competition.heroBadge || "🏆 Weekly Competition"}</div>
         <h1 class="hero-title">${competition.title}</h1>
         <p class="hero-sub">${competition.subtitle}</p>
         <div class="hero-stats">
@@ -225,11 +322,15 @@
         <main class="main-card">
           <div id="preflightView">
             <h2 class="card-title">Competition Rules</h2>
-            <p class="small-copy">This weekly challenge uses a full 25-question mixed paper. Once the timer begins, the child should work steadily and submit before the hour ends.</p>
+            <p class="small-copy">${competition.preflightCopy || "This weekly challenge uses a full 25-question mixed paper. Once the timer begins, the child should work steadily and submit before the hour ends."}</p>
             <div class="meta-list">
-              <div class="meta-item"><strong>Question Mix</strong><span>Reading, writing, conventions, and numeracy</span></div>
+              <div class="meta-item"><strong>Question Mix</strong><span>${competition.questionMixText || "Reading, writing, conventions, and numeracy"}</span></div>
               <div class="meta-item"><strong>Scoring</strong><span>Automatic scoring after submission</span></div>
             <div class="meta-item"><strong>Certificate</strong><span>Winner can download a certificate</span></div>
+            </div>
+            <div class="question-preview" id="questionPreview" style="display:none;">
+              <h3>Question List Preview</h3>
+              <div class="question-preview-list" id="questionPreviewList"></div>
             </div>
             <div class="leaderboard" id="leaderboard"></div>
             <div class="certificate-panel" id="claimPanel" style="display:none;">
@@ -306,6 +407,8 @@
   const claimWinnerName = document.getElementById("claimWinnerName");
   const claimCertificateBtn = document.getElementById("claimCertificateBtn");
   const claimStatus = document.getElementById("claimStatus");
+  const questionPreview = document.getElementById("questionPreview");
+  const questionPreviewList = document.getElementById("questionPreviewList");
   const weekStartLabel = document.getElementById("weekStartLabel");
   const weekEndLabel = document.getElementById("weekEndLabel");
   let latestWinnerEntryId = null;
@@ -394,6 +497,22 @@
 
     questionGrid.addEventListener("change", updateAnswerProgress);
     updateAnswerProgress();
+  }
+
+  function renderQuestionPreview() {
+    if (!questionPreview || !questionPreviewList || !competition.showQuestionPreview) return;
+    questionPreview.style.display = "block";
+    questionPreviewList.innerHTML = competition.questions.map(function (item, index) {
+      const optionsHtml = (item.options || []).map(function (option, optionIndex) {
+        return `<div>${String.fromCharCode(65 + optionIndex)}. ${option}</div>`;
+      }).join("");
+      return `
+        <div class="question-preview-item">
+          <b>Q${index + 1}.</b> ${item.question}
+          <div style="margin-top:6px;display:grid;gap:4px;color:#4b5563;">${optionsHtml}</div>
+        </div>
+      `;
+    }).join("");
   }
 
   function updateTimer() {
@@ -930,6 +1049,7 @@
 
   weekStartLabel.textContent = formatDate(competition.weekStart);
   weekEndLabel.textContent = formatDate(competition.weekEnd);
+  renderQuestionPreview();
   startBtn.addEventListener("click", startCompetition);
   submitBtn.addEventListener("click", function () {
     finalizeCompetition(false);

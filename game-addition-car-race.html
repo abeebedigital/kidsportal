@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Addition Tunnel Car Race</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet" />
+  <script src="analytics.js" defer></script>
+  <script src="site-drawer.js" defer></script>
+  <script src="page-share.js" defer></script>
+  <script src="voice-assist.js"></script>
+  <style>
+    :root {
+      --ink: #1f3354;
+      --line: #e3e9fa;
+      --paper: #fffefb;
+      --mint: #39c3ad;
+      --blue: #4d96ff;
+      --amber: #ffd166;
+      --rose: #ff7f96;
+      --night: #0f2f54;
+    }
+    html { font-size: 17px; }
+    @media (max-width: 500px) { html { font-size: 16px; } }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 16px;
+      background:
+        radial-gradient(circle at 14% 8%, rgba(77, 150, 255, 0.22) 0, transparent 26%),
+        radial-gradient(circle at 88% 10%, rgba(255, 209, 102, 0.28) 0, transparent 30%),
+        linear-gradient(180deg, #f4f9ff 0%, #fff8ed 100%);
+    }
+    .app {
+      max-width: 980px;
+      margin: 0 auto;
+      border-radius: 26px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      overflow: hidden;
+      box-shadow: 0 18px 34px rgba(24, 39, 72, 0.12);
+    }
+    .top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(135deg, #ebf4ff 0%, #f0fff8 54%, #fff6df 100%);
+    }
+    .title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Fredoka One', cursive;
+      color: #2f4670;
+      font-size: 1.2rem;
+    }
+    .chip {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #dceaff 0%, #ffe9bb 100%);
+    }
+    .content {
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .stat {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      text-align: center;
+      padding: 10px;
+    }
+    .stat-label {
+      display: block;
+      font-size: 0.76rem;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: #72829f;
+      font-weight: 800;
+    }
+    .stat-value {
+      display: block;
+      margin-top: 3px;
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.18rem;
+      color: #315083;
+    }
+    .mission {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: linear-gradient(135deg, #fff 0%, #f6faff 100%);
+      padding: 12px;
+      text-align: center;
+    }
+    .mission-kicker {
+      font-size: 0.82rem;
+      color: #7483a0;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+    .mission-sum {
+      margin-top: 4px;
+      font-family: 'Fredoka One', cursive;
+      font-size: 2rem;
+      color: #1f4c99;
+    }
+    .race-wrap {
+      position: relative;
+      border-radius: 22px;
+      border: 2px dashed #d9e4ff;
+      background:
+        radial-gradient(circle at 15% 12%, rgba(77, 150, 255, 0.1) 0, transparent 28%),
+        radial-gradient(circle at 88% 16%, rgba(255, 127, 150, 0.1) 0, transparent 28%),
+        linear-gradient(180deg, #dbedff 0%, #f6fbff 38%, #f7f9ff 100%);
+      min-height: 380px;
+      height: 56vh;
+      max-height: 520px;
+      overflow: hidden;
+      touch-action: none;
+    }
+    .sky {
+      position: absolute;
+      inset: 0 0 48% 0;
+      background: linear-gradient(180deg, rgba(217, 236, 255, 0.66) 0%, rgba(235, 245, 255, 0.4) 100%);
+      pointer-events: none;
+    }
+    .signals {
+      position: absolute;
+      left: 50%;
+      top: 14%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      z-index: 3;
+      pointer-events: none;
+    }
+    .signal-board {
+      min-width: 76px;
+      border-radius: 12px;
+      border: 2px solid #fff;
+      background: linear-gradient(145deg, #4d96ff 0%, #2c66be 100%);
+      color: #fff;
+      text-align: center;
+      padding: 8px 10px;
+      box-shadow: 0 8px 16px rgba(29, 49, 89, 0.2);
+    }
+    .signal-board .num {
+      display: block;
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.25rem;
+      line-height: 1.1;
+    }
+    .signal-board .txt {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      opacity: 0.95;
+      margin-top: 2px;
+    }
+    .signal-plus {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #d7e6ff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fredoka One', cursive;
+      color: #42669e;
+      font-size: 1rem;
+    }
+    .road {
+      position: absolute;
+      inset: 32% 5% 3% 5%;
+      background: linear-gradient(180deg, #627ea4 0%, #2f527f 100%);
+      border-radius: 26px 26px 16px 16px;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .road::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.65) 0,
+          rgba(255, 255, 255, 0.65) 14px,
+          transparent 14px,
+          transparent 30px
+        );
+      opacity: 0.5;
+      animation: roadMove 1.05s linear infinite;
+    }
+    @keyframes roadMove {
+      from { transform: translateY(0); }
+      to { transform: translateY(30px); }
+    }
+    .lanes {
+      position: absolute;
+      inset: 34% 5% 5% 5%;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .lane {
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.02);
+      position: relative;
+    }
+    .lane.active {
+      box-shadow: inset 0 0 0 3px rgba(255, 209, 102, 0.72);
+      background: rgba(255, 209, 102, 0.15);
+    }
+    .tunnels {
+      position: absolute;
+      left: 5%;
+      right: 5%;
+      top: 34%;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      z-index: 4;
+    }
+    .tunnel {
+      border: none;
+      border-radius: 16px 16px 10px 10px;
+      min-height: 94px;
+      background:
+        radial-gradient(circle at 50% 32%, rgba(255, 255, 255, 0.16) 0, transparent 34%),
+        linear-gradient(180deg, #163a66 0%, #0c2443 100%);
+      color: #fff;
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.58rem;
+      cursor: pointer;
+      box-shadow: 0 8px 16px rgba(16, 30, 56, 0.3);
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+    }
+    .tunnel:active { transform: translateY(1px); }
+    .tunnel.active {
+      box-shadow: 0 0 0 4px rgba(255, 209, 102, 0.5), 0 8px 16px rgba(16, 30, 56, 0.36);
+    }
+    .tunnel.correct {
+      box-shadow: 0 0 0 4px rgba(57, 195, 173, 0.7), 0 8px 16px rgba(16, 30, 56, 0.3);
+    }
+    .tunnel.wrong {
+      box-shadow: 0 0 0 4px rgba(255, 127, 150, 0.7), 0 8px 16px rgba(16, 30, 56, 0.3);
+    }
+    .car {
+      position: absolute;
+      left: 0;
+      bottom: 8%;
+      width: 68px;
+      height: 46px;
+      border-radius: 15px 15px 10px 10px;
+      background: linear-gradient(145deg, #ff8aa2 0%, #ff667f 100%);
+      box-shadow: 0 10px 20px rgba(32, 40, 74, 0.3);
+      z-index: 6;
+      transform: translateX(0);
+      transition: transform 0.18s ease;
+      pointer-events: none;
+    }
+    .car::before {
+      content: '';
+      position: absolute;
+      left: 11px;
+      right: 11px;
+      top: 8px;
+      height: 14px;
+      border-radius: 9px;
+      background: #e5f3ff;
+    }
+    .car::after {
+      content: '';
+      position: absolute;
+      left: 6px;
+      right: 6px;
+      bottom: -6px;
+      height: 10px;
+      background:
+        radial-gradient(circle at 16px 5px, #12263f 0, #12263f 6px, transparent 6px),
+        radial-gradient(circle at calc(100% - 16px) 5px, #12263f 0, #12263f 6px, transparent 6px);
+    }
+    .progress-wrap {
+      display: grid;
+      gap: 4px;
+    }
+    .progress-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: #5f7191;
+      font-weight: 800;
+    }
+    .progress-bar {
+      height: 12px;
+      border-radius: 999px;
+      background: #e8efff;
+      overflow: hidden;
+      border: 1px solid #d8e3ff;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, #39c3ad 0%, #5ec8ff 100%);
+      transition: width 0.1s linear;
+    }
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .ctrl {
+      border: none;
+      border-radius: 14px;
+      min-height: 46px;
+      padding: 10px;
+      background: linear-gradient(135deg, #4d96ff 0%, #3569b8 100%);
+      color: #fff;
+      font-family: 'Fredoka One', cursive;
+      cursor: pointer;
+      font-size: 0.92rem;
+    }
+    .ctrl:disabled { opacity: 0.55; cursor: not-allowed; }
+    .ctrl-mid {
+      background: linear-gradient(135deg, #39c3ad 0%, #279885 100%);
+    }
+    .hint {
+      text-align: center;
+      color: #5f7190;
+      font-size: 0.88rem;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+    .guide {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .guide-card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      padding: 10px;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      color: #61728f;
+    }
+    .guide-card strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #35507d;
+    }
+    .overlay {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      z-index: 9;
+      background: rgba(13, 28, 53, 0.45);
+      padding: 16px;
+    }
+    .overlay-card {
+      width: min(100%, 580px);
+      background: #fff;
+      border-radius: 20px;
+      border: 1px solid #e5e8f6;
+      text-align: center;
+      box-shadow: 0 16px 30px rgba(20, 33, 62, 0.22);
+      padding: 20px;
+    }
+    .overlay-card h1 {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.6rem;
+      color: #2f466f;
+      margin-bottom: 8px;
+    }
+    .overlay-card p {
+      color: #5f7090;
+      line-height: 1.65;
+      margin-bottom: 12px;
+    }
+    .tip {
+      display: inline-block;
+      border-radius: 14px;
+      border: 1px solid #d8e8ff;
+      background: #eef6ff;
+      color: #3d5885;
+      font-weight: 800;
+      font-size: 0.88rem;
+      padding: 8px 10px;
+      margin-bottom: 14px;
+    }
+    .btn {
+      border: none;
+      border-radius: 14px;
+      min-height: 46px;
+      padding: 12px 18px;
+      color: #fff;
+      cursor: pointer;
+      font-family: 'Fredoka One', cursive;
+      font-size: 0.95rem;
+      background: linear-gradient(135deg, #39c3ad 0%, #48ceb3 100%);
+    }
+    @media (max-width: 820px) {
+      .stats, .guide { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .mission-sum { font-size: 1.75rem; }
+      .tunnel { min-height: 84px; font-size: 1.35rem; }
+      .car { width: 60px; height: 41px; }
+    }
+    @media (max-width: 560px) {
+      body { padding: 10px; }
+      .content { padding: 12px; }
+      .stats, .guide { grid-template-columns: 1fr; }
+      .title { font-size: 1.03rem; }
+      .race-wrap { min-height: 360px; height: 52vh; }
+      .tunnel { min-height: 74px; font-size: 1.18rem; border-radius: 14px 14px 8px 8px; }
+      .signal-board { min-width: 64px; }
+      .signal-board .num { font-size: 1.06rem; }
+    }
+  </style>
+  <script src="slim-topbar.js" defer></script>
+</head>
+<body>
+  <div class="app">
+    <div class="top">
+      <div class="title"><span class="chip">🏎️</span> Addition Tunnel Car Race</div>
+    </div>
+
+    <div class="content">
+      <div class="voice-bar">
+        <button class="voice-btn voice-btn-read" id="voiceReadBtn" type="button">🔊 Read Task</button>
+        <button class="voice-btn voice-btn-stop" id="voiceStopBtn" type="button" style="display:none;">⏹ Stop</button>
+        <button class="voice-btn voice-btn-mute" id="voiceMuteBtn" type="button" aria-pressed="false">🔊 Sound On</button>
+        <span class="voice-note">Hear the two numbers and choose the tunnel with the correct sum.</span>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><span class="stat-label">Score</span><span class="stat-value" id="scoreValue">0</span></div>
+        <div class="stat"><span class="stat-label">Round</span><span class="stat-value" id="roundValue">1</span></div>
+        <div class="stat"><span class="stat-label">Best</span><span class="stat-value" id="bestValue">0</span></div>
+        <div class="stat"><span class="stat-label">Speed</span><span class="stat-value" id="speedValue">1x</span></div>
+      </div>
+
+      <div class="mission">
+        <div class="mission-kicker">Find the tunnel with this sum</div>
+        <div class="mission-sum" id="missionSum">2 + 3 = ?</div>
+      </div>
+
+      <div class="race-wrap" id="raceWrap" aria-label="Car race area">
+        <div class="sky" aria-hidden="true"></div>
+
+        <div class="signals" aria-hidden="true">
+          <div class="signal-board"><span class="num" id="signalA">2</span><span class="txt">Signal A</span></div>
+          <div class="signal-plus">+</div>
+          <div class="signal-board"><span class="num" id="signalB">3</span><span class="txt">Signal B</span></div>
+        </div>
+
+        <div class="road" aria-hidden="true"></div>
+
+        <div class="lanes" id="laneGrid" aria-hidden="true">
+          <div class="lane"></div>
+          <div class="lane"></div>
+          <div class="lane"></div>
+          <div class="lane"></div>
+        </div>
+
+        <div class="tunnels" id="tunnelGrid">
+          <button class="tunnel" data-lane="0" type="button">0</button>
+          <button class="tunnel" data-lane="1" type="button">0</button>
+          <button class="tunnel" data-lane="2" type="button">0</button>
+          <button class="tunnel" data-lane="3" type="button">0</button>
+        </div>
+
+        <div class="car" id="car" aria-hidden="true"></div>
+
+        <div class="overlay" id="overlay">
+          <div class="overlay-card">
+            <h1>Ready to Race?</h1>
+            <p>Two number signals will appear. Add them and move your car into the tunnel with that answer.</p>
+            <span class="tip">Wrong tunnel ends the game. Correct tunnel starts the next race.</span>
+            <button class="btn" id="startBtn" type="button">Start Race</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="progress-wrap" aria-label="Distance to tunnel">
+        <div class="progress-head">
+          <span id="distanceLabel">Distance to tunnel</span>
+          <span id="timeLabel">4.0s</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <div class="controls" aria-label="Race controls">
+        <button class="ctrl" id="leftBtn" type="button">⬅ Left</button>
+        <button class="ctrl ctrl-mid" id="stayBtn" type="button">Current Lane</button>
+        <button class="ctrl" id="rightBtn" type="button">Right ➡</button>
+      </div>
+
+      <p class="hint">Desktop: use ← → keys or number keys 1, 2, 3, 4. Mobile: swipe left/right or tap a tunnel to choose lane.</p>
+
+      <div class="guide">
+        <div class="guide-card"><strong>🚦 Signal Boards</strong>Each round shows two numbers. Add them before your car reaches the tunnels.</div>
+        <div class="guide-card"><strong>🚇 Tunnel Choice</strong>There are always four tunnel numbers. Only one tunnel has the correct sum.</div>
+        <div class="guide-card"><strong>🏁 Race Rule</strong>Correct tunnel gives points and next round. Wrong tunnel stops the race and you restart.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const STORAGE_KEY = 'additionTunnelRaceBest';
+      const ROUND_MS = 10000;
+
+      const missionSum = document.getElementById('missionSum');
+      const signalA = document.getElementById('signalA');
+      const signalB = document.getElementById('signalB');
+      const scoreValue = document.getElementById('scoreValue');
+      const roundValue = document.getElementById('roundValue');
+      const bestValue = document.getElementById('bestValue');
+      const speedValue = document.getElementById('speedValue');
+      const progressFill = document.getElementById('progressFill');
+      const timeLabel = document.getElementById('timeLabel');
+      const distanceLabel = document.getElementById('distanceLabel');
+      const raceWrap = document.getElementById('raceWrap');
+      const car = document.getElementById('car');
+      const overlay = document.getElementById('overlay');
+      const startBtn = document.getElementById('startBtn');
+      const tunnelButtons = Array.from(document.querySelectorAll('.tunnel'));
+      const lanes = Array.from(document.querySelectorAll('.lane'));
+      const leftBtn = document.getElementById('leftBtn');
+      const rightBtn = document.getElementById('rightBtn');
+      const stayBtn = document.getElementById('stayBtn');
+
+      let running = false;
+      let score = 0;
+      let round = 1;
+      let best = Number(localStorage.getItem(STORAGE_KEY) || 0);
+      let laneIndex = 1;
+      let correctLane = 0;
+      let correctAnswer = 0;
+      let a = 0;
+      let b = 0;
+      let roundMs = ROUND_MS;
+      let roundStart = 0;
+      let rafId = null;
+      let touchStartX = null;
+      let resolvingRound = false;
+
+      function rand(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      function sayLine(text) {
+        if (window.voiceAssistSay) {
+          window.voiceAssistSay(text, { interrupt: true, rate: 1.02, pitch: 1.06, lang: 'en-AU' });
+        }
+      }
+
+      function randomFrom(list) {
+        return list[rand(0, list.length - 1)];
+      }
+
+      function updateStats() {
+        scoreValue.textContent = String(score);
+        roundValue.textContent = String(round);
+        bestValue.textContent = String(best);
+        speedValue.textContent = '1x';
+      }
+
+      function setLane(nextLane) {
+        laneIndex = Math.max(0, Math.min(3, nextLane));
+
+        lanes.forEach(function (laneEl, index) {
+          laneEl.classList.toggle('active', index === laneIndex);
+        });
+
+        tunnelButtons.forEach(function (btn, index) {
+          btn.classList.toggle('active', index === laneIndex);
+          btn.setAttribute('aria-pressed', index === laneIndex ? 'true' : 'false');
+        });
+
+        placeCar();
+      }
+
+      function placeCar() {
+        const wrapRect = raceWrap.getBoundingClientRect();
+        const laneBtnRect = tunnelButtons[laneIndex].getBoundingClientRect();
+        const tunnelCenter = laneBtnRect.left - wrapRect.left + laneBtnRect.width / 2;
+        const x = tunnelCenter - car.offsetWidth / 2;
+        car.style.transform = 'translateX(' + Math.max(6, x) + 'px)';
+      }
+
+      function buildRoundValues() {
+        a = rand(1, 20);
+        b = rand(1, 20);
+        correctAnswer = a + b;
+        correctLane = rand(0, 3);
+
+        const values = [];
+        for (let i = 0; i < 4; i += 1) {
+          if (i === correctLane) {
+            values.push(correctAnswer);
+            continue;
+          }
+          let candidate = correctAnswer;
+          while (candidate === correctAnswer || values.indexOf(candidate) !== -1 || candidate < 0) {
+            const delta = rand(1, 11) * (Math.random() > 0.5 ? 1 : -1);
+            candidate = correctAnswer + delta;
+          }
+          values.push(candidate);
+        }
+
+        return values;
+      }
+
+      function paintRound() {
+        const values = buildRoundValues();
+
+        signalA.textContent = String(a);
+        signalB.textContent = String(b);
+        missionSum.textContent = a + ' + ' + b + ' = ?';
+
+        tunnelButtons.forEach(function (btn, index) {
+          btn.classList.remove('correct', 'wrong');
+          btn.textContent = String(values[index]);
+        });
+      }
+
+      function startRound() {
+        roundMs = ROUND_MS;
+        roundStart = performance.now();
+        distanceLabel.textContent = 'Distance to tunnel';
+        paintRound();
+        updateStats();
+      }
+
+      function endRace() {
+        running = false;
+        resolvingRound = false;
+        cancelAnimationFrame(rafId);
+
+        if (score > best) {
+          best = score;
+          localStorage.setItem(STORAGE_KEY, String(best));
+        }
+
+        updateStats();
+
+        sayLine('Race over. Your score is ' + score + '. Tap start race to play again.');
+
+        overlay.innerHTML =
+          '<div class="overlay-card">' +
+            '<h1>Race Finished</h1>' +
+            '<p>Your score: <strong>' + score + '</strong> · Best score: <strong>' + best + '</strong></p>' +
+            '<span class="tip">Wrong tunnel! Add the two signals and pick the matching tunnel next time.</span>' +
+            '<button class="btn" id="restartBtn" type="button">Start Again</button>' +
+          '</div>';
+        overlay.style.display = 'grid';
+
+        const restartBtn = document.getElementById('restartBtn');
+        if (restartBtn) {
+          restartBtn.addEventListener('click', startRace);
+        }
+      }
+
+      function resolveRound() {
+        if (resolvingRound) return;
+        resolvingRound = true;
+
+        const isCorrect = laneIndex === correctLane;
+        const selectedBtn = tunnelButtons[laneIndex];
+        const correctBtn = tunnelButtons[correctLane];
+
+        if (isCorrect) {
+          selectedBtn.classList.add('correct');
+          score += 10;
+          round += 1;
+
+          sayLine(randomFrom([
+            'Great driving. Correct tunnel.',
+            'Awesome. That sum is right.',
+            'Perfect. Keep racing.',
+            'Well done. Next tunnel.'
+          ]));
+
+          window.setTimeout(function () {
+            if (!running) return;
+            resolvingRound = false;
+            startRound();
+          }, 350);
+          return;
+        }
+
+        selectedBtn.classList.add('wrong');
+        correctBtn.classList.add('correct');
+        sayLine('Oops. ' + a + ' plus ' + b + ' is ' + correctAnswer + '.');
+        window.setTimeout(endRace, 420);
+      }
+
+      function frame(ts) {
+        if (!running) return;
+
+        const elapsed = ts - roundStart;
+        const progress = Math.min(1, elapsed / roundMs);
+        const remainingMs = Math.max(0, roundMs - elapsed);
+
+        progressFill.style.width = String(100 - progress * 100) + '%';
+        timeLabel.textContent = (remainingMs / 1000).toFixed(1) + 's';
+
+        if (progress >= 1 && !resolvingRound) {
+          resolveRound();
+        }
+
+        rafId = requestAnimationFrame(frame);
+      }
+
+      function startRace() {
+        score = 0;
+        round = 1;
+        running = true;
+        resolvingRound = false;
+        setLane(1);
+
+        overlay.style.display = 'none';
+        overlay.innerHTML = '';
+
+        progressFill.style.width = '100%';
+        timeLabel.textContent = '10.0s';
+
+        sayLine('Race started. Add the two signal numbers and drive to the correct tunnel.');
+
+        startRound();
+        cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(frame);
+      }
+
+      function shiftLane(step) {
+        if (!running) return;
+        setLane(laneIndex + step);
+      }
+
+      function onKeyDown(event) {
+        if (!running) return;
+
+        if (event.key === 'ArrowLeft' || event.key.toLowerCase() === 'a') {
+          event.preventDefault();
+          shiftLane(-1);
+        } else if (event.key === 'ArrowRight' || event.key.toLowerCase() === 'd') {
+          event.preventDefault();
+          shiftLane(1);
+        } else if (event.key === '1' || event.key === '2' || event.key === '3' || event.key === '4') {
+          event.preventDefault();
+          setLane(Number(event.key) - 1);
+        }
+      }
+
+      leftBtn.addEventListener('click', function () {
+        shiftLane(-1);
+      });
+
+      rightBtn.addEventListener('click', function () {
+        shiftLane(1);
+      });
+
+      stayBtn.addEventListener('click', function () {
+        if (!running) return;
+        sayLine('Current lane selected.');
+      });
+
+      tunnelButtons.forEach(function (btn, index) {
+        btn.addEventListener('click', function () {
+          if (!running) return;
+          setLane(index);
+        });
+      });
+
+      raceWrap.addEventListener('touchstart', function (event) {
+        if (!running || !event.touches[0]) return;
+        touchStartX = event.touches[0].clientX;
+      }, { passive: true });
+
+      raceWrap.addEventListener('touchend', function (event) {
+        if (!running || touchStartX === null || !event.changedTouches[0]) return;
+        const diffX = event.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(diffX) > 28) {
+          shiftLane(diffX > 0 ? 1 : -1);
+        }
+        touchStartX = null;
+      }, { passive: true });
+
+      window.addEventListener('keydown', onKeyDown);
+      window.addEventListener('resize', placeCar);
+
+      if (startBtn) {
+        startBtn.addEventListener('click', startRace);
+      }
+
+      updateStats();
+      setLane(1);
+      paintRound();
+
+      if (window.setupVoiceAssist) {
+        window.setupVoiceAssist({
+          readButtonId: 'voiceReadBtn',
+          stopButtonId: 'voiceStopBtn',
+          muteButtonId: 'voiceMuteBtn',
+          getText: function () {
+            const overlayVisible = overlay && window.getComputedStyle(overlay).display !== 'none';
+            if (overlayVisible) {
+              return 'Addition Tunnel Car Race. ' + overlay.textContent.replace(/\s+/g, ' ').trim();
+            }
+            return [
+              'Addition Tunnel Car Race.',
+              'Round ' + round + '.',
+              'Signal A is ' + a + '.',
+              'Signal B is ' + b + '.',
+              'Add both signals and pick the matching tunnel.',
+              'Current lane ' + (laneIndex + 1) + '.',
+              'Score ' + score + '.',
+              'Best ' + best + '.',
+              'Time left ' + timeLabel.textContent.replace('s', ' seconds') + '.'
+            ].join(' ');
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -422,6 +422,243 @@
           font-size: 0.72rem;
         }
       }
+
+      /* Match homepage mockup theme on all inner pages */
+      body.with-global-slim-topbar {
+        padding-top: calc(var(--global-slim-topbar-height, 84px) + 12px);
+      }
+
+      .global-slim-topbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        transform: none;
+        width: 100%;
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+        backdrop-filter: none;
+        background: linear-gradient(180deg, #5b3fa8 0%, #4a2e9a 100%);
+        padding: 0 20px;
+        min-height: 52px;
+        grid-template-columns: auto minmax(0, 1fr) minmax(210px, 240px);
+        gap: 10px;
+      }
+
+      .global-slim-topbar-brand {
+        min-height: 52px;
+        align-items: center;
+      }
+
+      .global-slim-topbar-logo {
+        width: 164px;
+        filter: none;
+      }
+
+      .global-slim-topbar-links {
+        height: 52px;
+        align-items: stretch;
+        gap: 0;
+      }
+
+      .global-top-menu-group {
+        margin-right: 2px;
+      }
+
+      .global-slim-topbar-link {
+        min-height: 52px;
+        padding: 0 13px;
+        border-radius: 0;
+        border: none;
+        background: transparent;
+        box-shadow: none;
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 0.8rem;
+      }
+
+      .global-slim-topbar-link:hover,
+      .global-slim-topbar-link.is-active {
+        color: #fff;
+        background: transparent;
+        box-shadow: none;
+        filter: none;
+        transform: none;
+      }
+
+      .global-slim-topbar-link.is-active {
+        border-bottom: 3px solid #f0c93a;
+      }
+
+      .global-top-main-link::after {
+        display: none;
+      }
+
+      .global-top-submenu {
+        border-color: #d9cff4;
+      }
+
+      .global-slim-topbar-search {
+        align-self: center;
+      }
+
+      .global-slim-topbar-search-icon {
+        color: rgba(255, 255, 255, 0.82);
+      }
+
+      .global-slim-topbar-search-input {
+        min-height: 34px;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        background: rgba(255, 255, 255, 0.14);
+        color: #fff;
+        padding-left: 34px;
+        font-size: 0.74rem;
+      }
+
+      .global-slim-topbar-search-input::placeholder {
+        color: rgba(255, 255, 255, 0.72);
+      }
+
+      .global-slim-topbar-search-input:focus {
+        border-color: rgba(255, 255, 255, 0.55);
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.14);
+      }
+
+      .global-slim-topbar-search-btn {
+        min-height: 34px;
+        border-radius: 20px;
+        padding: 6px 11px;
+        background: rgba(255, 255, 255, 0.16);
+        color: #fff;
+        font-size: 0.72rem;
+      }
+
+      .global-slim-topbar-search-btn:hover {
+        background: rgba(255, 255, 255, 0.24);
+      }
+
+      #app > .nav-bar.story-nav-bottom {
+        margin-top: 10px;
+        margin-bottom: 0;
+      }
+
+      #app > .nav-bar.story-nav-bottom.story-nav-with-tts {
+        gap: 10px;
+      }
+
+      #app > .nav-bar.story-nav-bottom .story-nav-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+
+      #app > .nav-bar.story-nav-bottom .story-nav-center .tts-bar {
+        margin: 0;
+        gap: 6px;
+        flex-wrap: nowrap;
+      }
+
+      #app > .nav-bar.story-nav-bottom .story-nav-center .tts-btn,
+      #app > .nav-bar.story-nav-bottom .story-nav-center .tts-stop {
+        margin: 0;
+        padding: 8px 12px;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+
+      #app > .nav-bar.story-nav-bottom .story-nav-center .page-dots {
+        max-width: 220px;
+      }
+
+      @media (max-width: 980px) {
+        .global-slim-topbar {
+          padding: 8px 10px;
+          min-height: auto;
+          grid-template-columns: auto auto minmax(0, 1fr);
+          gap: 8px;
+        }
+
+        .global-slim-topbar-logo {
+          width: 130px;
+        }
+
+        .global-slim-topbar-menu-btn {
+          border: 1px solid rgba(255, 255, 255, 0.32);
+          background: rgba(255, 255, 255, 0.12);
+          color: #fff;
+          min-height: 40px;
+          min-width: 40px;
+          border-radius: 12px;
+          padding: 8px;
+          gap: 0;
+        }
+
+        .global-slim-topbar-menu-btn > span:last-child {
+          display: none;
+        }
+
+        .global-slim-topbar-search {
+          display: none;
+        }
+
+        .global-slim-topbar-links {
+          display: none;
+          grid-column: 1 / -1;
+          background: #fff;
+          border-radius: 14px;
+          padding: 8px;
+          margin-top: 2px;
+        }
+
+        .global-slim-topbar.is-menu-open .global-slim-topbar-links {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          max-height: min(62vh, 420px);
+          overflow-y: auto;
+        }
+
+        .global-slim-topbar .global-top-menu-group {
+          width: 100%;
+          margin-right: 0;
+        }
+
+        .global-slim-topbar .global-slim-topbar-link {
+          width: 100%;
+          min-height: 38px;
+          border-radius: 10px;
+          color: #312563;
+          justify-content: flex-start;
+          padding: 0 10px;
+        }
+
+        .global-slim-topbar .global-slim-topbar-link.is-active {
+          background: #f0eafa;
+          border-bottom: 0;
+        }
+
+        #app > .nav-bar.story-nav-bottom.story-nav-with-tts {
+          padding: 10px;
+          gap: 8px;
+        }
+
+        #app > .nav-bar.story-nav-bottom .story-nav-center {
+          gap: 8px;
+        }
+
+        #app > .nav-bar.story-nav-bottom .story-nav-center .tts-btn,
+        #app > .nav-bar.story-nav-bottom .story-nav-center .tts-stop {
+          padding: 7px 10px;
+          font-size: 11px;
+        }
+
+        #app > .nav-bar.story-nav-bottom .story-nav-center .page-dots {
+          max-width: 140px;
+        }
+      }
     `;
     document.head.appendChild(style);
   }
@@ -752,6 +989,58 @@
     });
   }
 
+  function moveStoryNavToBottom() {
+    const app = document.getElementById('app');
+    if (!app) return;
+
+    const navBar = app.querySelector(':scope > .nav-bar');
+    const pages = Array.from(app.querySelectorAll(':scope > .page'));
+    if (!navBar || pages.length === 0) return;
+
+    const hasStoryLayout = app.querySelector('.story-page') && app.querySelector('.cover');
+    const hasStoryPager = app.querySelector('#prevBtn') && app.querySelector('#nextBtn');
+    if (!hasStoryLayout || !hasStoryPager) return;
+
+    const lastPage = pages[pages.length - 1];
+    if (!lastPage) return;
+
+    if (navBar.previousElementSibling !== lastPage) {
+      lastPage.insertAdjacentElement('afterend', navBar);
+    }
+    navBar.classList.add('story-nav-bottom');
+  }
+
+  function placeReadAloudInStoryNav() {
+    const app = document.getElementById('app');
+    if (!app) return;
+
+    const navBar = app.querySelector(':scope > .nav-bar');
+    const ttsBar = app.querySelector(':scope > .tts-bar');
+    const prevBtn = app.querySelector('#prevBtn');
+    const nextBtn = app.querySelector('#nextBtn');
+    const dotsWrap = app.querySelector('#pageDots');
+    if (!navBar || !ttsBar || !prevBtn || !nextBtn || !dotsWrap) return;
+
+    let center = navBar.querySelector('.story-nav-center');
+    if (!center) {
+      center = document.createElement('div');
+      center.className = 'story-nav-center';
+    }
+
+    if (center.parentElement !== navBar) {
+      navBar.insertBefore(center, nextBtn);
+    }
+
+    if (ttsBar.parentElement !== center) {
+      center.appendChild(ttsBar);
+    }
+    if (dotsWrap.parentElement !== center) {
+      center.appendChild(dotsWrap);
+    }
+
+    navBar.classList.add('story-nav-with-tts');
+  }
+
   function initSlimTopbar() {
     if (document.getElementById('miniTopbar')) return;
     ensureStyles();
@@ -763,6 +1052,8 @@
     syncActiveNav();
     setupSearch();
     setupTopSubmenuMoreOptions();
+    moveStoryNavToBottom();
+    placeReadAloudInStoryNav();
     setupMobileMenu();
     window.addEventListener('resize', syncTopbarHeightVar);
     window.addEventListener('hashchange', syncActiveNav);

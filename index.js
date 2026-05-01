@@ -141,6 +141,10 @@
   const learningMapBadgeGrid = document.getElementById('learningMapBadgeGrid');
   const learningMapNext = document.getElementById('learningMapNext');
   const learningMapNextTitle = document.getElementById('learningMapNextTitle');
+  const topbarStreakCount = document.getElementById('topbarStreakCount');
+  const heroProgressCompleted = document.getElementById('heroProgressCompleted');
+  const heroProgressBadges = document.getElementById('heroProgressBadges');
+  const heroProgressStars = document.getElementById('heroProgressStars');
   const pipGuide = document.getElementById('pipGuide');
   const pipGuideBubble = document.getElementById('pipGuideBubble');
   const pipGuideMinimize = document.getElementById('pipGuideMinimize');
@@ -661,6 +665,9 @@
     if (learningMapStreak) {
       learningMapStreak.textContent = '🔥 ' + streak + ' day' + (streak === 1 ? '' : 's') + ' streak';
     }
+    if (topbarStreakCount) {
+      topbarStreakCount.textContent = String(streak);
+    }
     if (learningMapStreakFill) {
       const streakProgress = Math.max(0, Math.min(3, streak));
       learningMapStreakFill.style.width = String((streakProgress / 3) * 100) + '%';
@@ -701,6 +708,15 @@
     learningMapBadgeGrid.innerHTML = badgeRules.map(function (badge) {
       return '<div class="learning-badge' + (badge.ok ? '' : ' is-locked') + '"><div class="learning-badge-title">' + badge.icon + ' ' + badge.title + '</div><div class="learning-badge-note">' + badge.note + '</div></div>';
     }).join('');
+    if (heroProgressCompleted) {
+      heroProgressCompleted.textContent = String(completedCount);
+    }
+    if (heroProgressBadges) {
+      heroProgressBadges.textContent = unlockedCount + '/6';
+    }
+    if (heroProgressStars) {
+      heroProgressStars.textContent = String(starFillCount);
+    }
 
     if (learningMapNext && learningMapNextTitle) {
       const nextCard = searchCards.find(function (card) {
