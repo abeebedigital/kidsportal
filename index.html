@@ -50,7 +50,6 @@
           <a class="top-submenu-link" href="addition-tables-hub.html">Addition Tables</a>
           <a class="top-submenu-link" href="multiplication-tables-hub.html">Multiplication Tables</a>
           <a class="top-submenu-link" href="index.html#space-science">Space & Science</a>
-          <a class="top-submenu-link" href="index.html#chemistry-lab">Chemistry Lab</a>
           <a class="top-submenu-link" href="index.html#world-history">World & History</a>
         </div>
       </div>
@@ -97,6 +96,7 @@
         <div class="top-submenu">
           <a class="top-submenu-link" href="index.html#games">Games Hub</a>
           <a class="top-submenu-link" href="game-addition-bubble-pop.html">Addition Bubble Pop</a>
+          <a class="top-submenu-link" href="game-addition-car-race.html">Addition Tunnel Car Race</a>
           <a class="top-submenu-link" href="game-multiplication-meteor.html">Multiplication Meteor</a>
           <a class="top-submenu-link" href="game-clock-match-rush.html">Clock Match Rush</a>
           <a class="top-submenu-link" href="game-grammar-fix-it-lab.html">Grammar Fix-it Lab</a>
@@ -147,6 +147,13 @@
       <button id="librarySearchClear" class="search-clear-btn" type="button">Clear</button>
       <div id="searchLinkPopup" class="search-link-popup" hidden></div>
     </div>
+    <div class="mini-topbar-utilities">
+      <button class="mini-topbar-streak" type="button" data-learning-map-toggle aria-controls="learningMapPanel" aria-expanded="false">
+        <span aria-hidden="true">🔥</span>
+        <span id="topbarStreakCount">0</span>
+      </button>
+      <span class="mini-topbar-avatar" aria-hidden="true">A</span>
+    </div>
   </div>
 
   <!-- ── HEADER ── -->
@@ -168,9 +175,26 @@
           <div class="hero-stat"><strong>27</strong><span>Storybooks</span></div>
           <div class="hero-stat"><strong>21</strong><span>Micro-topics</span></div>
           <div class="hero-stat"><strong>10</strong><span>Exam sessions</span></div>
-          <div class="hero-stat"><strong>4</strong><span>Mini games</span></div>
+          <div class="hero-stat"><strong>5</strong><span>Mini games</span></div>
         </div>
       </div>
+      <aside class="hero-side-mockup" aria-label="Daily challenge and progress">
+        <a class="hero-daily-mockup" href="game-multiplication-meteor.html">
+          <span class="hero-daily-eyebrow">Today's challenge</span>
+          <strong class="hero-daily-title">Multiplication Meteor</strong>
+          <span class="hero-daily-meta">2 min · Maths · Ages 7-10</span>
+          <span class="hero-daily-cta">Go now →</span>
+        </a>
+        <div class="hero-progress-mockup">
+          <div class="hero-progress-title">My learning map</div>
+          <div class="hero-progress-row">
+            <div class="hero-progress-item"><span id="heroProgressCompleted">0</span><small>Adventures</small></div>
+            <div class="hero-progress-item"><span id="heroProgressBadges">0/6</span><small>Badges</small></div>
+            <div class="hero-progress-item"><span id="heroProgressStars">0</span><small>Stars</small></div>
+          </div>
+          <button class="hero-progress-open" type="button" data-learning-map-toggle aria-controls="learningMapPanel" aria-expanded="false">Open map</button>
+        </div>
+      </aside>
     </div>
   </header>
 
@@ -241,10 +265,11 @@
         <div class="home-curated home-curated-games">
           <div class="home-curated-head">
             <h2>Quick games</h2>
-            <a href="#games">See all 4 →</a>
+            <a href="#games">See all 5 →</a>
           </div>
           <div class="quick-games-grid">
             <a class="quick-game-card" href="game-addition-bubble-pop.html"><span>🎈</span><strong>Bubble Pop</strong><small>Fast addition facts</small></a>
+            <a class="quick-game-card" href="game-addition-car-race.html"><span>🏎️</span><strong>Tunnel Race</strong><small>Add and pick lane</small></a>
             <a class="quick-game-card" href="game-multiplication-meteor.html"><span>☄️</span><strong>Meteor</strong><small>Times tables race</small></a>
             <a class="quick-game-card" href="game-clock-match-rush.html"><span>⏰</span><strong>Clock Rush</strong><small>Read clock faces</small></a>
             <a class="quick-game-card" href="game-grammar-fix-it-lab.html"><span>🧪</span><strong>Fix-it Lab</strong><small>Grammar editing</small></a>
@@ -931,7 +956,7 @@
           <div class="card-tags">
             <span class="tag tag-science">Chemistry</span>
             <span class="tag tag-story">Story</span>
-            <span class="tag tag-age">Ages 4–6</span>
+            <span class="tag tag-age">Ages 10–12</span>
           </div>
         </div>
         <div class="card-footer">
@@ -954,7 +979,7 @@
           <div class="card-tags">
             <span class="tag tag-science">Chemistry</span>
             <span class="tag tag-story">Story</span>
-            <span class="tag tag-age">Ages 5–7</span>
+            <span class="tag tag-age">Ages 10–12</span>
           </div>
         </div>
         <div class="card-footer">
@@ -977,7 +1002,7 @@
           <div class="card-tags">
             <span class="tag tag-science">Chemistry</span>
             <span class="tag tag-story">Story</span>
-            <span class="tag tag-age">Ages 6–8</span>
+            <span class="tag tag-age">Ages 10–12</span>
           </div>
         </div>
         <div class="card-footer">
@@ -1000,7 +1025,7 @@
           <div class="card-tags">
             <span class="tag tag-science">Chemistry</span>
             <span class="tag tag-story">Story</span>
-            <span class="tag tag-age">Ages 7–9</span>
+            <span class="tag tag-age">Ages 10–12</span>
           </div>
         </div>
         <div class="card-footer">
@@ -1023,7 +1048,7 @@
           <div class="card-tags">
             <span class="tag tag-science">Chemistry</span>
             <span class="tag tag-story">Story</span>
-            <span class="tag tag-age">Ages 8–10</span>
+            <span class="tag tag-age">Ages 10–12</span>
           </div>
         </div>
         <div class="card-footer">
@@ -1046,7 +1071,7 @@
           <div class="card-tags">
             <span class="tag tag-science">Chemistry</span>
             <span class="tag tag-story">Story</span>
-            <span class="tag tag-age">Ages 9–11</span>
+            <span class="tag tag-age">Ages 10–12</span>
           </div>
         </div>
         <div class="card-footer">
@@ -1497,7 +1522,7 @@
       Quick mini games that turn practice into play. Tap, think, and learn while chasing your best score.
     </p>
     <div class="section-meta">
-      <span class="section-pill">4 Live Games</span>
+      <span class="section-pill">5 Live Games</span>
       <span class="section-pill">Math, Time, Grammar</span>
       <span class="section-pill">Mobile + Laptop Friendly</span>
     </div>
@@ -1526,13 +1551,36 @@
         </div>
       </a>
 
+      <a class="story-card" href="game-addition-car-race.html">
+        <div class="card-cover" style="background: linear-gradient(135deg, #15385d 0%, #3982df 46%, #ffd166 100%);">
+          🏎️
+          <span class="badge">Game · Addition</span>
+        </div>
+        <div class="card-body">
+          <div class="card-number">Game #02</div>
+          <div class="card-title">Addition Tunnel Car Race</div>
+          <div class="card-desc">
+            Add the two signal numbers, then steer your car into the tunnel that shows the correct sum before time runs out.
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-game">Game</span>
+            <span class="tag tag-math">Math</span>
+            <span class="tag tag-age">Ages 6–11</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pages-info">🏎️ 4-tunnel lane challenge</span>
+          <span class="read-btn">Play Now →</span>
+        </div>
+      </a>
+
       <a class="story-card" href="game-multiplication-meteor.html">
         <div class="card-cover" style="background: linear-gradient(135deg, #0f3460 0%, #4d96ff 45%, #ffb36c 100%);">
           ☄️
           <span class="badge">Game · Multiplication</span>
         </div>
         <div class="card-body">
-          <div class="card-number">Game #02</div>
+          <div class="card-number">Game #03</div>
           <div class="card-title">Multiplication Meteor</div>
           <div class="card-desc">
             Tap the meteor with the right multiplication answer before it escapes. Build fast recall of times tables.
@@ -1555,7 +1603,7 @@
           <span class="badge">Game · Time</span>
         </div>
         <div class="card-body">
-          <div class="card-number">Game #03</div>
+          <div class="card-number">Game #04</div>
           <div class="card-title">Clock Match Rush</div>
           <div class="card-desc">
             Match analog clocks to digital time quickly. Train your eye to read hour and minute hands with confidence.
@@ -1578,7 +1626,7 @@
           <span class="badge">Game · Grammar</span>
         </div>
         <div class="card-body">
-          <div class="card-number">Game #04</div>
+          <div class="card-number">Game #05</div>
           <div class="card-title">Grammar Fix-it Lab</div>
           <div class="card-desc">
             Fix sentence errors in capitals, punctuation, and grammar. Quick rounds to build editing confidence.
@@ -1950,13 +1998,23 @@
       using score first and speed as the tie-breaker.
     </p>
     <div class="section-meta">
-      <span class="section-pill">2 Rounds</span>
+      <span class="section-pill">4 Rounds</span>
       <span class="section-pill">60 Minute Timer</span>
       <span class="section-pill">Winner Certificate</span>
-      <span class="section-pill">Week 2 Started 6 Apr 2026</span>
+      <span class="section-pill">Week 3 Started 29 Apr 2026</span>
     </div>
 
     <div class="story-grid">
+      <a class="story-card" href="competition-maths-story-cup.html" data-competition-card data-competition-start="2026-04-29T00:00:00+10:00" data-competition-end="2026-12-31T23:59:59+10:00">
+        <div class="card-cover" style="background: linear-gradient(135deg, #ff8f00 0%, #ffd166 100%);">➕<span class="badge">Competition · Maths Stories</span></div>
+        <div class="card-body"><div class="card-number">Cup #M1</div><div class="competition-status is-pending" data-competition-status>⏳ Checking status</div><div class="card-title">Maths Adventure Cup</div><div class="card-desc">A maths-only, 25-question story-based competition inspired by our characters and adventures, with leaderboard and winner certificate.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-numeracy">Numeracy</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info" data-competition-meta>🏁 Story maths round</span><span class="read-btn" data-competition-cta>Enter →</span></div>
+      </a>
+      <a class="story-card" href="competition-week-03.html" data-competition-card data-competition-start="2026-04-29T00:00:00+10:00" data-competition-end="2026-05-05T23:59:59+10:00">
+        <div class="card-cover" style="background: linear-gradient(135deg, #006d77 0%, #83c5be 100%);">🥳<span class="badge">Competition · Week 3</span></div>
+        <div class="card-body"><div class="card-number">Cup #03</div><div class="competition-status is-pending" data-competition-status>⏳ Checking status</div><div class="card-title">The Weekly Skills Cup</div><div class="card-desc">A brand new 25-question mixed competition for April 29, 2026 to May 5, 2026, with live leaderboard and winner certificate.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-story">Competition</span><span class="tag tag-age">Year 3–5</span></div></div>
+        <div class="card-footer"><span class="pages-info" data-competition-meta>🏁 New weekly round</span><span class="read-btn" data-competition-cta>Enter →</span></div>
+      </a>
       <a class="story-card" href="np-competition-week-01.html" data-competition-card data-competition-start="2026-04-01T00:00:00+11:00" data-competition-end="2026-04-07T23:59:59+10:00">
         <div class="card-cover" style="background: linear-gradient(135deg, #6a040f 0%, #d00000 100%);">🏆<span class="badge">Competition · Week 1</span></div>
         <div class="card-body"><div class="card-number">Cup #01</div><div class="competition-status is-pending" data-competition-status>⏳ Checking status</div><div class="card-title">The Weekly Skills Cup</div><div class="card-desc">A 25-question, 60-minute mixed competition with leaderboard, winner tracking, and downloadable winner certificate.</div><div class="card-tags"><span class="tag tag-challenge">Challenge</span><span class="tag tag-story">Competition</span><span class="tag tag-age">Year 3–5</span></div></div>
